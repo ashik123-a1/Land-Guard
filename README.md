@@ -67,9 +67,9 @@ Attempting to cross authorization boundaries (e.g. Citizen attempting to view `/
 
 ---
 
-## 4. Operational Database & Neon PostgreSQL Architecture
+## 4. Operational Database Architecture (SQLite Primary with Neon Standby)
 
-LandGuard provides an enterprise relational schema covering all 10 table groups defined in the SRS:
+LandGuard provides an enterprise relational schema covering all 10 table groups defined in SRS v5.0 Section 14:
 - `users`, `roles`, `sessions`
 - `parcels`, `ownership_events`
 - `deeds`, `mutations`, `tax_records`
@@ -77,9 +77,30 @@ LandGuard provides an enterprise relational schema covering all 10 table groups 
 - `complaints`, `cases`, `case_notes`
 - `notifications`, `audit_events`
 
-**Deployment Modes**:
-- **Neon-hosted PostgreSQL**: Automatically enabled when `DATABASE_URL` is set in the environment.
-- **Local SQLite Fallback**: Automatically initialized at `data/landguard_operational.db` when running offline or in local hackathon test mode. Produces a safe degraded state without crashing if external network is unavailable.
+### Database Configuration & Execution Rules:
+* **Active Primary Database (SQLite)**:
+  - **SQLite is ALWAYS the active and primary database** for the application runtime.
+  - All normal application operations (authentication, sessions, complaints, investigations, verification records, audit logging, and dashboard analytics) read and write to `data/landguard_operational.db`.
+  - The default configuration is `DATABASE_BACKEND=SQLITE`.
+  - The application will **never** automatically or silently switch to PostgreSQL or split traffic across databases.
+* **Standby Neon Serverless PostgreSQL (Future Activation)**:
+  - Neon PostgreSQL connection settings are preserved in `.env` (`DATABASE_URL`) on standby.
+  - While SQLite is active, Neon PostgreSQL is **NOT** used for normal application reads or writes.
+  - The `/api/health` endpoint explicitly reports `db_type: "SQLITE"` and `neon_postgres: {"status": "STANDBY", "active_for_traffic": false}`.
+
+### How to Explicitly Activate Neon PostgreSQL in the Future:
+To explicitly switch the application backend from SQLite to Neon PostgreSQL:
+1. In your `.env` file, set:
+   ```env
+   DATABASE_BACKEND=POSTGRESQL
+   DATABASE_URL=postgresql://neondb_owner:YOUR_PASSWORD@ep-falling-hat-b4bi5i99-pooler.c-6.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+   ```
+2. Restart the application service:
+   ```bash
+   uvicorn src.landguard_web.app:app --host 127.0.0.1 --port 8000
+   ```
+3. The application will initialize the Neon schema idempotently and route queries through `psycopg2`.
+4. If `DATABASE_BACKEND` is omitted or set to `SQLITE`, the application unconditionally remains on SQLite.
 
 ---
 

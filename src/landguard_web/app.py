@@ -756,7 +756,8 @@ async def admin_settings(request: Request):
 
 @app.get("/api/health")
 async def health_check():
-    """Health check endpoint indicating model readiness and synthetic disclaimer."""
+    """Health check endpoint indicating model readiness, active database, and standby configuration."""
+    neon_status = "STANDBY" if service.db.neon_configured else "NOT_CONFIGURED"
     return {
         "status": "HEALTHY",
         "service": "LandGuard AI Land Record Verification",
@@ -765,6 +766,13 @@ async def health_check():
         "indexed_parcels": len(service.parcels_by_plot),
         "total_cases": len(service.cases),
         "db_type": service.db.db_type,
+        "database_backend": service.db.db_type,
+        "primary_database": "SQLITE",
+        "neon_postgres": {
+            "configured": service.db.neon_configured,
+            "status": neon_status,
+            "active_for_traffic": service.db.db_type == "POSTGRESQL",
+        },
         "disclaimer": "SYNTHETIC DEMO — NOT AN OFFICIAL DOCUMENT. All records are synthetically generated.",
     }
 
