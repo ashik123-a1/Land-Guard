@@ -1,0 +1,78 @@
+{
+  "evaluation_timestamp": "2026-10-13 23:22:46",
+  "total_images_evaluated": 80,
+  "clean_images_count": 20,
+  "altered_images_count": 60,
+  "confusion_matrix": [
+    [
+      20,
+      0
+    ],
+    [
+      0,
+      60
+    ]
+  ],
+  "clean_false_positive_rate": 0.0,
+  "altered_recall": 1.0,
+  "precision": 1.0,
+  "f1_score": 1.0,
+  "per_mechanism_stats": {
+    "CLEAN_UNTAMPERED": {
+      "sample_count": 20,
+      "detection_rate": 0.0,
+      "mean_score": 0.0,
+      "min_score": 0.0,
+      "max_score": 0.0,
+      "std_score": 0.0
+    },
+    "paste_over_plot": {
+      "sample_count": 10,
+      "detection_rate": 1.0,
+      "mean_score": 0.8242,
+      "min_score": 0.8206,
+      "max_score": 0.8273,
+      "std_score": 0.0031
+    },
+    "copy_move_clone": {
+      "sample_count": 10,
+      "detection_rate": 1.0,
+      "mean_score": 0.7784,
+      "min_score": 0.7733,
+      "max_score": 0.7856,
+      "std_score": 0.005
+    },
+    "localized_erasure_blur": {
+      "sample_count": 10,
+      "detection_rate": 1.0,
+      "mean_score": 0.7748,
+      "min_score": 0.7695,
+      "max_score": 0.7826,
+      "std_score": 0.0053
+    },
+    "dark_ink_overwrite": {
+      "sample_count": 10,
+      "detection_rate": 1.0,
+      "mean_score": 0.8109,
+      "min_score": 0.8109,
+      "max_score": 0.8109,
+      "std_score": 0.0
+    },
+    "faded_chemical_erasure": {
+      "sample_count": 10,
+      "detection_rate": 1.0,
+      "mean_score": 0.7733,
+      "min_score": 0.7679,
+      "max_score": 0.7811,
+      "std_score": 0.0054
+    },
+    "misaligned_numerical_splice": {
+      "sample_count": 10,
+      "detection_rate": 1.0,
+      "mean_score": 0.8089,
+      "min_score": 0.8045,
+      "max_score": 0.8115,
+      "std_score": 0.002
+    }
+  }
+}

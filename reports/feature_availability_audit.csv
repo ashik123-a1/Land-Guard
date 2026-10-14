@@ -1,0 +1,23 @@
+feature_name,feature_group,source_entity,derivation,availability_in_production,is_oracle_or_simulator_artifact,audit_assessment
+transferred_area_decimal,REGISTRY_ONLY,transaction.transferred_area_decimal,Direct numeric area claimed on deed transaction record,AVAILABLE_TABULAR_DEED,False,SAFE_OBSERVABLE_FACT
+parcel_total_area_decimal,REGISTRY_ONLY,parcel.total_area_decimal,Direct numeric total area from cadastral parcel register,AVAILABLE_REGISTRY_LOOKUP,False,SAFE_OBSERVABLE_FACT
+area_ratio,REGISTRY_ONLY,transaction + parcel,transferred_area_decimal / parcel_total_area_decimal,AVAILABLE_RELATIONAL_JOIN,False,SAFE_OBSERVABLE_FACT
+area_excess_flag,REGISTRY_ONLY,transaction + parcel,1.0 if transferred_area_decimal > parcel_total_area_decimal * 1.005 else 0.0,AVAILABLE_RELATIONAL_JOIN,False,SAFE_OBSERVABLE_FACT
+cumulative_seller_area_ratio,REGISTRY_ONLY,transaction + history_transactions + parcel,Cumulative area sold by primary seller on parcel divided by parcel total area,AVAILABLE_REGISTRY_LOOKUP,False,SAFE_OBSERVABLE_FACT
+price_per_decimal,REGISTRY_ONLY,transaction,consideration_bdt / transferred_area_decimal,AVAILABLE_TABULAR_DEED,False,SAFE_OBSERVABLE_FACT
+has_previous_deed_ref,REGISTRY_ONLY,transaction.previous_deed_ref,1.0 if non-empty and not INHERITED_ANCESTRAL_CS_RECORD else 0.0,AVAILABLE_TABULAR_DEED,False,SAFE_OBSERVABLE_FACT
+is_ancestral_ref,REGISTRY_ONLY,transaction.previous_deed_ref,1.0 if previous_deed_ref == 'INHERITED_ANCESTRAL_CS_RECORD' else 0.0,AVAILABLE_TABULAR_DEED,False,SAFE_OBSERVABLE_FACT
+previous_deed_verified_flag,REGISTRY_ONLY,transaction + history_transactions,1.0 if previous_deed_ref exists in historical deed index or is ancestral CS else 0.0,AVAILABLE_REGISTRY_LOOKUP,False,SAFE_OBSERVABLE_FACT
+chain_length,REGISTRY_ONLY,history_transactions,len(history_transactions),AVAILABLE_REGISTRY_LOOKUP,False,SAFE_OBSERVABLE_FACT
+seller_was_previous_buyer,REGISTRY_ONLY,transaction + history_transactions,1.0 if seller_id appears in buyer_ids of prior deed in chain else 0.0,AVAILABLE_REGISTRY_LOOKUP,False,SAFE_OBSERVABLE_FACT
+mutation_present,REGISTRY_ONLY,transaction + mutations,1.0 if mutation_case_no exists with APPROVED status in mutation register else 0.0,AVAILABLE_REGISTRY_LOOKUP,False,SAFE_OBSERVABLE_FACT
+mutation_pending_flag,REGISTRY_ONLY,transaction + mutations,1.0 if mutation_case_no exists with PENDING_VERIFICATION status else 0.0,AVAILABLE_REGISTRY_LOOKUP,False,SAFE_OBSERVABLE_FACT
+tax_year_delta,REGISTRY_ONLY,transaction,"max(0, execution_year - tax_clearance_year)",AVAILABLE_TABULAR_DEED,False,SAFE_OBSERVABLE_FACT
+conflicting_sale_flag,REGISTRY_ONLY,transaction + history_transactions + parcel,1.0 if seller already conveyed >100.5% of parcel area across deeds else 0.0,AVAILABLE_REGISTRY_LOOKUP,False,SAFE_OBSERVABLE_FACT
+doc_plot_discrepancy_flag,DOCUMENT_EVIDENCE_OCR,document_evidence.ocr_extracted_dag_plot_number + parcel.dag_plot_number,1.0 if OCR-extracted plot number on deed differs from cadastral dag_plot_number else 0.0,REQUIRES_OCR_ON_DEED_IMAGE,False,OBSERVABLE_DOCUMENT_OCR_FEATURE
+doc_area_discrepancy_flag,DOCUMENT_EVIDENCE_OCR,document_evidence.ocr_extracted_area_decimal + transaction.transferred_area_decimal,1.0 if OCR-extracted deed area differs from structured transaction area (>0.25 dec) else 0.0,REQUIRES_OCR_ON_DEED_IMAGE,False,OBSERVABLE_DOCUMENT_OCR_FEATURE
+cv_seal_absent_flag,DOCUMENT_EVIDENCE_CV,document_evidence.cv_detected_seal_present,1.0 if CV seal detector reports absence of official seal on deed scan else 0.0,REQUIRES_CV_DETECTOR_ON_IMAGE,False,OBSERVABLE_DOCUMENT_CV_FEATURE
+cv_visual_anomaly_score,DOCUMENT_EVIDENCE_CV,document_evidence.cv_visual_anomaly_score,"Continuous [0, 1] score from CV tampering / paste-over / erasure detector",REQUIRES_CV_DETECTOR_ON_IMAGE,False,OBSERVABLE_DOCUMENT_CV_FEATURE
+has_visual_anomaly (REMOVED),BANNED_ORACLE_FLAG,simulator_audit_metadata,Removed from transaction records and banned by validate_no_leakage(),UNAVAILABLE_SIMULATOR_ONLY,True,REMOVED_AND_BLOCKED_BY_TEST
+has_seal (REMOVED),BANNED_ORACLE_FLAG,simulator_audit_metadata,Removed from transaction records and banned by validate_no_leakage(),UNAVAILABLE_SIMULATOR_ONLY,True,REMOVED_AND_BLOCKED_BY_TEST
+claimed_dag_plot_number (REMOVED),BANNED_ORACLE_FLAG,simulator_audit_metadata,Removed from transaction records and banned by validate_no_leakage(),UNAVAILABLE_SIMULATOR_ONLY,True,REMOVED_AND_BLOCKED_BY_TEST

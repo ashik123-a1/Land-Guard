@@ -1,0 +1,1164 @@
+{
+  "environment_audit": {
+    "rapidocr_onnxruntime": {
+      "installed": true,
+      "version": "1.4.4",
+      "supported_scripts": [
+        "Latin/English (ASCII)",
+        "Digits"
+      ],
+      "bengali_unicode_support": false,
+      "role_in_pipeline": "High-precision ASCII/numeric line recognition and structured ID extraction"
+    },
+    "tesseract": {
+      "installed": true,
+      "binary_path": "C:\\Users\\ASHIK_CSE\\AppData\\Local\\Programs\\Tesseract-OCR\\tesseract.exe",
+      "version": "tesseract v5.4.0.20240606",
+      "available_languages": [
+        "ben",
+        "eng",
+        "osd"
+      ],
+      "bengali_traineddata_loaded": true,
+      "role_in_pipeline": "Primary bilingual (ben+eng) LSTM OCR engine with Bengali vowel-matra realignment"
+    }
+  },
+  "before_repair": {
+    "total_evaluated": 48,
+    "overall": {
+      "mean_cer": 0.7185,
+      "mean_wer": 0.9099
+    },
+    "english_subset": {
+      "mean_cer": 0.6021,
+      "mean_wer": 0.9025,
+      "evaluated_samples": 48
+    },
+    "bangla_subset": {
+      "mean_cer": 1.0,
+      "mean_wer": 1.0,
+      "evaluated_samples": 40
+    },
+    "exact_field_match_rate": 0.875,
+    "fields_checked_count": 80,
+    "fields_matched_count": 70,
+    "by_category": {
+      "SALE_DEED": {
+        "overall_cer": 0.5669,
+        "english_cer": 0.5103,
+        "bangla_cer": 1.0,
+        "mean_wer": 0.8354,
+        "count": 8
+      },
+      "KHATIAN_PORCHA": {
+        "overall_cer": 0.7303,
+        "english_cer": 0.6523,
+        "bangla_cer": 1.0,
+        "mean_wer": 0.9344,
+        "count": 8
+      },
+      "MUTATION_RECORD": {
+        "overall_cer": 0.6043,
+        "english_cer": 0.3539,
+        "bangla_cer": 1.0,
+        "mean_wer": 0.9201,
+        "count": 8
+      },
+      "TAX_RECEIPT": {
+        "overall_cer": 0.6873,
+        "english_cer": 0.4959,
+        "bangla_cer": 1.0,
+        "mean_wer": 0.9313,
+        "count": 8
+      },
+      "PARCEL_MAP": {
+        "overall_cer": 0.9227,
+        "english_cer": 0.9227,
+        "bangla_cer": 0.0,
+        "mean_wer": 0.875,
+        "count": 8
+      },
+      "APPLICATION_COMPLAINT": {
+        "overall_cer": 0.7997,
+        "english_cer": 0.6777,
+        "bangla_cer": 1.0,
+        "mean_wer": 0.9631,
+        "count": 8
+      }
+    },
+    "by_quality": {
+      "clean_digital": {
+        "overall_cer": 0.6704,
+        "english_cer": 0.463,
+        "bangla_cer": 0.8333,
+        "mean_wer": 0.8409,
+        "count": 6
+      },
+      "clean_scan": {
+        "overall_cer": 0.6984,
+        "english_cer": 0.5393,
+        "bangla_cer": 0.8333,
+        "mean_wer": 0.9317,
+        "count": 6
+      },
+      "grayscale_scan": {
+        "overall_cer": 0.7757,
+        "english_cer": 0.7011,
+        "bangla_cer": 0.8333,
+        "mean_wer": 0.8887,
+        "count": 6
+      },
+      "low_resolution": {
+        "overall_cer": 0.7311,
+        "english_cer": 0.7684,
+        "bangla_cer": 0.8333,
+        "mean_wer": 0.9069,
+        "count": 6
+      },
+      "mild_rotation": {
+        "overall_cer": 0.7273,
+        "english_cer": 0.5465,
+        "bangla_cer": 0.8333,
+        "mean_wer": 0.9615,
+        "count": 6
+      },
+      "skewed_scan": {
+        "overall_cer": 0.7053,
+        "english_cer": 0.5401,
+        "bangla_cer": 0.8333,
+        "mean_wer": 0.931,
+        "count": 6
+      },
+      "low_contrast": {
+        "overall_cer": 0.6661,
+        "english_cer": 0.4839,
+        "bangla_cer": 0.8333,
+        "mean_wer": 0.8934,
+        "count": 6
+      },
+      "uneven_illumination": {
+        "overall_cer": 0.774,
+        "english_cer": 0.7747,
+        "bangla_cer": 0.8333,
+        "mean_wer": 0.925,
+        "count": 6
+      }
+    },
+    "sample_comparisons": [
+      {
+        "image_id": "IMG-AEE39DE1",
+        "document_type": "SALE_DEED",
+        "quality_class": "clean_digital",
+        "overall_cer": 0.5892,
+        "english_cer": 0.5415,
+        "bangla_cer": 1.0,
+        "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2002-965",
+        "english_pred_sample": "DEMO STAMP I (DEED OF SALE) BDT 1,000 /DeedNo:DEED-2002-96528 FICTIONAL REVENUE ",
+        "bangla_gt_sample": "সাফ কবলা দলিল দলিল নং তারিখ ফরিদা হক জাহানারা ইসলাম জেলা উপজেলা মৌজা জে এল নং দা",
+        "bangla_pred_sample": ""
+      },
+      {
+        "image_id": "IMG-11321A28",
+        "document_type": "SALE_DEED",
+        "quality_class": "clean_scan",
+        "overall_cer": 0.5237,
+        "english_cer": 0.448,
+        "bangla_cer": 1.0,
+        "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2010-913",
+        "english_pred_sample": "DEMO STAMP I (DEED OF SALE) BDT 1,000 /DeedNo:DEED-2010-91323 FICTIONAL REVENUE ",
+        "bangla_gt_sample": "সাফ কবলা দলিল দলিল নং তারিখ জাহানারা ইসলাম রশীদ আক্তার জেলা উপজেলা মৌজা জে এল নং",
+        "bangla_pred_sample": ""
+      },
+      {
+        "image_id": "IMG-06CD594C",
+        "document_type": "SALE_DEED",
+        "quality_class": "grayscale_scan",
+        "overall_cer": 0.6179,
+        "english_cer": 0.5729,
+        "bangla_cer": 1.0,
+        "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-1999-207",
+        "english_pred_sample": "DEMO STAMP ) BDT 1,000 /DeedNo:DEED-1999-20777 FICTIONAL REVENUE /ExecutionDate:",
+        "bangla_gt_sample": "সাফ কবলা দলিল দলিল নং তারিখ মোহাম্মদ আলী আব্দুল চৌধুরী জেলা উপজেলা মৌজা জে এল নং",
+        "bangla_pred_sample": ""
+      },
+      {
+        "image_id": "IMG-1193E534",
+        "document_type": "SALE_DEED",
+        "quality_class": "low_resolution",
+        "overall_cer": 0.5859,
+        "english_cer": 0.6067,
+        "bangla_cer": 1.0,
+        "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2006-570",
+        "english_pred_sample": "(DEED OFSALE) EMD 51Aur Ff t / Deed No: DEED-2006-57089 BOT 1.000 Wf / Execution",
+        "bangla_gt_sample": "সাফ কবলা দলিল দলিল নং তারিখ আব্দুল চৌধুরী রশীদ আক্তার জেলা উপজেলা মৌজা জে এল নং ",
+        "bangla_pred_sample": ""
+      },
+      {
+        "image_id": "IMG-17440783",
+        "document_type": "SALE_DEED",
+        "quality_class": "mild_rotation",
+        "overall_cer": 0.5631,
+        "english_cer": 0.4936,
+        "bangla_cer": 1.0,
+        "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2014-599",
+        "english_pred_sample": "I T (DEED OF SALE) DEMO STAMP /Deed No:DEED-2014-59954 BDT 1,000 af/Execution Da",
+        "bangla_gt_sample": "সাফ কবলা দলিল দলিল নং তারিখ রশীদ আক্তার রশীদ তালুকদার জেলা উপজেলা মৌজা জে এল নং ",
+        "bangla_pred_sample": ""
+      },
+      {
+        "image_id": "IMG-33456CFF",
+        "document_type": "SALE_DEED",
+        "quality_class": "skewed_scan",
+        "overall_cer": 0.5613,
+        "english_cer": 0.4873,
+        "bangla_cer": 1.0,
+        "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2020-842",
+        "english_pred_sample": "I (DEED OF SALE) DEMO STAMP /Deed No:DEED-2020-84268 BDT 1.000 FICTIONA_RFENJE a",
+        "bangla_gt_sample": "সাফ কবলা দলিল দলিল নং তারিখ রশীদ তালুকদার কামাল ইসলাম জেলা উপজেলা মৌজা জে এল নং ",
+        "bangla_pred_sample": ""
+      },
+      {
+        "image_id": "IMG-4A7031BA",
+        "document_type": "SALE_DEED",
+        "quality_class": "low_contrast",
+        "overall_cer": 0.5266,
+        "english_cer": 0.4289,
+        "bangla_cer": 1.0,
+        "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2000-525",
+        "english_pred_sample": "I M (DEED OF SALE) /DeedNo:DEED-2000-52530 af/ExecutionDate:2000-05-15 /SEER): /",
+        "bangla_gt_sample": "সাফ কবলা দলিল দলিল নং তারিখ সৈয়দ মিয়া কামাল ইসলাম জেলা উপজেলা মৌজা জে এল নং দা",
+        "bangla_pred_sample": ""
+      },
+      {
+        "image_id": "IMG-AA14FA90",
+        "document_type": "SALE_DEED",
+        "quality_class": "uneven_illumination",
+        "overall_cer": 0.5677,
+        "english_cer": 0.5033,
+        "bangla_cer": 1.0,
+        "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2004-869",
+        "english_pred_sample": "DEMO STAMP ) BDT 1,000 / DeedNo:DEED-2004-86987 FICTIONAL REVENUE f/ExecutionDat",
+        "bangla_gt_sample": "সাফ কবলা দলিল দলিল নং তারিখ কামাল ইসলাম হাবিবুর তালুকদার জেলা উপজেলা মৌজা জে এল ",
+        "bangla_pred_sample": ""
+      }
+    ]
+  },
+  "phase1_rapidocr_english_only": {
+    "total_evaluated": 48,
+    "overall": {
+      "mean_cer": 0.7185,
+      "mean_wer": 0.9099
+    },
+    "english_subset": {
+      "mean_cer": 0.6021,
+      "mean_wer": 0.9025,
+      "evaluated_samples": 48
+    },
+    "bangla_subset": {
+      "mean_cer": 1.0,
+      "mean_wer": 1.0,
+      "evaluated_samples": 40
+    },
+    "exact_field_match_rate": 0.875,
+    "fields_checked_count": 80,
+    "fields_matched_count": 70,
+    "by_category": {
+      "SALE_DEED": {
+        "overall_cer": 0.5669,
+        "english_cer": 0.5103,
+        "bangla_cer": 1.0,
+        "mean_wer": 0.8354,
+        "count": 8
+      },
+      "KHATIAN_PORCHA": {
+        "overall_cer": 0.7303,
+        "english_cer": 0.6523,
+        "bangla_cer": 1.0,
+        "mean_wer": 0.9344,
+        "count": 8
+      },
+      "MUTATION_RECORD": {
+        "overall_cer": 0.6043,
+        "english_cer": 0.3539,
+        "bangla_cer": 1.0,
+        "mean_wer": 0.9201,
+        "count": 8
+      },
+      "TAX_RECEIPT": {
+        "overall_cer": 0.6873,
+        "english_cer": 0.4959,
+        "bangla_cer": 1.0,
+        "mean_wer": 0.9313,
+        "count": 8
+      },
+      "PARCEL_MAP": {
+        "overall_cer": 0.9227,
+        "english_cer": 0.9227,
+        "bangla_cer": 0.0,
+        "mean_wer": 0.875,
+        "count": 8
+      },
+      "APPLICATION_COMPLAINT": {
+        "overall_cer": 0.7997,
+        "english_cer": 0.6777,
+        "bangla_cer": 1.0,
+        "mean_wer": 0.9631,
+        "count": 8
+      }
+    },
+    "by_quality": {
+      "clean_digital": {
+        "overall_cer": 0.6704,
+        "english_cer": 0.463,
+        "bangla_cer": 0.8333,
+        "mean_wer": 0.8409,
+        "count": 6
+      },
+      "clean_scan": {
+        "overall_cer": 0.6984,
+        "english_cer": 0.5393,
+        "bangla_cer": 0.8333,
+        "mean_wer": 0.9317,
+        "count": 6
+      },
+      "grayscale_scan": {
+        "overall_cer": 0.7757,
+        "english_cer": 0.7011,
+        "bangla_cer": 0.8333,
+        "mean_wer": 0.8887,
+        "count": 6
+      },
+      "low_resolution": {
+        "overall_cer": 0.7311,
+        "english_cer": 0.7684,
+        "bangla_cer": 0.8333,
+        "mean_wer": 0.9069,
+        "count": 6
+      },
+      "mild_rotation": {
+        "overall_cer": 0.7273,
+        "english_cer": 0.5465,
+        "bangla_cer": 0.8333,
+        "mean_wer": 0.9615,
+        "count": 6
+      },
+      "skewed_scan": {
+        "overall_cer": 0.7053,
+        "english_cer": 0.5401,
+        "bangla_cer": 0.8333,
+        "mean_wer": 0.931,
+        "count": 6
+      },
+      "low_contrast": {
+        "overall_cer": 0.6661,
+        "english_cer": 0.4839,
+        "bangla_cer": 0.8333,
+        "mean_wer": 0.8934,
+        "count": 6
+      },
+      "uneven_illumination": {
+        "overall_cer": 0.774,
+        "english_cer": 0.7747,
+        "bangla_cer": 0.8333,
+        "mean_wer": 0.925,
+        "count": 6
+      }
+    },
+    "sample_comparisons": [
+      {
+        "image_id": "IMG-AEE39DE1",
+        "document_type": "SALE_DEED",
+        "quality_class": "clean_digital",
+        "overall_cer": 0.5892,
+        "english_cer": 0.5415,
+        "bangla_cer": 1.0,
+        "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2002-965",
+        "english_pred_sample": "DEMO STAMP I (DEED OF SALE) BDT 1,000 /DeedNo:DEED-2002-96528 FICTIONAL REVENUE ",
+        "bangla_gt_sample": "সাফ কবলা দলিল দলিল নং তারিখ ফরিদা হক জাহানারা ইসলাম জেলা উপজেলা মৌজা জে এল নং দা",
+        "bangla_pred_sample": ""
+      },
+      {
+        "image_id": "IMG-11321A28",
+        "document_type": "SALE_DEED",
+        "quality_class": "clean_scan",
+        "overall_cer": 0.5237,
+        "english_cer": 0.448,
+        "bangla_cer": 1.0,
+        "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2010-913",
+        "english_pred_sample": "DEMO STAMP I (DEED OF SALE) BDT 1,000 /DeedNo:DEED-2010-91323 FICTIONAL REVENUE ",
+        "bangla_gt_sample": "সাফ কবলা দলিল দলিল নং তারিখ জাহানারা ইসলাম রশীদ আক্তার জেলা উপজেলা মৌজা জে এল নং",
+        "bangla_pred_sample": ""
+      },
+      {
+        "image_id": "IMG-06CD594C",
+        "document_type": "SALE_DEED",
+        "quality_class": "grayscale_scan",
+        "overall_cer": 0.6179,
+        "english_cer": 0.5729,
+        "bangla_cer": 1.0,
+        "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-1999-207",
+        "english_pred_sample": "DEMO STAMP ) BDT 1,000 /DeedNo:DEED-1999-20777 FICTIONAL REVENUE /ExecutionDate:",
+        "bangla_gt_sample": "সাফ কবলা দলিল দলিল নং তারিখ মোহাম্মদ আলী আব্দুল চৌধুরী জেলা উপজেলা মৌজা জে এল নং",
+        "bangla_pred_sample": ""
+      },
+      {
+        "image_id": "IMG-1193E534",
+        "document_type": "SALE_DEED",
+        "quality_class": "low_resolution",
+        "overall_cer": 0.5859,
+        "english_cer": 0.6067,
+        "bangla_cer": 1.0,
+        "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2006-570",
+        "english_pred_sample": "(DEED OFSALE) EMD 51Aur Ff t / Deed No: DEED-2006-57089 BOT 1.000 Wf / Execution",
+        "bangla_gt_sample": "সাফ কবলা দলিল দলিল নং তারিখ আব্দুল চৌধুরী রশীদ আক্তার জেলা উপজেলা মৌজা জে এল নং ",
+        "bangla_pred_sample": ""
+      },
+      {
+        "image_id": "IMG-17440783",
+        "document_type": "SALE_DEED",
+        "quality_class": "mild_rotation",
+        "overall_cer": 0.5631,
+        "english_cer": 0.4936,
+        "bangla_cer": 1.0,
+        "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2014-599",
+        "english_pred_sample": "I T (DEED OF SALE) DEMO STAMP /Deed No:DEED-2014-59954 BDT 1,000 af/Execution Da",
+        "bangla_gt_sample": "সাফ কবলা দলিল দলিল নং তারিখ রশীদ আক্তার রশীদ তালুকদার জেলা উপজেলা মৌজা জে এল নং ",
+        "bangla_pred_sample": ""
+      },
+      {
+        "image_id": "IMG-33456CFF",
+        "document_type": "SALE_DEED",
+        "quality_class": "skewed_scan",
+        "overall_cer": 0.5613,
+        "english_cer": 0.4873,
+        "bangla_cer": 1.0,
+        "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2020-842",
+        "english_pred_sample": "I (DEED OF SALE) DEMO STAMP /Deed No:DEED-2020-84268 BDT 1.000 FICTIONA_RFENJE a",
+        "bangla_gt_sample": "সাফ কবলা দলিল দলিল নং তারিখ রশীদ তালুকদার কামাল ইসলাম জেলা উপজেলা মৌজা জে এল নং ",
+        "bangla_pred_sample": ""
+      },
+      {
+        "image_id": "IMG-4A7031BA",
+        "document_type": "SALE_DEED",
+        "quality_class": "low_contrast",
+        "overall_cer": 0.5266,
+        "english_cer": 0.4289,
+        "bangla_cer": 1.0,
+        "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2000-525",
+        "english_pred_sample": "I M (DEED OF SALE) /DeedNo:DEED-2000-52530 af/ExecutionDate:2000-05-15 /SEER): /",
+        "bangla_gt_sample": "সাফ কবলা দলিল দলিল নং তারিখ সৈয়দ মিয়া কামাল ইসলাম জেলা উপজেলা মৌজা জে এল নং দা",
+        "bangla_pred_sample": ""
+      },
+      {
+        "image_id": "IMG-AA14FA90",
+        "document_type": "SALE_DEED",
+        "quality_class": "uneven_illumination",
+        "overall_cer": 0.5677,
+        "english_cer": 0.5033,
+        "bangla_cer": 1.0,
+        "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2004-869",
+        "english_pred_sample": "DEMO STAMP ) BDT 1,000 / DeedNo:DEED-2004-86987 FICTIONAL REVENUE f/ExecutionDat",
+        "bangla_gt_sample": "সাফ কবলা দলিল দলিল নং তারিখ কামাল ইসলাম হাবিবুর তালুকদার জেলা উপজেলা মৌজা জে এল ",
+        "bangla_pred_sample": ""
+      }
+    ]
+  },
+  "after_bilingual_on_original_annotations": {
+    "total_evaluated": 48,
+    "overall": {
+      "mean_cer": 0.5195,
+      "mean_wer": 0.6572
+    },
+    "english_subset": {
+      "mean_cer": 0.5376,
+      "mean_wer": 0.7165,
+      "evaluated_samples": 48
+    },
+    "bangla_subset": {
+      "mean_cer": 0.4719,
+      "mean_wer": 0.6151,
+      "evaluated_samples": 40
+    },
+    "exact_field_match_rate": 0.7875,
+    "field_extraction_metrics": {
+      "exact_match_accuracy": 0.7875,
+      "field_precision": 0.8514,
+      "field_recall": 0.7875,
+      "field_f1": 0.8182,
+      "fields_checked_count": 80,
+      "fields_predicted_count": 74,
+      "fields_matched_count": 63,
+      "per_field": {
+        "deed_number": {
+          "gt_count": 8,
+          "pred_count": 7,
+          "match_count": 0,
+          "exact_match_rate": 0.0,
+          "precision": 0.0
+        },
+        "dag_plot_number": {
+          "gt_count": 48,
+          "pred_count": 45,
+          "match_count": 43,
+          "exact_match_rate": 0.8958,
+          "precision": 0.9556
+        },
+        "khatian_number": {
+          "gt_count": 8,
+          "pred_count": 7,
+          "match_count": 7,
+          "exact_match_rate": 0.875,
+          "precision": 1.0
+        },
+        "transferred_area_decimal": {
+          "gt_count": 16,
+          "pred_count": 15,
+          "match_count": 13,
+          "exact_match_rate": 0.8125,
+          "precision": 0.8667
+        }
+      }
+    },
+    "fields_checked_count": 80,
+    "fields_matched_count": 63,
+    "by_category": {
+      "SALE_DEED": {
+        "overall_cer": 0.5237,
+        "english_cer": 0.5331,
+        "bangla_cer": 0.5255,
+        "mean_wer": 0.6624,
+        "english_wer": 0.7052,
+        "bangla_wer": 0.6638,
+        "count": 8
+      },
+      "KHATIAN_PORCHA": {
+        "overall_cer": 0.5384,
+        "english_cer": 0.5344,
+        "bangla_cer": 0.5718,
+        "mean_wer": 0.6369,
+        "english_wer": 0.6897,
+        "bangla_wer": 0.6702,
+        "count": 8
+      },
+      "MUTATION_RECORD": {
+        "overall_cer": 0.4079,
+        "english_cer": 0.3984,
+        "bangla_cer": 0.4521,
+        "mean_wer": 0.5417,
+        "english_wer": 0.5826,
+        "bangla_wer": 0.5703,
+        "count": 8
+      },
+      "TAX_RECEIPT": {
+        "overall_cer": 0.325,
+        "english_cer": 0.2827,
+        "bangla_cer": 0.3936,
+        "mean_wer": 0.5156,
+        "english_wer": 0.5078,
+        "bangla_wer": 0.5573,
+        "count": 8
+      },
+      "PARCEL_MAP": {
+        "overall_cer": 0.894,
+        "english_cer": 0.8823,
+        "bangla_cer": 0.0,
+        "mean_wer": 0.9408,
+        "english_wer": 0.9276,
+        "bangla_wer": 0.0,
+        "count": 8
+      },
+      "APPLICATION_COMPLAINT": {
+        "overall_cer": 0.4279,
+        "english_cer": 0.5948,
+        "bangla_cer": 0.4163,
+        "mean_wer": 0.6458,
+        "english_wer": 0.8864,
+        "bangla_wer": 0.6139,
+        "count": 8
+      }
+    },
+    "by_quality": {
+      "clean_digital": {
+        "overall_cer": 0.4557,
+        "english_cer": 0.4588,
+        "bangla_cer": 0.3396,
+        "mean_wer": 0.5655,
+        "english_wer": 0.6357,
+        "bangla_wer": 0.5183,
+        "count": 6
+      },
+      "clean_scan": {
+        "overall_cer": 0.4385,
+        "english_cer": 0.4405,
+        "bangla_cer": 0.3413,
+        "mean_wer": 0.5599,
+        "english_wer": 0.6262,
+        "bangla_wer": 0.5552,
+        "count": 6
+      },
+      "grayscale_scan": {
+        "overall_cer": 0.4459,
+        "english_cer": 0.4851,
+        "bangla_cer": 0.319,
+        "mean_wer": 0.5655,
+        "english_wer": 0.6629,
+        "bangla_wer": 0.5252,
+        "count": 6
+      },
+      "low_resolution": {
+        "overall_cer": 0.6784,
+        "english_cer": 0.7363,
+        "bangla_cer": 0.5829,
+        "mean_wer": 0.9226,
+        "english_wer": 0.949,
+        "bangla_wer": 0.9204,
+        "count": 6
+      },
+      "mild_rotation": {
+        "overall_cer": 0.4227,
+        "english_cer": 0.4369,
+        "bangla_cer": 0.26,
+        "mean_wer": 0.5554,
+        "english_wer": 0.5873,
+        "bangla_wer": 0.4523,
+        "count": 6
+      },
+      "skewed_scan": {
+        "overall_cer": 0.4191,
+        "english_cer": 0.4476,
+        "bangla_cer": 0.2578,
+        "mean_wer": 0.5484,
+        "english_wer": 0.6135,
+        "bangla_wer": 0.4539,
+        "count": 6
+      },
+      "low_contrast": {
+        "overall_cer": 0.4317,
+        "english_cer": 0.4568,
+        "bangla_cer": 0.3258,
+        "mean_wer": 0.5801,
+        "english_wer": 0.6869,
+        "bangla_wer": 0.5497,
+        "count": 6
+      },
+      "uneven_illumination": {
+        "overall_cer": 0.8638,
+        "english_cer": 0.8389,
+        "bangla_cer": 0.7193,
+        "mean_wer": 0.9601,
+        "english_wer": 0.9708,
+        "bangla_wer": 0.9457,
+        "count": 6
+      }
+    },
+    "sample_comparisons": [
+      {
+        "image_id": "IMG-4F67AAA0",
+        "document_type": "SALE_DEED",
+        "quality_class": "clean_digital",
+        "overall_cer": 0.4495,
+        "english_cer": 0.477,
+        "bangla_cer": 0.3415,
+        "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2002-96528 / Execu",
+        "english_pred_sample": "i DEMO STAMP ] - (DEED OF SALE) BDT 1,000 / Deed No: DEED-2001-35323 FICTIONAL REVENUE / E",
+        "bangla_gt_sample": "সাফ কবলা দলিল দলিল নং তারিখ ফরিদা হক জাহানারা ইসলাম জেলা উপজেলা মৌজা জে এল নং দাগ নং হস্তা",
+        "bangla_pred_sample": "সাফ কবলা দলিল দলিল নং তারিখ ম পক্ষ বক্রিতো যু পক্ষ ক্রেতা তপশিল সম্পত্ত জেলা উপেজলা মনৌজা "
+      },
+      {
+        "image_id": "IMG-24DCC9AE",
+        "document_type": "SALE_DEED",
+        "quality_class": "clean_scan",
+        "overall_cer": 0.47,
+        "english_cer": 0.4671,
+        "bangla_cer": 0.515,
+        "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2010-91323 / Execu",
+        "english_pred_sample": "DEMO STAMP - (DEED OF SALE) BDT 1,000 Ag / Deed No: DEED-2006-18946 FICTIONAL REVENUE / Ex",
+        "bangla_gt_sample": "সাফ কবলা দলিল দলিল নং তারিখ জাহানারা ইসলাম রশীদ আক্তার জেলা উপজেলা মৌজা জে এল নং দাগ নং হস",
+        "bangla_pred_sample": "সাফ কবলা দলিল দলিল তারিধ ম পক্ষ বক্রিতো যু পক্ষ ক্রেতা নাম আনেনায়ার ভূইযা নাম কামাল আক্তা"
+      },
+      {
+        "image_id": "IMG-56611CF8",
+        "document_type": "SALE_DEED",
+        "quality_class": "grayscale_scan",
+        "overall_cer": 0.4686,
+        "english_cer": 0.4947,
+        "bangla_cer": 0.4551,
+        "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-1999-20777 / Execu",
+        "english_pred_sample": "DEMO STAMP - (DEED OF SALE) BDT 1,000 / Deed No: DEED-2001-62672 FICTIONAL REVENUE / Execu",
+        "bangla_gt_sample": "সাফ কবলা দলিল দলিল নং তারিখ মোহাম্মদ আলী আব্দুল চৌধুরী জেলা উপজেলা মৌজা জে এল নং দাগ নং হস",
+        "bangla_pred_sample": "সাফ কবলা দলিল দলিল নং তারিখ ম পক্ষ বক্রিতো পক্ষ ক্রেতা নাম সুলতানা খান নাম চনৌধুরী তপশিল স"
+      },
+      {
+        "image_id": "IMG-00C932E3",
+        "document_type": "SALE_DEED",
+        "quality_class": "low_resolution",
+        "overall_cer": 0.7469,
+        "english_cer": 0.7448,
+        "bangla_cer": 0.8133,
+        "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2006-57089 / Execu",
+        "english_pred_sample": "- (DEED OF SALE) a tt / Deed Mo: (ED 2007-26266 WW | Date: 2 | J ee (SELLER: | EST 18158) ",
+        "bangla_gt_sample": "সাফ কবলা দলিল দলিল নং তারিখ আব্দুল চৌধুরী রশীদ আক্তার জেলা উপজেলা মৌজা জে এল নং দাগ নং হস্",
+        "bangla_pred_sample": "সাফ কবলা দলিল ছলিল রি চা টানা এর উম রক্ষিত বম পন্চঙগ দিক বের এরা কা দেনা সে রর িএছারম্ত দা"
+      },
+      {
+        "image_id": "IMG-34AA49E9",
+        "document_type": "SALE_DEED",
+        "quality_class": "mild_rotation",
+        "overall_cer": 0.5079,
+        "english_cer": 0.5106,
+        "bangla_cer": 0.5,
+        "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2014-59954 / Execu",
+        "english_pred_sample": "DEMO STAMP - (DEED OF SALE) BDT 1,000 7 / Deed No: DEED-2012-84268 FICTIONAL REVENUE / ,0/",
+        "bangla_gt_sample": "সাফ কবলা দলিল দলিল নং তারিখ রশীদ আক্তার রশীদ তালুকদার জেলা উপজেলা মৌজা জে এল নং দাগ নং হস্",
+        "bangla_pred_sample": "সাফ কবলা দলিল দলিল তারিখ ম পক্ষ বক্রিতো পক্ষ ক্রেতা নাম মেনাহাম্মদ আক্তার নাম কামাল রহমান "
+      },
+      {
+        "image_id": "IMG-37B97E26",
+        "document_type": "SALE_DEED",
+        "quality_class": "skewed_scan",
+        "overall_cer": 0.4906,
+        "english_cer": 0.5316,
+        "bangla_cer": 0.3916,
+        "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2020-84268 / Execu",
+        "english_pred_sample": "1 ee a 7] DEMO STAMP - (DEED OF SALE) BDT 1,000 / Deed No: DEED-2016-42496 01458595105 ] /",
+        "bangla_gt_sample": "সাফ কবলা দলিল দলিল নং তারিখ রশীদ তালুকদার কামাল ইসলাম জেলা উপজেলা মৌজা জে এল নং দাগ নং হস্",
+        "bangla_pred_sample": "রা ৷ সাফ কবলা দলিল দলিল নং তারিখ ম পক্ষ বক্রিতো যু পক্ষ ক্রেতা তপশিল সম্পত্ত জেলা উপেজলা ম"
+      },
+      {
+        "image_id": "IMG-8622B0A7",
+        "document_type": "SALE_DEED",
+        "quality_class": "low_contrast",
+        "overall_cer": 0.4483,
+        "english_cer": 0.4498,
+        "bangla_cer": 0.5549,
+        "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2000-52530 / Execu",
+        "english_pred_sample": "?) << _ - (DEED OF SALE) / Deed No: DEED-1999-51197 / Execution Date: 1999-09-21 1 / (SELL",
+        "bangla_gt_sample": "সাফ কবলা দলিল দলিল নং তারিখ সৈয়দ মিয়া কামাল ইসলাম জেলা উপজেলা মৌজা জে এল নং দাগ নং হস্তা",
+        "bangla_pred_sample": "লী সাফ কবলা দলিল দলিল নং তারিখ ম পক্ষ বক্রিতো যু পক্ষ ক্রেতা নাম জল্লুর রহমান নাম নাসরীন চ"
+      },
+      {
+        "image_id": "IMG-4B02B3DB",
+        "document_type": "SALE_DEED",
+        "quality_class": "uneven_illumination",
+        "overall_cer": 0.6081,
+        "english_cer": 0.589,
+        "bangla_cer": 0.6331,
+        "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2004-86987 / Execu",
+        "english_pred_sample": "< e & ne 069 695 esc 055 a pS om a ID: SYN-013 IID: SYN 0 Ne . <i) Ip} oy 6 GEM / District",
+        "bangla_gt_sample": "সাফ কবলা দলিল দলিল নং তারিখ কামাল ইসলাম হাবিবুর তালুকদার জেলা উপজেলা মৌজা জে এল নং দাগ নং ",
+        "bangla_pred_sample": "টি রি রন উপেজলা মেনজা জঞ্েল দাগ নং হস্তান্তরিত জমির পরমাণ লস পম সএতনঃ লস দক্ষিণ শু প্ স্বা"
+      },
+      {
+        "image_id": "IMG-FC665927",
+        "document_type": "KHATIAN_PORCHA",
+        "quality_class": "clean_digital",
+        "overall_cer": 0.6044,
+        "english_cer": 0.5889,
+        "bangla_cer": 0.7063,
+        "english_gt_sample": "5463 ( - CS) : Khulna | : Rupsha | : Naihati | . : 48 (Khatian No): 1001 | : 1939 (Owner &",
+        "english_pred_sample": "5463 ( - cs) GEM: Khulna | : Rupsha | : Naihati | WIAA : 48 WORTH (Khatian No): 1001 | : 1",
+        "bangla_gt_sample": "বাংলাদেশ ফরম নং খতিয়ান জেলা উপজেলা মৌজা জে এল নং খতিয়ান নং জরিপ সন মালিকের নাম ও অংশ দাগ",
+        "bangla_pred_sample": "বাংলাদেশ ফরম নং খতন উপেজলা মনৌজা নং নং জরিপ সন"
+      },
+      {
+        "image_id": "IMG-DA4FA159",
+        "document_type": "KHATIAN_PORCHA",
+        "quality_class": "clean_scan",
+        "overall_cer": 0.5884,
+        "english_cer": 0.5889,
+        "bangla_cer": 0.6377,
+        "english_gt_sample": "5463 ( - SA) : Dhaka | : Savar | : Bagbari | . : 142 (Khatian No): 1002 | : 1964 (Owner & ",
+        "english_pred_sample": "5463 (ASAT - SA) WUC: Dhaka | : Savar | : 44987 | : 142 (Khatian No): 1002 | : 1964 me mem",
+        "bangla_gt_sample": "বাংলাদেশ ফরম নং খতিয়ান জেলা উপজেলা মৌজা জে এল নং খতিয়ান নং জরিপ সন মালিকের নাম ও অংশ দাগ",
+        "bangla_pred_sample": "বাংলাদেশ ফরম নং উপেজলা মনৌজা জচ্ঞএল নং খতঘান নং জরিপ সন চি পা"
+      },
+      {
+        "image_id": "IMG-E682210A",
+        "document_type": "KHATIAN_PORCHA",
+        "quality_class": "grayscale_scan",
+        "overall_cer": 0.4987,
+        "english_cer": 0.493,
+        "bangla_cer": 0.5799,
+        "english_gt_sample": "5463 ( - RS) : Dhaka | : Savar | : Bagbari | . : 142 (Khatian No): 1003 | : 1986 (Owner & ",
+        "english_pred_sample": "5463 ( - RS) GET: Dhaka | BGM: Savar | : Bagbari | WAT AR: 142 (Khatian No): 1003 | : 1986",
+        "bangla_gt_sample": "বাংলাদেশ ফরম নং খতিয়ান জেলা উপজেলা মৌজা জে এল নং খতিয়ান নং জরিপ সন মালিকের নাম ও অংশ দাগ",
+        "bangla_pred_sample": "বাংলাদেশ ফরম নং খতাঘ়ান মনৌজা খতধান নং জরিপ সন ফরিদ বেগম আনা মাহমুদ রহমান শতক নিজ দখল আনা "
+      },
+      {
+        "image_id": "IMG-09A0330E",
+        "document_type": "KHATIAN_PORCHA",
+        "quality_class": "low_resolution",
+        "overall_cer": 0.6763,
+        "english_cer": 0.6851,
+        "bangla_cer": 0.6594,
+        "english_gt_sample": "5463 ( - BS) : Dhaka | : Keraniganj | : Ruhitpur | . : 55 (Khatian No): 1004 | : 1998 (Own",
+        "english_pred_sample": "5460 ( - Bs) : Dhaka | SPT | FCP AubMpur | , oy Caen fee toa 18 oa ) ear fe = 'ee m 1 1 I",
+        "bangla_gt_sample": "বাংলাদেশ ফরম নং খতিয়ান জেলা উপজেলা মৌজা জে এল নং খতিয়ান নং জরিপ সন মালিকের নাম ও অংশ দাগ",
+        "bangla_pred_sample": "নাংলাদেশ ফরম লং খতন হেলা এজ এল লা নান নল জির লন শত শি সঙ আপনার উদর"
+      }
+    ]
+  },
+  "after_repair": {
+    "total_evaluated": 48,
+    "overall": {
+      "mean_cer": 0.3702,
+      "mean_wer": 0.4955
+    },
+    "english_subset": {
+      "mean_cer": 0.3598,
+      "mean_wer": 0.5086,
+      "evaluated_samples": 48
+    },
+    "bangla_subset": {
+      "mean_cer": 0.4435,
+      "mean_wer": 0.5641,
+      "evaluated_samples": 40
+    },
+    "exact_field_match_rate": 0.9,
+    "field_extraction_metrics": {
+      "exact_match_accuracy": 0.9,
+      "field_precision": 0.973,
+      "field_recall": 0.9,
+      "field_f1": 0.9351,
+      "fields_checked_count": 80,
+      "fields_predicted_count": 74,
+      "fields_matched_count": 72,
+      "per_field": {
+        "deed_number": {
+          "gt_count": 8,
+          "pred_count": 7,
+          "match_count": 7,
+          "exact_match_rate": 0.875,
+          "precision": 1.0
+        },
+        "dag_plot_number": {
+          "gt_count": 48,
+          "pred_count": 45,
+          "match_count": 43,
+          "exact_match_rate": 0.8958,
+          "precision": 0.9556
+        },
+        "khatian_number": {
+          "gt_count": 8,
+          "pred_count": 7,
+          "match_count": 7,
+          "exact_match_rate": 0.875,
+          "precision": 1.0
+        },
+        "transferred_area_decimal": {
+          "gt_count": 16,
+          "pred_count": 15,
+          "match_count": 15,
+          "exact_match_rate": 0.9375,
+          "precision": 1.0
+        }
+      }
+    },
+    "fields_checked_count": 80,
+    "fields_matched_count": 72,
+    "by_category": {
+      "SALE_DEED": {
+        "overall_cer": 0.3778,
+        "english_cer": 0.3772,
+        "bangla_cer": 0.3581,
+        "mean_wer": 0.4784,
+        "english_wer": 0.5028,
+        "bangla_wer": 0.4625,
+        "count": 8
+      },
+      "KHATIAN_PORCHA": {
+        "overall_cer": 0.6338,
+        "english_cer": 0.6197,
+        "bangla_cer": 0.663,
+        "mean_wer": 0.7004,
+        "english_wer": 0.7264,
+        "bangla_wer": 0.7361,
+        "count": 8
+      },
+      "MUTATION_RECORD": {
+        "overall_cer": 0.3261,
+        "english_cer": 0.2641,
+        "bangla_cer": 0.4311,
+        "mean_wer": 0.4386,
+        "english_wer": 0.3963,
+        "bangla_wer": 0.5469,
+        "count": 8
+      },
+      "TAX_RECEIPT": {
+        "overall_cer": 0.3293,
+        "english_cer": 0.309,
+        "bangla_cer": 0.3734,
+        "mean_wer": 0.4942,
+        "english_wer": 0.4803,
+        "bangla_wer": 0.5417,
+        "count": 8
+      },
+      "PARCEL_MAP": {
+        "overall_cer": 0.2208,
+        "english_cer": 0.2202,
+        "bangla_cer": 0.0,
+        "mean_wer": 0.3523,
+        "english_wer": 0.3523,
+        "bangla_wer": 0.0,
+        "count": 8
+      },
+      "APPLICATION_COMPLAINT": {
+        "overall_cer": 0.3334,
+        "english_cer": 0.3688,
+        "bangla_cer": 0.3917,
+        "mean_wer": 0.5093,
+        "english_wer": 0.5938,
+        "bangla_wer": 0.5335,
+        "count": 8
+      }
+    },
+    "by_quality": {
+      "clean_digital": {
+        "overall_cer": 0.2731,
+        "english_cer": 0.235,
+        "bangla_cer": 0.3143,
+        "mean_wer": 0.37,
+        "english_wer": 0.3556,
+        "bangla_wer": 0.4522,
+        "count": 6
+      },
+      "clean_scan": {
+        "overall_cer": 0.2905,
+        "english_cer": 0.2567,
+        "bangla_cer": 0.3061,
+        "mean_wer": 0.3896,
+        "english_wer": 0.3901,
+        "bangla_wer": 0.4766,
+        "count": 6
+      },
+      "grayscale_scan": {
+        "overall_cer": 0.2641,
+        "english_cer": 0.2685,
+        "bangla_cer": 0.2676,
+        "mean_wer": 0.3636,
+        "english_wer": 0.4148,
+        "bangla_wer": 0.4431,
+        "count": 6
+      },
+      "low_resolution": {
+        "overall_cer": 0.5625,
+        "english_cer": 0.6338,
+        "bangla_cer": 0.5778,
+        "mean_wer": 0.8059,
+        "english_wer": 0.8839,
+        "bangla_wer": 0.9186,
+        "count": 6
+      },
+      "mild_rotation": {
+        "overall_cer": 0.2609,
+        "english_cer": 0.2421,
+        "bangla_cer": 0.2399,
+        "mean_wer": 0.375,
+        "english_wer": 0.3406,
+        "bangla_wer": 0.4061,
+        "count": 6
+      },
+      "skewed_scan": {
+        "overall_cer": 0.2703,
+        "english_cer": 0.2568,
+        "bangla_cer": 0.2549,
+        "mean_wer": 0.3847,
+        "english_wer": 0.3882,
+        "bangla_wer": 0.4136,
+        "count": 6
+      },
+      "low_contrast": {
+        "overall_cer": 0.2412,
+        "english_cer": 0.2171,
+        "bangla_cer": 0.2671,
+        "mean_wer": 0.3658,
+        "english_wer": 0.3825,
+        "bangla_wer": 0.4561,
+        "count": 6
+      },
+      "uneven_illumination": {
+        "overall_cer": 0.7991,
+        "english_cer": 0.7686,
+        "bangla_cer": 0.7288,
+        "mean_wer": 0.9095,
+        "english_wer": 0.9133,
+        "bangla_wer": 0.9467,
+        "count": 6
+      }
+    },
+    "sample_comparisons": [
+      {
+        "image_id": "IMG-4F67AAA0",
+        "document_type": "SALE_DEED",
+        "quality_class": "clean_digital",
+        "overall_cer": 0.2444,
+        "english_cer": 0.242,
+        "bangla_cer": 0.2371,
+        "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2001-35323 / Execu",
+        "english_pred_sample": "i DEMO STAMP ] - (DEED OF SALE) BDT 1,000 / Deed No: DEED-2001-35323 FICTIONAL REVENUE / E",
+        "bangla_gt_sample": "সাফ কবলা দলিল দলিল নং তারিখ ম পক্ষ বিক্রেতা নাম কামাল আক্তার য় পক্ষ ক্রেতা নাম আনোয়ার ভূ",
+        "bangla_pred_sample": "সাফ কবলা দলিল দলিল নং তারিখ ম পক্ষ বক্রিতো যু পক্ষ ক্রেতা তপশিল সম্পত্ত জেলা উপেজলা মনৌজা "
+      },
+      {
+        "image_id": "IMG-24DCC9AE",
+        "document_type": "SALE_DEED",
+        "quality_class": "clean_scan",
+        "overall_cer": 0.2902,
+        "english_cer": 0.281,
+        "bangla_cer": 0.2284,
+        "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2006-18946 / Execu",
+        "english_pred_sample": "DEMO STAMP - (DEED OF SALE) BDT 1,000 Ag / Deed No: DEED-2006-18946 FICTIONAL REVENUE / Ex",
+        "bangla_gt_sample": "সাফ কবলা দলিল দলিল নং তারিখ ম পক্ষ বিক্রেতা নাম আনোয়ার ভূঁইয়া য় পক্ষ ক্রেতা নাম কামাল আ",
+        "bangla_pred_sample": "সাফ কবলা দলিল দলিল তারিধ ম পক্ষ বক্রিতো যু পক্ষ ক্রেতা নাম আনেনায়ার ভূইযা নাম কামাল আক্তা"
+      },
+      {
+        "image_id": "IMG-56611CF8",
+        "document_type": "SALE_DEED",
+        "quality_class": "grayscale_scan",
+        "overall_cer": 0.2927,
+        "english_cer": 0.3043,
+        "bangla_cer": 0.2412,
+        "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2001-62672 / Execu",
+        "english_pred_sample": "DEMO STAMP - (DEED OF SALE) BDT 1,000 / Deed No: DEED-2001-62672 FICTIONAL REVENUE / Execu",
+        "bangla_gt_sample": "সাফ কবলা দলিল দলিল নং তারিখ ম পক্ষ বিক্রেতা নাম সুলতানা খান য় পক্ষ ক্রেতা নাম সৈয়দ চৌধুর",
+        "bangla_pred_sample": "সাফ কবলা দলিল দলিল নং তারিখ ম পক্ষ বক্রিতো পক্ষ ক্রেতা নাম সুলতানা খান নাম চনৌধুরী তপশিল স"
+      },
+      {
+        "image_id": "IMG-00C932E3",
+        "document_type": "SALE_DEED",
+        "quality_class": "low_resolution",
+        "overall_cer": 0.6884,
+        "english_cer": 0.6941,
+        "bangla_cer": 0.7155,
+        "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2007-26266 / Execu",
+        "english_pred_sample": "- (DEED OF SALE) a tt / Deed Mo: (ED 2007-26266 WW | Date: 2 | J ee (SELLER: | EST 18158) ",
+        "bangla_gt_sample": "সাফ কবলা দলিল দলিল নং তারিখ ম পক্ষ বিক্রেতা নাম সৈয়দ চৌধুরী য় পক্ষ ক্রেতা নাম মোহাম্মদ আ",
+        "bangla_pred_sample": "সাফ কবলা দলিল ছলিল রি চা টানা এর উম রক্ষিত বম পন্চঙগ দিক বের এরা কা দেনা সে রর িএছারম্ত দা"
+      },
+      {
+        "image_id": "IMG-34AA49E9",
+        "document_type": "SALE_DEED",
+        "quality_class": "mild_rotation",
+        "overall_cer": 0.3256,
+        "english_cer": 0.3339,
+        "bangla_cer": 0.2424,
+        "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2012-84268 / Execu",
+        "english_pred_sample": "DEMO STAMP - (DEED OF SALE) BDT 1,000 7 / Deed No: DEED-2012-84268 FICTIONAL REVENUE / ,0/",
+        "bangla_gt_sample": "সাফ কবলা দলিল দলিল নং তারিখ ম পক্ষ বিক্রেতা নাম মোহাম্মদ আক্তার য় পক্ষ ক্রেতা নাম কামাল র",
+        "bangla_pred_sample": "সাফ কবলা দলিল দলিল তারিখ ম পক্ষ বক্রিতো পক্ষ ক্রেতা নাম মেনাহাম্মদ আক্তার নাম কামাল রহমান "
+      },
+      {
+        "image_id": "IMG-37B97E26",
+        "document_type": "SALE_DEED",
+        "quality_class": "skewed_scan",
+        "overall_cer": 0.3338,
+        "english_cer": 0.3442,
+        "bangla_cer": 0.262,
+        "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2016-42496 / Execu",
+        "english_pred_sample": "1 ee a 7] DEMO STAMP - (DEED OF SALE) BDT 1,000 / Deed No: DEED-2016-42496 01458595105 ] /",
+        "bangla_gt_sample": "সাফ কবলা দলিল দলিল নং তারিখ ম পক্ষ বিক্রেতা নাম কামাল রহমান য় পক্ষ ক্রেতা নাম সুলতানা ইসল",
+        "bangla_pred_sample": "রা ৷ সাফ কবলা দলিল দলিল নং তারিখ ম পক্ষ বক্রিতো যু পক্ষ ক্রেতা তপশিল সম্পত্ত জেলা উপেজলা ম"
+      },
+      {
+        "image_id": "IMG-8622B0A7",
+        "document_type": "SALE_DEED",
+        "quality_class": "low_contrast",
+        "overall_cer": 0.2592,
+        "english_cer": 0.2535,
+        "bangla_cer": 0.2684,
+        "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-1999-51197 / Execu",
+        "english_pred_sample": "?) << _ - (DEED OF SALE) / Deed No: DEED-1999-51197 / Execution Date: 1999-09-21 1 / (SELL",
+        "bangla_gt_sample": "সাফ কবলা দলিল দলিল নং তারিখ ম পক্ষ বিক্রেতা নাম জিল্লুর রহমান য় পক্ষ ক্রেতা নাম নাসরীন চৌ",
+        "bangla_pred_sample": "লী সাফ কবলা দলিল দলিল নং তারিখ ম পক্ষ বক্রিতো যু পক্ষ ক্রেতা নাম জল্লুর রহমান নাম নাসরীন চ"
+      },
+      {
+        "image_id": "IMG-4B02B3DB",
+        "document_type": "SALE_DEED",
+        "quality_class": "uneven_illumination",
+        "overall_cer": 0.5885,
+        "english_cer": 0.5645,
+        "bangla_cer": 0.6696,
+        "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2005-38604 / Execu",
+        "english_pred_sample": "< e & ne 069 695 esc 055 a pS om a ID: SYN-013 IID: SYN 0 Ne . <i) Ip} oy 6 GEM / District",
+        "bangla_gt_sample": "সাফ কবলা দলিল দলিল নং তারিখ ম পক্ষ বিক্রেতা নাম নাসরীন চৌধুরী য় পক্ষ ক্রেতা নাম নজরুল শিক",
+        "bangla_pred_sample": "টি রি রন উপেজলা মেনজা জঞ্েল দাগ নং হস্তান্তরিত জমির পরমাণ লস পম সএতনঃ লস দক্ষিণ শু প্ স্বা"
+      },
+      {
+        "image_id": "IMG-FC665927",
+        "document_type": "KHATIAN_PORCHA",
+        "quality_class": "clean_digital",
+        "overall_cer": 0.7031,
+        "english_cer": 0.681,
+        "bangla_cer": 0.7879,
+        "english_gt_sample": "5463 ( - CS) : Khulna | : Rupsha | : Naihati | . : 48 (Khatian No): 1001 | : 1939 (Owner &",
+        "english_pred_sample": "5463 ( - cs) GEM: Khulna | : Rupsha | : Naihati | WIAA : 48 WORTH (Khatian No): 1001 | : 1",
+        "bangla_gt_sample": "বাংলাদেশ ফরম নং খতিয়ান জেলা উপজেলা মৌজা জে এল নং খতিয়ান নং জরিপ সন মালিকের নাম ও অংশ দাগ",
+        "bangla_pred_sample": "বাংলাদেশ ফরম নং খতন উপেজলা মনৌজা নং নং জরিপ সন"
+      },
+      {
+        "image_id": "IMG-DA4FA159",
+        "document_type": "KHATIAN_PORCHA",
+        "quality_class": "clean_scan",
+        "overall_cer": 0.6836,
+        "english_cer": 0.6652,
+        "bangla_cer": 0.7409,
+        "english_gt_sample": "5463 ( - SA) : Dhaka | : Savar | : Bagbari | . : 142 (Khatian No): 1002 | : 1964 (Owner & ",
+        "english_pred_sample": "5463 (ASAT - SA) WUC: Dhaka | : Savar | : 44987 | : 142 (Khatian No): 1002 | : 1964 me mem",
+        "bangla_gt_sample": "বাংলাদেশ ফরম নং খতিয়ান জেলা উপজেলা মৌজা জে এল নং খতিয়ান নং জরিপ সন মালিকের নাম ও অংশ দাগ",
+        "bangla_pred_sample": "বাংলাদেশ ফরম নং উপেজলা মনৌজা জচ্ঞএল নং খতঘান নং জরিপ সন চি পা"
+      },
+      {
+        "image_id": "IMG-E682210A",
+        "document_type": "KHATIAN_PORCHA",
+        "quality_class": "grayscale_scan",
+        "overall_cer": 0.5685,
+        "english_cer": 0.5693,
+        "bangla_cer": 0.6116,
+        "english_gt_sample": "5463 ( - RS) : Dhaka | : Savar | : Bagbari | . : 142 (Khatian No): 1003 | : 1986 (Owner & ",
+        "english_pred_sample": "5463 ( - RS) GET: Dhaka | BGM: Savar | : Bagbari | WAT AR: 142 (Khatian No): 1003 | : 1986",
+        "bangla_gt_sample": "বাংলাদেশ ফরম নং খতিয়ান জেলা উপজেলা মৌজা জে এল নং খতিয়ান নং জরিপ সন মালিকের নাম ও অংশ দাগ",
+        "bangla_pred_sample": "বাংলাদেশ ফরম নং খতাঘ়ান মনৌজা খতধান নং জরিপ সন ফরিদ বেগম আনা মাহমুদ রহমান শতক নিজ দখল আনা "
+      },
+      {
+        "image_id": "IMG-09A0330E",
+        "document_type": "KHATIAN_PORCHA",
+        "quality_class": "low_resolution",
+        "overall_cer": 0.753,
+        "english_cer": 0.7554,
+        "bangla_cer": 0.7202,
+        "english_gt_sample": "5463 ( - BS) : Dhaka | : Keraniganj | : Ruhitpur | . : 55 (Khatian No): 1004 | : 1998 (Own",
+        "english_pred_sample": "5460 ( - Bs) : Dhaka | SPT | FCP AubMpur | , oy Caen fee toa 18 oa ) ear fe = 'ee m 1 1 I",
+        "bangla_gt_sample": "বাংলাদেশ ফরম নং খতিয়ান জেলা উপজেলা মৌজা জে এল নং খতিয়ান নং জরিপ সন মালিকের নাম ও অংশ দাগ",
+        "bangla_pred_sample": "নাংলাদেশ ফরম লং খতন হেলা এজ এল লা নান নল জির লন শত শি সঙ আপনার উদর"
+      }
+    ]
+  },
+  "ground_truth_annotation_audit": {
+    "audited_files": [
+      "src/landguard_data/render_maps.py",
+      "src/landguard_data/render_documents.py"
+    ],
+    "verified_findings": [
+      "PARCEL_MAP: render_maps.py drew 4 neighbor plot labels (e.g. 'Plot 1249'), scale bar ('0m 50m 100m'), and legend text on the image canvas without appending them to full_text_parts, artificially inflating English CER.",
+      "SALE_DEED, KHATIAN_PORCHA, MUTATION_RECORD, TAX_RECEIPT, APPLICATION_COMPLAINT: render_documents.py drew section headers, Khatian Row-2 co-heirs text, and applicant Mouza/Dag metadata on the image canvas without recording them in full_text_parts."
+    ],
+    "impact_of_annotation_alignment_alone": {
+      "overall_cer_before_alignment": 0.5195,
+      "overall_cer_after_alignment": 0.3702,
+      "english_cer_before_alignment": 0.5376,
+      "english_cer_after_alignment": 0.3598,
+      "bangla_cer_before_alignment": 0.4719,
+      "bangla_cer_after_alignment": 0.4435
+    }
+  },
+  "improvements_summary": {
+    "overall_cer_delta_vs_baseline": -0.3483,
+    "overall_wer_delta_vs_baseline": -0.4144,
+    "english_cer_delta_vs_baseline": -0.2423,
+    "english_wer_delta_vs_baseline": -0.3939,
+    "bangla_cer_delta_vs_baseline": -0.5565,
+    "bangla_wer_delta_vs_baseline": -0.4359,
+    "exact_field_match_rate_delta_vs_baseline": 0.025,
+    "bangla_cer_status": "REPAIRED_VIA_TESSERACT_5.4.0_BEN_PLUS_MATRA_REALIGNMENT"
+  }
+}

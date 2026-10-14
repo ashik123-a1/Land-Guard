@@ -1,0 +1,94 @@
+{
+  "evaluation_timestamp": "2026-10-14T02:51:39.479658",
+  "evaluation_command": "python scripts/reconcile_ml_metrics_and_splits.py",
+  "frozen_model_path": "models/xgboost_risk_model.joblib",
+  "frozen_model_sha256": "af74a704ca2e7d9fb9b6bc0bd0731b4cc504a464f32d8c5f219adb878b506d95",
+  "records_path": "data/full/records/canonical_records.json",
+  "records_sha256": "24b1bee2a3cb27a71a272e0577d41b5600a9670cc57632993122c08b0c45cc6c",
+  "split_methodology": {
+    "group_key": "template_cohort",
+    "seed": 42,
+    "total_records": 2500,
+    "train_samples": 1700,
+    "val_samples": 300,
+    "test_samples": 500,
+    "leakage_verification": {
+      "template_cohort": {
+        "is_leakage_free": true,
+        "train_count": 1700,
+        "val_count": 300,
+        "test_count": 500,
+        "train_val_overlap": 0,
+        "train_test_overlap": 0,
+        "val_test_overlap": 0,
+        "doc_overlap": 0
+      },
+      "parcel_id": {
+        "is_leakage_free": true,
+        "train_count": 1700,
+        "val_count": 300,
+        "test_count": 500,
+        "train_val_overlap": 0,
+        "train_test_overlap": 0,
+        "val_test_overlap": 0,
+        "doc_overlap": 0
+      },
+      "primary_seller_id": {
+        "is_leakage_free": true,
+        "train_count": 1700,
+        "val_count": 300,
+        "test_count": 500,
+        "train_val_overlap": 0,
+        "train_test_overlap": 0,
+        "val_test_overlap": 0,
+        "doc_overlap": 0
+      },
+      "scenario_id": {
+        "is_leakage_free": true,
+        "train_count": 1700,
+        "val_count": 300,
+        "test_count": 500,
+        "train_val_overlap": 0,
+        "train_test_overlap": 0,
+        "val_test_overlap": 0,
+        "doc_overlap": 0
+      }
+    }
+  },
+  "recomputed_test_metrics": {
+    "sample_count": 500,
+    "clean_count": 168,
+    "fraud_count": 332,
+    "decision_threshold": 0.5,
+    "confusion_matrix": {
+      "true_negative": 167,
+      "false_positive": 1,
+      "false_negative": 0,
+      "true_positive": 332
+    },
+    "accuracy": 0.998,
+    "precision": 0.997,
+    "recall": 1.0,
+    "f1_score": 0.9985,
+    "roc_auc": 1.0,
+    "pr_auc": 1.0,
+    "brier_score": 0.0013
+  },
+  "single_failure_case": [
+    {
+      "test_index": 342,
+      "scenario_id": "SCN-F78C845A",
+      "transaction_id": "TXN-A97127DD",
+      "deed_number": "DEED-2004-74301",
+      "parcel_id": "PAR-CDD95994",
+      "primary_seller_id": "OWN-8CA743B6",
+      "template_cohort": "TMPL-COHORT-09",
+      "scenario_category": "LEGITIMATE_INHERITANCE",
+      "ground_truth_label": 0,
+      "frozen_xgb_prob": 0.651642,
+      "frozen_xgb_pred": 1,
+      "is_correct": 0,
+      "error_type": "FALSE_POSITIVE"
+    }
+  ]
+}

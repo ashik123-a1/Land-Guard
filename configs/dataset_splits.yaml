@@ -1,0 +1,15 @@
+# Data Split Configuration - Grouped to prevent data leakage
+seed: 42
+
+group_by_field: "scenario_id"
+fallback_group_field: "parcel_id"
+
+split_ratios:
+  train: 0.70
+  val: 0.15
+  test: 0.15
+
+leakage_checks:
+  assert_disjoint_scenarios: true
+  assert_disjoint_parcels_where_possible: true
+  disallow_shared_source_documents: true

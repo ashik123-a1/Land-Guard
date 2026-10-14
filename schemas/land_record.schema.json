@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FictionalLandRecordKhatian",
+  "type": "object",
+  "required": [
+    "record_id",
+    "khatian_type",
+    "khatian_number",
+    "parcel_id",
+    "owners",
+    "effective_year",
+    "status",
+    "is_synthetic"
+  ],
+  "properties": {
+    "record_id": {
+      "type": "string",
+      "pattern": "^REC-[0-9A-F]{8}$"
+    },
+    "khatian_type": {
+      "type": "string",
+      "enum": ["CS", "SA", "RS", "City Survey", "BS"]
+    },
+    "khatian_number": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "parcel_id": {
+      "type": "string"
+    },
+    "owners": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["owner_id", "share_fraction"],
+        "properties": {
+          "owner_id": { "type": "string" },
+          "share_fraction": { "type": "number", "minimum": 0.001, "maximum": 1.0 }
+        }
+      },
+      "minItems": 1
+    },
+    "effective_year": {
+      "type": "integer"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["ACTIVE", "SUPERSEDED", "DISPUTED", "MUTATED"]
+    },
+    "is_synthetic": {
+      "type": "boolean",
+      "const": true
+    }
+  },
+  "additionalProperties": false
+}

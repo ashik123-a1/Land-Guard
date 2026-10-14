@@ -1,0 +1,230 @@
+{
+  "fraud_risk_models_test_set_500_scenarios": {
+    "Majority Baseline": {
+      "TP": 332,
+      "FP": 168,
+      "TN": 0,
+      "FN": 0,
+      "matrix_2x2_TN_FP_FN_TP": [
+        [
+          0,
+          168
+        ],
+        [
+          0,
+          332
+        ]
+      ],
+      "accuracy": 0.664,
+      "precision": 0.664,
+      "recall": 1.0,
+      "f1_score": 0.7981
+    },
+    "Deterministic Rule Baseline": {
+      "TP": 332,
+      "FP": 26,
+      "TN": 142,
+      "FN": 0,
+      "matrix_2x2_TN_FP_FN_TP": [
+        [
+          142,
+          26
+        ],
+        [
+          0,
+          332
+        ]
+      ],
+      "accuracy": 0.948,
+      "precision": 0.9274,
+      "recall": 1.0,
+      "f1_score": 0.9623
+    },
+    "Logistic Regression": {
+      "TP": 330,
+      "FP": 10,
+      "TN": 158,
+      "FN": 2,
+      "matrix_2x2_TN_FP_FN_TP": [
+        [
+          158,
+          10
+        ],
+        [
+          2,
+          330
+        ]
+      ],
+      "accuracy": 0.976,
+      "precision": 0.9706,
+      "recall": 0.994,
+      "f1_score": 0.9821
+    },
+    "Random Forest": {
+      "TP": 329,
+      "FP": 17,
+      "TN": 151,
+      "FN": 3,
+      "matrix_2x2_TN_FP_FN_TP": [
+        [
+          151,
+          17
+        ],
+        [
+          3,
+          329
+        ]
+      ],
+      "accuracy": 0.96,
+      "precision": 0.9509,
+      "recall": 0.991,
+      "f1_score": 0.9705
+    },
+    "XGBoost Classifier": {
+      "TP": 330,
+      "FP": 7,
+      "TN": 161,
+      "FN": 2,
+      "matrix_2x2_TN_FP_FN_TP": [
+        [
+          161,
+          7
+        ],
+        [
+          2,
+          330
+        ]
+      ],
+      "accuracy": 0.982,
+      "precision": 0.9792,
+      "recall": 0.994,
+      "f1_score": 0.9865
+    }
+  },
+  "computer_vision_600_images": {
+    "signature_assisted": {
+      "TP": 281,
+      "FP": 11,
+      "TN": 308,
+      "FN": 0
+    },
+    "signature_unassisted": {
+      "TP": 104,
+      "FP": 31,
+      "TN": 288,
+      "FN": 177
+    },
+    "signature_by_document_type": {
+      "SALE_DEED": {
+        "TP": 128,
+        "FP": 3,
+        "TN": 19,
+        "FN": 0
+      },
+      "KHATIAN_PORCHA": {
+        "TP": 0,
+        "FP": 0,
+        "TN": 120,
+        "FN": 0
+      },
+      "MUTATION_RECORD": {
+        "TP": 102,
+        "FP": 2,
+        "TN": 16,
+        "FN": 0
+      },
+      "TAX_RECEIPT": {
+        "TP": 0,
+        "FP": 0,
+        "TN": 90,
+        "FN": 0
+      },
+      "PARCEL_MAP": {
+        "TP": 0,
+        "FP": 4,
+        "TN": 56,
+        "FN": 0
+      },
+      "APPLICATION_COMPLAINT": {
+        "TP": 51,
+        "FP": 2,
+        "TN": 7,
+        "FN": 0
+      }
+    },
+    "seal_overall": {
+      "TP": 510,
+      "FP": 0,
+      "TN": 87,
+      "FN": 3
+    },
+    "seal_by_document_type": {
+      "SALE_DEED": {
+        "TP": 135,
+        "FP": 0,
+        "TN": 15,
+        "FN": 0
+      },
+      "KHATIAN_PORCHA": {
+        "TP": 120,
+        "FP": 0,
+        "TN": 0,
+        "FN": 0
+      },
+      "MUTATION_RECORD": {
+        "TP": 108,
+        "FP": 0,
+        "TN": 12,
+        "FN": 0
+      },
+      "TAX_RECEIPT": {
+        "TP": 90,
+        "FP": 0,
+        "TN": 0,
+        "FN": 0
+      },
+      "PARCEL_MAP": {
+        "TP": 57,
+        "FP": 0,
+        "TN": 0,
+        "FN": 3
+      },
+      "APPLICATION_COMPLAINT": {
+        "TP": 0,
+        "FP": 0,
+        "TN": 60,
+        "FN": 0
+      }
+    },
+    "visual_anomaly": {
+      "clean_digital_TN": 40,
+      "clean_digital_FP": 0,
+      "overall_600_clean_TN": 595,
+      "overall_600_clean_FP": 5,
+      "controlled_50_altered_TP": 48,
+      "controlled_50_altered_FN": 2,
+      "by_alteration_type": {
+        "paste_over_plot": {
+          "tested": 13,
+          "detected": 13,
+          "recall": 1.0
+        },
+        "copy_move_clone": {
+          "tested": 13,
+          "detected": 11,
+          "recall": 0.8462
+        },
+        "localized_erasure_blur": {
+          "tested": 12,
+          "detected": 12,
+          "recall": 1.0
+        },
+        "dark_ink_overwrite": {
+          "tested": 12,
+          "detected": 12,
+          "recall": 1.0
+        }
+      }
+    }
+  }
+}

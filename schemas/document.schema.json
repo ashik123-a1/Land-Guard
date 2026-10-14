@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FictionalDocumentMetadata",
+  "type": "object",
+  "required": [
+    "document_id",
+    "document_type",
+    "language",
+    "template_id",
+    "canonical_record_id",
+    "watermark_text",
+    "fields",
+    "is_synthetic"
+  ],
+  "properties": {
+    "document_id": {
+      "type": "string",
+      "pattern": "^DOC-[0-9A-F]{8}$"
+    },
+    "document_type": {
+      "type": "string",
+      "enum": [
+        "SALE_DEED",
+        "KHATIAN_PORCHA",
+        "MUTATION_RECORD",
+        "TAX_RECEIPT",
+        "PARCEL_MAP",
+        "APPLICATION_COMPLAINT"
+      ]
+    },
+    "language": {
+      "type": "string",
+      "enum": ["bn", "en", "mixed"]
+    },
+    "template_id": {
+      "type": "string"
+    },
+    "canonical_record_id": {
+      "type": "string"
+    },
+    "parcel_id": {
+      "type": "string"
+    },
+    "watermark_text": {
+      "type": "string",
+      "const": "SYNTHETIC DEMO — NOT AN OFFICIAL DOCUMENT"
+    },
+    "fields": {
+      "type": "object"
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "is_synthetic": {
+      "type": "boolean",
+      "const": true
+    }
+  },
+  "additionalProperties": false
+}

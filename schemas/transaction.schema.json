@@ -1,0 +1,84 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FictionalLandTransaction",
+  "type": "object",
+  "required": [
+    "transaction_id",
+    "deed_number",
+    "deed_type",
+    "execution_date",
+    "seller_ids",
+    "buyer_ids",
+    "parcel_id",
+    "transferred_area_decimal",
+    "consideration_bdt",
+    "is_synthetic"
+  ],
+  "properties": {
+    "transaction_id": {
+      "type": "string",
+      "pattern": "^TXN-[0-9A-F]{8}$"
+    },
+    "deed_number": {
+      "type": "string"
+    },
+    "deed_type": {
+      "type": "string",
+      "enum": [
+        "Sale Deed (Kabala)",
+        "Heirship Transfer (Waris)",
+        "Inheritance Partition (Warishnama)",
+        "Gift (Heba)",
+        "Exchange",
+        "Mortgage",
+        "Correction Deed (Bhranti Songshodhon)",
+        "Correction Deed (Bhul-Sanshodhon)"
+      ]
+    },
+    "execution_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "registration_sub_office": {
+      "type": "string"
+    },
+    "seller_ids": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "buyer_ids": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "parcel_id": {
+      "type": "string"
+    },
+    "transferred_area_decimal": {
+      "type": "number",
+      "minimum": 0.01
+    },
+    "consideration_bdt": {
+      "type": "number",
+      "minimum": 0
+    },
+    "previous_deed_ref": {
+      "type": "string"
+    },
+    "mutation_case_no": {
+      "type": "string"
+    },
+    "tax_clearance_year": {
+      "type": "integer"
+    },
+    "scenario_id": {
+      "type": "string"
+    },
+    "is_synthetic": {
+      "type": "boolean",
+      "const": true
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,19 @@
+# OCR Engine and Preprocessing Configuration
+primary_engine: "rapidocr"
+fallback_engine: "tesseract"
+
+tesseract:
+  executable_path: "C:/Program Files/Tesseract-OCR/tesseract.exe"
+  languages: "ben+eng"
+  config_params: "--oem 1 --psm 6"
+
+rapidocr:
+  det_model_path: null
+  rec_model_path: null
+  use_angle_cls: true
+
+preprocessing:
+  deskew: true
+  denoise: true
+  clahe_contrast: true
+  target_dpi: 300

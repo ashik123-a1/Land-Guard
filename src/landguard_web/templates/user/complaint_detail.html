@@ -1,0 +1,154 @@
+{% extends "user/layout.html" %}
+
+{% block title %}Case Tracking {{ complaint.complaint_id }} — LandGuard AI{% endblock %}
+
+{% block portal_content %}
+<div class="max-w-4xl mx-auto space-y-6">
+    <!-- Breadcrumb -->
+    <div class="flex items-center justify-between">
+        <a href="/user/complaints" class="text-xs text-slate-400 hover:text-cyan-400 inline-flex items-center gap-1.5">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            <span>Back to Complaints</span>
+        </a>
+        <div class="flex items-center gap-2">
+            {% if not complaint.is_expedited %}
+            <button type="button" onclick="openExpediteModal()" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-indigo-300 bg-indigo-950 border border-indigo-500/40 hover:bg-indigo-900 transition-colors inline-flex items-center gap-1.5">
+                <i data-lucide="zap" class="w-3.5 h-3.5 text-indigo-400"></i>
+                <span>Request Expedited Review</span>
+            </button>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Case Status Header Card -->
+    <div class="glass-panel p-6 rounded-2xl border border-slate-800">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+            <div>
+                <div class="flex items-center gap-3">
+                    <span class="font-mono text-base font-bold text-cyan-400">{{ complaint.complaint_id }}</span>
+                    <span class="px-2.5 py-0.5 rounded-lg text-xs font-mono font-semibold {% if complaint.status == 'UNDER_REVIEW' %}bg-amber-950 text-amber-300 border border-amber-800/40{% elif complaint.status == 'RESOLVED' %}bg-emerald-950 text-emerald-300 border border-emerald-800/40{% else %}bg-slate-800 text-slate-300{% endif %}">
+                        {{ complaint.status|replace('_', ' ') }}
+                    </span>
+                    {% if complaint.is_expedited %}
+                    <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-indigo-950 text-indigo-300 border border-indigo-500/40 flex items-center gap-1">
+                        <i data-lucide="zap" class="w-3 h-3 text-indigo-400"></i>
+                        <span>EXPEDITE: {{ complaint.expedite_status }}</span>
+                    </span>
+                    {% endif %}
+                </div>
+                <h1 class="text-xl font-bold text-white mt-1.5">{{ complaint.title }}</h1>
+            </div>
+
+            <div class="text-right text-xs font-mono text-slate-400">
+                <div>Date Filed: <span class="text-slate-200">{{ complaint.created_at[:10] }}</span></div>
+                <div class="mt-1">Assigned: <span class="text-cyan-400 font-semibold">{{ complaint.assigned_officer }}</span></div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 py-4 text-xs font-mono text-slate-300 border-b border-slate-800">
+            <div>
+                <span class="text-slate-500 block text-[10px] uppercase">Dag Plot #</span>
+                <span class="text-white font-bold">{{ complaint.dag_plot_number }}</span>
+            </div>
+            <div>
+                <span class="text-slate-500 block text-[10px] uppercase">Disputed Deed</span>
+                <span class="text-white font-bold">{{ complaint.deed_number }}</span>
+            </div>
+            <div>
+                <span class="text-slate-500 block text-[10px] uppercase">Category</span>
+                <span class="text-cyan-300">{{ complaint.category|replace('_', ' ') }}</span>
+            </div>
+            <div>
+                <span class="text-slate-500 block text-[10px] uppercase">Investigation Case</span>
+                <span class="text-indigo-400 font-bold">{{ complaint.linked_case_id or 'In Queue' }}</span>
+            </div>
+        </div>
+
+        <div class="pt-4">
+            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Citizen Grievance Narrative</h3>
+            <p class="text-xs text-slate-200 leading-relaxed bg-slate-900/60 p-4 rounded-xl border border-slate-800/80 font-sans">
+                {{ complaint.narrative_description }}
+            </p>
+        </div>
+    </div>
+
+    <!-- Case Status & Investigation Timeline -->
+    <div class="glass-panel p-6 rounded-2xl border border-slate-800">
+        <h2 class="text-base font-bold text-white mb-2 flex items-center gap-2">
+            <i data-lucide="clock" class="w-4 h-4 text-cyan-400"></i>
+            <span>Case Resolution Timeline</span>
+        </h2>
+        <p class="text-xs text-slate-400 mb-6">Chronological log of administrative actions, evidence reviews, and status progression.</p>
+
+        <div class="relative pl-6 sm:pl-8 border-l-2 border-slate-800 space-y-6">
+            {% for event in complaint.timeline %}
+            <div class="relative">
+                <div class="absolute -left-[31px] sm:-left-[39px] top-1 w-4 h-4 rounded-full bg-navy-950 border-2 border-cyan-400 flex items-center justify-center">
+                    <div class="w-1.5 h-1.5 rounded-full bg-cyan-400"></div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-xs font-bold text-white">{{ event.title }}</span>
+                        <span class="text-[10px] font-mono text-slate-500">{{ event.timestamp[:19]|replace('T', ' ') }}</span>
+                    </div>
+                    <div class="text-xs text-slate-300 leading-relaxed">{{ event.description }}</div>
+                    <div class="text-[10px] text-cyan-400 font-mono mt-2">Actor: {{ event.actor }}</div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Request Expedite Modal -->
+<div id="expedite-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+    <div class="glass-panel-glow p-6 rounded-2xl max-w-md w-full border border-indigo-500/40">
+        <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
+            <i data-lucide="zap" class="w-4 h-4 text-indigo-400"></i>
+            <span>Request Expedited Review</span>
+        </h3>
+        <p class="text-xs text-slate-400 mb-4">Under Section 5.3 of the Statutory Verification Framework, expedited status may be requested for imminent transactions.</p>
+        <textarea id="modal-expedite-reason" rows="3" placeholder="Provide justification (e.g. earnest money deposit deadline, imminent transfer)..."
+                  class="glass-input w-full p-2.5 rounded-xl text-xs mb-4"></textarea>
+        <div class="flex items-center justify-end gap-2">
+            <button type="button" onclick="closeExpediteModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white glass-panel">Cancel</button>
+            <button type="button" onclick="submitExpediteRequest()" class="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 transition-colors">Submit Request</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    function openExpediteModal() {
+        document.getElementById('expedite-modal').classList.remove('hidden');
+    }
+    function closeExpediteModal() {
+        document.getElementById('expedite-modal').classList.add('hidden');
+    }
+    async function submitExpediteRequest() {
+        const reason = document.getElementById('modal-expedite-reason').value;
+        if (!reason) {
+            showToast("Please state a reason for urgency.", "warning");
+            return;
+        }
+        try {
+            const res = await fetch('/api/complaints/{{ complaint.complaint_id }}/expedite', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ reason })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                showToast("Expedite request submitted to Registrar queue!", "success");
+                closeExpediteModal();
+                setTimeout(() => location.reload(), 1000);
+            } else {
+                showToast(data.detail || "Request failed", "error");
+            }
+        } catch (err) {
+            showToast("Error: " + err.message, "error");
+        }
+    }
+</script>
+{% endblock %}

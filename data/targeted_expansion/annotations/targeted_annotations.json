@@ -1,0 +1,410 @@
+[
+  {
+    "image_id": "IMG-EXP-0001",
+    "filename": "IMG-EXP-0001.png",
+    "document_type": "SALE_DEED",
+    "quality_class": "clean_digital",
+    "is_tampered": false,
+    "tampering_type": null,
+    "ground_truth_fields": {
+      "dag_plot_number": "2630",
+      "area_decimal": "90.86"
+    },
+    "has_signature": true,
+    "has_seal": true,
+    "sha256": "bcca8908869b8c7fc468849ec7fc2931d8af6c726b8661787c341299eb6dba01",
+    "size_bytes": 210865,
+    "watermark": "SYNTHETIC DEMO \u2014 NOT AN OFFICIAL DOCUMENT"
+  },
+  {
+    "image_id": "IMG-EXP-0002",
+    "filename": "IMG-EXP-0002.png",
+    "document_type": "KHATIAN_PORCHA",
+    "quality_class": "clean_scan",
+    "is_tampered": false,
+    "tampering_type": null,
+    "ground_truth_fields": {
+      "dag_plot_number": "6717",
+      "area_decimal": "93.49"
+    },
+    "has_signature": false,
+    "has_seal": true,
+    "sha256": "4dab4a9241101ad114532473416a7a3359bf9d55c318ba8c5d1aa8f3182b2f97",
+    "size_bytes": 222172,
+    "watermark": "SYNTHETIC DEMO \u2014 NOT AN OFFICIAL DOCUMENT"
+  },
+  {
+    "image_id": "IMG-EXP-0003",
+    "filename": "IMG-EXP-0003.png",
+    "document_type": "SALE_DEED",
+    "quality_class": "faded_text",
+    "is_tampered": false,
+    "tampering_type": null,
+    "ground_truth_fields": {
+      "dag_plot_number": "973",
+      "area_decimal": "7.58"
+    },
+    "has_signature": true,
+    "has_seal": true,
+    "sha256": "80fdb9b786d76f9c59889af3568fb73e629561a4bc68538a8fd0f9b9f9941ddd",
+    "size_bytes": 204968,
+    "watermark": "SYNTHETIC DEMO \u2014 NOT AN OFFICIAL DOCUMENT"
+  },
+  {
+    "image_id": "IMG-EXP-0004",
+    "filename": "IMG-EXP-0004.png",
+    "document_type": "MUTATION_RECORD",
+    "quality_class": "blur",
+    "is_tampered": false,
+    "tampering_type": null,
+    "ground_truth_fields": {
+      "dag_plot_number": "593",
+      "area_decimal": "18.82"
+    },
+    "has_signature": true,
+    "has_seal": true,
+    "sha256": "796e519f43f77daea23e008d9d6a6d1aa4914038f4ccbe9f09b4a301bc05c4b9",
+    "size_bytes": 263749,
+    "watermark": "SYNTHETIC DEMO \u2014 NOT AN OFFICIAL DOCUMENT"
+  },
+  {
+    "image_id": "IMG-EXP-0005",
+    "filename": "IMG-EXP-0005.png",
+    "document_type": "SALE_DEED",
+    "quality_class": "shadow_phone_photo",
+    "is_tampered": false,
+    "tampering_type": null,
+    "ground_truth_fields": {
+      "dag_plot_number": "2040",
+      "area_decimal": "13.69"
+    },
+    "has_signature": true,
+    "has_seal": true,
+    "sha256": "87b824348567c417d1a296642aa07a5d57f0108473406d7225bf18200f6f8239",
+    "size_bytes": 340973,
+    "watermark": "SYNTHETIC DEMO \u2014 NOT AN OFFICIAL DOCUMENT"
+  },
+  {
+    "image_id": "IMG-EXP-0006",
+    "filename": "IMG-EXP-0006.png",
+    "document_type": "KHATIAN_PORCHA",
+    "quality_class": "uneven_illumination",
+    "is_tampered": false,
+    "tampering_type": null,
+    "ground_truth_fields": {
+      "dag_plot_number": "7633",
+      "area_decimal": "31.22"
+    },
+    "has_signature": false,
+    "has_seal": true,
+    "sha256": "53fd2d02164cb6276531df3226daa62afd0b7fb0752623a64624163ba6233113",
+    "size_bytes": 188786,
+    "watermark": "SYNTHETIC DEMO \u2014 NOT AN OFFICIAL DOCUMENT"
+  },
+  {
+    "image_id": "IMG-EXP-0007",
+    "filename": "IMG-EXP-0007.png",
+    "document_type": "SALE_DEED",
+    "quality_class": "low_resolution",
+    "is_tampered": false,
+    "tampering_type": null,
+    "ground_truth_fields": {
+      "dag_plot_number": "105",
+      "area_decimal": "84.61"
+    },
+    "has_signature": true,
+    "has_seal": true,
+    "sha256": "538ab844ed26f56b3841f1fe3e2174d505ff7c2d8b9be494c635aae6fb319a17",
+    "size_bytes": 204674,
+    "watermark": "SYNTHETIC DEMO \u2014 NOT AN OFFICIAL DOCUMENT"
+  },
+  {
+    "image_id": "IMG-EXP-0008",
+    "filename": "IMG-EXP-0008.png",
+    "document_type": "MUTATION_RECORD",
+    "quality_class": "compression_artifacts",
+    "is_tampered": false,
+    "tampering_type": null,
+    "ground_truth_fields": {
+      "dag_plot_number": "1349",
+      "area_decimal": "34.27"
+    },
+    "has_signature": true,
+    "has_seal": true,
+    "sha256": "695631299c38bd9fca47b8b47034f04f554338e1e19bdc66be2f60be0558f9a2",
+    "size_bytes": 394297,
+    "watermark": "SYNTHETIC DEMO \u2014 NOT AN OFFICIAL DOCUMENT"
+  },
+  {
+    "image_id": "IMG-EXP-0009",
+    "filename": "IMG-EXP-0009.png",
+    "document_type": "SALE_DEED",
+    "quality_class": "clean_digital",
+    "is_tampered": false,
+    "tampering_type": null,
+    "ground_truth_fields": {
+      "dag_plot_number": "9172",
+      "area_decimal": "83.21"
+    },
+    "has_signature": true,
+    "has_seal": true,
+    "sha256": "fb9ee76f99fd1b125bb0c309db34910260e26e925f7d126253fda02b06794cc7",
+    "size_bytes": 209990,
+    "watermark": "SYNTHETIC DEMO \u2014 NOT AN OFFICIAL DOCUMENT"
+  },
+  {
+    "image_id": "IMG-EXP-0010",
+    "filename": "IMG-EXP-0010.png",
+    "document_type": "KHATIAN_PORCHA",
+    "quality_class": "clean_scan",
+    "is_tampered": false,
+    "tampering_type": null,
+    "ground_truth_fields": {
+      "dag_plot_number": "6790",
+      "area_decimal": "22.76"
+    },
+    "has_signature": false,
+    "has_seal": true,
+    "sha256": "9e192be819fec5d0cfee7b98e13f988021f3effbe5280d95251ea6fe40c73380",
+    "size_bytes": 220812,
+    "watermark": "SYNTHETIC DEMO \u2014 NOT AN OFFICIAL DOCUMENT"
+  },
+  {
+    "image_id": "IMG-EXP-0011",
+    "filename": "IMG-EXP-0011.png",
+    "document_type": "SALE_DEED",
+    "quality_class": "faded_text",
+    "is_tampered": false,
+    "tampering_type": null,
+    "ground_truth_fields": {
+      "dag_plot_number": "2805",
+      "area_decimal": "81.81"
+    },
+    "has_signature": true,
+    "has_seal": true,
+    "sha256": "406bacbf149e9fdf2a7f6f215c199ad0a790aeabcb9ccf1ac609cc0e324917d7",
+    "size_bytes": 204024,
+    "watermark": "SYNTHETIC DEMO \u2014 NOT AN OFFICIAL DOCUMENT"
+  },
+  {
+    "image_id": "IMG-EXP-0012",
+    "filename": "IMG-EXP-0012.png",
+    "document_type": "MUTATION_RECORD",
+    "quality_class": "blur",
+    "is_tampered": false,
+    "tampering_type": null,
+    "ground_truth_fields": {
+      "dag_plot_number": "7395",
+      "area_decimal": "66.27"
+    },
+    "has_signature": true,
+    "has_seal": true,
+    "sha256": "ae66247b3163a652f780037caa52d33ac5a5a01be6c6b9b8dd3c12d108d80506",
+    "size_bytes": 264656,
+    "watermark": "SYNTHETIC DEMO \u2014 NOT AN OFFICIAL DOCUMENT"
+  },
+  {
+    "image_id": "IMG-EXP-0013",
+    "filename": "IMG-EXP-0013.png",
+    "document_type": "SALE_DEED",
+    "quality_class": "shadow_phone_photo",
+    "is_tampered": true,
+    "tampering_type": "paste_over_plot",
+    "ground_truth_fields": {
+      "dag_plot_number": "5235",
+      "area_decimal": "69.45"
+    },
+    "has_signature": true,
+    "has_seal": true,
+    "sha256": "f1ebc5b10415ddfccec7eab51d3d9eb83f90d5eb6be8c718910b6bd1398a9b2d",
+    "size_bytes": 343860,
+    "watermark": "SYNTHETIC DEMO \u2014 NOT AN OFFICIAL DOCUMENT"
+  },
+  {
+    "image_id": "IMG-EXP-0014",
+    "filename": "IMG-EXP-0014.png",
+    "document_type": "KHATIAN_PORCHA",
+    "quality_class": "uneven_illumination",
+    "is_tampered": true,
+    "tampering_type": "copy_move_clone",
+    "ground_truth_fields": {
+      "dag_plot_number": "6202",
+      "area_decimal": "49.98"
+    },
+    "has_signature": false,
+    "has_seal": true,
+    "sha256": "031a340743984c7af58923a41f174755d6a3465af3c0f4e635d11bb80d45a4ca",
+    "size_bytes": 193614,
+    "watermark": "SYNTHETIC DEMO \u2014 NOT AN OFFICIAL DOCUMENT"
+  },
+  {
+    "image_id": "IMG-EXP-0015",
+    "filename": "IMG-EXP-0015.png",
+    "document_type": "SALE_DEED",
+    "quality_class": "low_resolution",
+    "is_tampered": true,
+    "tampering_type": "localized_erasure_blur",
+    "ground_truth_fields": {
+      "dag_plot_number": "7393",
+      "area_decimal": "76.8"
+    },
+    "has_signature": true,
+    "has_seal": true,
+    "sha256": "3b6e3235a5b36a8d6914e5de6f35ed521285958fe1c26b1af1ac46ac313a9df3",
+    "size_bytes": 189773,
+    "watermark": "SYNTHETIC DEMO \u2014 NOT AN OFFICIAL DOCUMENT"
+  },
+  {
+    "image_id": "IMG-EXP-0016",
+    "filename": "IMG-EXP-0016.png",
+    "document_type": "MUTATION_RECORD",
+    "quality_class": "compression_artifacts",
+    "is_tampered": true,
+    "tampering_type": "dark_ink_overwrite",
+    "ground_truth_fields": {
+      "dag_plot_number": "3201",
+      "area_decimal": "94.97"
+    },
+    "has_signature": true,
+    "has_seal": true,
+    "sha256": "2e02f00f5863c6505494109a53150a18399a14189fd9e05f0da8bb1450b1af7d",
+    "size_bytes": 375948,
+    "watermark": "SYNTHETIC DEMO \u2014 NOT AN OFFICIAL DOCUMENT"
+  },
+  {
+    "image_id": "IMG-EXP-0017",
+    "filename": "IMG-EXP-0017.png",
+    "document_type": "SALE_DEED",
+    "quality_class": "clean_digital",
+    "is_tampered": true,
+    "tampering_type": "faded_chemical_erasure",
+    "ground_truth_fields": {
+      "dag_plot_number": "8899",
+      "area_decimal": "41.68"
+    },
+    "has_signature": true,
+    "has_seal": true,
+    "sha256": "8b0ed3c082d6804ce7ba3299530bbdc31842648b423d0355d83c68719dcaa334",
+    "size_bytes": 209553,
+    "watermark": "SYNTHETIC DEMO \u2014 NOT AN OFFICIAL DOCUMENT"
+  },
+  {
+    "image_id": "IMG-EXP-0018",
+    "filename": "IMG-EXP-0018.png",
+    "document_type": "KHATIAN_PORCHA",
+    "quality_class": "clean_scan",
+    "is_tampered": true,
+    "tampering_type": "misaligned_numerical_splice",
+    "ground_truth_fields": {
+      "dag_plot_number": "6445",
+      "area_decimal": "49.17"
+    },
+    "has_signature": false,
+    "has_seal": true,
+    "sha256": "59e7882ef47b38ae0651a4e97d5da93abf3b878e599b79367c0d4b86b93004ad",
+    "size_bytes": 224169,
+    "watermark": "SYNTHETIC DEMO \u2014 NOT AN OFFICIAL DOCUMENT"
+  },
+  {
+    "image_id": "IMG-EXP-0019",
+    "filename": "IMG-EXP-0019.png",
+    "document_type": "SALE_DEED",
+    "quality_class": "faded_text",
+    "is_tampered": true,
+    "tampering_type": "paste_over_plot",
+    "ground_truth_fields": {
+      "dag_plot_number": "2792",
+      "area_decimal": "91.25"
+    },
+    "has_signature": true,
+    "has_seal": true,
+    "sha256": "ebb4483309ab8d8076f883aedd02f0bf8c829c812b08a4ab516344b1559aeb08",
+    "size_bytes": 204443,
+    "watermark": "SYNTHETIC DEMO \u2014 NOT AN OFFICIAL DOCUMENT"
+  },
+  {
+    "image_id": "IMG-EXP-0020",
+    "filename": "IMG-EXP-0020.png",
+    "document_type": "MUTATION_RECORD",
+    "quality_class": "blur",
+    "is_tampered": true,
+    "tampering_type": "copy_move_clone",
+    "ground_truth_fields": {
+      "dag_plot_number": "5664",
+      "area_decimal": "85.09"
+    },
+    "has_signature": true,
+    "has_seal": true,
+    "sha256": "03047734696d5d2d319b788aa9890650ff3b7426b2ea3e926660c5b8d4096154",
+    "size_bytes": 261964,
+    "watermark": "SYNTHETIC DEMO \u2014 NOT AN OFFICIAL DOCUMENT"
+  },
+  {
+    "image_id": "IMG-EXP-0021",
+    "filename": "IMG-EXP-0021.png",
+    "document_type": "SALE_DEED",
+    "quality_class": "shadow_phone_photo",
+    "is_tampered": true,
+    "tampering_type": "localized_erasure_blur",
+    "ground_truth_fields": {
+      "dag_plot_number": "3237",
+      "area_decimal": "11.26"
+    },
+    "has_signature": true,
+    "has_seal": true,
+    "sha256": "dc27ca7ba93c44dbe5684a0d595c94990f08cdd36efdc380a7ea31baa7c125ba",
+    "size_bytes": 343373,
+    "watermark": "SYNTHETIC DEMO \u2014 NOT AN OFFICIAL DOCUMENT"
+  },
+  {
+    "image_id": "IMG-EXP-0022",
+    "filename": "IMG-EXP-0022.png",
+    "document_type": "KHATIAN_PORCHA",
+    "quality_class": "uneven_illumination",
+    "is_tampered": true,
+    "tampering_type": "dark_ink_overwrite",
+    "ground_truth_fields": {
+      "dag_plot_number": "5260",
+      "area_decimal": "21.02"
+    },
+    "has_signature": false,
+    "has_seal": true,
+    "sha256": "80ab44839b52dba3d91f27f07af55fde9e05a2963daabb01a83663e35d3db503",
+    "size_bytes": 190189,
+    "watermark": "SYNTHETIC DEMO \u2014 NOT AN OFFICIAL DOCUMENT"
+  },
+  {
+    "image_id": "IMG-EXP-0023",
+    "filename": "IMG-EXP-0023.png",
+    "document_type": "SALE_DEED",
+    "quality_class": "low_resolution",
+    "is_tampered": true,
+    "tampering_type": "faded_chemical_erasure",
+    "ground_truth_fields": {
+      "dag_plot_number": "8135",
+      "area_decimal": "38.42"
+    },
+    "has_signature": true,
+    "has_seal": true,
+    "sha256": "3aeb4205ca3e19097cd294956702ccefaf188b91e495fb424f67025c28f391e6",
+    "size_bytes": 186775,
+    "watermark": "SYNTHETIC DEMO \u2014 NOT AN OFFICIAL DOCUMENT"
+  },
+  {
+    "image_id": "IMG-EXP-0024",
+    "filename": "IMG-EXP-0024.png",
+    "document_type": "MUTATION_RECORD",
+    "quality_class": "compression_artifacts",
+    "is_tampered": true,
+    "tampering_type": "misaligned_numerical_splice",
+    "ground_truth_fields": {
+      "dag_plot_number": "8145",
+      "area_decimal": "11.21"
+    },
+    "has_signature": true,
+    "has_seal": true,
+    "sha256": "f694360477b2438f070f875055d56192ddd6a47658b0bcfe39ba9a6f0764d251",
+    "size_bytes": 394200,
+    "watermark": "SYNTHETIC DEMO \u2014 NOT AN OFFICIAL DOCUMENT"
+  }
+]

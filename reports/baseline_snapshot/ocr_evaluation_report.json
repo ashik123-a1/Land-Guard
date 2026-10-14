@@ -1,0 +1,220 @@
+{
+  "total_evaluated": 48,
+  "overall": {
+    "mean_cer": 0.7185,
+    "mean_wer": 0.9099
+  },
+  "english_subset": {
+    "mean_cer": 0.6021,
+    "mean_wer": 0.9025,
+    "evaluated_samples": 48
+  },
+  "bangla_subset": {
+    "mean_cer": 1.0,
+    "mean_wer": 1.0,
+    "evaluated_samples": 40
+  },
+  "exact_field_match_rate": 0.875,
+  "fields_checked_count": 80,
+  "fields_matched_count": 70,
+  "by_category": {
+    "SALE_DEED": {
+      "overall_cer": 0.5669,
+      "english_cer": 0.5103,
+      "bangla_cer": 1.0,
+      "mean_wer": 0.8354,
+      "count": 8
+    },
+    "KHATIAN_PORCHA": {
+      "overall_cer": 0.7303,
+      "english_cer": 0.6523,
+      "bangla_cer": 1.0,
+      "mean_wer": 0.9344,
+      "count": 8
+    },
+    "MUTATION_RECORD": {
+      "overall_cer": 0.6043,
+      "english_cer": 0.3539,
+      "bangla_cer": 1.0,
+      "mean_wer": 0.9201,
+      "count": 8
+    },
+    "TAX_RECEIPT": {
+      "overall_cer": 0.6873,
+      "english_cer": 0.4959,
+      "bangla_cer": 1.0,
+      "mean_wer": 0.9313,
+      "count": 8
+    },
+    "PARCEL_MAP": {
+      "overall_cer": 0.9227,
+      "english_cer": 0.9227,
+      "bangla_cer": 0.0,
+      "mean_wer": 0.875,
+      "count": 8
+    },
+    "APPLICATION_COMPLAINT": {
+      "overall_cer": 0.7997,
+      "english_cer": 0.6777,
+      "bangla_cer": 1.0,
+      "mean_wer": 0.9631,
+      "count": 8
+    }
+  },
+  "by_quality": {
+    "clean_digital": {
+      "overall_cer": 0.6704,
+      "english_cer": 0.463,
+      "bangla_cer": 0.8333,
+      "mean_wer": 0.8409,
+      "count": 6
+    },
+    "clean_scan": {
+      "overall_cer": 0.6984,
+      "english_cer": 0.5393,
+      "bangla_cer": 0.8333,
+      "mean_wer": 0.9317,
+      "count": 6
+    },
+    "grayscale_scan": {
+      "overall_cer": 0.7757,
+      "english_cer": 0.7011,
+      "bangla_cer": 0.8333,
+      "mean_wer": 0.8887,
+      "count": 6
+    },
+    "low_resolution": {
+      "overall_cer": 0.7311,
+      "english_cer": 0.7684,
+      "bangla_cer": 0.8333,
+      "mean_wer": 0.9069,
+      "count": 6
+    },
+    "mild_rotation": {
+      "overall_cer": 0.7273,
+      "english_cer": 0.5465,
+      "bangla_cer": 0.8333,
+      "mean_wer": 0.9615,
+      "count": 6
+    },
+    "skewed_scan": {
+      "overall_cer": 0.7053,
+      "english_cer": 0.5401,
+      "bangla_cer": 0.8333,
+      "mean_wer": 0.931,
+      "count": 6
+    },
+    "low_contrast": {
+      "overall_cer": 0.6661,
+      "english_cer": 0.4839,
+      "bangla_cer": 0.8333,
+      "mean_wer": 0.8934,
+      "count": 6
+    },
+    "uneven_illumination": {
+      "overall_cer": 0.774,
+      "english_cer": 0.7747,
+      "bangla_cer": 0.8333,
+      "mean_wer": 0.925,
+      "count": 6
+    }
+  },
+  "sample_comparisons": [
+    {
+      "image_id": "IMG-AEE39DE1",
+      "document_type": "SALE_DEED",
+      "quality_class": "clean_digital",
+      "overall_cer": 0.5892,
+      "english_cer": 0.5415,
+      "bangla_cer": 1.0,
+      "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2002-965",
+      "english_pred_sample": "DEMO STAMP I (DEED OF SALE) BDT 1,000 /DeedNo:DEED-2002-96528 FICTIONAL REVENUE ",
+      "bangla_gt_sample": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u09ab\u09b0\u09bf\u09a6\u09be \u09b9\u0995 \u099c\u09be\u09b9\u09be\u09a8\u09be\u09b0\u09be \u0987\u09b8\u09b2\u09be\u09ae \u099c\u09c7\u09b2\u09be \u0989\u09aa\u099c\u09c7\u09b2\u09be \u09ae\u09cc\u099c\u09be \u099c\u09c7 \u098f\u09b2 \u09a8\u0982 \u09a6\u09be",
+      "bangla_pred_sample": ""
+    },
+    {
+      "image_id": "IMG-11321A28",
+      "document_type": "SALE_DEED",
+      "quality_class": "clean_scan",
+      "overall_cer": 0.5237,
+      "english_cer": 0.448,
+      "bangla_cer": 1.0,
+      "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2010-913",
+      "english_pred_sample": "DEMO STAMP I (DEED OF SALE) BDT 1,000 /DeedNo:DEED-2010-91323 FICTIONAL REVENUE ",
+      "bangla_gt_sample": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u099c\u09be\u09b9\u09be\u09a8\u09be\u09b0\u09be \u0987\u09b8\u09b2\u09be\u09ae \u09b0\u09b6\u09c0\u09a6 \u0986\u0995\u09cd\u09a4\u09be\u09b0 \u099c\u09c7\u09b2\u09be \u0989\u09aa\u099c\u09c7\u09b2\u09be \u09ae\u09cc\u099c\u09be \u099c\u09c7 \u098f\u09b2 \u09a8\u0982",
+      "bangla_pred_sample": ""
+    },
+    {
+      "image_id": "IMG-06CD594C",
+      "document_type": "SALE_DEED",
+      "quality_class": "grayscale_scan",
+      "overall_cer": 0.6179,
+      "english_cer": 0.5729,
+      "bangla_cer": 1.0,
+      "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-1999-207",
+      "english_pred_sample": "DEMO STAMP ) BDT 1,000 /DeedNo:DEED-1999-20777 FICTIONAL REVENUE /ExecutionDate:",
+      "bangla_gt_sample": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u09ae\u09cb\u09b9\u09be\u09ae\u09cd\u09ae\u09a6 \u0986\u09b2\u09c0 \u0986\u09ac\u09cd\u09a6\u09c1\u09b2 \u099a\u09cc\u09a7\u09c1\u09b0\u09c0 \u099c\u09c7\u09b2\u09be \u0989\u09aa\u099c\u09c7\u09b2\u09be \u09ae\u09cc\u099c\u09be \u099c\u09c7 \u098f\u09b2 \u09a8\u0982",
+      "bangla_pred_sample": ""
+    },
+    {
+      "image_id": "IMG-1193E534",
+      "document_type": "SALE_DEED",
+      "quality_class": "low_resolution",
+      "overall_cer": 0.5859,
+      "english_cer": 0.6067,
+      "bangla_cer": 1.0,
+      "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2006-570",
+      "english_pred_sample": "(DEED OFSALE) EMD 51Aur Ff t / Deed No: DEED-2006-57089 BOT 1.000 Wf / Execution",
+      "bangla_gt_sample": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u0986\u09ac\u09cd\u09a6\u09c1\u09b2 \u099a\u09cc\u09a7\u09c1\u09b0\u09c0 \u09b0\u09b6\u09c0\u09a6 \u0986\u0995\u09cd\u09a4\u09be\u09b0 \u099c\u09c7\u09b2\u09be \u0989\u09aa\u099c\u09c7\u09b2\u09be \u09ae\u09cc\u099c\u09be \u099c\u09c7 \u098f\u09b2 \u09a8\u0982 ",
+      "bangla_pred_sample": ""
+    },
+    {
+      "image_id": "IMG-17440783",
+      "document_type": "SALE_DEED",
+      "quality_class": "mild_rotation",
+      "overall_cer": 0.5631,
+      "english_cer": 0.4936,
+      "bangla_cer": 1.0,
+      "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2014-599",
+      "english_pred_sample": "I T (DEED OF SALE) DEMO STAMP /Deed No:DEED-2014-59954 BDT 1,000 af/Execution Da",
+      "bangla_gt_sample": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u09b0\u09b6\u09c0\u09a6 \u0986\u0995\u09cd\u09a4\u09be\u09b0 \u09b0\u09b6\u09c0\u09a6 \u09a4\u09be\u09b2\u09c1\u0995\u09a6\u09be\u09b0 \u099c\u09c7\u09b2\u09be \u0989\u09aa\u099c\u09c7\u09b2\u09be \u09ae\u09cc\u099c\u09be \u099c\u09c7 \u098f\u09b2 \u09a8\u0982 ",
+      "bangla_pred_sample": ""
+    },
+    {
+      "image_id": "IMG-33456CFF",
+      "document_type": "SALE_DEED",
+      "quality_class": "skewed_scan",
+      "overall_cer": 0.5613,
+      "english_cer": 0.4873,
+      "bangla_cer": 1.0,
+      "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2020-842",
+      "english_pred_sample": "I (DEED OF SALE) DEMO STAMP /Deed No:DEED-2020-84268 BDT 1.000 FICTIONA_RFENJE a",
+      "bangla_gt_sample": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u09b0\u09b6\u09c0\u09a6 \u09a4\u09be\u09b2\u09c1\u0995\u09a6\u09be\u09b0 \u0995\u09be\u09ae\u09be\u09b2 \u0987\u09b8\u09b2\u09be\u09ae \u099c\u09c7\u09b2\u09be \u0989\u09aa\u099c\u09c7\u09b2\u09be \u09ae\u09cc\u099c\u09be \u099c\u09c7 \u098f\u09b2 \u09a8\u0982 ",
+      "bangla_pred_sample": ""
+    },
+    {
+      "image_id": "IMG-4A7031BA",
+      "document_type": "SALE_DEED",
+      "quality_class": "low_contrast",
+      "overall_cer": 0.5266,
+      "english_cer": 0.4289,
+      "bangla_cer": 1.0,
+      "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2000-525",
+      "english_pred_sample": "I M (DEED OF SALE) /DeedNo:DEED-2000-52530 af/ExecutionDate:2000-05-15 /SEER): /",
+      "bangla_gt_sample": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u09b8\u09c8\u09af\u09bc\u09a6 \u09ae\u09bf\u09af\u09bc\u09be \u0995\u09be\u09ae\u09be\u09b2 \u0987\u09b8\u09b2\u09be\u09ae \u099c\u09c7\u09b2\u09be \u0989\u09aa\u099c\u09c7\u09b2\u09be \u09ae\u09cc\u099c\u09be \u099c\u09c7 \u098f\u09b2 \u09a8\u0982 \u09a6\u09be",
+      "bangla_pred_sample": ""
+    },
+    {
+      "image_id": "IMG-AA14FA90",
+      "document_type": "SALE_DEED",
+      "quality_class": "uneven_illumination",
+      "overall_cer": 0.5677,
+      "english_cer": 0.5033,
+      "bangla_cer": 1.0,
+      "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2004-869",
+      "english_pred_sample": "DEMO STAMP ) BDT 1,000 / DeedNo:DEED-2004-86987 FICTIONAL REVENUE f/ExecutionDat",
+      "bangla_gt_sample": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u0995\u09be\u09ae\u09be\u09b2 \u0987\u09b8\u09b2\u09be\u09ae \u09b9\u09be\u09ac\u09bf\u09ac\u09c1\u09b0 \u09a4\u09be\u09b2\u09c1\u0995\u09a6\u09be\u09b0 \u099c\u09c7\u09b2\u09be \u0989\u09aa\u099c\u09c7\u09b2\u09be \u09ae\u09cc\u099c\u09be \u099c\u09c7 \u098f\u09b2 ",
+      "bangla_pred_sample": ""
+    }
+  ]
+}

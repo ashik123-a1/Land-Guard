@@ -1,0 +1,1978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LandGuard AI — Statutory Land Deed Verification & Risk Assessment</title>
+  <style>
+    :root {
+      --bg: #0b1120;
+      --card-bg: #1e293b;
+      --card-bg-subtle: #0f172a;
+      --card-border: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --info: #06b6d4;
+      --banner-bg: #eab308;
+      --banner-text: #000000;
+      --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-stack);
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Synthetic Banner */
+    .synthetic-banner {
+      background-color: var(--banner-bg);
+      color: var(--banner-text);
+      text-align: center;
+      padding: 8px 16px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .synthetic-banner span.subtext {
+      font-weight: 500;
+      font-size: 0.8rem;
+      opacity: 0.85;
+    }
+
+    /* Header */
+    header {
+      background-color: #070d17;
+      border-bottom: 1px solid var(--card-border);
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .logo-group h1 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: #60a5fa;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-group p {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-top: 4px;
+    }
+
+    .status-pills {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      font-size: 0.78rem;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      background: #1e293b;
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pill.online .dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--success);
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    /* Navigation Tabs */
+    .nav-tabs {
+      background-color: #0f172a;
+      border-bottom: 1px solid var(--card-border);
+      padding: 0 32px;
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+    }
+
+    .nav-tab {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      padding: 14px 18px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .nav-tab:hover {
+      color: var(--text-main);
+      background-color: rgba(255, 255, 255, 0.03);
+    }
+
+    .nav-tab.active {
+      color: #60a5fa;
+      border-bottom-color: #3b82f6;
+      background-color: rgba(59, 130, 246, 0.08);
+    }
+
+    .nav-tab .tab-badge {
+      font-size: 0.72rem;
+      padding: 2px 7px;
+      border-radius: 9999px;
+      background: #ef4444;
+      color: white;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 24px;
+      flex: 1;
+      width: 100%;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Demo Quick Selector */
+    .demo-bar {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+    }
+
+    .demo-bar h3 {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .demo-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .demo-btn {
+      background: #0f172a;
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      padding: 8px 12px;
+      color: var(--text-main);
+      font-size: 0.82rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .demo-btn:hover {
+      border-color: #60a5fa;
+      background: #1e293b;
+      transform: translateY(-1px);
+    }
+
+    /* Badges */
+    .badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      display: inline-block;
+    }
+
+    .badge.green { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+    .badge.red { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
+    .badge.amber { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+    .badge.blue { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4); }
+    .badge.purple { background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4); }
+
+    /* Grids & Panels */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 1024px) {
+      .main-grid { grid-template-columns: 1fr; }
+    }
+
+    .panel {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 12px;
+    }
+
+    .panel-header h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Dropzone */
+    .dropzone {
+      border: 2px dashed #475569;
+      border-radius: 8px;
+      padding: 30px;
+      text-align: center;
+      background: #0f172a;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .dropzone:hover {
+      border-color: #3b82f6;
+      background: #172554;
+    }
+
+    .dropzone-icon {
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+    }
+
+    .dropzone p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .dropzone p span.highlight {
+      color: #60a5fa;
+      font-weight: 600;
+    }
+
+    /* Document Preview */
+    .preview-box {
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      background: #000000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      max-height: 280px;
+      position: relative;
+    }
+
+    .preview-box img {
+      max-width: 100%;
+      max-height: 280px;
+      object-fit: contain;
+    }
+
+    .preview-watermark {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.75);
+      border: 1px solid #eab308;
+      color: #facc15;
+      font-size: 0.68rem;
+      font-weight: bold;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    /* OCR Raw Text Box */
+    .ocr-raw {
+      background: #090e17;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      padding: 12px;
+      font-family: monospace;
+      font-size: 0.78rem;
+      color: #cbd5e1;
+      max-height: 140px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      line-height: 1.4;
+    }
+
+    /* Form Fields Grid */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .form-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .form-group label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #cbd5e1;
+    }
+
+    .field-badge {
+      font-size: 0.68rem;
+      padding: 1px 6px;
+      border-radius: 3px;
+    }
+
+    .form-group input, .form-group select, .form-group textarea {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      padding: 8px 12px;
+      color: var(--text-main);
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color: #3b82f6;
+    }
+
+    .form-group input.modified {
+      border-color: #f59e0b;
+      background: rgba(245, 158, 11, 0.05);
+    }
+
+    /* Action Buttons */
+    .btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 18px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn.secondary {
+      background: #334155;
+      color: #cbd5e1;
+    }
+
+    .btn.secondary:hover {
+      background: #475569;
+    }
+
+    .btn.danger {
+      background: #ef4444;
+    }
+
+    .btn.danger:hover {
+      background: #dc2626;
+    }
+
+    /* Verification Results Card */
+    .results-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 24px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .verdict-header {
+      padding: 16px 20px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .verdict-header.CLEAR_FOR_STANDARD_PROCESSING {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #34d399;
+    }
+
+    .verdict-header.CONFIRMED_INCONSISTENCY {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #f87171;
+    }
+
+    .verdict-header.MISSING_EVIDENCE {
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #fbbf24;
+    }
+
+    .verdict-header.REVIEW_REQUIRED {
+      background: rgba(59, 130, 246, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      color: #60a5fa;
+    }
+
+    .verdict-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .results-sections {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 1024px) {
+      .results-sections { grid-template-columns: 1fr; }
+    }
+
+    .section-card {
+      background: #0f172a;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .section-card h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #cbd5e1;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 8px;
+    }
+
+    .rule-item {
+      padding: 10px;
+      border-radius: 6px;
+      background: #1e293b;
+      border-left: 4px solid var(--danger);
+      margin-bottom: 10px;
+    }
+
+    .rule-item.MISSING_EVIDENCE {
+      border-left-color: var(--warning);
+    }
+
+    .rule-item.REVIEW_REQUIRED {
+      border-left-color: var(--primary);
+    }
+
+    .rule-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .rule-reason {
+      font-size: 0.8rem;
+      color: #cbd5e1;
+      line-height: 1.4;
+    }
+
+    /* Progress bar for ML Score */
+    .progress-bar-bg {
+      background: #334155;
+      height: 12px;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      transition: width 0.4s ease;
+    }
+
+    /* Stat Cards Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .stat-card .stat-label {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .stat-card .stat-val {
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: #60a5fa;
+    }
+
+    .stat-card .stat-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      color: #cbd5e1;
+    }
+
+    th, td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid #334155;
+    }
+
+    th {
+      color: var(--text-muted);
+      font-weight: 600;
+      background: #0f172a;
+    }
+
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    /* Timeline Chain of Title */
+    .chain-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      margin-left: 16px;
+      border-left: 2px solid #334155;
+      padding-left: 20px;
+    }
+
+    .timeline-node {
+      position: relative;
+      background: #0f172a;
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      padding: 12px;
+    }
+
+    .timeline-node::before {
+      content: "";
+      position: absolute;
+      left: -27px;
+      top: 14px;
+      width: 12px;
+      height: 12px;
+      background: #3b82f6;
+      border: 2px solid var(--bg);
+      border-radius: 50%;
+    }
+
+    /* Modals */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      max-width: 600px;
+      width: 100%;
+      padding: 24px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #070d17;
+      border-top: 1px solid var(--card-border);
+      padding: 20px 32px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      margin-top: auto;
+    }
+
+    /* Loading Spinner */
+    .spinner {
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      border-top: 3px solid #3b82f6;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      animation: spin 0.8s linear infinite;
+      display: inline-block;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- MANDATORY TOP WATERMARK BANNER -->
+  <div class="synthetic-banner">
+    <span>⚠️ SYNTHETIC DEMO — NOT AN OFFICIAL DOCUMENT</span>
+    <span class="subtext">| Ministry of Land Research Prototype. Built exclusively on synthetic mock records. Non-operational decision support only.</span>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo-group">
+      <h1>🛡️ LandGuard AI — Statutory Land Deed Verification</h1>
+      <p>Automated Deed Ingestion, Bilingual OCR, Cadastral Integrity & Multi-Modal Fraud Risk Assessment</p>
+    </div>
+    <div class="status-pills">
+      <div class="pill online"><span class="dot"></span> Statutory Rule Engine: Active</div>
+      <div class="pill online"><span class="dot"></span> XGBoost Risk Model: Active (19 Features)</div>
+      <div class="pill" id="header-parcels-count">Cadastral Database: 2,500+ Parcels Indexed</div>
+    </div>
+  </header>
+
+  <!-- NAVIGATION TABS -->
+  <nav class="nav-tabs">
+    <button class="nav-tab active" onclick="switchTab('verification-tab')">🔍 Verification & Audit Lab</button>
+    <button class="nav-tab" onclick="switchTab('dashboard-tab')">📊 System Dashboard</button>
+    <button class="nav-tab" onclick="switchTab('cadastral-tab')">🗺️ Cadastral Explorer</button>
+    <button class="nav-tab" onclick="switchTab('cases-tab')">📁 Investigator Cases <span id="cases-count-badge" class="tab-badge">2</span></button>
+    <button class="nav-tab" onclick="switchTab('audit-tab')">📜 Audit Trail</button>
+  </nav>
+
+  <!-- MAIN CONTAINER -->
+  <div class="container">
+
+    <!-- ========================================== -->
+    <!-- TAB 1: VERIFICATION & AUDIT LAB           -->
+    <!-- ========================================== -->
+    <div id="verification-tab" class="tab-content active">
+
+      <!-- DEMO QUICK SELECTOR -->
+      <div class="demo-bar">
+        <h3>⚡ Curated Demonstration Scenarios (One-Click Ingestion)</h3>
+        <div class="demo-buttons">
+          {% for sample in sample_cases %}
+          <button class="demo-btn" onclick="loadSampleCase('{{ sample.case_id }}')">
+            <span class="badge {{ sample.badge_color }}">{{ sample.badge }}</span>
+            <span>{{ sample.title }}</span>
+          </button>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- MAIN TWO-COLUMN WORKFLOW -->
+      <div class="main-grid">
+
+        <!-- LEFT PANEL: DOCUMENT UPLOAD & OCR PREVIEW -->
+        <div class="panel">
+          <div class="panel-header">
+            <h2>📄 Step 1: Document Ingestion & Vision</h2>
+            <span id="doc-status-badge" class="badge blue">Awaiting Input</span>
+          </div>
+
+          <!-- Dropzone -->
+          <div class="dropzone" id="dropzone" onclick="document.getElementById('file-input').click()">
+            <input type="file" id="file-input" style="display: none;" accept=".png,.jpg,.jpeg,.pdf" onchange="handleFileUpload(event)">
+            <div class="dropzone-icon">📥</div>
+            <p><span class="highlight">Click to browse</span> or drag & drop deed document</p>
+            <p style="font-size: 0.78rem; margin-top: 6px;">Supported: .PNG, .JPG, .JPEG, .PDF (Max 10MB)</p>
+          </div>
+
+          <!-- Image Preview Box -->
+          <div class="preview-box" id="preview-box" style="display: none;">
+            <img id="preview-img" src="" alt="Synthetic Deed Document">
+            <div class="preview-watermark">SYNTHETIC DEMO</div>
+          </div>
+
+          <!-- Vision Flags -->
+          <div id="vision-flags" style="display: none; gap: 8px; flex-wrap: wrap;">
+            <div id="flag-seal" class="pill">Seal: Unknown</div>
+            <div id="flag-signature" class="pill">Signature: Unknown</div>
+            <div id="flag-anomaly" class="pill">CV Anomaly: None</div>
+          </div>
+
+          <!-- Raw Bilingual OCR Text -->
+          <div class="form-group">
+            <label>Bilingual OCR Transcription (Tesseract 5.4 ben+eng & RapidOCR ONNX)</label>
+            <div class="ocr-raw" id="ocr-raw-text">Upload a document or choose a sample case above to inspect OCR text...</div>
+          </div>
+        </div>
+
+        <!-- RIGHT PANEL: EDITABLE LEGAL FIELDS FORM -->
+        <div class="panel">
+          <div class="panel-header">
+            <h2>✍️ Step 2: Human-in-the-Loop Confirmation</h2>
+            <span id="diff-badge" class="badge green">Unmodified OCR</span>
+          </div>
+
+          <p style="font-size: 0.82rem; color: var(--text-muted);">
+            Officers review OCR extractions before statutory registry lookup. Modifications are tracked in the audit trail.
+          </p>
+
+          <form id="deed-form" onsubmit="event.preventDefault(); verifyRecord();">
+            <div class="form-grid">
+
+              <!-- Deed Number -->
+              <div class="form-group">
+                <div class="form-label-row">
+                  <label for="f_deed_number">Deed Number (দলিল নং)</label>
+                  <span id="b_deed_number" class="field-badge badge blue">Awaiting</span>
+                </div>
+                <input type="text" id="f_deed_number" placeholder="e.g. DEED-2006-18946" oninput="markFieldModified(this)">
+              </div>
+
+              <!-- Dag Plot Number -->
+              <div class="form-group">
+                <div class="form-label-row">
+                  <label for="f_dag_plot_number">Dag / Plot Number (দাগ নং)</label>
+                  <span id="b_dag_plot_number" class="field-badge badge blue">Awaiting</span>
+                </div>
+                <input type="text" id="f_dag_plot_number" placeholder="e.g. 9044" oninput="markFieldModified(this)">
+              </div>
+
+              <!-- Transferred Area -->
+              <div class="form-group">
+                <div class="form-label-row">
+                  <label for="f_transferred_area_decimal">Transferred Area (Decimal)</label>
+                  <span id="b_transferred_area_decimal" class="field-badge badge blue">Awaiting</span>
+                </div>
+                <input type="number" step="0.01" id="f_transferred_area_decimal" placeholder="e.g. 8.38" oninput="markFieldModified(this)">
+              </div>
+
+              <!-- Execution Date -->
+              <div class="form-group">
+                <div class="form-label-row">
+                  <label for="f_execution_date">Execution Date</label>
+                  <span id="b_execution_date" class="field-badge badge blue">Awaiting</span>
+                </div>
+                <input type="date" id="f_execution_date" oninput="markFieldModified(this)">
+              </div>
+
+              <!-- Seller NID -->
+              <div class="form-group">
+                <div class="form-label-row">
+                  <label for="f_seller_nid">Seller Identity (NID / ID)</label>
+                  <span id="b_seller_nid" class="field-badge badge blue">Awaiting</span>
+                </div>
+                <input type="text" id="f_seller_nid" placeholder="e.g. OWN-11CE5DD2" oninput="markFieldModified(this)">
+              </div>
+
+              <!-- Buyer NID -->
+              <div class="form-group">
+                <div class="form-label-row">
+                  <label for="f_buyer_nid">Buyer Identity (NID / ID)</label>
+                  <span id="b_buyer_nid" class="field-badge badge blue">Awaiting</span>
+                </div>
+                <input type="text" id="f_buyer_nid" placeholder="e.g. OWN-CE177B4E" oninput="markFieldModified(this)">
+              </div>
+
+              <!-- Previous Deed Ref -->
+              <div class="form-group">
+                <label for="f_previous_deed_ref">Previous Root Deed / Ancestral Ref (বায়া দলিল)</label>
+                <input type="text" id="f_previous_deed_ref" placeholder="e.g. DEED-2001-35323" oninput="markFieldModified(this)">
+              </div>
+
+              <!-- Mutation Case Number -->
+              <div class="form-group">
+                <label for="f_mutation_case_no">Mutation Case Number (নামজারি কেস নং)</label>
+                <input type="text" id="f_mutation_case_no" placeholder="e.g. MUT-2006-5364/Rupsha" oninput="markFieldModified(this)">
+              </div>
+
+              <!-- Consideration Amount -->
+              <div class="form-group">
+                <label for="f_consideration_bdt">Consideration Value (BDT)</label>
+                <input type="number" step="0.01" id="f_consideration_bdt" placeholder="e.g. 955246.39" oninput="markFieldModified(this)">
+              </div>
+
+              <!-- Khatian Number -->
+              <div class="form-group">
+                <label for="f_khatian_number">Khatian Number (খতিয়ান নং)</label>
+                <input type="text" id="f_khatian_number" placeholder="e.g. 1420" oninput="markFieldModified(this)">
+              </div>
+
+            </div>
+
+            <div style="margin-top: 20px; display: flex; gap: 12px;">
+              <button type="submit" id="btn-verify" class="btn" style="flex: 2;">
+                🔍 Verify Record & Assess Risk
+              </button>
+              <button type="button" class="btn secondary" style="flex: 1;" onclick="resetForm()">
+                ↺ Reset
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- VERIFICATION RESULTS DASHBOARD -->
+      <div class="results-card" id="results-card" style="display: none;">
+        <div class="panel-header">
+          <h2>📊 Step 3 & 4: Statutory Verification & Decision Support</h2>
+          <span id="time-badge" class="pill"></span>
+        </div>
+
+        <!-- Verdict Banner -->
+        <div class="verdict-header" id="verdict-banner">
+          <div>
+            <div class="verdict-title" id="verdict-title">VERDICT PENDING</div>
+            <p id="verdict-desc" style="font-size: 0.88rem; margin-top: 4px;"></p>
+          </div>
+          <div id="verdict-pills" style="display: flex; gap: 8px;"></div>
+        </div>
+
+        <!-- 2-Column Findings & AI Signals -->
+        <div class="results-sections">
+
+          <!-- Column A: Statutory Rule Engine (Primary) -->
+          <div class="section-card">
+            <h3>⚖️ Statutory Rule Engine (Primary Legal Authority)</h3>
+            <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px;">
+              Deterministic statutory verification against Cadastral Survey, Ancestral Title & Namzari Register.
+            </p>
+            <div id="rules-container"></div>
+          </div>
+
+          <!-- Column B: Multi-Modal AI & CV Signals (Supplementary) -->
+          <div class="section-card">
+            <h3>🧠 Multi-Modal AI & Computer Vision Signals (Supplementary)</h3>
+
+            <!-- ML Risk Score -->
+            <div style="margin-bottom: 16px;">
+              <div style="display: flex; justify-content: space-between; font-size: 0.85rem;">
+                <span>Supervised XGBoost Risk Indicator (Synthetic Benchmark Score):</span>
+                <strong id="ml-score-val">0.0%</strong>
+              </div>
+              <div class="progress-bar-bg">
+                <div id="ml-progress-fill" class="progress-bar-fill" style="width: 0%; background: var(--success);"></div>
+              </div>
+              <p style="font-size: 0.74rem; color: var(--text-muted); margin-top: 6px;">
+                *Synthetic benchmark risk indicator only; does NOT constitute judicial proof of fraud.
+              </p>
+            </div>
+
+            <!-- CV Tampering Evidence -->
+            <div style="border-top: 1px solid var(--card-border); padding-top: 12px;">
+              <div style="font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; color: #cbd5e1;">
+                Physical Document Visual Inspection:
+              </div>
+              <div id="cv-details" style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5;"></div>
+            </div>
+
+            <!-- Matched Cadastral Record -->
+            <div style="border-top: 1px solid var(--card-border); padding-top: 12px; margin-top: 12px;">
+              <div style="font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; color: #cbd5e1;">
+                Cadastral Registry Record:
+              </div>
+              <div id="cadastral-details" style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Human Action Recommendation -->
+        <div class="section-card" style="background: #111827; border-left: 4px solid #3b82f6;">
+          <h3 style="color: #60a5fa;">📋 Recommended Administrative Action:</h3>
+          <p id="recommended-action-text" style="font-size: 0.9rem; color: #e2e8f0; line-height: 1.5; font-weight: 500;"></p>
+        </div>
+
+        <!-- Action Bar: Export Dossier & Open Investigation Case -->
+        <div style="display: flex; gap: 12px; justify-content: flex-end; flex-wrap: wrap;">
+          <button id="btn-export-dossier" class="btn secondary" onclick="printReport()">
+            🖨️ Export Printable Audit Dossier
+          </button>
+          <button id="btn-create-case-action" class="btn" style="background: #e11d48;" onclick="triggerCreateCaseModal()">
+            🚨 Create Investigation Case
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: SYSTEM DASHBOARD                    -->
+    <!-- ========================================== -->
+    <div id="dashboard-tab" class="tab-content">
+      <div class="panel-header" style="margin-bottom: 20px;">
+        <h2>📊 Truthful System Metrics & Benchmark Foundation</h2>
+        <span class="badge blue">Verified Canonical Registry</span>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-label">Total Canonical Records</span>
+          <span class="stat-val" id="stat-total-records">100,000</span>
+          <span class="stat-sub">Across full relational database</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Linked Scenarios</span>
+          <span class="stat-val" id="stat-scenarios">2,500</span>
+          <span class="stat-sub">1,664 Fraud-Risk vs 836 Legit</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Parcels Indexed</span>
+          <span class="stat-val" id="stat-parcels">10,000</span>
+          <span class="stat-sub">2,500 Multi-Feature Benchmarks</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Historical Khatians</span>
+          <span class="stat-val" id="stat-khatians">30,000</span>
+          <span class="stat-sub">CS, SA, RS, BS Records</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Mutation Records</span>
+          <span class="stat-val" id="stat-mutations">10,000</span>
+          <span class="stat-sub">Approved, Pending & Rejected</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Model Benchmark F1</span>
+          <span class="stat-val" id="stat-model-f1">0.9985</span>
+          <span class="stat-sub">XGBoost (19 Feats, Disjoint Splits)</span>
+        </div>
+      </div>
+
+      <div class="results-sections">
+        <!-- Scenario Category Distribution -->
+        <div class="section-card">
+          <h3>📁 Scenario Distribution Breakdown</h3>
+          <div id="category-distribution-container" style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px;">
+            <!-- Dynamic Category List -->
+          </div>
+        </div>
+
+        <!-- Frozen XGBoost Model Architecture & Top Features -->
+        <div class="section-card">
+          <h3>🧠 XGBoost Fraud-Risk Model (Top Feature Weights)</h3>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">
+            Trained on group-disjoint splits (`Train=1,700`, `Val=300`, `Test=500`). Zero oracle flag leakage.
+          </p>
+          <div id="features-distribution-container" style="display: flex; flex-direction: column; gap: 8px;">
+            <!-- Dynamic Feature List -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: CADASTRAL REGISTRY EXPLORER         -->
+    <!-- ========================================== -->
+    <div id="cadastral-tab" class="tab-content">
+      <div class="panel-header" style="margin-bottom: 20px;">
+        <h2>🗺️ Cadastral Registry Explorer & Ownership Chain</h2>
+        <span class="badge green">2,500+ Parcels Indexed</span>
+      </div>
+
+      <!-- Search Input -->
+      <div style="display: flex; gap: 12px; margin-bottom: 24px;">
+        <input type="text" id="cadastral-search-input" placeholder="Search by plot number (e.g. 9044, 6792, 7025), mouza, upazila, or parcel ID..."
+               style="flex: 1; padding: 12px 16px; background: #1e293b; border: 1px solid #334155; border-radius: 8px; color: white; font-size: 0.95rem;"
+               onkeydown="if(event.key==='Enter') searchParcels()">
+        <button class="btn" onclick="searchParcels()">🔍 Search Cadastre</button>
+      </div>
+
+      <div class="main-grid">
+        <!-- Search Results Table -->
+        <div class="panel">
+          <div class="panel-header">
+            <h3>Registered Parcels List</h3>
+            <span id="parcels-count-badge" class="badge blue">Showing Results</span>
+          </div>
+          <div style="max-height: 480px; overflow-y: auto;">
+            <table id="parcels-table">
+              <thead>
+                <tr>
+                  <th>Plot</th>
+                  <th>Mouza & JL</th>
+                  <th>Area</th>
+                  <th>Class</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="parcels-tbody">
+                <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Searching parcels...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Parcel Detail & Chain of Title Dossier -->
+        <div class="panel" id="parcel-detail-panel">
+          <div class="panel-header">
+            <h3 id="selected-parcel-title">Parcel Chain of Title Dossier</h3>
+            <span id="selected-parcel-badge" class="badge green">Selected</span>
+          </div>
+
+          <div id="parcel-detail-empty" style="text-align: center; color: var(--text-muted); padding: 40px 0;">
+            Select a parcel on the left to inspect its statutory survey timeline, conveyance history, and mutation compliance.
+          </div>
+
+          <div id="parcel-detail-content" style="display: none; flex-direction: column; gap: 16px;">
+            <div id="parcel-meta-box" style="background: #0f172a; padding: 12px; border-radius: 6px; font-size: 0.85rem; line-height: 1.6;"></div>
+
+            <h4 style="font-size: 0.9rem; color: #60a5fa; margin-top: 8px;">📜 Statutory Survey Chain of Title:</h4>
+            <div class="chain-timeline" id="chain-timeline-container"></div>
+
+            <h4 style="font-size: 0.9rem; color: #60a5fa; margin-top: 8px;">🤝 Previous Deeds & Mutations:</h4>
+            <div id="parcel-history-txns" style="font-size: 0.82rem; line-height: 1.5;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 4: INVESTIGATOR CASE MANAGEMENT        -->
+    <!-- ========================================== -->
+    <div id="cases-tab" class="tab-content">
+      <div class="panel-header" style="margin-bottom: 20px;">
+        <h2>📁 Investigator Review & Fraud Enforcement Portal</h2>
+        <div style="display: flex; gap: 10px;">
+          <button class="btn" style="padding: 6px 14px; font-size: 0.82rem;" onclick="openNewCaseModal()">+ New Case</button>
+        </div>
+      </div>
+
+      <!-- Filter Bar -->
+      <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+        <button class="demo-btn" onclick="filterCases('ALL')">All Cases</button>
+        <button class="demo-btn" onclick="filterCases('OPEN')"><span class="badge red">OPEN</span></button>
+        <button class="demo-btn" onclick="filterCases('UNDER_REVIEW')"><span class="badge amber">UNDER REVIEW</span></button>
+        <button class="demo-btn" onclick="filterCases('RESOLVED')"><span class="badge green">RESOLVED</span></button>
+      </div>
+
+      <div class="main-grid">
+        <!-- Case List Table -->
+        <div class="panel">
+          <div class="panel-header">
+            <h3>Active Investigation Docket</h3>
+            <span id="case-list-badge" class="badge purple">Cases</span>
+          </div>
+          <div style="max-height: 500px; overflow-y: auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Case ID</th>
+                  <th>Plot</th>
+                  <th>Priority</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="cases-tbody">
+                <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Loading cases...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Case Detail Inspector & Notes Timeline -->
+        <div class="panel" id="case-inspector-panel">
+          <div class="panel-header">
+            <h3 id="inspector-case-title">Case Details Inspector</h3>
+            <span id="inspector-status-badge" class="badge red">STATUS</span>
+          </div>
+
+          <div id="case-inspector-empty" style="text-align: center; color: var(--text-muted); padding: 40px 0;">
+            Select a case on the left to inspect investigation notes and update case status.
+          </div>
+
+          <div id="case-inspector-content" style="display: none; flex-direction: column; gap: 16px;">
+            <div id="inspector-meta-box" style="background: #0f172a; padding: 12px; border-radius: 6px; font-size: 0.85rem; line-height: 1.6;"></div>
+
+            <!-- Status & Priority Controls -->
+            <div style="display: flex; gap: 12px; background: #1e293b; padding: 12px; border-radius: 6px;">
+              <div style="flex: 1;">
+                <label style="font-size: 0.78rem; color: var(--text-muted);">Update Status:</label>
+                <select id="case-status-select" style="width: 100%; margin-top: 4px;" onchange="updateSelectedCaseStatus()">
+                  <option value="OPEN">OPEN</option>
+                  <option value="UNDER_REVIEW">UNDER REVIEW</option>
+                  <option value="RESOLVED">RESOLVED</option>
+                  <option value="REJECTED">REJECTED</option>
+                </select>
+              </div>
+              <div style="flex: 1;">
+                <label style="font-size: 0.78rem; color: var(--text-muted);">Update Priority:</label>
+                <select id="case-priority-select" style="width: 100%; margin-top: 4px;" onchange="updateSelectedCasePriority()">
+                  <option value="LOW">LOW</option>
+                  <option value="MEDIUM">MEDIUM</option>
+                  <option value="HIGH">HIGH</option>
+                  <option value="CRITICAL">CRITICAL</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Notes Timeline -->
+            <h4 style="font-size: 0.9rem; color: #60a5fa;">📝 Officer Investigation Notes:</h4>
+            <div id="case-notes-container" style="display: flex; flex-direction: column; gap: 8px; max-height: 200px; overflow-y: auto;"></div>
+
+            <!-- Add Note Form -->
+            <div style="display: flex; gap: 8px; margin-top: 8px;">
+              <input type="text" id="new-note-input" placeholder="Add investigation finding or ledger note..." style="flex: 1;">
+              <button class="btn" style="padding: 6px 14px;" onclick="submitSelectedCaseNote()">Add Note</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 5: AUDIT TRAIL LOG                     -->
+    <!-- ========================================== -->
+    <div id="audit-tab" class="tab-content">
+      <div class="panel-header" style="margin-bottom: 20px;">
+        <h2>📜 Session Verification & Officer Diff Audit Trail</h2>
+        <button class="demo-btn" style="font-size: 0.78rem; padding: 4px 10px;" onclick="clearHistory()">Clear History</button>
+      </div>
+
+      <div class="panel">
+        <table id="history-table">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Verification ID</th>
+              <th>Deed Number</th>
+              <th>Plot No</th>
+              <th>Overall Status</th>
+              <th>Violations</th>
+              <th>ML Risk</th>
+              <th>Officer Edits</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="history-tbody">
+            <tr><td colspan="9" style="text-align: center; color: var(--text-muted);">No transactions verified yet in this session.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MODAL: CREATE INVESTIGATION CASE -->
+  <div class="modal-backdrop" id="create-case-modal">
+    <div class="modal-content">
+      <div class="panel-header">
+        <h3>🚨 Open New Investigation Docket</h3>
+        <button onclick="closeModal()" style="background: none; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer;">✕</button>
+      </div>
+      <form id="new-case-form" onsubmit="event.preventDefault(); submitCreateCase();">
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label>Case Title / Allegation</label>
+          <input type="text" id="modal-case-title" required>
+        </div>
+        <div class="form-grid" style="margin-bottom: 12px;">
+          <div class="form-group">
+            <label>Deed Number</label>
+            <input type="text" id="modal-case-deed" required>
+          </div>
+          <div class="form-group">
+            <label>Dag Plot Number</label>
+            <input type="text" id="modal-case-plot" required>
+          </div>
+        </div>
+        <div class="form-grid" style="margin-bottom: 12px;">
+          <div class="form-group">
+            <label>Priority</label>
+            <select id="modal-case-priority">
+              <option value="CRITICAL">CRITICAL</option>
+              <option value="HIGH" selected>HIGH</option>
+              <option value="MEDIUM">MEDIUM</option>
+              <option value="LOW">LOW</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Assigned Officer</label>
+            <input type="text" id="modal-case-officer" placeholder="e.g. Senior Registrar Rahman">
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label>Initial Evidence / Ledger Note</label>
+          <textarea id="modal-case-note" rows="3" style="resize: vertical;"></textarea>
+        </div>
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+          <button type="button" class="btn secondary" onclick="closeModal()">Cancel</button>
+          <button type="submit" class="btn" style="background: #e11d48;">Create Case Docket</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>LandGuard AI Land Record Verification Platform | Synthetic Research Prototype | Governed under Evidence Act & Land Reform Rules</p>
+    <p style="margin-top: 4px; opacity: 0.7;">Watermark: SYNTHETIC DEMO — NOT AN OFFICIAL DOCUMENT</p>
+  </footer>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    let currentImagePath = null;
+    let originalOcrFields = {};
+    let sampleCasesCache = {};
+    let currentVerificationResult = null;
+    let selectedCaseId = null;
+
+    // Load available samples into local cache
+    fetch('/api/samples')
+      .then(res => res.json())
+      .then(data => {
+        data.forEach(s => sampleCasesCache[s.case_id] = s);
+      });
+
+    // Tab Switching
+    function switchTab(tabId) {
+      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+
+      if (tabId === 'dashboard-tab') loadDashboardStats();
+      if (tabId === 'cadastral-tab') searchParcels();
+      if (tabId === 'cases-tab') loadCases();
+      if (tabId === 'audit-tab') refreshHistory();
+    }
+
+    // Load Sample Case
+    function loadSampleCase(caseId) {
+      const sample = sampleCasesCache[caseId];
+      if (!sample) return;
+
+      currentImagePath = sample.image_path;
+      originalOcrFields = Object.assign({}, sample.preset_fields);
+
+      const previewBox = document.getElementById('preview-box');
+      const previewImg = document.getElementById('preview-img');
+      const dropzone = document.getElementById('dropzone');
+      previewImg.src = '/api/image/' + sample.image_filename;
+      previewBox.style.display = 'flex';
+      dropzone.style.display = 'none';
+
+      document.getElementById('doc-status-badge').textContent = sample.category;
+      document.getElementById('doc-status-badge').className = 'badge ' + sample.badge_color;
+
+      for (const [key, val] of Object.entries(sample.preset_fields)) {
+        const inp = document.getElementById('f_' + key);
+        if (inp) {
+          inp.value = val;
+          inp.classList.remove('modified');
+        }
+        const badge = document.getElementById('b_' + key);
+        if (badge) {
+          badge.textContent = 'SAMPLE PRESET';
+          badge.className = 'field-badge badge green';
+        }
+      }
+
+      document.getElementById('diff-badge').textContent = 'Sample Preset';
+      document.getElementById('diff-badge').className = 'badge blue';
+
+      document.getElementById('ocr-raw-text').textContent =
+        `[SAMPLE INGESTION: ${sample.case_id}]\nCategory: ${sample.category}\n` +
+        `Deed: ${sample.preset_fields.deed_number}\nPlot: ${sample.preset_fields.dag_plot_number}\n` +
+        `Area: ${sample.preset_fields.transferred_area_decimal} decimal\n` +
+        `Previous Ref: ${sample.preset_fields.previous_deed_ref}\n` +
+        `Mutation: ${sample.preset_fields.mutation_case_no}\n` +
+        `Status: Ready for statutory verification.`;
+
+      document.getElementById('results-card').style.display = 'none';
+    }
+
+    // File Upload Handler
+    async function handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      document.getElementById('doc-status-badge').textContent = 'Running OCR...';
+      document.getElementById('doc-status-badge').className = 'badge amber';
+
+      try {
+        const res = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!res.ok) {
+          const err = await res.json();
+          alert('Upload failed: ' + (err.detail || 'Unknown error'));
+          return;
+        }
+
+        const data = await res.json();
+        currentImagePath = data.cached_image_path;
+        originalOcrFields = Object.assign({}, data.extracted_fields);
+
+        const previewBox = document.getElementById('preview-box');
+        const previewImg = document.getElementById('preview-img');
+        const dropzone = document.getElementById('dropzone');
+        previewImg.src = '/api/image/' + data.document_id + '.png';
+        previewBox.style.display = 'flex';
+        dropzone.style.display = 'none';
+
+        document.getElementById('doc-status-badge').textContent = 'OCR Completed';
+        document.getElementById('doc-status-badge').className = 'badge green';
+        document.getElementById('ocr-raw-text').textContent = data.ocr_text || '(No text detected)';
+
+        for (const [key, conf] of Object.entries(data.field_confidences)) {
+          const inp = document.getElementById('f_' + key);
+          if (inp && conf.value) {
+            inp.value = conf.value;
+            inp.classList.remove('modified');
+          }
+          const badge = document.getElementById('b_' + key);
+          if (badge) {
+            badge.textContent = conf.status;
+            badge.className = 'field-badge badge ' + conf.level;
+          }
+        }
+
+        const vf = document.getElementById('vision-flags');
+        vf.style.display = 'flex';
+        document.getElementById('flag-seal').textContent = data.cv_preview.seal_present ? '✓ Seal Detected' : '✗ Seal Missing';
+        document.getElementById('flag-signature').textContent = data.cv_preview.signature_present ? '✓ Signature Detected' : '✗ Signature Missing';
+        document.getElementById('flag-anomaly').textContent = data.cv_preview.has_visual_anomaly ?
+          `⚠️ Anomaly (${(data.cv_preview.visual_anomaly_score * 100).toFixed(0)}%)` : '✓ Visual Seam Clean';
+
+        document.getElementById('diff-badge').textContent = 'Unmodified OCR';
+        document.getElementById('diff-badge').className = 'badge green';
+
+      } catch (e) {
+        alert('Network or processing error: ' + e.message);
+      }
+    }
+
+    function markFieldModified(input) {
+      input.classList.add('modified');
+      document.getElementById('diff-badge').textContent = 'Officer Modified';
+      document.getElementById('diff-badge').className = 'badge amber';
+    }
+
+    function resetForm() {
+      document.getElementById('deed-form').reset();
+      document.getElementById('dropzone').style.display = 'block';
+      document.getElementById('preview-box').style.display = 'none';
+      document.getElementById('ocr-raw-text').textContent = 'Upload a document or choose a sample case above...';
+      document.getElementById('doc-status-badge').textContent = 'Awaiting Input';
+      document.getElementById('doc-status-badge').className = 'badge blue';
+      document.getElementById('diff-badge').textContent = 'Unmodified OCR';
+      document.getElementById('diff-badge').className = 'badge green';
+      document.getElementById('results-card').style.display = 'none';
+      currentImagePath = null;
+      originalOcrFields = {};
+    }
+
+    // Verify Record
+    async function verifyRecord() {
+      const confirmed = {
+        deed_number: document.getElementById('f_deed_number').value,
+        dag_plot_number: document.getElementById('f_dag_plot_number').value,
+        transferred_area_decimal: parseFloat(document.getElementById('f_transferred_area_decimal').value || 0),
+        execution_date: document.getElementById('f_execution_date').value,
+        seller_nid: document.getElementById('f_seller_nid').value,
+        buyer_nid: document.getElementById('f_buyer_nid').value,
+        previous_deed_ref: document.getElementById('f_previous_deed_ref').value,
+        mutation_case_no: document.getElementById('f_mutation_case_no').value,
+        consideration_bdt: parseFloat(document.getElementById('f_consideration_bdt').value || 0),
+        khatian_number: document.getElementById('f_khatian_number').value,
+      };
+
+      const btn = document.getElementById('btn-verify');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span> Verifying against Registry...';
+
+      try {
+        const res = await fetch('/api/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            confirmed_fields: confirmed,
+            image_path: currentImagePath,
+            original_ocr_fields: originalOcrFields
+          })
+        });
+
+        if (!res.ok) {
+          const err = await res.json();
+          alert('Verification failed: ' + (err.detail || 'Unknown error'));
+          return;
+        }
+
+        const data = await res.json();
+        currentVerificationResult = data;
+        renderVerificationResults(data);
+        refreshHistory();
+
+      } catch (e) {
+        alert('Verification error: ' + e.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '🔍 Verify Record & Assess Risk';
+      }
+    }
+
+    function renderVerificationResults(data) {
+      const card = document.getElementById('results-card');
+      card.style.display = 'flex';
+
+      document.getElementById('time-badge').textContent = `Processed in ${data.duration_ms} ms`;
+
+      const vb = document.getElementById('verdict-banner');
+      vb.className = 'verdict-header ' + data.overall_status;
+      document.getElementById('verdict-title').textContent = data.overall_status.replace(/_/g, ' ');
+      document.getElementById('verdict-desc').textContent = data.explanation_summary;
+
+      const rc = document.getElementById('rules-container');
+      rc.innerHTML = '';
+      if (data.rules_triggered.length === 0) {
+        rc.innerHTML = `
+          <div style="padding: 12px; border-radius: 6px; background: rgba(16, 185, 129, 0.1); border-left: 4px solid var(--success); color: #34d399; font-size: 0.85rem;">
+            ✓ All checked cadastral boundaries, deed references, and revenue mutation records are consistent.
+          </div>
+        `;
+      } else {
+        data.rules_triggered.forEach(r => {
+          const div = document.createElement('div');
+          div.className = 'rule-item ' + (r.category || 'CONFIRMED_INCONSISTENCY');
+          div.innerHTML = `
+            <div class="rule-header">
+              <span>${r.rule_code}</span>
+              <span class="badge ${r.severity === 'CRITICAL' || r.severity === 'HIGH' ? 'red' : 'amber'}">${r.severity}</span>
+            </div>
+            <div class="rule-reason">${r.reason}</div>
+            <div style="font-size: 0.72rem; color: #64748b; margin-top: 4px;">Source: ${r.evidence_source}</div>
+          `;
+          rc.appendChild(div);
+        });
+      }
+
+      const mlScore = data.ml_risk_score !== null ? data.ml_risk_score : 0.0;
+      const mlPct = (mlScore * 100).toFixed(1);
+      document.getElementById('ml-score-val').textContent = `${mlPct}%`;
+      const fill = document.getElementById('ml-progress-fill');
+      fill.style.width = `${mlPct}%`;
+      fill.style.background = mlScore >= 0.50 ? 'var(--danger)' : mlScore >= 0.25 ? 'var(--warning)' : 'var(--success)';
+
+      const cv = data.cv_evidence;
+      document.getElementById('cv-details').innerHTML = `
+        <div>• Physical Anomaly Detected: <strong>${cv.visual_anomaly_detected ? 'YES ⚠️' : 'NO (Clear)'}</strong></div>
+        <div>• Anomaly Score: <strong>${(cv.visual_anomaly_score * 100).toFixed(1)}%</strong></div>
+        <div>• Official Seal Presence: <strong>${cv.seal_present ? 'VERIFIED' : 'ABSENT'}</strong></div>
+        <div>• Registrar Signature: <strong>${cv.signature_present ? 'VERIFIED' : 'ABSENT'}</strong></div>
+        ${cv.detected_patches && cv.detected_patches.length > 0 ? `<div style="color: #f87171; margin-top: 4px;">• Patches Located: ${cv.detected_patches.length} isolated seam(s)</div>` : ''}
+      `;
+
+      const cp = data.cadastral_parcel;
+      document.getElementById('cadastral-details').innerHTML = `
+        <div>• Registered Parcel ID: <strong>${cp.parcel_id || 'N/A'}</strong></div>
+        <div>• Recorded Total Area: <strong>${cp.total_area_decimal} decimal</strong></div>
+        <div>• Mouza & JL: <strong>${cp.mouza || 'N/A'} (JL #${cp.jl_number || 'N/A'})</strong></div>
+        <div>• Jurisdiction: <strong>${cp.upazila || 'N/A'}, ${cp.district || 'N/A'}</strong></div>
+        <div>• Land Classification: <strong>${cp.recorded_land_class || cp.land_classification || 'Nal'}</strong></div>
+      `;
+
+      document.getElementById('recommended-action-text').textContent = data.recommended_action;
+      card.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function printReport() {
+      if (!currentVerificationResult) return;
+      window.open(`/api/reports/html/${currentVerificationResult.verification_id}`, '_blank');
+    }
+
+    // Case Modal Trigger from Verification Result
+    function triggerCreateCaseModal() {
+      if (!currentVerificationResult) return;
+      document.getElementById('modal-case-title').value = `Investigation: ${currentVerificationResult.overall_status} on Plot #${currentVerificationResult.dag_plot_number}`;
+      document.getElementById('modal-case-deed').value = currentVerificationResult.deed_number;
+      document.getElementById('modal-case-plot').value = currentVerificationResult.dag_plot_number;
+      document.getElementById('modal-case-priority').value = currentVerificationResult.overall_status === 'CONFIRMED_INCONSISTENCY' ? 'CRITICAL' : 'HIGH';
+      document.getElementById('modal-case-note').value = currentVerificationResult.explanation_summary;
+      document.getElementById('create-case-modal').style.display = 'flex';
+    }
+
+    function openNewCaseModal() {
+      document.getElementById('new-case-form').reset();
+      document.getElementById('create-case-modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('create-case-modal').style.display = 'none';
+    }
+
+    async function submitCreateCase() {
+      const payload = {
+        title: document.getElementById('modal-case-title').value,
+        deed_number: document.getElementById('modal-case-deed').value,
+        dag_plot_number: document.getElementById('modal-case-plot').value,
+        priority: document.getElementById('modal-case-priority').value,
+        assigned_officer: document.getElementById('modal-case-officer').value || 'Unassigned',
+        initial_note: document.getElementById('modal-case-note').value,
+        verification_id: currentVerificationResult ? currentVerificationResult.verification_id : null,
+        statutory_finding: currentVerificationResult ? currentVerificationResult.overall_status : 'REVIEW_REQUIRED',
+        ml_risk_score: currentVerificationResult ? currentVerificationResult.ml_risk_score : null,
+      };
+
+      try {
+        const res = await fetch('/api/cases', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+          closeModal();
+          alert('Investigation case docket opened successfully!');
+          loadCases();
+        } else {
+          alert('Failed to create case');
+        }
+      } catch (e) {
+        alert('Error: ' + e.message);
+      }
+    }
+
+    // Dashboard Stats Loading
+    async function loadDashboardStats() {
+      try {
+        const res = await fetch('/api/dashboard/stats');
+        const data = await res.json();
+
+        document.getElementById('stat-total-records').textContent = data.dataset.total_canonical_records.toLocaleString();
+        document.getElementById('stat-scenarios').textContent = data.dataset.total_scenarios.toLocaleString();
+        document.getElementById('stat-parcels').textContent = data.dataset.total_parcels.toLocaleString();
+        document.getElementById('stat-khatians').textContent = data.dataset.total_khatians.toLocaleString();
+        document.getElementById('stat-mutations').textContent = data.dataset.total_mutations.toLocaleString();
+        document.getElementById('stat-model-f1').textContent = data.model_performance.f1_score;
+
+        // Populate Categories
+        const catContainer = document.getElementById('category-distribution-container');
+        catContainer.innerHTML = '';
+        for (const [cat, count] of Object.entries(data.dataset.category_distribution)) {
+          const isFraud = !cat.startsWith('LEGITIMATE');
+          const row = document.createElement('div');
+          row.style.display = 'flex';
+          row.style.justifyContent = 'space-between';
+          row.style.padding = '6px 8px';
+          row.style.background = '#1e293b';
+          row.style.borderRadius = '4px';
+          row.style.fontSize = '0.82rem';
+          row.innerHTML = `
+            <span><span class="badge ${isFraud ? 'red' : 'green'}" style="margin-right: 8px;">${isFraud ? 'FRAUD' : 'LEGIT'}</span> ${cat}</span>
+            <strong style="color: #60a5fa;">${count}</strong>
+          `;
+          catContainer.appendChild(row);
+        }
+
+        // Populate Top Features
+        const featContainer = document.getElementById('features-distribution-container');
+        featContainer.innerHTML = '';
+        data.model_performance.top_features.forEach(f => {
+          const row = document.createElement('div');
+          row.style.display = 'flex';
+          row.style.flexDirection = 'column';
+          row.style.gap = '2px';
+          row.style.fontSize = '0.82rem';
+          row.innerHTML = `
+            <div style="display: flex; justify-content: space-between;">
+              <span>${f.feature}</span>
+              <strong style="color: #34d399;">${(f.importance * 100).toFixed(1)}%</strong>
+            </div>
+            <div class="progress-bar-bg" style="height: 6px;">
+              <div class="progress-bar-fill" style="width: ${f.importance * 100}%; background: #3b82f6;"></div>
+            </div>
+          `;
+          featContainer.appendChild(row);
+        });
+
+      } catch (e) {
+        console.error('Failed to load dashboard statistics:', e);
+      }
+    }
+
+    // Cadastral Search
+    async function searchParcels() {
+      const q = document.getElementById('cadastral-search-input').value;
+      try {
+        const res = await fetch(`/api/parcels/search?q=${encodeURIComponent(q)}&limit=15`);
+        const parcels = await res.json();
+        const tbody = document.getElementById('parcels-tbody');
+        tbody.innerHTML = '';
+
+        if (parcels.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No parcels found matching search query.</td></tr>';
+          return;
+        }
+
+        parcels.forEach(p => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td><strong>Plot #${p.dag_plot_number}</strong></td>
+            <td>${p.mouza} (JL #${p.jl_number})<br><small style="color: #64748b;">${p.upazila}, ${p.district}</small></td>
+            <td>${p.total_area_decimal} dec</td>
+            <td><span class="badge blue">${p.land_classification}</span></td>
+            <td><button class="demo-btn" style="padding: 4px 8px; font-size: 0.75rem;" onclick="selectParcel('${p.dag_plot_number}')">Inspect</button></td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        // Auto-select first parcel
+        if (parcels.length > 0) selectParcel(parcels[0].dag_plot_number);
+
+      } catch (e) {
+        console.error('Cadastral search failed:', e);
+      }
+    }
+
+    async function selectParcel(plotNumber) {
+      try {
+        const res = await fetch(`/api/parcels/${plotNumber}`);
+        if (!res.ok) return;
+        const data = await res.json();
+        const p = data.parcel;
+
+        document.getElementById('parcel-detail-empty').style.display = 'none';
+        const content = document.getElementById('parcel-detail-content');
+        content.style.display = 'flex';
+
+        document.getElementById('selected-parcel-title').textContent = `Dag Plot #${p.dag_plot_number} (${p.mouza}, JL #${p.jl_number})`;
+
+        document.getElementById('parcel-meta-box').innerHTML = `
+          <div><strong>Parcel ID:</strong> ${p.parcel_id} | <strong>Land Class:</strong> ${p.land_classification || 'Nal'}</div>
+          <div><strong>Total Area:</strong> ${p.total_area_decimal} decimal | <strong>Upazila / District:</strong> ${p.upazila}, ${p.district}</div>
+          <div><strong>Boundaries:</strong> N: ${p.boundaries?.north || 'N/A'} | S: ${p.boundaries?.south || 'N/A'} | E: ${p.boundaries?.east || 'N/A'} | W: ${p.boundaries?.west || 'N/A'}</div>
+          <div><strong>Land Tax Status:</strong> <span class="badge ${data.tax_status.status === 'PAID' ? 'green' : 'amber'}">${data.tax_status.status}</span> (Year: ${data.tax_status.clearance_year})</div>
+        `;
+
+        // Chain of Title
+        const chainBox = document.getElementById('chain-timeline-container');
+        chainBox.innerHTML = '';
+        data.chain_of_title.forEach(node => {
+          const div = document.createElement('div');
+          div.className = 'timeline-node';
+          div.innerHTML = `
+            <div style="display: flex; justify-content: space-between;">
+              <strong>${node.survey_type}</strong>
+              <span class="badge ${node.status === 'ACTIVE_HOLDING' ? 'green' : 'blue'}">${node.status}</span>
+            </div>
+            <div style="font-size: 0.8rem; color: #cbd5e1; margin-top: 4px;">Khatian: <strong>${node.khatian_no}</strong> | Recorded Area: ${node.recorded_area_decimal} dec</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">${node.description}</div>
+          `;
+          chainBox.appendChild(div);
+        });
+
+        // Transactions & Mutations
+        const txnsBox = document.getElementById('parcel-history-txns');
+        txnsBox.innerHTML = '';
+        if (data.history_transactions.length === 0) {
+          txnsBox.innerHTML = '<div style="color: var(--text-muted);">No prior conveyance deeds recorded for this parcel.</div>';
+        } else {
+          data.history_transactions.forEach(t => {
+            const div = document.createElement('div');
+            div.style.padding = '8px';
+            div.style.background = '#0f172a';
+            div.style.borderRadius = '4px';
+            div.style.marginBottom = '6px';
+            div.innerHTML = `
+              <strong>${t.deed_number}</strong> (${t.execution_date}) | 
+              Transferred: ${t.transferred_area_decimal} dec | BDT ${Number(t.consideration_bdt).toLocaleString()}<br>
+              <span style="color: var(--text-muted); font-size: 0.74rem;">Seller: ${t.seller_ids?.[0]} ➔ Buyer: ${t.buyer_ids?.[0]} | Root: ${t.previous_deed_ref}</span>
+            `;
+            txnsBox.appendChild(div);
+          });
+        }
+
+      } catch (e) {
+        console.error('Failed to select parcel:', e);
+      }
+    }
+
+    // Case Management Loading
+    async function loadCases(statusFilter = 'ALL') {
+      try {
+        const url = statusFilter === 'ALL' ? '/api/cases' : `/api/cases?status=${statusFilter}`;
+        const res = await fetch(url);
+        const cases = await res.json();
+        const tbody = document.getElementById('cases-tbody');
+        tbody.innerHTML = '';
+
+        document.getElementById('cases-count-badge').textContent = cases.length;
+
+        if (cases.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No cases found.</td></tr>';
+          return;
+        }
+
+        cases.forEach(c => {
+          const tr = document.createElement('tr');
+          const priorityColor = c.priority === 'CRITICAL' ? 'red' : c.priority === 'HIGH' ? 'amber' : 'blue';
+          const statusColor = c.status === 'RESOLVED' ? 'green' : c.status === 'UNDER_REVIEW' ? 'amber' : 'red';
+          tr.innerHTML = `
+            <td><strong>${c.case_id}</strong></td>
+            <td>Plot #${c.dag_plot_number}</td>
+            <td><span class="badge ${priorityColor}">${c.priority}</span></td>
+            <td><span class="badge ${statusColor}">${c.status}</span></td>
+            <td><button class="demo-btn" style="padding: 4px 8px; font-size: 0.75rem;" onclick="inspectCase('${c.case_id}')">Open</button></td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        if (cases.length > 0 && !selectedCaseId) inspectCase(cases[0].case_id);
+
+      } catch (e) {
+        console.error('Failed to load cases:', e);
+      }
+    }
+
+    function filterCases(status) {
+      loadCases(status);
+    }
+
+    async function inspectCase(caseId) {
+      selectedCaseId = caseId;
+      try {
+        const res = await fetch(`/api/cases/${caseId}`);
+        if (!res.ok) return;
+        const c = await res.json();
+
+        document.getElementById('case-inspector-empty').style.display = 'none';
+        const content = document.getElementById('case-inspector-content');
+        content.style.display = 'flex';
+
+        document.getElementById('inspector-case-title').textContent = `${c.case_id}: ${c.title}`;
+        document.getElementById('inspector-status-badge').textContent = c.status;
+        document.getElementById('inspector-status-badge').className = 'badge ' + (c.status === 'RESOLVED' ? 'green' : c.status === 'UNDER_REVIEW' ? 'amber' : 'red');
+
+        document.getElementById('case-status-select').value = c.status;
+        document.getElementById('case-priority-select').value = c.priority;
+
+        document.getElementById('inspector-meta-box').innerHTML = `
+          <div><strong>Deed:</strong> ${c.deed_number} | <strong>Plot:</strong> #${c.dag_plot_number}</div>
+          <div><strong>Assigned Officer:</strong> ${c.assigned_officer} | <strong>Finding:</strong> ${c.statutory_finding}</div>
+          <div><strong>ML Risk Indicator:</strong> ${c.ml_risk_score !== null ? (c.ml_risk_score * 100).toFixed(1) + '%' : 'N/A'}</div>
+          <div><strong>Evidence Summary:</strong> ${c.evidence_summary || 'N/A'}</div>
+        `;
+
+        const notesBox = document.getElementById('case-notes-container');
+        notesBox.innerHTML = '';
+        (c.officer_notes || []).forEach(n => {
+          const div = document.createElement('div');
+          div.style.background = '#0f172a';
+          div.style.padding = '8px 10px';
+          div.style.borderRadius = '4px';
+          div.style.fontSize = '0.8rem';
+          const time = n.timestamp ? n.timestamp.split('T')[0] : '';
+          div.innerHTML = `
+            <div style="display: flex; justify-content: space-between; color: #60a5fa; font-weight: 600; margin-bottom: 2px;">
+              <span>${n.author}</span>
+              <small style="color: var(--text-muted);">${time}</small>
+            </div>
+            <div style="color: #cbd5e1;">${n.note}</div>
+          `;
+          notesBox.appendChild(div);
+        });
+
+      } catch (e) {
+        console.error('Failed to inspect case:', e);
+      }
+    }
+
+    async function updateSelectedCaseStatus() {
+      if (!selectedCaseId) return;
+      const newStatus = document.getElementById('case-status-select').value;
+      await fetch(`/api/cases/${selectedCaseId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus })
+      });
+      loadCases();
+      inspectCase(selectedCaseId);
+    }
+
+    async function updateSelectedCasePriority() {
+      if (!selectedCaseId) return;
+      const newPriority = document.getElementById('case-priority-select').value;
+      await fetch(`/api/cases/${selectedCaseId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ priority: newPriority })
+      });
+      loadCases();
+      inspectCase(selectedCaseId);
+    }
+
+    async function submitSelectedCaseNote() {
+      if (!selectedCaseId) return;
+      const inp = document.getElementById('new-note-input');
+      const note = inp.value.trim();
+      if (!note) return;
+
+      await fetch(`/api/cases/${selectedCaseId}/notes`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ note: note, author: 'Registrar Officer' })
+      });
+      inp.value = '';
+      inspectCase(selectedCaseId);
+    }
+
+    // History Table Refresh
+    async function refreshHistory() {
+      try {
+        const res = await fetch('/api/history');
+        const list = await res.json();
+        const tbody = document.getElementById('history-tbody');
+        if (list.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; color: var(--text-muted);">No records yet.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = '';
+        list.forEach(item => {
+          const tr = document.createElement('tr');
+          const timeStr = item.timestamp ? item.timestamp.split('T')[1].split('.')[0] : '';
+          const mlPct = item.ml_risk_score !== null ? (item.ml_risk_score * 100).toFixed(0) + '%' : 'N/A';
+          const editsCount = item.field_edits_by_user ? item.field_edits_by_user.length : 0;
+
+          let badgeColor = 'green';
+          if (item.overall_status === 'CONFIRMED_INCONSISTENCY') badgeColor = 'red';
+          else if (item.overall_status === 'MISSING_EVIDENCE') badgeColor = 'amber';
+          else if (item.overall_status === 'REVIEW_REQUIRED') badgeColor = 'blue';
+
+          tr.innerHTML = `
+            <td>${timeStr}</td>
+            <td style="font-family: monospace;">${item.verification_id}</td>
+            <td><strong>${item.deed_number}</strong></td>
+            <td>Plot #${item.dag_plot_number}</td>
+            <td><span class="badge ${badgeColor}">${item.overall_status}</span></td>
+            <td>${item.rules_triggered.length}</td>
+            <td>${mlPct}</td>
+            <td>${editsCount > 0 ? `<span class="badge amber">${editsCount} fields</span>` : '<span style="color: #64748b;">None</span>'}</td>
+            <td><a href="/api/reports/html/${item.verification_id}" target="_blank" class="demo-btn" style="padding: 2px 6px; font-size: 0.72rem; text-decoration: none;">Dossier</a></td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (e) {
+        console.error('History refresh error:', e);
+      }
+    }
+
+    async function clearHistory() {
+      await fetch('/api/history/clear', { method: 'POST' });
+      refreshHistory();
+    }
+  </script>
+</body>
+</html>

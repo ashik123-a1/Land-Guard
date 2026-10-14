@@ -1,0 +1,20 @@
+Metadata-Version: 2.4
+Name: landguard-ai-evaluation
+Version: 0.1.0
+Summary: Synthetic Data, Document Generation, and AI Evaluation Benchmark for LandGuard
+Author: LandGuard AI Research Team
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: pandas>=2.0.0
+Requires-Dist: numpy>=1.24.0
+Requires-Dist: scikit-learn>=1.3.0
+Requires-Dist: xgboost>=2.0.0
+Requires-Dist: opencv-python>=4.8.0
+Requires-Dist: Pillow>=10.0.0
+Requires-Dist: PyYAML>=6.0
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: jsonschema>=4.19.0
+Requires-Dist: matplotlib>=3.7.0
+Requires-Dist: pytest>=7.4.0
+Requires-Dist: rapidocr-onnxruntime>=1.3.0
+Requires-Dist: pymupdf>=1.23.0

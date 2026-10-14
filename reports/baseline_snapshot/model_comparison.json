@@ -1,0 +1,180 @@
+[
+  {
+    "model_name": "Majority Baseline",
+    "accuracy": 0.6507,
+    "precision": 0.6507,
+    "recall": 1.0,
+    "f1_score": 0.7884,
+    "roc_auc": 0.5,
+    "pr_auc": 0.6507,
+    "confusion_matrix": [
+      [
+        0,
+        131
+      ],
+      [
+        0,
+        244
+      ]
+    ],
+    "per_class_metrics": {
+      "legitimate": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "fraud": {
+        "precision": 0.6507,
+        "recall": 1.0,
+        "f1": 0.7884
+      }
+    },
+    "false_positive_count": 131,
+    "false_negative_count": 0,
+    "sample_fp_indices": [
+      0,
+      2,
+      3,
+      4,
+      7
+    ],
+    "sample_fn_indices": []
+  },
+  {
+    "model_name": "Deterministic Rule Baseline",
+    "total_evaluated": 375,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1_score": 1.0,
+    "accuracy": 1.0,
+    "confusion_matrix": [
+      [
+        131,
+        0
+      ],
+      [
+        0,
+        244
+      ]
+    ],
+    "false_positive_count": 0,
+    "false_negative_count": 0,
+    "rule_trigger_breakdown": {
+      "RULE_CONFLICTING_DOUBLE_DISPOSITION": 31,
+      "RULE_SELLER_NOT_TITLEHOLDER": 42,
+      "RULE_VISUAL_TAMPERING_DETECTED": 27,
+      "RULE_BROKEN_CHAIN_OF_TITLE": 30,
+      "RULE_AREA_EXCEEDS_CAPACITY": 28,
+      "RULE_MANDATORY_REGISTRAR_SEAL_ABSENT": 33,
+      "RULE_UNVERIFIED_MUTATION_RECORD": 28,
+      "RULE_PLOT_MISMATCH_WITH_KHATIAN": 34
+    },
+    "sample_false_positives": [],
+    "sample_false_negatives": []
+  },
+  {
+    "model_name": "Logistic Regression",
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1_score": 1.0,
+    "roc_auc": 1.0,
+    "pr_auc": 1.0,
+    "confusion_matrix": [
+      [
+        131,
+        0
+      ],
+      [
+        0,
+        244
+      ]
+    ],
+    "per_class_metrics": {
+      "legitimate": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "fraud": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "false_positive_count": 0,
+    "false_negative_count": 0,
+    "sample_fp_indices": [],
+    "sample_fn_indices": []
+  },
+  {
+    "model_name": "Random Forest",
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1_score": 1.0,
+    "roc_auc": 1.0,
+    "pr_auc": 1.0,
+    "confusion_matrix": [
+      [
+        131,
+        0
+      ],
+      [
+        0,
+        244
+      ]
+    ],
+    "per_class_metrics": {
+      "legitimate": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "fraud": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "false_positive_count": 0,
+    "false_negative_count": 0,
+    "sample_fp_indices": [],
+    "sample_fn_indices": []
+  },
+  {
+    "model_name": "XGBoost Classifier",
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1_score": 1.0,
+    "roc_auc": 1.0,
+    "pr_auc": 1.0,
+    "confusion_matrix": [
+      [
+        131,
+        0
+      ],
+      [
+        0,
+        244
+      ]
+    ],
+    "per_class_metrics": {
+      "legitimate": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "fraud": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "false_positive_count": 0,
+    "false_negative_count": 0,
+    "sample_fp_indices": [],
+    "sample_fn_indices": []
+  }
+]

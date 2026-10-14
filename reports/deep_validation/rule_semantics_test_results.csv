@@ -1,0 +1,11 @@
+test_id,test_name,intended_category,produced_primary_category,produced_rule_code,is_risk_flagged,risk_score,category_match_passed,scenario_description
+SEM-01,Cadastral Plot Mismatch with Khatian,CONFIRMED_INCONSISTENCY,MISSING_EVIDENCE,RULE_UNVERIFIED_MUTATION_RECORD,1,0.75,1,Deed schedule cites plot 9044 conflicting with survey record plot 8011
+SEM-02,Cadastral Statutory Area Excess,CONFIRMED_INCONSISTENCY,CONFIRMED_INCONSISTENCY,RULE_AREA_EXCEEDS_CAPACITY,1,0.75,1,Deed attempts to convey 35 decimals on a 20 decimal cadastral plot
+SEM-03,Conflicting Double Disposition in Current Tenure,CONFIRMED_INCONSISTENCY,CONFIRMED_INCONSISTENCY,RULE_CONFLICTING_DOUBLE_DISPOSITION,1,0.75,1,"Seller already conveyed 15 dec on a 20 dec parcel, now conveys 10 dec again"
+SEM-04,Seller Not Found in Preceding Chain of Title,CONFIRMED_INCONSISTENCY,CONFIRMED_INCONSISTENCY,RULE_SELLER_NOT_TITLEHOLDER,1,0.75,1,Non-titleholder imposter executes deed without appearing in chain
+SEM-05,Mechanical Paste-over Alteration on Physical Deed,CONFIRMED_INCONSISTENCY,MISSING_EVIDENCE,RULE_UNVERIFIED_MUTATION_RECORD,1,0.75,1,High visual anomaly score (0.88) on standard sale deed
+SEM-06,Pending Namzari Mutation Hearing,REVIEW_REQUIRED,REVIEW_REQUIRED,RULE_MUTATION_PENDING_REVIEW,0,0.3,1,Bona fide recent purchase awaiting AC Land mutation hearing
+SEM-07,Partial Subdivision within Total Parcel Capacity,REVIEW_REQUIRED,REVIEW_REQUIRED,RULE_PARTIAL_SUBDIVISION_CAPACITY_CHECK,0,0.3,1,Prior partial sale of 5 dec; current sale of 8 dec out of 20 dec total
+SEM-08,Rectification Deed Clerical Strikeover with Initials,REVIEW_REQUIRED,MISSING_EVIDENCE,RULE_UNVERIFIED_MUTATION_RECORD,0,0.3,1,Bhul-Sanshodhon rectification deed with initialed stroke mark
+SEM-09,Succession Partition Memo without Sub-Registry Seal,REVIEW_REQUIRED,MISSING_EVIDENCE,RULE_UNVERIFIED_MUTATION_RECORD,0,0.3,1,Informal family Warishnama memorandum lacking formal sub-registrar seal
+SEM-10,Pre-1972 Archival Record in Unindexed Volume,MISSING_EVIDENCE,MISSING_EVIDENCE,RULE_BROKEN_CHAIN_OF_TITLE,0,0.2,1,Historical deed cites pre-1972 archival volume records damaged in archive

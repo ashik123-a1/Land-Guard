@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<style>
+    .admin-nav-active {
+        background: rgba(99, 102, 241, 0.15);
+        color: #818cf8;
+        border-right: 3px solid #6366f1;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="flex-1 flex overflow-hidden">
+    <!-- Admin Operational Sidebar -->
+    <aside class="w-64 bg-navy-900 border-r border-slate-800 flex flex-col justify-between shrink-0 hidden md:flex">
+        <div>
+            <!-- Header -->
+            <div class="p-5 border-b border-slate-800 flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 border border-indigo-400/40">
+                    <i data-lucide="shield" class="w-5 h-5 text-white"></i>
+                </div>
+                <div>
+                    <span class="text-base font-bold text-white tracking-tight">LandGuard</span>
+                    <span class="text-[10px] font-mono tracking-wider text-indigo-400 block uppercase font-medium">Ops &bull; Command Center</span>
+                </div>
+            </div>
+
+            <!-- Admin Nav Links -->
+            <nav class="py-3 px-2 space-y-0.5 text-xs">
+                <a href="/admin/dashboard" class="flex items-center gap-3 px-3 py-2 rounded-xl font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all {% if active_page == 'dashboard' %}admin-nav-active{% endif %}">
+                    <i data-lucide="activity" class="w-4 h-4 text-indigo-400"></i>
+                    <span>Command Center</span>
+                </a>
+                <a href="/admin/verifications" class="flex items-center gap-3 px-3 py-2 rounded-xl font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all {% if active_page == 'verifications' %}admin-nav-active{% endif %}">
+                    <i data-lucide="check-square" class="w-4 h-4 text-indigo-400"></i>
+                    <span>Verification Queue</span>
+                </a>
+                <a href="/admin/cases" class="flex items-center gap-3 px-3 py-2 rounded-xl font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all {% if active_page == 'cases' %}admin-nav-active{% endif %}">
+                    <i data-lucide="folder-kanban" class="w-4 h-4 text-indigo-400"></i>
+                    <span>Investigation Docket</span>
+                </a>
+                <a href="/admin/parcels" class="flex items-center gap-3 px-3 py-2 rounded-xl font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all {% if active_page == 'parcels' %}admin-nav-active{% endif %}">
+                    <i data-lucide="layers" class="w-4 h-4 text-indigo-400"></i>
+                    <span>Cadastral Registry</span>
+                </a>
+                <a href="/admin/reports" class="flex items-center gap-3 px-3 py-2 rounded-xl font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all {% if active_page == 'reports' %}admin-nav-active{% endif %}">
+                    <i data-lucide="file-check" class="w-4 h-4 text-indigo-400"></i>
+                    <span>Evidence Dossiers</span>
+                </a>
+                <a href="/admin/analytics" class="flex items-center gap-3 px-3 py-2 rounded-xl font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all {% if active_page == 'analytics' %}admin-nav-active{% endif %}">
+                    <i data-lucide="bar-chart-3" class="w-4 h-4 text-indigo-400"></i>
+                    <span>Analytics &amp; Metrics</span>
+                </a>
+                <a href="/admin/audit" class="flex items-center gap-3 px-3 py-2 rounded-xl font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all {% if active_page == 'audit' %}admin-nav-active{% endif %}">
+                    <i data-lucide="history" class="w-4 h-4 text-indigo-400"></i>
+                    <span>Immutable Audit Log</span>
+                </a>
+                <a href="/admin/users" class="flex items-center gap-3 px-3 py-2 rounded-xl font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all {% if active_page == 'users' %}admin-nav-active{% endif %}">
+                    <i data-lucide="users" class="w-4 h-4 text-indigo-400"></i>
+                    <span>User Directory</span>
+                </a>
+                <a href="/admin/models" class="flex items-center gap-3 px-3 py-2 rounded-xl font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all {% if active_page == 'models' %}admin-nav-active{% endif %}">
+                    <i data-lucide="cpu" class="w-4 h-4 text-indigo-400"></i>
+                    <span>AI Model Ops</span>
+                </a>
+                <a href="/admin/system" class="flex items-center gap-3 px-3 py-2 rounded-xl font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all {% if active_page == 'system' %}admin-nav-active{% endif %}">
+                    <i data-lucide="server" class="w-4 h-4 text-indigo-400"></i>
+                    <span>System Health</span>
+                </a>
+                <a href="/admin/settings" class="flex items-center gap-3 px-3 py-2 rounded-xl font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all {% if active_page == 'settings' %}admin-nav-active{% endif %}">
+                    <i data-lucide="sliders" class="w-4 h-4 text-indigo-400"></i>
+                    <span>SLA &amp; Rulesets</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- Staff Profile Pill -->
+        <div class="p-3 border-t border-slate-800">
+            <div class="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center justify-between">
+                <div class="flex items-center gap-2.5 min-w-0">
+                    <div class="w-8 h-8 rounded-lg bg-indigo-950 border border-indigo-500/40 flex items-center justify-center text-indigo-300 font-bold text-xs shrink-0">
+                        {{ (current_user.full_name[:2] if current_user else 'AD')|upper }}
+                    </div>
+                    <div class="truncate">
+                        <div class="text-xs font-bold text-white truncate">{{ current_user.full_name if current_user else 'Authorized Officer' }}</div>
+                        <div class="text-[10px] text-indigo-400 font-mono">{{ current_user.role if current_user else 'ADMIN' }}</div>
+                    </div>
+                </div>
+                <a href="/logout" title="Sign Out" class="text-slate-400 hover:text-rose-400 p-1.5 rounded-lg hover:bg-slate-800 transition-colors">
+                    <i data-lucide="log-out" class="w-4 h-4"></i>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+        <!-- Topbar -->
+        <header class="h-16 bg-navy-900/70 border-b border-slate-800 px-6 flex items-center justify-between shrink-0">
+            <div class="flex items-center gap-3">
+                <button class="md:hidden text-slate-400 hover:text-white">
+                    <i data-lucide="menu" class="w-5 h-5"></i>
+                </button>
+                <div class="flex items-center gap-2 text-xs font-medium text-slate-400">
+                    <span class="text-indigo-400">Operations</span>
+                    <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-600"></i>
+                    <span class="text-white capitalize">{{ active_page|replace('_', ' ') }}</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <div class="hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-950/60 border border-indigo-500/30 text-[11px] font-mono text-indigo-300">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>XGBOOST RISK ENGINE ONLINE</span>
+                </div>
+
+                <a href="/user/dashboard" class="px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white glass-panel hover:bg-slate-800 transition-colors flex items-center gap-1.5">
+                    <i data-lucide="eye" class="w-3.5 h-3.5 text-cyan-400"></i>
+                    <span class="hidden sm:inline">Citizen View</span>
+                </a>
+
+                <a href="/logout" class="px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-rose-300 glass-panel hover:bg-slate-800 transition-colors flex items-center gap-1.5">
+                    <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
+                    <span class="hidden sm:inline">Logout</span>
+                </a>
+            </div>
+        </header>
+
+        <!-- Page View -->
+        <main class="flex-1 p-6 lg:p-8 max-w-7xl w-full mx-auto">
+            {% block portal_content %}{% endblock %}
+        </main>
+    </div>
+</div>
+{% endblock %}

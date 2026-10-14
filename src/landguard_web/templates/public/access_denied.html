@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Access Denied — LandGuard AI{% endblock %}
+
+{% block content %}
+<div class="min-h-[calc(100vh-2rem)] flex flex-col items-center justify-center px-4 py-12 text-center">
+    <div class="w-16 h-16 rounded-2xl bg-rose-950/80 border border-rose-500/40 flex items-center justify-center text-rose-400 mb-6 shadow-xl shadow-rose-950/50">
+        <i data-lucide="shield-x" class="w-8 h-8"></i>
+    </div>
+
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-950/50 border border-rose-500/30 text-rose-300 text-xs font-mono mb-4">
+        <span>ERROR 403 &bull; ROLE-BASED ACCESS CONTROL</span>
+    </div>
+
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-3">Restricted Clearance Zone</h1>
+    <p class="text-sm text-slate-400 max-w-md mx-auto mb-8 leading-relaxed">
+        Your current session identity does not possess the requisite operational privileges to access this administrative portal. This incident has been logged in the immutable audit trail.
+    </p>
+
+    <div class="flex flex-col sm:flex-row items-center gap-3">
+        <a href="/user/dashboard" class="w-full sm:w-auto px-6 py-2.5 rounded-xl text-sm font-semibold text-navy-950 bg-gradient-to-r from-cyan-400 to-cyan-500 hover:from-cyan-300 hover:to-cyan-400 transition-all flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20">
+            <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+            <span>Return to Citizen Dashboard</span>
+        </a>
+        <a href="/login" class="w-full sm:w-auto px-6 py-2.5 rounded-xl text-sm font-semibold text-slate-300 glass-panel hover:bg-slate-800 transition-all border border-slate-700 flex items-center justify-center gap-2">
+            <i data-lucide="log-in" class="w-4 h-4 text-cyan-400"></i>
+            <span>Switch to Authorized Account</span>
+        </a>
+    </div>
+</div>
+{% endblock %}

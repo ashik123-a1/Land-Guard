@@ -1,0 +1,126 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DocumentGroundTruthAnnotation",
+  "type": "object",
+  "required": [
+    "image_id",
+    "source_document_id",
+    "source_record_id",
+    "document_type",
+    "language",
+    "source_template_id",
+    "ground_truth_text",
+    "ground_truth_fields",
+    "signature_presence",
+    "seal_presence",
+    "expected_consistency_checks",
+    "expected_tampering_outcome",
+    "image_quality_class",
+    "degradation_parameters",
+    "field_legibility_labels",
+    "split_assignment",
+    "sha256_checksum"
+  ],
+  "properties": {
+    "image_id": {
+      "type": "string",
+      "pattern": "^IMG-[0-9A-F]{8}$"
+    },
+    "source_document_id": {
+      "type": "string"
+    },
+    "source_record_id": {
+      "type": "string"
+    },
+    "scenario_id": {
+      "type": "string"
+    },
+    "document_type": {
+      "type": "string",
+      "enum": [
+        "SALE_DEED",
+        "KHATIAN_PORCHA",
+        "MUTATION_RECORD",
+        "TAX_RECEIPT",
+        "PARCEL_MAP",
+        "APPLICATION_COMPLAINT"
+      ]
+    },
+    "language": {
+      "type": "string",
+      "enum": ["bn", "en", "mixed"]
+    },
+    "source_template_id": {
+      "type": "string"
+    },
+    "ground_truth_text": {
+      "type": "string"
+    },
+    "ground_truth_fields": {
+      "type": "object"
+    },
+    "bounding_boxes": {
+      "type": "object"
+    },
+    "signature_presence": {
+      "type": "boolean"
+    },
+    "seal_presence": {
+      "type": "boolean"
+    },
+    "expected_consistency_checks": {
+      "type": "object"
+    },
+    "expected_tampering_outcome": {
+      "type": "string",
+      "enum": [
+        "CLEAN_LEGITIMATE",
+        "PLOT_NUMBER_MISMATCH",
+        "OWNER_NAME_MISMATCH",
+        "AREA_DISCREPANCY",
+        "DATE_ANOMALY",
+        "MISSING_DEED_CHAIN",
+        "TAMPERED_IMAGE_OVERLAY",
+        "SUSPICIOUS_SEAL_ABSENT",
+        "CONFLICTING_TRANSFER"
+      ]
+    },
+    "image_quality_class": {
+      "type": "string",
+      "enum": [
+        "clean_digital",
+        "clean_scan",
+        "grayscale_scan",
+        "low_resolution",
+        "mild_rotation",
+        "skewed_scan",
+        "perspective_distortion",
+        "low_contrast",
+        "uneven_illumination",
+        "blur",
+        "compression_artifacts",
+        "light_noise",
+        "wrinkled_paper",
+        "mild_stains",
+        "shadow_phone_photo",
+        "occluded_text",
+        "cropped_edges"
+      ]
+    },
+    "degradation_parameters": {
+      "type": "object"
+    },
+    "field_legibility_labels": {
+      "type": "object"
+    },
+    "split_assignment": {
+      "type": "string",
+      "enum": ["train", "val", "test"]
+    },
+    "sha256_checksum": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "additionalProperties": false
+}

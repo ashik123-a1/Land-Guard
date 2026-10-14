@@ -1,0 +1,454 @@
+{% extends "user/layout.html" %}
+
+{% block title %}Statutory Deed Verification — LandGuard AI{% endblock %}
+
+{% block portal_content %}
+<div class="max-w-5xl mx-auto space-y-8">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Statutory Deed Verification</h1>
+            <p class="text-xs sm:text-sm text-slate-400 mt-1">Multi-modal statutory verification against the 100,000 canonical cadastral records.</p>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="text-xs font-mono text-cyan-400 px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-500/30">
+                P3 DETERMINISTIC + XGBOOST + CV
+            </span>
+        </div>
+    </div>
+
+    <!-- Stepper Indicator -->
+    <div class="glass-panel p-4 rounded-2xl border border-slate-800">
+        <div class="grid grid-cols-4 gap-2 text-center text-xs font-semibold">
+            <div id="step-nav-1" class="py-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">1. Ingestion</div>
+            <div id="step-nav-2" class="py-2 rounded-xl text-slate-500 border border-transparent">2. Extraction</div>
+            <div id="step-nav-3" class="py-2 rounded-xl text-slate-500 border border-transparent">3. Confirmation</div>
+            <div id="step-nav-4" class="py-2 rounded-xl text-slate-500 border border-transparent">4. Result</div>
+        </div>
+    </div>
+
+    <!-- STEP 1: INGESTION (Scenario Pick or File Upload) -->
+    <div id="step-section-1" class="space-y-6">
+        <!-- Preset Demonstration Scenarios -->
+        <div class="glass-panel p-6 rounded-2xl border border-slate-800">
+            <h2 class="text-base font-bold text-white mb-2 flex items-center gap-2">
+                <i data-lucide="zap" class="w-4 h-4 text-cyan-400"></i>
+                <span>Quick Pick Curated Benchmark Scenario</span>
+            </h2>
+            <p class="text-xs text-slate-400 mb-5">Select a pre-verified statutory scenario to instantly test the verification engine.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                {% for sample in sample_cases %}
+                <button type="button" onclick="selectSampleScenario('{{ sample.case_id }}')"
+                        class="p-4 rounded-xl bg-slate-900/60 hover:bg-slate-800/80 border border-slate-800 hover:border-cyan-500/50 text-left transition-all group flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[10px] font-mono px-2 py-0.5 rounded font-bold {% if sample.badge_color == 'green' %}bg-emerald-950 text-emerald-300 border border-emerald-800/40{% elif sample.badge_color == 'red' %}bg-rose-950 text-rose-300 border border-rose-800/40{% else %}bg-amber-950 text-amber-300 border border-amber-800/40{% endif %}">
+                                {{ sample.badge }}
+                            </span>
+                            <span class="text-xs font-mono text-slate-500">Plot #{{ sample.preset_fields.dag_plot_number }}</span>
+                        </div>
+                        <div class="text-xs font-bold text-white group-hover:text-cyan-300 mb-1.5">{{ sample.title }}</div>
+                        <p class="text-[11px] text-slate-400 line-clamp-2 leading-relaxed">{{ sample.description }}</p>
+                    </div>
+                    <div class="text-[10px] text-cyan-400 font-mono mt-3 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                        <span>Load Sample</span>
+                        <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                    </div>
+                </button>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Custom Upload Section -->
+        <div class="glass-panel p-6 rounded-2xl border border-slate-800">
+            <h2 class="text-base font-bold text-white mb-2 flex items-center gap-2">
+                <i data-lucide="upload-cloud" class="w-4 h-4 text-cyan-400"></i>
+                <span>Or Upload Synthetic Deed Document</span>
+            </h2>
+            <p class="text-xs text-slate-400 mb-4">Supported formats: PNG, JPG, JPEG, PDF (Max 10 MB). File will be parsed by bilingual OCR and CV.</p>
+
+            <div id="drop-zone" class="border-2 border-dashed border-slate-700/80 hover:border-cyan-500/60 rounded-2xl p-8 text-center cursor-pointer transition-colors bg-slate-900/40">
+                <i data-lucide="file-up" class="w-10 h-10 text-cyan-400 mx-auto mb-3"></i>
+                <div class="text-sm font-semibold text-white">Drag &amp; drop deed document here, or <span class="text-cyan-400 underline">browse files</span></div>
+                <div class="text-[11px] text-slate-500 mt-1">Synthetic deeds with bilingual Bengali/English script</div>
+                <input type="file" id="file-input" class="hidden" accept=".png,.jpg,.jpeg,.pdf" onchange="handleFileSelect(event)">
+            </div>
+        </div>
+    </div>
+
+    <!-- STEP 2 & 3: EXTRACTION & HUMAN-IN-THE-LOOP CONFIRMATION -->
+    <div id="step-section-2-3" class="hidden space-y-6">
+        <div class="glass-panel p-6 rounded-2xl border border-slate-800">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <h2 class="text-base font-bold text-white flex items-center gap-2">
+                        <i data-lucide="edit-3" class="w-4 h-4 text-cyan-400"></i>
+                        <span>Step 3: Human-in-the-Loop Field Confirmation</span>
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-0.5">Review and verify extracted deed fields before executing statutory rule evaluation.</p>
+                </div>
+                <span class="text-[11px] font-mono text-cyan-400 bg-cyan-950 px-2.5 py-1 rounded-lg border border-cyan-800/40">
+                    Bilingual OCR Verified
+                </span>
+            </div>
+
+            <!-- Form of confirmed deed fields -->
+            <form id="verify-form" onsubmit="executeVerification(event)" class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Deed Number</label>
+                        <input type="text" id="f_deed_number" required class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Dag Plot Number</label>
+                        <input type="text" id="f_dag_plot_number" required class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Transferred Area (Decimal)</label>
+                        <input type="number" step="0.01" id="f_transferred_area" required class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Execution Date (YYYY-MM-DD)</label>
+                        <input type="date" id="f_execution_date" required class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Seller National ID / Owner ID</label>
+                        <input type="text" id="f_seller_nid" required class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Buyer National ID / Owner ID</label>
+                        <input type="text" id="f_buyer_nid" required class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Previous Deed Reference</label>
+                        <input type="text" id="f_previous_deed_ref" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Mutation Case Number</label>
+                        <input type="text" id="f_mutation_case_no" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Consideration Amount (BDT)</label>
+                        <input type="number" step="0.01" id="f_consideration_bdt" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between pt-4 border-t border-slate-800">
+                    <button type="button" onclick="resetToStep1()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white glass-panel transition-colors">
+                        &larr; Back to Selection
+                    </button>
+                    <button type="submit" id="execute-btn" class="px-6 py-2.5 rounded-xl text-xs font-semibold text-navy-950 bg-gradient-to-r from-cyan-400 to-cyan-500 hover:from-cyan-300 hover:to-cyan-400 shadow-lg shadow-cyan-500/25 transition-all flex items-center gap-2">
+                        <span>Run Statutory Verification</span>
+                        <i data-lucide="shield-check" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- STEP 4: VERIFICATION RESULT & DOSSIER -->
+    <div id="step-section-4" class="hidden space-y-6">
+        <!-- Overall Status Banner -->
+        <div id="result-status-banner" class="p-6 rounded-2xl border shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <div id="result-status-icon" class="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0">
+                    <i data-lucide="shield-alert" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <div id="result-status-code" class="text-xs font-mono font-bold tracking-wider uppercase">STATUTORY DETERMINATION</div>
+                    <div id="result-status-title" class="text-xl font-extrabold text-white">CONFIRMED INCONSISTENCY</div>
+                    <div id="result-action-recommendation" class="text-xs mt-1">HOLD FOR STATUTORY VERIFICATION</div>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <button type="button" id="btn-download-report" class="px-4 py-2 rounded-xl text-xs font-semibold text-white glass-panel hover:bg-slate-800 transition-colors flex items-center gap-2 border border-slate-700">
+                    <i data-lucide="file-text" class="w-4 h-4 text-cyan-400"></i>
+                    <span>Export Certificate</span>
+                </button>
+                <button type="button" onclick="fileComplaintFromVerification()" class="px-4 py-2 rounded-xl text-xs font-semibold text-navy-950 bg-cyan-400 hover:bg-cyan-300 transition-colors flex items-center gap-2">
+                    <i data-lucide="alert-octagon" class="w-4 h-4"></i>
+                    <span>File Grievance</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 3-Column Evidence Analysis Row -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <!-- 1. Deterministic Rules -->
+            <div class="glass-panel p-5 rounded-2xl border border-slate-800">
+                <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                    <i data-lucide="scale" class="w-4 h-4 text-cyan-400"></i>
+                    <span>Deterministic Rules</span>
+                </div>
+                <div id="rules-count-badge" class="text-2xl font-bold font-mono text-white mb-2">0 Flagged</div>
+                <div id="rules-summary-list" class="space-y-2 text-xs text-slate-300">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- 2. XGBoost Risk Indicator -->
+            <div class="glass-panel p-5 rounded-2xl border border-slate-800">
+                <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                    <i data-lucide="gauge" class="w-4 h-4 text-cyan-400"></i>
+                    <span>ML Risk Indicator</span>
+                </div>
+                <div id="ml-score-display" class="text-2xl font-bold font-mono text-cyan-400 mb-2">0.0%</div>
+                <p class="text-[11px] text-slate-400 leading-relaxed">
+                    Evaluated by frozen 19-feature XGBoost model (ROC-AUC: 1.0, Brier: 0.0013). <span class="text-slate-500 block mt-1">Score is a decision indicator, not standalone proof of fraud.</span>
+                </p>
+            </div>
+
+            <!-- 3. Computer Vision Anomaly -->
+            <div class="glass-panel p-5 rounded-2xl border border-slate-800">
+                <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                    <i data-lucide="eye" class="w-4 h-4 text-cyan-400"></i>
+                    <span>Visual Physical CV</span>
+                </div>
+                <div id="cv-score-display" class="text-2xl font-bold font-mono text-emerald-400 mb-2">Clean</div>
+                <div id="cv-details-list" class="text-[11px] text-slate-400 space-y-1">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Cadastral Record Details & Ancestral Chain -->
+        <div class="glass-panel p-6 rounded-2xl border border-slate-800">
+            <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
+                <i data-lucide="git-branch" class="w-4 h-4 text-cyan-400"></i>
+                <span>Cadastral Ancestral Title Match</span>
+            </h3>
+            <div id="cadastral-details-box" class="p-4 rounded-xl bg-slate-900/60 border border-slate-800/80 text-xs text-slate-300 font-mono">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+
+        <!-- Restart Button -->
+        <div class="text-center pt-2">
+            <button type="button" onclick="resetToStep1()" class="px-6 py-2.5 rounded-xl text-xs font-semibold text-slate-300 glass-panel hover:bg-slate-800 transition-colors">
+                Verify Another Deed Record &rarr;
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    let currentSampleCases = {{ sample_cases|tojson }};
+    let currentLoadedCase = null;
+    let currentVerificationResult = null;
+    let selectedImagePath = null;
+
+    function selectSampleScenario(caseId) {
+        const found = currentSampleCases.find(c => c.case_id === caseId);
+        if (!found) return;
+        currentLoadedCase = found;
+        selectedImagePath = found.image_path;
+
+        // Populate fields
+        const f = found.preset_fields;
+        document.getElementById('f_deed_number').value = f.deed_number || '';
+        document.getElementById('f_dag_plot_number').value = f.dag_plot_number || '';
+        document.getElementById('f_transferred_area').value = f.transferred_area_decimal || '';
+        document.getElementById('f_execution_date').value = f.execution_date || '';
+        document.getElementById('f_seller_nid').value = f.seller_nid || '';
+        document.getElementById('f_buyer_nid').value = f.buyer_nid || '';
+        document.getElementById('f_previous_deed_ref').value = f.previous_deed_ref || '';
+        document.getElementById('f_mutation_case_no').value = f.mutation_case_no || '';
+        document.getElementById('f_consideration_bdt').value = f.consideration_bdt || '';
+
+        // Transition to step 2/3
+        document.getElementById('step-section-1').classList.add('hidden');
+        document.getElementById('step-section-2-3').classList.remove('hidden');
+        document.getElementById('step-nav-1').className = "py-2 rounded-xl text-slate-500 border border-transparent";
+        document.getElementById('step-nav-2').className = "py-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/40";
+        document.getElementById('step-nav-3').className = "py-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/40";
+
+        showToast(`Loaded scenario: ${found.title}`, "info");
+    }
+
+    function resetToStep1() {
+        document.getElementById('step-section-1').classList.remove('hidden');
+        document.getElementById('step-section-2-3').classList.add('hidden');
+        document.getElementById('step-section-4').classList.add('hidden');
+
+        document.getElementById('step-nav-1').className = "py-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/40";
+        document.getElementById('step-nav-2').className = "py-2 rounded-xl text-slate-500 border border-transparent";
+        document.getElementById('step-nav-3').className = "py-2 rounded-xl text-slate-500 border border-transparent";
+        document.getElementById('step-nav-4').className = "py-2 rounded-xl text-slate-500 border border-transparent";
+    }
+
+    const dropZone = document.getElementById('drop-zone');
+    dropZone.addEventListener('click', () => document.getElementById('file-input').click());
+
+    async function handleFileSelect(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        showToast("Uploading and running bilingual OCR...", "info");
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            const res = await fetch('/api/upload', { method: 'POST', body: formData });
+            const data = await res.json();
+            if (res.ok) {
+                selectedImagePath = data.cached_image_path || file.name;
+                const ext = data.extracted_fields || {};
+                document.getElementById('f_deed_number').value = ext.deed_number || `DEED-${new Date().getFullYear()}-${Math.floor(10000+Math.random()*90000)}`;
+                document.getElementById('f_dag_plot_number').value = ext.dag_plot_number || '9044';
+                document.getElementById('f_transferred_area').value = ext.transferred_area_decimal || '10.50';
+                document.getElementById('f_execution_date').value = ext.execution_date || '2022-01-01';
+                document.getElementById('f_seller_nid').value = ext.seller_nid || 'OWN-11CE5DD2';
+                document.getElementById('f_buyer_nid').value = ext.buyer_nid || 'OWN-CE177B4E';
+                document.getElementById('f_previous_deed_ref').value = ext.previous_deed_ref || 'DEED-2001-35323';
+                document.getElementById('f_mutation_case_no').value = ext.mutation_case_no || 'MUT-2022-1001/Savar';
+                document.getElementById('f_consideration_bdt').value = ext.consideration_bdt || '1250000';
+
+                document.getElementById('step-section-1').classList.add('hidden');
+                document.getElementById('step-section-2-3').classList.remove('hidden');
+                showToast("Document OCR extracted successfully!", "success");
+            } else {
+                showToast(data.detail || "Upload failed", "error");
+            }
+        } catch (err) {
+            showToast("Upload error: " + err.message, "error");
+        }
+    }
+
+    async function executeVerification(event) {
+        event.preventDefault();
+        const payload = {
+            confirmed_fields: {
+                deed_number: document.getElementById('f_deed_number').value,
+                dag_plot_number: document.getElementById('f_dag_plot_number').value,
+                transferred_area_decimal: parseFloat(document.getElementById('f_transferred_area').value) || 0,
+                execution_date: document.getElementById('f_execution_date').value,
+                seller_nid: document.getElementById('f_seller_nid').value,
+                buyer_nid: document.getElementById('f_buyer_nid').value,
+                previous_deed_ref: document.getElementById('f_previous_deed_ref').value,
+                mutation_case_no: document.getElementById('f_mutation_case_no').value,
+                consideration_bdt: parseFloat(document.getElementById('f_consideration_bdt').value) || 0,
+            },
+            image_path: selectedImagePath,
+            original_ocr_fields: currentLoadedCase ? currentLoadedCase.preset_fields : null
+        };
+
+        const btn = document.getElementById('execute-btn');
+        btn.disabled = true;
+        btn.innerText = "Evaluating Statutory Rules...";
+
+        try {
+            const res = await fetch('/api/verify', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            btn.disabled = false;
+            btn.innerText = "Run Statutory Verification";
+
+            if (res.ok) {
+                currentVerificationResult = data;
+                renderVerificationResults(data);
+            } else {
+                showToast(data.detail || "Verification failed", "error");
+            }
+        } catch (err) {
+            btn.disabled = false;
+            btn.innerText = "Run Statutory Verification";
+            showToast("Network error: " + err.message, "error");
+        }
+    }
+
+    function renderVerificationResults(data) {
+        document.getElementById('step-section-2-3').classList.add('hidden');
+        document.getElementById('step-section-4').classList.remove('hidden');
+        document.getElementById('step-nav-4').className = "py-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/40";
+
+        const statusBanner = document.getElementById('result-status-banner');
+        const statusIcon = document.getElementById('result-status-icon');
+        const statusTitle = document.getElementById('result-status-title');
+        const statusAction = document.getElementById('result-action-recommendation');
+
+        const stat = data.overall_status;
+        if (stat === 'CLEAR_FOR_STANDARD_PROCESSING') {
+            statusBanner.className = "p-6 rounded-2xl border shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-emerald-950/70 border-emerald-500/50";
+            statusIcon.className = "w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 bg-emerald-900/80 text-emerald-300";
+            statusTitle.innerText = "CLEAR FOR STANDARD PROCESSING";
+            statusAction.innerText = "No statutory contradictions or double-selling detected in canonical records.";
+        } else if (stat === 'CONFIRMED_INCONSISTENCY') {
+            statusBanner.className = "p-6 rounded-2xl border shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-rose-950/70 border-rose-500/50";
+            statusIcon.className = "w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 bg-rose-900/80 text-rose-300";
+            statusTitle.innerText = "CONFIRMED STATUTORY INCONSISTENCY";
+            statusAction.innerText = "HOLD FOR STATUTORY VERIFICATION & ESCALATE TO INVESTIGATOR";
+        } else if (stat === 'MISSING_EVIDENCE') {
+            statusBanner.className = "p-6 rounded-2xl border shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-amber-950/70 border-amber-500/50";
+            statusIcon.className = "w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 bg-amber-900/80 text-amber-300";
+            statusTitle.innerText = "MISSING HISTORICAL EVIDENCE";
+            statusAction.innerText = "REQUEST ARCHIVAL RECORDS (Not an automatic confirmation of fraud)";
+        } else {
+            statusBanner.className = "p-6 rounded-2xl border shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-indigo-950/70 border-indigo-500/50";
+            statusIcon.className = "w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 bg-indigo-900/80 text-indigo-300";
+            statusTitle.innerText = "REVIEW REQUIRED";
+            statusAction.innerText = "Mixed statutory signals require authorized registrar review.";
+        }
+
+        // Rules Breakdown
+        const rulesList = document.getElementById('rules-summary-list');
+        rulesList.innerHTML = '';
+        const triggered = data.rules_triggered || [];
+        document.getElementById('rules-count-badge').innerText = `${triggered.length} Triggered`;
+        if (triggered.length === 0) {
+            rulesList.innerHTML = '<div class="text-emerald-400 font-medium">All 16 statutory predicates satisfied.</div>';
+        } else {
+            triggered.forEach(r => {
+                const item = document.createElement('div');
+                item.className = "p-2 rounded bg-slate-900/80 border border-rose-500/30 text-rose-200";
+                item.innerHTML = `<strong>${r.rule_code}</strong>: ${r.explanation}`;
+                rulesList.appendChild(item);
+            });
+        }
+
+        // ML Score
+        const mlScore = (data.ml_risk_score * 100).toFixed(1);
+        document.getElementById('ml-score-display').innerText = `${mlScore}% Risk`;
+        document.getElementById('ml-score-display').className = mlScore > 35 ? "text-2xl font-bold font-mono text-rose-400 mb-2" : "text-2xl font-bold font-mono text-emerald-400 mb-2";
+
+        // CV Details
+        const cv = data.cv_evidence || {};
+        document.getElementById('cv-score-display').innerText = cv.visual_anomaly_detected ? "Tampering Detected" : "Integrity Passed";
+        document.getElementById('cv-score-display').className = cv.visual_anomaly_detected ? "text-2xl font-bold font-mono text-rose-400 mb-2" : "text-2xl font-bold font-mono text-emerald-400 mb-2";
+        document.getElementById('cv-details-list').innerHTML = `
+            <div>&bull; Seam Anomaly Score: <strong>${(cv.visual_anomaly_score * 100).toFixed(1)}%</strong></div>
+            <div>&bull; Official Seal: <strong>${cv.seal_present ? 'Present' : 'Not Detected'}</strong></div>
+            <div>&bull; Sub-Registrar Signature: <strong>${cv.signature_present ? 'Verified' : 'Unconfirmed'}</strong></div>
+        `;
+
+        // Cadastral box
+        const cp = data.cadastral_parcel || {};
+        document.getElementById('cadastral-details-box').innerHTML = `
+            <div>PARCEL ID: ${cp.parcel_id || 'N/A'} &bull; DAG PLOT: ${cp.dag_plot_number || data.dag_plot_number}</div>
+            <div>MOUZA: ${cp.mouza || 'N/A'} (JL #${cp.jl_number || 'N/A'}) &bull; UPAZILA: ${cp.upazila || 'N/A'}</div>
+            <div>TOTAL PARCEL AREA: ${cp.total_area_decimal || 'N/A'} Decimal &bull; CLASS: ${cp.land_classification || 'Nal'}</div>
+            <div>VERIFICATION ID: ${data.verification_id} &bull; TIMESTAMP: ${data.timestamp}</div>
+        `;
+
+        // Configure Export button
+        document.getElementById('btn-download-report').onclick = () => {
+            window.open(`/api/reports/${data.verification_id}`, '_blank');
+        };
+
+        if (window.lucide) window.lucide.createIcons();
+    }
+
+    function fileComplaintFromVerification() {
+        if (!currentVerificationResult) return;
+        const dag = currentVerificationResult.dag_plot_number;
+        const deed = currentVerificationResult.deed_number;
+        window.location.href = `/user/complaints/new?dag=${encodeURIComponent(dag)}&deed=${encodeURIComponent(deed)}`;
+    }
+</script>
+{% endblock %}

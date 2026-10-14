@@ -1,0 +1,227 @@
+{
+  "evaluation_timestamp": "2026-10-13 23:09:42",
+  "total_stress_test_scenarios": 100,
+  "legitimate_scenarios_count": 50,
+  "compound_fraud_scenarios_count": 50,
+  "models": {
+    "Deterministic Rule Engine": {
+      "true_positives": 50,
+      "false_positives": 0,
+      "true_negatives": 50,
+      "false_negatives": 0,
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "specificity": 1.0,
+      "f1_score": 1.0,
+      "roc_auc": 1.0,
+      "pr_auc": 1.0,
+      "brier_score": 0.0272,
+      "ece": 0.11,
+      "confusion_matrix": [
+        [
+          50,
+          0
+        ],
+        [
+          0,
+          50
+        ]
+      ],
+      "legitimate_false_positive_rate": 0.0,
+      "compound_fraud_recall": 1.0,
+      "false_positive_indices": [],
+      "false_positive_count": 0
+    },
+    "Logistic Regression": {
+      "true_positives": 50,
+      "false_positives": 16,
+      "true_negatives": 34,
+      "false_negatives": 0,
+      "accuracy": 0.84,
+      "precision": 0.7576,
+      "recall": 1.0,
+      "specificity": 0.68,
+      "f1_score": 0.8621,
+      "roc_auc": 1.0,
+      "pr_auc": 1.0,
+      "brier_score": 0.1475,
+      "ece": 0.1708,
+      "confusion_matrix": [
+        [
+          34,
+          16
+        ],
+        [
+          0,
+          50
+        ]
+      ],
+      "legitimate_false_positive_rate": 0.32,
+      "compound_fraud_recall": 1.0,
+      "false_positive_indices": [
+        0,
+        1,
+        3,
+        4,
+        10,
+        14,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49
+      ],
+      "false_positive_count": 16
+    },
+    "Random Forest": {
+      "true_positives": 50,
+      "false_positives": 16,
+      "true_negatives": 34,
+      "false_negatives": 0,
+      "accuracy": 0.84,
+      "precision": 0.7576,
+      "recall": 1.0,
+      "specificity": 0.68,
+      "f1_score": 0.8621,
+      "roc_auc": 0.988,
+      "pr_auc": 0.9898,
+      "brier_score": 0.108,
+      "ece": 0.1794,
+      "confusion_matrix": [
+        [
+          34,
+          16
+        ],
+        [
+          0,
+          50
+        ]
+      ],
+      "legitimate_false_positive_rate": 0.32,
+      "compound_fraud_recall": 1.0,
+      "false_positive_indices": [
+        2,
+        3,
+        4,
+        5,
+        7,
+        9,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49
+      ],
+      "false_positive_count": 16
+    },
+    "XGBoost Classifier": {
+      "true_positives": 50,
+      "false_positives": 10,
+      "true_negatives": 40,
+      "false_negatives": 0,
+      "accuracy": 0.9,
+      "precision": 0.8333,
+      "recall": 1.0,
+      "specificity": 0.8,
+      "f1_score": 0.9091,
+      "roc_auc": 1.0,
+      "pr_auc": 1.0,
+      "brier_score": 0.1077,
+      "ece": 0.138,
+      "confusion_matrix": [
+        [
+          40,
+          10
+        ],
+        [
+          0,
+          50
+        ]
+      ],
+      "legitimate_false_positive_rate": 0.2,
+      "compound_fraud_recall": 1.0,
+      "false_positive_indices": [
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49
+      ],
+      "false_positive_count": 10
+    }
+  },
+  "per_category_accuracy": {
+    "AMBIGUOUS_UNTRACED_PRE1972_DEED": {
+      "sample_count": 10,
+      "is_fraud_category": false,
+      "rule_engine_acc": 1.0,
+      "logistic_regression_acc": 0.0,
+      "random_forest_acc": 0.0,
+      "xgboost_acc": 0.0
+    },
+    "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT": {
+      "sample_count": 18,
+      "is_fraud_category": true,
+      "rule_engine_acc": 1.0,
+      "logistic_regression_acc": 1.0,
+      "random_forest_acc": 1.0,
+      "xgboost_acc": 1.0
+    },
+    "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS": {
+      "sample_count": 16,
+      "is_fraud_category": true,
+      "rule_engine_acc": 1.0,
+      "logistic_regression_acc": 1.0,
+      "random_forest_acc": 1.0,
+      "xgboost_acc": 1.0
+    },
+    "COMPOUND_IMPOSTER_AND_TAMPERED_DEED": {
+      "sample_count": 16,
+      "is_fraud_category": true,
+      "rule_engine_acc": 1.0,
+      "logistic_regression_acc": 1.0,
+      "random_forest_acc": 1.0,
+      "xgboost_acc": 1.0
+    },
+    "LEGITIMATE_INITIALED_CORRECTION_DEED": {
+      "sample_count": 10,
+      "is_fraud_category": false,
+      "rule_engine_acc": 1.0,
+      "logistic_regression_acc": 1.0,
+      "random_forest_acc": 1.0,
+      "xgboost_acc": 1.0
+    },
+    "LEGITIMATE_LONG_CHAIN_PENDING_MUTATION": {
+      "sample_count": 15,
+      "is_fraud_category": false,
+      "rule_engine_acc": 1.0,
+      "logistic_regression_acc": 0.6,
+      "random_forest_acc": 0.6,
+      "xgboost_acc": 1.0
+    },
+    "LEGITIMATE_MULTI_HEIR_PARTITION": {
+      "sample_count": 15,
+      "is_fraud_category": false,
+      "rule_engine_acc": 1.0,
+      "logistic_regression_acc": 1.0,
+      "random_forest_acc": 1.0,
+      "xgboost_acc": 1.0
+    }
+  }
+}

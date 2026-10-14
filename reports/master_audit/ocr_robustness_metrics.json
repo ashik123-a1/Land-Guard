@@ -1,0 +1,398 @@
+{
+  "total_evaluated": 90,
+  "overall": {
+    "mean_cer": 0.397,
+    "mean_wer": 0.5065
+  },
+  "english_subset": {
+    "mean_cer": 0.3816,
+    "mean_wer": 0.5341,
+    "evaluated_samples": 90
+  },
+  "bangla_subset": {
+    "mean_cer": 0.4396,
+    "mean_wer": 0.5301,
+    "evaluated_samples": 88
+  },
+  "exact_field_match_rate": 0.8889,
+  "field_extraction_metrics": {
+    "exact_match_accuracy": 0.8889,
+    "field_precision": 0.9467,
+    "field_recall": 0.8889,
+    "field_f1": 0.9169,
+    "fields_checked_count": 180,
+    "fields_predicted_count": 169,
+    "fields_matched_count": 160,
+    "per_field": {
+      "deed_number": {
+        "gt_count": 24,
+        "pred_count": 24,
+        "match_count": 24,
+        "exact_match_rate": 1.0,
+        "precision": 1.0
+      },
+      "dag_plot_number": {
+        "gt_count": 90,
+        "pred_count": 85,
+        "match_count": 77,
+        "exact_match_rate": 0.8556,
+        "precision": 0.9059
+      },
+      "khatian_number": {
+        "gt_count": 19,
+        "pred_count": 16,
+        "match_count": 16,
+        "exact_match_rate": 0.8421,
+        "precision": 1.0
+      },
+      "transferred_area_decimal": {
+        "gt_count": 47,
+        "pred_count": 44,
+        "match_count": 43,
+        "exact_match_rate": 0.9149,
+        "precision": 0.9773
+      }
+    }
+  },
+  "fields_checked_count": 180,
+  "fields_matched_count": 160,
+  "by_category": {
+    "SALE_DEED": {
+      "overall_cer": 0.3158,
+      "english_cer": 0.3227,
+      "bangla_cer": 0.3005,
+      "mean_wer": 0.3919,
+      "english_wer": 0.4269,
+      "bangla_wer": 0.3594,
+      "count": 24
+    },
+    "KHATIAN_PORCHA": {
+      "overall_cer": 0.6312,
+      "english_cer": 0.6079,
+      "bangla_cer": 0.6741,
+      "mean_wer": 0.6798,
+      "english_wer": 0.7034,
+      "bangla_wer": 0.7192,
+      "count": 19
+    },
+    "MUTATION_RECORD": {
+      "overall_cer": 0.3716,
+      "english_cer": 0.3117,
+      "bangla_cer": 0.4667,
+      "mean_wer": 0.4922,
+      "english_wer": 0.4522,
+      "bangla_wer": 0.5761,
+      "count": 23
+    },
+    "TAX_RECEIPT": {
+      "overall_cer": 0.2666,
+      "english_cer": 0.2668,
+      "bangla_cer": 0.3078,
+      "mean_wer": 0.4264,
+      "english_wer": 0.4561,
+      "bangla_wer": 0.4213,
+      "count": 9
+    },
+    "PARCEL_MAP": {
+      "overall_cer": 0.41,
+      "english_cer": 0.4123,
+      "bangla_cer": 0.0,
+      "mean_wer": 0.5606,
+      "english_wer": 0.5606,
+      "bangla_wer": 0.0,
+      "count": 2
+    },
+    "APPLICATION_COMPLAINT": {
+      "overall_cer": 0.3375,
+      "english_cer": 0.3584,
+      "bangla_cer": 0.3973,
+      "mean_wer": 0.5373,
+      "english_wer": 0.6795,
+      "bangla_wer": 0.5632,
+      "count": 13
+    }
+  },
+  "by_quality": {
+    "low_contrast": {
+      "overall_cer": 0.2801,
+      "english_cer": 0.262,
+      "bangla_cer": 0.3197,
+      "mean_wer": 0.3772,
+      "english_wer": 0.4474,
+      "bangla_wer": 0.3963,
+      "count": 6
+    },
+    "light_noise": {
+      "overall_cer": 0.4838,
+      "english_cer": 0.4854,
+      "bangla_cer": 0.5029,
+      "mean_wer": 0.5973,
+      "english_wer": 0.7146,
+      "bangla_wer": 0.5666,
+      "count": 6
+    },
+    "mild_stains": {
+      "overall_cer": 0.2222,
+      "english_cer": 0.2119,
+      "bangla_cer": 0.2194,
+      "mean_wer": 0.2751,
+      "english_wer": 0.2486,
+      "bangla_wer": 0.2896,
+      "count": 4
+    },
+    "clean_digital": {
+      "overall_cer": 0.2713,
+      "english_cer": 0.2068,
+      "bangla_cer": 0.3395,
+      "mean_wer": 0.3835,
+      "english_wer": 0.3225,
+      "bangla_wer": 0.4403,
+      "count": 6
+    },
+    "grayscale_scan": {
+      "overall_cer": 0.354,
+      "english_cer": 0.3214,
+      "bangla_cer": 0.4195,
+      "mean_wer": 0.4273,
+      "english_wer": 0.44,
+      "bangla_wer": 0.4693,
+      "count": 3
+    },
+    "cropped_edges": {
+      "overall_cer": 0.2907,
+      "english_cer": 0.2504,
+      "bangla_cer": 0.3505,
+      "mean_wer": 0.3419,
+      "english_wer": 0.3087,
+      "bangla_wer": 0.3914,
+      "count": 8
+    },
+    "clean_scan": {
+      "overall_cer": 0.3388,
+      "english_cer": 0.3053,
+      "bangla_cer": 0.3294,
+      "mean_wer": 0.4272,
+      "english_wer": 0.3884,
+      "bangla_wer": 0.4814,
+      "count": 6
+    },
+    "uneven_illumination": {
+      "overall_cer": 0.7558,
+      "english_cer": 0.7413,
+      "bangla_cer": 0.7302,
+      "mean_wer": 0.8791,
+      "english_wer": 0.8933,
+      "bangla_wer": 0.8939,
+      "count": 9
+    },
+    "wrinkled_paper": {
+      "overall_cer": 0.293,
+      "english_cer": 0.2496,
+      "bangla_cer": 0.3704,
+      "mean_wer": 0.4058,
+      "english_wer": 0.444,
+      "bangla_wer": 0.4439,
+      "count": 5
+    },
+    "shadow_phone_photo": {
+      "overall_cer": 0.4113,
+      "english_cer": 0.3736,
+      "bangla_cer": 0.47,
+      "mean_wer": 0.465,
+      "english_wer": 0.4305,
+      "bangla_wer": 0.5357,
+      "count": 7
+    },
+    "skewed_scan": {
+      "overall_cer": 0.2626,
+      "english_cer": 0.2395,
+      "bangla_cer": 0.3119,
+      "mean_wer": 0.3915,
+      "english_wer": 0.4871,
+      "bangla_wer": 0.3976,
+      "count": 5
+    },
+    "mild_rotation": {
+      "overall_cer": 0.217,
+      "english_cer": 0.1935,
+      "bangla_cer": 0.2591,
+      "mean_wer": 0.322,
+      "english_wer": 0.3196,
+      "bangla_wer": 0.36,
+      "count": 7
+    },
+    "compression_artifacts": {
+      "overall_cer": 0.3469,
+      "english_cer": 0.3653,
+      "bangla_cer": 0.3734,
+      "mean_wer": 0.4609,
+      "english_wer": 0.5428,
+      "bangla_wer": 0.4528,
+      "count": 8
+    },
+    "blur": {
+      "overall_cer": 0.7391,
+      "english_cer": 0.8133,
+      "bangla_cer": 0.722,
+      "mean_wer": 0.9157,
+      "english_wer": 0.9931,
+      "bangla_wer": 0.9074,
+      "count": 5
+    },
+    "low_resolution": {
+      "overall_cer": 0.5518,
+      "english_cer": 0.5799,
+      "bangla_cer": 0.6227,
+      "mean_wer": 0.8169,
+      "english_wer": 0.9594,
+      "bangla_wer": 0.868,
+      "count": 5
+    }
+  },
+  "sample_comparisons": [
+    {
+      "image_id": "IMG-8622B0A7",
+      "document_type": "SALE_DEED",
+      "quality_class": "low_contrast",
+      "overall_cer": 0.2592,
+      "english_cer": 0.2535,
+      "bangla_cer": 0.2684,
+      "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-1999-51197 / Execu",
+      "english_pred_sample": "?) << _ - (DEED OF SALE) / Deed No: DEED-1999-51197 / Execution Date: 1999-09-21 1 / (SELL",
+      "bangla_gt_sample": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u09ae \u09aa\u0995\u09cd\u09b7 \u09ac\u09bf\u0995\u09cd\u09b0\u09c7\u09a4\u09be \u09a8\u09be\u09ae \u099c\u09bf\u09b2\u09cd\u09b2\u09c1\u09b0 \u09b0\u09b9\u09ae\u09be\u09a8 \u09af\u09bc \u09aa\u0995\u09cd\u09b7 \u0995\u09cd\u09b0\u09c7\u09a4\u09be \u09a8\u09be\u09ae \u09a8\u09be\u09b8\u09b0\u09c0\u09a8 \u099a\u09cc",
+      "bangla_pred_sample": "\u09b2\u09c0 \u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u09ae \u09aa\u0995\u09cd\u09b7 \u09ac\u0995\u09cd\u09b0\u09bf\u09a4\u09cb \u09af\u09c1 \u09aa\u0995\u09cd\u09b7 \u0995\u09cd\u09b0\u09c7\u09a4\u09be \u09a8\u09be\u09ae \u099c\u09b2\u09cd\u09b2\u09c1\u09b0 \u09b0\u09b9\u09ae\u09be\u09a8 \u09a8\u09be\u09ae \u09a8\u09be\u09b8\u09b0\u09c0\u09a8 \u099a"
+    },
+    {
+      "image_id": "IMG-0E673731",
+      "document_type": "SALE_DEED",
+      "quality_class": "light_noise",
+      "overall_cer": 0.4302,
+      "english_cer": 0.4928,
+      "bangla_cer": 0.25,
+      "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-1999-1183 / Execut",
+      "english_pred_sample": "i i DEMO STAMP { . - (DEED OF SALE) i BDT 1,000 i / Deed No: DEED-1999-1183 i ; FICTIONAL ",
+      "bangla_gt_sample": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u09ae \u09aa\u0995\u09cd\u09b7 \u09ac\u09bf\u0995\u09cd\u09b0\u09c7\u09a4\u09be \u09a8\u09be\u09ae \u0995\u09be\u099c\u09c0 \u09ad\u09c2\u0981\u0987\u09af\u09bc\u09be \u09af\u09bc \u09aa\u0995\u09cd\u09b7 \u0995\u09cd\u09b0\u09c7\u09a4\u09be \u09a8\u09be\u09ae \u09b0\u09b6\u09c0\u09a6 \u09b6\u09bf\u0995\u09a6\u09be",
+      "bangla_pred_sample": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u09ae \u09aa\u0995\u09cd\u09b7 \u09ac\u0995\u09cd\u09b0\u09bf\u09a4\u09cb \u09aa\u0995\u09cd\u09b7 \u0995\u09c7\u09b0\u09a4\u09be \u09a8\u09be\u09ae \u0995\u09be\u099c\u09c0 \u09ad\u09c2\u0981\u0987\u09af\u09bc\u09be \u09a8\u09be\u09ae \u09b0\u09b6\u09c0\u09a6 \u09b6\u09bf\u0995\u09a6\u09be\u09b0 \u09a4\u09aa\u09b6"
+    },
+    {
+      "image_id": "IMG-A2952D98",
+      "document_type": "SALE_DEED",
+      "quality_class": "mild_stains",
+      "overall_cer": 0.291,
+      "english_cer": 0.2928,
+      "bangla_cer": 0.2105,
+      "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2011-17890 / Execu",
+      "english_pred_sample": "DEMO STAMP - (DEED OF SALE) BDT 1,000 / Deed No: DEED-2011-17890 FICTIONAL REVENUE wrafY/ ",
+      "bangla_gt_sample": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u09ae \u09aa\u0995\u09cd\u09b7 \u09ac\u09bf\u0995\u09cd\u09b0\u09c7\u09a4\u09be \u09a8\u09be\u09ae \u09ab\u09b0\u09bf\u09a6\u09be \u0986\u0995\u09cd\u09a4\u09be\u09b0 \u09af\u09bc \u09aa\u0995\u09cd\u09b7 \u0995\u09cd\u09b0\u09c7\u09a4\u09be \u09a8\u09be\u09ae \u0995\u09be\u099c\u09c0 \u099a\u09cc\u09a7\u09c1\u09b0",
+      "bangla_pred_sample": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09ae \u09aa\u0995\u09cd\u09b7 \u09ac\u0995\u09cd\u09b0\u09bf\u09a4\u09cb \u09af\u09c1 \u09aa\u0995\u09cd\u09b7 \u0995\u09cd\u09b0\u09c7\u09a4\u09be \u09a8\u09be\u09ae \u09ab\u09b0\u09a6\u09be \u0986\u0995\u09cd\u09a4\u09be\u09b0 \u09a8\u09be\u09ae \u0995\u09be\u099c\u09c0 \u099a\u09a8\u09cc\u09a7\u09c1\u09b0\u09c0 \u09a4\u09aa\u09b6\u09bf\u09b2"
+    },
+    {
+      "image_id": "IMG-95DA3D63",
+      "document_type": "SALE_DEED",
+      "quality_class": "clean_digital",
+      "overall_cer": 0.2589,
+      "english_cer": 0.2583,
+      "bangla_cer": 0.2379,
+      "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2006-7106 / Execut",
+      "english_pred_sample": "DEMO STAMP - (DEED OF SALE) BDT 1,000 / Deed No: DEED-2006-7106 FICTIONAL REVENUE / Execut",
+      "bangla_gt_sample": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u09ae \u09aa\u0995\u09cd\u09b7 \u09ac\u09bf\u0995\u09cd\u09b0\u09c7\u09a4\u09be \u09a8\u09be\u09ae \u09ab\u09b0\u09bf\u09a6\u09be \u09ac\u09c7\u0997\u09ae \u09af\u09bc \u09aa\u0995\u09cd\u09b7 \u0995\u09cd\u09b0\u09c7\u09a4\u09be \u09a8\u09be\u09ae \u0986\u09ac\u09cd\u09a6\u09c1\u09b2 \u09ae\u09bf\u09af\u09bc\u09be",
+      "bangla_pred_sample": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u09ae \u09aa\u0995\u09cd\u09b7 \u09ac\u0995\u09cd\u09b0\u09bf\u09a4\u09cb \u09af\u09c1 \u09aa\u0995\u09cd\u09b7 \u0995\u09cd\u09b0\u09c7\u09a4\u09be \u09a4\u09aa\u09b6\u09bf\u09b2 \u09b8\u09ae\u09cd\u09aa\u09a4\u09cd\u09a4\u09be \u099c\u09c7\u09b2\u09be \u0989\u09aa\u09c7\u099c\u09b2\u09be \u09ae\u09a8\u09cc\u099c\u09be"
+    },
+    {
+      "image_id": "IMG-F4058715",
+      "document_type": "SALE_DEED",
+      "quality_class": "grayscale_scan",
+      "overall_cer": 0.2522,
+      "english_cer": 0.2544,
+      "bangla_cer": 0.2335,
+      "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2003-62861 / Execu",
+      "english_pred_sample": "DEMO STAMP - (DEED OF SALE) BDT 1,000 / Deed No: DEED-2003-62861 FICTIONAL REVENUE / Execu",
+      "bangla_gt_sample": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u09ae \u09aa\u0995\u09cd\u09b7 \u09ac\u09bf\u0995\u09cd\u09b0\u09c7\u09a4\u09be \u09a8\u09be\u09ae \u0986\u09a8\u09cb\u09af\u09bc\u09be\u09b0 \u09b9\u0995 \u09af\u09bc \u09aa\u0995\u09cd\u09b7 \u0995\u09cd\u09b0\u09c7\u09a4\u09be \u09a8\u09be\u09ae \u09a8\u09be\u09b8\u09b0\u09c0\u09a8 \u09b9\u09cb\u09b8\u09c7\u09a8",
+      "bangla_pred_sample": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u09ae \u09aa\u0995\u09cd\u09b7 \u09ac\u0995\u09cd\u09b0\u09bf\u09a4\u09cb \u09af\u09c1 \u09aa\u0995\u09cd\u09b7 \u0995\u09cd\u09b0\u09c7\u09a4\u09be \u09c3 \u09a4\u09aa\u09b6\u09bf\u09b2 \u09b8\u09ae\u09c3\u09aa\u09a4\u09cd\u09a4 \u099c\u09c7\u09b2\u09be \u0989\u09aa\u09c7\u099c\u09b2\u09be \u09ae\u09a8\u09cc\u099c"
+    },
+    {
+      "image_id": "IMG-2AABA2A7",
+      "document_type": "SALE_DEED",
+      "quality_class": "cropped_edges",
+      "overall_cer": 0.2494,
+      "english_cer": 0.2593,
+      "bangla_cer": 0.2251,
+      "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2014-62997 / Execu",
+      "english_pred_sample": "DEMO STAMP - (DEED OF SALE) BDT 1,000 / Deed No: DEED-2014-62997 HISTIONAL REENUE / Execut",
+      "bangla_gt_sample": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u09ae \u09aa\u0995\u09cd\u09b7 \u09ac\u09bf\u0995\u09cd\u09b0\u09c7\u09a4\u09be \u09a8\u09be\u09ae \u09a8\u09be\u09b8\u09b0\u09c0\u09a8 \u0987\u09b8\u09b2\u09be\u09ae \u09af\u09bc \u09aa\u0995\u09cd\u09b7 \u0995\u09cd\u09b0\u09c7\u09a4\u09be \u09a8\u09be\u09ae \u09b9\u09be\u09ac\u09bf\u09ac\u09c1\u09b0 \u099a\u09cc",
+      "bangla_pred_sample": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u09ae \u09aa\u0995\u09cd\u09b7 \u09ac\u0995\u09cd\u09b0\u09bf\u09a4\u09cb \u09af\u09c1 \u09aa\u0995\u09cd\u09b7 \u0995\u09cd\u09b0\u09c7\u09a4\u09be \u09a4\u09aa\u09b6\u09bf\u09b2 \u09b8\u09ae\u09cd\u09aa\u09a4\u09cd\u09a4 \u099c\u09c7\u09b2\u09be \u0989\u09aa\u09c7\u099c\u09b2\u09be \u09ae\u09a8\u09cc\u099c\u09be "
+    },
+    {
+      "image_id": "IMG-CE005CDE",
+      "document_type": "SALE_DEED",
+      "quality_class": "clean_scan",
+      "overall_cer": 0.27,
+      "english_cer": 0.2779,
+      "bangla_cer": 0.2414,
+      "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2003-65173 / Execu",
+      "english_pred_sample": "DEMO STAMP - (DEED OF SALE) BDT 1,000 / Deed No: DEED-2003-65173 FICTIONAL REVENUE / Execu",
+      "bangla_gt_sample": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u09ae \u09aa\u0995\u09cd\u09b7 \u09ac\u09bf\u0995\u09cd\u09b0\u09c7\u09a4\u09be \u09a8\u09be\u09ae \u09b8\u09c1\u09b2\u09a4\u09be\u09a8\u09be \u0987\u09b8\u09b2\u09be\u09ae \u09af\u09bc \u09aa\u0995\u09cd\u09b7 \u0995\u09cd\u09b0\u09c7\u09a4\u09be \u09a8\u09be\u09ae \u09ab\u09b0\u09bf\u09a6\u09be \u09a4\u09be\u09b2",
+      "bangla_pred_sample": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u09ae \u09aa\u0995\u09cd\u09b7 \u09ac\u0995\u09cd\u09b0\u09bf\u09a4\u09cb \u09af\u09c1 \u09aa\u0995\u09cd\u09b7 \u0995\u09cd\u09b0\u09c7\u09a4\u09be \u09a4\u09aa\u09b6\u09bf\u09b2 \u09b8\u09ae\u09cd\u09aa\u09a4\u09cd\u09a4 \u099c\u09c7\u09b2\u09be \u0989\u09aa\u09c7\u099c\u09b2\u09be \u09ae\u09a8\u09cc\u099c\u09be "
+    },
+    {
+      "image_id": "IMG-6756AF05",
+      "document_type": "SALE_DEED",
+      "quality_class": "mild_stains",
+      "overall_cer": 0.2474,
+      "english_cer": 0.2581,
+      "bangla_cer": 0.2478,
+      "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2002-88504 / Execu",
+      "english_pred_sample": "DEMO STAMP - (DEED OF SALE) BDT 1,000 / Deed No: DEED-2002-88504 FICTIONAL REVENUE / Execu",
+      "bangla_gt_sample": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u09ae \u09aa\u0995\u09cd\u09b7 \u09ac\u09bf\u0995\u09cd\u09b0\u09c7\u09a4\u09be \u09a8\u09be\u09ae \u09ae\u09a8\u09bf\u09b0 \u0986\u09b2\u09c0 \u09af\u09bc \u09aa\u0995\u09cd\u09b7 \u0995\u09cd\u09b0\u09c7\u09a4\u09be \u09a8\u09be\u09ae \u099c\u09bf\u09b2\u09cd\u09b2\u09c1\u09b0 \u0986\u09b9\u09ae\u09c7\u09a6 ",
+      "bangla_pred_sample": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u09ae \u09aa\u0995\u09cd\u09b7 \u09ac\u0995\u09cd\u09b0\u09bf\u09a4\u09cb \u09af\u09c1 \u09aa\u0995\u09cd\u09b7 \u09a4\u09aa\u09b6\u09bf\u09b2 \u09b8\u09ae\u09cd\u09aa\u09a4\u09cd\u09a4\u09b0 \u099c\u09c7\u09b2\u09be \u0989\u09aa\u09c7\u099c\u09b2\u09be \u09ae\u09a8\u09cc\u099c\u09be \u099c\u09a3\u09cd\u099e\u09c7\u09b2"
+    },
+    {
+      "image_id": "IMG-50890EB7",
+      "document_type": "SALE_DEED",
+      "quality_class": "uneven_illumination",
+      "overall_cer": 0.5269,
+      "english_cer": 0.5177,
+      "bangla_cer": 0.5885,
+      "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2006-65385 / Execu",
+      "english_pred_sample": "0966 e a es . 16 900 6 00 ) | name: Stan Ka ae oe' \\o Wy | oe {| | 1) -- eee eee ; nie SUR",
+      "bangla_gt_sample": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u09ae \u09aa\u0995\u09cd\u09b7 \u09ac\u09bf\u0995\u09cd\u09b0\u09c7\u09a4\u09be \u09a8\u09be\u09ae \u09ab\u09b0\u09bf\u09a6\u09be \u09ac\u09c7\u0997\u09ae \u09af\u09bc \u09aa\u0995\u09cd\u09b7 \u0995\u09cd\u09b0\u09c7\u09a4\u09be \u09a8\u09be\u09ae \u09b8\u09c1\u09b2\u09a4\u09be\u09a8\u09be \u0996\u09be\u09a8 ",
+      "bangla_pred_sample": "\u09a6\u09bf \u099a\u09bf \u09ad\u09bf \u09b8\u09cd\u09aa\u09be \u0989\u09aa\u09c7\u099c\u09b2\u09be \u099c\u099e\u09cd\u09b0\u09c7\u09b2\u09a8\u0982 \u09a6\u09be\u0997 \u09a8\u0982 \u099f\u09bf \u09b9\u09b8\u09cd\u09a4\u09be\u09a8\u09cd\u09a4\u09b0\u09bf\u09a4 \u099c\u09ae\u09bf\u09b0 \u09aa\u09b0\u09ae\u09be\u09a3 \u099c\u09ae\u09bf\u09b0 \u09b6\u09cd\u09b0\u09a3\u09cc \u09aa\u09a3\u09ae\u09c2\u09b2\u09cd\u09af \u099c\u09a8 \u09a6\u0995\u09cd\u09b7\u09bf"
+    },
+    {
+      "image_id": "IMG-0DE67DFE",
+      "document_type": "SALE_DEED",
+      "quality_class": "wrinkled_paper",
+      "overall_cer": 0.3263,
+      "english_cer": 0.3511,
+      "bangla_cer": 0.3484,
+      "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2016-71829 / Execu",
+      "english_pred_sample": "DEMO STAMP - (DEED OF SALE) BDT 1,000 / Deed No: DEED-2016-71829 FicTionad REVENUE / Execu",
+      "bangla_gt_sample": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u09ae \u09aa\u0995\u09cd\u09b7 \u09ac\u09bf\u0995\u09cd\u09b0\u09c7\u09a4\u09be \u09a8\u09be\u09ae \u0995\u09be\u099c\u09c0 \u0986\u09b2\u09c0 \u09af\u09bc \u09aa\u0995\u09cd\u09b7 \u0995\u09cd\u09b0\u09c7\u09a4\u09be \u09a8\u09be\u09ae \u09b8\u09c8\u09af\u09bc\u09a6 \u09b9\u0995 \u09a4\u09aa\u09b6\u09bf\u09b2",
+      "bangla_pred_sample": "\u09ac\u09b2 \u09a4\u09b0\u09c0 \u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u09ae \u09aa\u0995\u09cd\u09b7 \u09ac\u0995\u09cd\u09b0\u09bf\u09a4\u09cb \u09af\u09c1 \u09aa\u0995\u09cd\u09b7 \u0995\u09cd\u09b0\u09c7\u09a4\u09be \u09a4\u09aa\u09b6\u09bf\u09b2 \u09b8\u09ae\u09cd\u09aa\u09ad\u09c2\u09a4 \u099c\u09c7\u09b2\u09be \u0989\u09aa\u09c7\u099c\u09b2\u09be"
+    },
+    {
+      "image_id": "IMG-25C43936",
+      "document_type": "SALE_DEED",
+      "quality_class": "shadow_phone_photo",
+      "overall_cer": 0.283,
+      "english_cer": 0.2827,
+      "bangla_cer": 0.2957,
+      "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2009-46308 / Execu",
+      "english_pred_sample": "DEMO STAMP - (DEED OF SALE) BDT 1,000 Ag / Deed No: DEED-2009-46308 FICTIONAL REVENUE / Ex",
+      "bangla_gt_sample": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u09ae \u09aa\u0995\u09cd\u09b7 \u09ac\u09bf\u0995\u09cd\u09b0\u09c7\u09a4\u09be \u09a8\u09be\u09ae \u09ab\u09b0\u09bf\u09a6\u09be \u09ae\u09bf\u09af\u09bc\u09be \u09af\u09bc \u09aa\u0995\u09cd\u09b7 \u0995\u09cd\u09b0\u09c7\u09a4\u09be \u09a8\u09be\u09ae \u09a8\u09be\u09b8\u09b0\u09c0\u09a8 \u09ad\u09c2\u0981\u0987",
+      "bangla_pred_sample": "\u09b9\u09c1 \u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a4\u09be\u09b0\u09bf\u0996 \u09ae \u09aa\u0995\u09cd\u09b7 \u09ac\u0995\u09cd\u09b0\u09bf\u09a4\u09cb \u09af\u09c1 \u09aa\u0995\u09cd\u09b7 \u09a4\u09aa\u09b6\u09bf\u09b2 \u09b8\u09ae\u09cd\u09aa\u09a4\u09cd\u09a4 \u099c\u09c7\u09b2\u09be \u0989\u09aa\u09c7\u099c\u09b2\u09be \u09ae\u09c7\u099f\u09be\u099c\u09be \u099c\u09a3\u09cd\u099e\u09c7\u09b2"
+    },
+    {
+      "image_id": "IMG-C316DC19",
+      "document_type": "SALE_DEED",
+      "quality_class": "skewed_scan",
+      "overall_cer": 0.2799,
+      "english_cer": 0.2883,
+      "bangla_cer": 0.2412,
+      "english_gt_sample": "DEMO STAMP BDT 1,000 FICTIONAL REVENUE - (DEED OF SALE) / Deed No: DEED-2002-26493 / Execu",
+      "english_pred_sample": "DEMO STAMP: - (DEED OF SALE) BDT 1,000 / Deed No: DEED-2002-26493 07018570545 / Execution ",
+      "bangla_gt_sample": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u09ae \u09aa\u0995\u09cd\u09b7 \u09ac\u09bf\u0995\u09cd\u09b0\u09c7\u09a4\u09be \u09a8\u09be\u09ae \u0986\u09a8\u09cb\u09af\u09bc\u09be\u09b0 \u0996\u09be\u09a8 \u09af\u09bc \u09aa\u0995\u09cd\u09b7 \u0995\u09cd\u09b0\u09c7\u09a4\u09be \u09a8\u09be\u09ae \u09ae\u09be\u09b9\u09ae\u09c1\u09a6 \u09ae\u09bf\u09af\u09bc",
+      "bangla_pred_sample": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u09ae \u09aa\u0995\u09cd\u09b7 \u09ac\u0995\u09cd\u09b0\u09bf\u09a4\u09cb \u09af\u09c1 \u09aa\u0995\u09cd\u09b7 \u0995\u09cd\u09b0\u09c7\u09a4\u09be \u09a8\u09be\u09ae \u0996\u09be\u09a8 \u09a8\u09be\u09ae \u09ae\u09be\u09b9\u09ae\u09c1\u09a6 \u09ae\u09a7 \u09a4\u09aa\u09b6\u09bf\u09b2 \u09b8\u09ae\u09cd\u09aa"
+    }
+  ]
+}

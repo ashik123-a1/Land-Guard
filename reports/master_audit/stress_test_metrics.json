@@ -1,0 +1,173 @@
+{
+  "total_stress_tests": 26,
+  "passed_stress_tests": 26,
+  "failed_stress_tests": 0,
+  "load_test": {
+    "total_requests": 100,
+    "failed_requests": 0,
+    "total_time_seconds": 0.51,
+    "throughput_req_per_sec": 197.4,
+    "latency_p50_ms": 5.0,
+    "latency_p95_ms": 6.0,
+    "latency_p99_ms": 6.0,
+    "latency_max_ms": 6.0
+  },
+  "tests": [
+    {
+      "suite": "NUMERICAL_BOUNDARIES",
+      "test_name": "Zero transferred area",
+      "status": "PASS",
+      "details": "Handled safely in 2.0ms without exception. Status: CONFIRMED_INCONSISTENCY"
+    },
+    {
+      "suite": "NUMERICAL_BOUNDARIES",
+      "test_name": "Negative transferred area",
+      "status": "PASS",
+      "details": "Handled safely in 2.0ms without exception. Status: CONFIRMED_INCONSISTENCY"
+    },
+    {
+      "suite": "NUMERICAL_BOUNDARIES",
+      "test_name": "Astronomical area (10^7 dec)",
+      "status": "PASS",
+      "details": "Handled safely in 1.0ms without exception. Status: CONFIRMED_INCONSISTENCY"
+    },
+    {
+      "suite": "NUMERICAL_BOUNDARIES",
+      "test_name": "Zero consideration",
+      "status": "PASS",
+      "details": "Handled safely in 2.0ms without exception. Status: CONFIRMED_INCONSISTENCY"
+    },
+    {
+      "suite": "NUMERICAL_BOUNDARIES",
+      "test_name": "Negative consideration",
+      "status": "PASS",
+      "details": "Handled safely in 1.0ms without exception. Status: CONFIRMED_INCONSISTENCY"
+    },
+    {
+      "suite": "NUMERICAL_BOUNDARIES",
+      "test_name": "Astronomical consideration (10^12 BDT)",
+      "status": "PASS",
+      "details": "Handled safely in 2.0ms without exception. Status: CONFIRMED_INCONSISTENCY"
+    },
+    {
+      "suite": "NUMERICAL_BOUNDARIES",
+      "test_name": "Non-numeric string for area",
+      "status": "PASS",
+      "details": "Handled safely in 1.0ms without exception. Status: CONFIRMED_INCONSISTENCY"
+    },
+    {
+      "suite": "NUMERICAL_BOUNDARIES",
+      "test_name": "Non-numeric string for consideration",
+      "status": "PASS",
+      "details": "Handled safely in 2.0ms without exception. Status: CONFIRMED_INCONSISTENCY"
+    },
+    {
+      "suite": "ADVERSARIAL_STRINGS",
+      "test_name": "SQL injection in deed_number",
+      "status": "PASS",
+      "details": "Processed safely in 1.0ms. Status: CONFIRMED_INCONSISTENCY"
+    },
+    {
+      "suite": "ADVERSARIAL_STRINGS",
+      "test_name": "SQL injection in dag_plot_number",
+      "status": "PASS",
+      "details": "Processed safely in 1.0ms. Status: CONFIRMED_INCONSISTENCY"
+    },
+    {
+      "suite": "ADVERSARIAL_STRINGS",
+      "test_name": "XSS script tag in seller_nid",
+      "status": "PASS",
+      "details": "Processed safely in 2.0ms. Status: CONFIRMED_INCONSISTENCY"
+    },
+    {
+      "suite": "ADVERSARIAL_STRINGS",
+      "test_name": "Huge string (25,000 chars)",
+      "status": "PASS",
+      "details": "Processed safely in 1.0ms. Status: CONFIRMED_INCONSISTENCY"
+    },
+    {
+      "suite": "ADVERSARIAL_STRINGS",
+      "test_name": "Bengali unicode script in fields",
+      "status": "PASS",
+      "details": "Processed safely in 1.0ms. Status: CONFIRMED_INCONSISTENCY"
+    },
+    {
+      "suite": "ADVERSARIAL_STRINGS",
+      "test_name": "Empty dict payload",
+      "status": "PASS",
+      "details": "Processed safely in 2.0ms. Status: CONFIRMED_INCONSISTENCY"
+    },
+    {
+      "suite": "ADVERSARIAL_STRINGS",
+      "test_name": "None values across all fields",
+      "status": "PASS",
+      "details": "Processed safely in 1.0ms. Status: CONFIRMED_INCONSISTENCY"
+    },
+    {
+      "suite": "CALENDAR_DATES",
+      "test_name": "Valid leap year date (2024-02-29)",
+      "status": "PASS",
+      "details": "Input: '2024-02-29' -> Parsed: 2024-02-29"
+    },
+    {
+      "suite": "CALENDAR_DATES",
+      "test_name": "Invalid non-leap Feb 29 (2023-02-29)",
+      "status": "PASS",
+      "details": "Input: '2023-02-29' -> Parsed: None"
+    },
+    {
+      "suite": "CALENDAR_DATES",
+      "test_name": "Impossible date Feb 30 (2024-02-30)",
+      "status": "PASS",
+      "details": "Input: '2024-02-30' -> Parsed: None"
+    },
+    {
+      "suite": "CALENDAR_DATES",
+      "test_name": "Impossible date April 31 (2024-04-31)",
+      "status": "PASS",
+      "details": "Input: '2024-04-31' -> Parsed: None"
+    },
+    {
+      "suite": "CALENDAR_DATES",
+      "test_name": "Month 13 (2024-13-01)",
+      "status": "PASS",
+      "details": "Input: '2024-13-01' -> Parsed: None"
+    },
+    {
+      "suite": "CALENDAR_DATES",
+      "test_name": "Bengali digits leap date (\u09e8\u09e6\u09e8\u09ea-\u09e6\u09e8-\u09e8\u09ef)",
+      "status": "PASS",
+      "details": "Input: '\u09e8\u09e6\u09e8\u09ea-\u09e6\u09e8-\u09e8\u09ef' -> Parsed: 2024-02-29"
+    },
+    {
+      "suite": "UPLOAD_ROBUSTNESS",
+      "test_name": "Unsupported extension (.exe)",
+      "status": "PASS",
+      "details": "Expected HTTP 400, got HTTP 400 ({\"detail\":\"Invalid file extension '.exe'. Only .png, .jpg, .)"
+    },
+    {
+      "suite": "UPLOAD_ROBUSTNESS",
+      "test_name": "Unsupported extension (.sh)",
+      "status": "PASS",
+      "details": "Expected HTTP 400, got HTTP 400 ({\"detail\":\"Invalid file extension '.sh'. Only .png, .jpg, .j)"
+    },
+    {
+      "suite": "UPLOAD_ROBUSTNESS",
+      "test_name": "0-byte file upload",
+      "status": "PASS",
+      "details": "Expected HTTP 400, got HTTP 400 ({\"detail\":\"Uploaded file is corrupted or not a valid image: )"
+    },
+    {
+      "suite": "UPLOAD_ROBUSTNESS",
+      "test_name": "Random garbage bytes disguised as .png",
+      "status": "PASS",
+      "details": "Expected HTTP 400, got HTTP 400 ({\"detail\":\"Uploaded file is corrupted or not a valid image: )"
+    },
+    {
+      "suite": "CONCURRENCY_LOAD",
+      "test_name": "100 Sequential API Verification Requests",
+      "status": "PASS",
+      "details": "Throughput: 197.4 rps, p50: 5.0ms, p95: 6.0ms, Errors: 0"
+    }
+  ]
+}

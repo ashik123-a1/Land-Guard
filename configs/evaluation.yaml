@@ -1,0 +1,25 @@
+# Global Evaluation Benchmarking Configuration
+metrics:
+  ocr:
+    - cer
+    - wer
+    - exact_field_match_rate
+  classification:
+    - precision
+    - recall
+    - f1_score
+    - roc_auc
+    - pr_auc
+  signature_seal:
+    - presence_accuracy
+    - presence_precision
+    - presence_recall
+    - anomaly_detection_rate
+  tampering:
+    - flag_detection_accuracy
+    - false_positive_rate_on_legitimate
+
+thresholds:
+  risk_classification_decision: 0.50
+  tampering_alert_rule: 0.70
+  ocr_acceptable_cer: 0.20

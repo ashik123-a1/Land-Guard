@@ -1,0 +1,32 @@
+# Image Generation Target Configuration
+seed: 42
+dpi: 150
+target_total_images: 10000
+pilot_total_images: 60
+
+category_targets:
+  SALE_DEED: 2500
+  KHATIAN_PORCHA: 2000
+  MUTATION_RECORD: 2000
+  TAX_RECEIPT: 1500
+  PARCEL_MAP: 1000
+  APPLICATION_COMPLAINT: 1000
+
+pilot_category_targets:
+  SALE_DEED: 15
+  KHATIAN_PORCHA: 15
+  MUTATION_RECORD: 10
+  TAX_RECEIPT: 10
+  PARCEL_MAP: 5
+  APPLICATION_COMPLAINT: 5
+
+fonts:
+  primary_bangla: "C:/Windows/Fonts/Nirmala.ttf"
+  primary_bangla_bold: "C:/Windows/Fonts/NirmalaB.ttf"
+  fallback_english: "C:/Windows/Fonts/arial.ttf"
+  fallback_english_bold: "C:/Windows/Fonts/arialbd.ttf"
+
+watermark:
+  text: "SYNTHETIC DEMO — NOT AN OFFICIAL DOCUMENT"
+  color_rgba: [180, 50, 50, 65]
+  font_size: 28

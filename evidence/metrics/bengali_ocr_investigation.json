@@ -1,0 +1,160 @@
+{
+  "engine_availability": {
+    "RapidOCR": {
+      "installed": true,
+      "details": "rapidocr_onnxruntime active with default model"
+    },
+    "Tesseract": {
+      "installed": false,
+      "details": "Tesseract binary not found in system PATH"
+    },
+    "EasyOCR": {
+      "installed": false,
+      "details": "EasyOCR package not installed"
+    }
+  },
+  "sample_size": 10,
+  "metrics_summary": {
+    "bangla_mean_cer": 1.0,
+    "bangla_mean_wer": 1.0,
+    "english_mean_cer": 0.6772,
+    "english_mean_wer": 0.8948
+  },
+  "sample_details": [
+    {
+      "image_id": "IMG-AEE39DE1",
+      "document_type": "SALE_DEED",
+      "quality_class": "clean_digital",
+      "bangla_chars_in_ground_truth": 164,
+      "bangla_chars_in_prediction": 0,
+      "bangla_cer": 1.0,
+      "bangla_wer": 1.0,
+      "english_cer": 0.682,
+      "english_wer": 0.8727,
+      "ground_truth_sample_bn": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u09ab\u09b0\u09bf\u09a6\u09be \u09b9\u0995 \u099c\u09be\u09b9\u09be\u09a8\u09be\u09b0\u09be \u0987\u09b8\u09b2\u09be\u09ae \u099c\u09c7\u09b2\u09be \u0989\u09aa\u099c",
+      "predicted_sample_bn": "[EMPTY_OR_NOISE]"
+    },
+    {
+      "image_id": "IMG-11321A28",
+      "document_type": "SALE_DEED",
+      "quality_class": "clean_scan",
+      "bangla_chars_in_ground_truth": 167,
+      "bangla_chars_in_prediction": 0,
+      "bangla_cer": 1.0,
+      "bangla_wer": 1.0,
+      "english_cer": 0.707,
+      "english_wer": 0.85,
+      "ground_truth_sample_bn": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u099c\u09be\u09b9\u09be\u09a8\u09be\u09b0\u09be \u0987\u09b8\u09b2\u09be\u09ae \u09b0\u09b6\u09c0\u09a6 \u0986\u0995\u09cd\u09a4\u09be\u09b0 \u099c\u09c7\u09b2\u09be ",
+      "predicted_sample_bn": "[EMPTY_OR_NOISE]"
+    },
+    {
+      "image_id": "IMG-06CD594C",
+      "document_type": "SALE_DEED",
+      "quality_class": "grayscale_scan",
+      "bangla_chars_in_ground_truth": 167,
+      "bangla_chars_in_prediction": 0,
+      "bangla_cer": 1.0,
+      "bangla_wer": 1.0,
+      "english_cer": 0.6786,
+      "english_wer": 0.8833,
+      "ground_truth_sample_bn": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u09ae\u09cb\u09b9\u09be\u09ae\u09cd\u09ae\u09a6 \u0986\u09b2\u09c0 \u0986\u09ac\u09cd\u09a6\u09c1\u09b2 \u099a\u09cc\u09a7\u09c1\u09b0\u09c0 \u099c\u09c7\u09b2\u09be ",
+      "predicted_sample_bn": "[EMPTY_OR_NOISE]"
+    },
+    {
+      "image_id": "IMG-1193E534",
+      "document_type": "SALE_DEED",
+      "quality_class": "low_resolution",
+      "bangla_chars_in_ground_truth": 166,
+      "bangla_chars_in_prediction": 0,
+      "bangla_cer": 1.0,
+      "bangla_wer": 1.0,
+      "english_cer": 0.7678,
+      "english_wer": 1.0,
+      "ground_truth_sample_bn": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u0986\u09ac\u09cd\u09a6\u09c1\u09b2 \u099a\u09cc\u09a7\u09c1\u09b0\u09c0 \u09b0\u09b6\u09c0\u09a6 \u0986\u0995\u09cd\u09a4\u09be\u09b0 \u099c\u09c7\u09b2\u09be \u0989",
+      "predicted_sample_bn": "[EMPTY_OR_NOISE]"
+    },
+    {
+      "image_id": "IMG-17440783",
+      "document_type": "SALE_DEED",
+      "quality_class": "mild_rotation",
+      "bangla_chars_in_ground_truth": 166,
+      "bangla_chars_in_prediction": 0,
+      "bangla_cer": 1.0,
+      "bangla_wer": 1.0,
+      "english_cer": 0.7076,
+      "english_wer": 0.9,
+      "ground_truth_sample_bn": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u09b0\u09b6\u09c0\u09a6 \u0986\u0995\u09cd\u09a4\u09be\u09b0 \u09b0\u09b6\u09c0\u09a6 \u09a4\u09be\u09b2\u09c1\u0995\u09a6\u09be\u09b0 \u099c\u09c7\u09b2\u09be \u0989",
+      "predicted_sample_bn": "[EMPTY_OR_NOISE]"
+    },
+    {
+      "image_id": "IMG-33456CFF",
+      "document_type": "SALE_DEED",
+      "quality_class": "skewed_scan",
+      "bangla_chars_in_ground_truth": 166,
+      "bangla_chars_in_prediction": 0,
+      "bangla_cer": 1.0,
+      "bangla_wer": 1.0,
+      "english_cer": 0.5928,
+      "english_wer": 0.9,
+      "ground_truth_sample_bn": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u09b0\u09b6\u09c0\u09a6 \u09a4\u09be\u09b2\u09c1\u0995\u09a6\u09be\u09b0 \u0995\u09be\u09ae\u09be\u09b2 \u0987\u09b8\u09b2\u09be\u09ae \u099c\u09c7\u09b2\u09be \u0989",
+      "predicted_sample_bn": "[EMPTY_OR_NOISE]"
+    },
+    {
+      "image_id": "IMG-4A7031BA",
+      "document_type": "SALE_DEED",
+      "quality_class": "low_contrast",
+      "bangla_chars_in_ground_truth": 164,
+      "bangla_chars_in_prediction": 0,
+      "bangla_cer": 1.0,
+      "bangla_wer": 1.0,
+      "english_cer": 0.5795,
+      "english_wer": 0.7833,
+      "ground_truth_sample_bn": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u09b8\u09c8\u09af\u09bc\u09a6 \u09ae\u09bf\u09af\u09bc\u09be \u0995\u09be\u09ae\u09be\u09b2 \u0987\u09b8\u09b2\u09be\u09ae \u099c\u09c7\u09b2\u09be \u0989\u09aa\u099c",
+      "predicted_sample_bn": "[EMPTY_OR_NOISE]"
+    },
+    {
+      "image_id": "IMG-AA14FA90",
+      "document_type": "SALE_DEED",
+      "quality_class": "uneven_illumination",
+      "bangla_chars_in_ground_truth": 169,
+      "bangla_chars_in_prediction": 0,
+      "bangla_cer": 1.0,
+      "bangla_wer": 1.0,
+      "english_cer": 0.7143,
+      "english_wer": 0.8421,
+      "ground_truth_sample_bn": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u0995\u09be\u09ae\u09be\u09b2 \u0987\u09b8\u09b2\u09be\u09ae \u09b9\u09be\u09ac\u09bf\u09ac\u09c1\u09b0 \u09a4\u09be\u09b2\u09c1\u0995\u09a6\u09be\u09b0 \u099c\u09c7\u09b2",
+      "predicted_sample_bn": "[EMPTY_OR_NOISE]"
+    },
+    {
+      "image_id": "IMG-E9CAFB6B",
+      "document_type": "SALE_DEED",
+      "quality_class": "blur",
+      "bangla_chars_in_ground_truth": 170,
+      "bangla_chars_in_prediction": 0,
+      "bangla_cer": 1.0,
+      "bangla_wer": 1.0,
+      "english_cer": 0.6646,
+      "english_wer": 1.0,
+      "ground_truth_sample_bn": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u09b9\u09be\u09ac\u09bf\u09ac\u09c1\u09b0 \u09a4\u09be\u09b2\u09c1\u0995\u09a6\u09be\u09b0 \u0986\u09ac\u09cd\u09a6\u09c1\u09b0 \u0987\u09b8\u09b2\u09be\u09ae \u099c\u09c7",
+      "predicted_sample_bn": "[EMPTY_OR_NOISE]"
+    },
+    {
+      "image_id": "IMG-B9F9C671",
+      "document_type": "SALE_DEED",
+      "quality_class": "compression_artifacts",
+      "bangla_chars_in_ground_truth": 168,
+      "bangla_chars_in_prediction": 0,
+      "bangla_cer": 1.0,
+      "bangla_wer": 1.0,
+      "english_cer": 0.678,
+      "english_wer": 0.9167,
+      "ground_truth_sample_bn": "\u09b8\u09be\u09ab \u0995\u09ac\u09b2\u09be \u09a6\u09b2\u09bf\u09b2 \u09a6\u09b2\u09bf\u09b2 \u09a8\u0982 \u09a4\u09be\u09b0\u09bf\u0996 \u0986\u09ac\u09cd\u09a6\u09c1\u09b0 \u0987\u09b8\u09b2\u09be\u09ae \u09b0\u09cb\u0995\u09c7\u09af\u09bc\u09be \u09b6\u09bf\u0995\u09a6\u09be\u09b0 \u099c\u09c7\u09b2\u09be",
+      "predicted_sample_bn": "[EMPTY_OR_NOISE]"
+    }
+  ],
+  "investigation_conclusion": {
+    "finding": "RapidOCR with default ONNX models does NOT support Bengali Unicode characters.",
+    "root_cause": "The default bundled model dictionary covers alphanumeric Latin and CJK character sets, but lacks the Bengali Unicode block (U+0980 to U+09FF). Consequently, all Bengali words and ligatures are either skipped or transliterated as random Latin punctuation, yielding ~1.0000 CER on Bengali text.",
+    "recommendation": "Do NOT claim Bengali OCR support. In future phases, deploy an external Bengali OCR engine (such as Tesseract with 'ben.traineddata' or an open Bengali CRNN/ViT model) once approved and installed."
+  }
+}

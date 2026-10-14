@@ -1,0 +1,35 @@
+{
+  "evaluation_timestamp": "2026-10-13 23:22:47",
+  "total_test_images": 48,
+  "overall_cer": 0.3702,
+  "overall_wer": 0.4955,
+  "english_cer": 0.3598,
+  "bangla_cer": 0.3696,
+  "field_exact_match_rates": {
+    "deed_number": {
+      "total_evaluated": 8,
+      "exact_matches": 7,
+      "exact_match_rate": 0.875
+    },
+    "dag_plot_number": {
+      "total_evaluated": 48,
+      "exact_matches": 43,
+      "exact_match_rate": 0.8958
+    },
+    "transferred_area_decimal": {
+      "total_evaluated": 16,
+      "exact_matches": 15,
+      "exact_match_rate": 0.9375
+    },
+    "khatian_number": {
+      "total_evaluated": 8,
+      "exact_matches": 7,
+      "exact_match_rate": 0.875
+    },
+    "execution_date": {
+      "total_evaluated": 8,
+      "exact_matches": 0,
+      "exact_match_rate": 0.0
+    }
+  }
+}

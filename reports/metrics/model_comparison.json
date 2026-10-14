@@ -1,0 +1,413 @@
+[
+  {
+    "model_name": "Majority Baseline",
+    "decision_threshold": 0.5,
+    "accuracy": 0.664,
+    "precision": 0.664,
+    "recall": 1.0,
+    "f1_score": 0.7981,
+    "roc_auc": 0.5,
+    "pr_auc": 0.664,
+    "brier_score": 0.336,
+    "ece_score": 0.336,
+    "confusion_matrix": [
+      [
+        0,
+        168
+      ],
+      [
+        0,
+        332
+      ]
+    ],
+    "tn": 0,
+    "fp": 168,
+    "fn": 0,
+    "tp": 332,
+    "per_class_metrics": {
+      "legitimate": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "fraud": {
+        "precision": 0.664,
+        "recall": 1.0,
+        "f1": 0.7981
+      }
+    },
+    "bootstrap_ci_95": {
+      "accuracy_ci95": [
+        0.624,
+        0.704
+      ],
+      "precision_ci95": [
+        0.624,
+        0.704
+      ],
+      "recall_ci95": [
+        1.0,
+        1.0
+      ],
+      "f1_score_ci95": [
+        0.7685,
+        0.8263
+      ],
+      "pr_auc_ci95": [
+        0.624,
+        0.704
+      ]
+    },
+    "false_positive_count": 168,
+    "false_negative_count": 0,
+    "sample_fp_indices": [
+      0,
+      1,
+      2,
+      3,
+      12
+    ],
+    "sample_fn_indices": []
+  },
+  {
+    "model_name": "Deterministic Rule Baseline",
+    "total_evaluated": 500,
+    "precision": 0.9274,
+    "recall": 1.0,
+    "f1_score": 0.9623,
+    "accuracy": 0.948,
+    "confusion_matrix": [
+      [
+        142,
+        26
+      ],
+      [
+        0,
+        332
+      ]
+    ],
+    "false_positive_count": 26,
+    "false_negative_count": 0,
+    "rule_trigger_breakdown": {
+      "RULE_PARTIAL_SUBDIVISION_CAPACITY_CHECK": 7,
+      "RULE_PLOT_MISMATCH_WITH_KHATIAN": 41,
+      "RULE_CONFLICTING_DOUBLE_DISPOSITION": 125,
+      "RULE_AREA_EXCEEDS_CAPACITY": 41,
+      "RULE_TAX_ARREARS_INDICATOR": 135,
+      "RULE_BROKEN_CHAIN_OF_TITLE": 41,
+      "RULE_UNVERIFIED_MUTATION_RECORD": 131,
+      "RULE_SELLER_NOT_TITLEHOLDER": 46,
+      "RULE_BELOW_MARKET_CONSIDERATION_INDICATOR": 75,
+      "RULE_MANDATORY_REGISTRAR_SEAL_ABSENT": 47,
+      "RULE_VISUAL_TAMPERING_DETECTED": 42,
+      "RULE_MUTATION_PENDING_REVIEW": 22
+    },
+    "finding_category_breakdown": {
+      "REVIEW_REQUIRED": 34,
+      "CONFIRMED_INCONSISTENCY": 509,
+      "RISK_INDICATOR": 210
+    },
+    "sample_false_positives": [
+      {
+        "transaction_id": "TXN-A50E782E",
+        "scenario_category": "LEGITIMATE_NORMAL_SALE",
+        "violations": [
+          {
+            "rule_code": "RULE_CONFLICTING_DOUBLE_DISPOSITION",
+            "category": "CONFIRMED_INCONSISTENCY",
+            "severity": "CRITICAL",
+            "evidence_source": "RELATIONAL_HISTORY",
+            "reason": "Prior deed 'DEED-2003-53651' detected where seller 'OWN-58065BAE' already conveyed 36.06 dec; cumulative transfer (61.31 dec) exceeds parcel capacity (36.06 dec)."
+          },
+          {
+            "rule_code": "RULE_MUTATION_PENDING_REVIEW",
+            "category": "REVIEW_REQUIRED",
+            "severity": "MEDIUM",
+            "evidence_source": "MUTATION_REGISTER",
+            "reason": "Mutation case 'MUT-2018-443/Hathazari' is currently PENDING administrative approval."
+          }
+        ]
+      },
+      {
+        "transaction_id": "TXN-80849794",
+        "scenario_category": "LEGITIMATE_INHERITANCE",
+        "violations": [
+          {
+            "rule_code": "RULE_CONFLICTING_DOUBLE_DISPOSITION",
+            "category": "CONFIRMED_INCONSISTENCY",
+            "severity": "CRITICAL",
+            "evidence_source": "RELATIONAL_HISTORY",
+            "reason": "Prior deed 'DEED-2007-15647' detected where seller 'OWN-E4871AB3' already conveyed 62.12 dec; cumulative transfer (77.08 dec) exceeds parcel capacity (62.12 dec)."
+          },
+          {
+            "rule_code": "RULE_MUTATION_PENDING_REVIEW",
+            "category": "REVIEW_REQUIRED",
+            "severity": "MEDIUM",
+            "evidence_source": "MUTATION_REGISTER",
+            "reason": "Mutation case 'MUT-2023-948/Keraniganj' is currently PENDING administrative approval."
+          }
+        ]
+      },
+      {
+        "transaction_id": "TXN-0C108BEB",
+        "scenario_category": "LEGITIMATE_CORRECTION_DEED",
+        "violations": [
+          {
+            "rule_code": "RULE_CONFLICTING_DOUBLE_DISPOSITION",
+            "category": "CONFIRMED_INCONSISTENCY",
+            "severity": "CRITICAL",
+            "evidence_source": "RELATIONAL_HISTORY",
+            "reason": "Prior deed 'DEED-2004-59813' detected where seller 'OWN-2B501AD7' already conveyed 55.01 dec; cumulative transfer (100.41 dec) exceeds parcel capacity (55.01 dec)."
+          }
+        ]
+      },
+      {
+        "transaction_id": "TXN-3EAC2563",
+        "scenario_category": "LEGITIMATE_NORMAL_SALE",
+        "violations": [
+          {
+            "rule_code": "RULE_CONFLICTING_DOUBLE_DISPOSITION",
+            "category": "CONFIRMED_INCONSISTENCY",
+            "severity": "CRITICAL",
+            "evidence_source": "RELATIONAL_HISTORY",
+            "reason": "Prior deed 'DEED-2000-56011' detected where seller 'OWN-B0AA1503' already conveyed 53.76 dec; cumulative transfer (96.60 dec) exceeds parcel capacity (53.76 dec)."
+          }
+        ]
+      },
+      {
+        "transaction_id": "TXN-194DF7BB",
+        "scenario_category": "LEGITIMATE_NORMAL_SALE",
+        "violations": [
+          {
+            "rule_code": "RULE_CONFLICTING_DOUBLE_DISPOSITION",
+            "category": "CONFIRMED_INCONSISTENCY",
+            "severity": "CRITICAL",
+            "evidence_source": "RELATIONAL_HISTORY",
+            "reason": "Prior deed 'DEED-1999-79169' detected where seller 'OWN-7436B551' already conveyed 68.37 dec; cumulative transfer (126.77 dec) exceeds parcel capacity (68.37 dec)."
+          }
+        ]
+      }
+    ],
+    "sample_false_negatives": []
+  },
+  {
+    "model_name": "Logistic Regression",
+    "decision_threshold": 0.28,
+    "accuracy": 0.976,
+    "precision": 0.9706,
+    "recall": 0.994,
+    "f1_score": 0.9821,
+    "roc_auc": 0.9985,
+    "pr_auc": 0.9993,
+    "brier_score": 0.0152,
+    "ece_score": 0.0188,
+    "confusion_matrix": [
+      [
+        158,
+        10
+      ],
+      [
+        2,
+        330
+      ]
+    ],
+    "tn": 158,
+    "fp": 10,
+    "fn": 2,
+    "tp": 330,
+    "per_class_metrics": {
+      "legitimate": {
+        "precision": 0.9875,
+        "recall": 0.9405,
+        "f1": 0.9634
+      },
+      "fraud": {
+        "precision": 0.9706,
+        "recall": 0.994,
+        "f1": 0.9821
+      }
+    },
+    "bootstrap_ci_95": {
+      "accuracy_ci95": [
+        0.964,
+        0.988
+      ],
+      "precision_ci95": [
+        0.9533,
+        0.9856
+      ],
+      "recall_ci95": [
+        0.9823,
+        1.0
+      ],
+      "f1_score_ci95": [
+        0.9736,
+        0.9912
+      ],
+      "pr_auc_ci95": [
+        0.9985,
+        0.9998
+      ]
+    },
+    "false_positive_count": 10,
+    "false_negative_count": 2,
+    "sample_fp_indices": [
+      100,
+      148,
+      149,
+      184,
+      220
+    ],
+    "sample_fn_indices": [
+      132,
+      249
+    ]
+  },
+  {
+    "model_name": "Random Forest",
+    "decision_threshold": 0.67,
+    "accuracy": 0.96,
+    "precision": 0.9509,
+    "recall": 0.991,
+    "f1_score": 0.9705,
+    "roc_auc": 0.9963,
+    "pr_auc": 0.9982,
+    "brier_score": 0.0447,
+    "ece_score": 0.0847,
+    "confusion_matrix": [
+      [
+        151,
+        17
+      ],
+      [
+        3,
+        329
+      ]
+    ],
+    "tn": 151,
+    "fp": 17,
+    "fn": 3,
+    "tp": 329,
+    "per_class_metrics": {
+      "legitimate": {
+        "precision": 0.9805,
+        "recall": 0.8988,
+        "f1": 0.9379
+      },
+      "fraud": {
+        "precision": 0.9509,
+        "recall": 0.991,
+        "f1": 0.9705
+      }
+    },
+    "bootstrap_ci_95": {
+      "accuracy_ci95": [
+        0.9399,
+        0.976
+      ],
+      "precision_ci95": [
+        0.9272,
+        0.9714
+      ],
+      "recall_ci95": [
+        0.9803,
+        1.0
+      ],
+      "f1_score_ci95": [
+        0.956,
+        0.9826
+      ],
+      "pr_auc_ci95": [
+        0.9962,
+        0.9994
+      ]
+    },
+    "false_positive_count": 17,
+    "false_negative_count": 3,
+    "sample_fp_indices": [
+      48,
+      100,
+      112,
+      148,
+      160
+    ],
+    "sample_fn_indices": [
+      237,
+      300,
+      421
+    ]
+  },
+  {
+    "model_name": "XGBoost Classifier",
+    "decision_threshold": 0.41,
+    "accuracy": 0.982,
+    "precision": 0.9792,
+    "recall": 0.994,
+    "f1_score": 0.9865,
+    "roc_auc": 0.9994,
+    "pr_auc": 0.9997,
+    "brier_score": 0.0104,
+    "ece_score": 0.0185,
+    "confusion_matrix": [
+      [
+        161,
+        7
+      ],
+      [
+        2,
+        330
+      ]
+    ],
+    "tn": 161,
+    "fp": 7,
+    "fn": 2,
+    "tp": 330,
+    "per_class_metrics": {
+      "legitimate": {
+        "precision": 0.9877,
+        "recall": 0.9583,
+        "f1": 0.9728
+      },
+      "fraud": {
+        "precision": 0.9792,
+        "recall": 0.994,
+        "f1": 0.9865
+      }
+    },
+    "bootstrap_ci_95": {
+      "accuracy_ci95": [
+        0.972,
+        0.992
+      ],
+      "precision_ci95": [
+        0.9641,
+        0.9938
+      ],
+      "recall_ci95": [
+        0.9845,
+        1.0
+      ],
+      "f1_score_ci95": [
+        0.9785,
+        0.9944
+      ],
+      "pr_auc_ci95": [
+        0.9993,
+        1.0
+      ]
+    },
+    "false_positive_count": 7,
+    "false_negative_count": 2,
+    "sample_fp_indices": [
+      100,
+      148,
+      232,
+      244,
+      341
+    ],
+    "sample_fn_indices": [
+      237,
+      249
+    ]
+  }
+]

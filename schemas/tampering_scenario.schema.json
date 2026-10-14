@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "TamperingScenarioDefinition",
+  "type": "object",
+  "required": [
+    "scenario_id",
+    "scenario_category",
+    "is_fraud_risk",
+    "description",
+    "injected_modifications",
+    "expected_rule_violations",
+    "ground_truth_label"
+  ],
+  "properties": {
+    "scenario_id": {
+      "type": "string",
+      "pattern": "^SCN-[0-9A-F]{8}$"
+    },
+    "scenario_category": {
+      "type": "string",
+      "enum": [
+        "LEGITIMATE_NORMAL_SALE",
+        "LEGITIMATE_INHERITANCE",
+        "LEGITIMATE_PARTIAL_SUBDIVISION",
+        "LEGITIMATE_CORRECTION_DEED",
+        "ALTERED_PLOT_NUMBER",
+        "ALTERED_OWNER_NAME",
+        "EXAGGERATED_LAND_AREA",
+        "CONFLICTING_DOUBLE_SALE",
+        "BROKEN_CHAIN_OF_TITLE",
+        "UNREGISTERED_MUTATION_MISMATCH",
+        "SYNTHETIC_SEAL_ABSENT_SUSPICIOUS",
+        "VISUAL_OVERLAY_TAMPERING"
+      ]
+    },
+    "is_fraud_risk": {
+      "type": "boolean"
+    },
+    "description": {
+      "type": "string"
+    },
+    "injected_modifications": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "expected_rule_violations": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "ground_truth_label": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

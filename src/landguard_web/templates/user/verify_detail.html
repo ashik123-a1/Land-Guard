@@ -1,0 +1,105 @@
+{% extends "user/layout.html" %}
+
+{% block title %}Verification Dossier {{ verification.verification_id }} — LandGuard AI{% endblock %}
+
+{% block portal_content %}
+<div class="max-w-5xl mx-auto space-y-6">
+    <!-- Breadcrumb & Actions -->
+    <div class="flex items-center justify-between">
+        <a href="/user/history" class="text-xs text-slate-400 hover:text-cyan-400 inline-flex items-center gap-1.5">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            <span>Back to Verification History</span>
+        </a>
+        <div class="flex items-center gap-2">
+            <a href="/api/reports/{{ verification.verification_id }}" target="_blank" class="px-4 py-2 rounded-xl text-xs font-semibold text-white glass-panel hover:bg-slate-800 transition-colors flex items-center gap-2 border border-slate-700">
+                <i data-lucide="file-text" class="w-4 h-4 text-cyan-400"></i>
+                <span>Official PDF/HTML Certificate</span>
+            </a>
+            <a href="/user/complaints/new?dag={{ verification.dag_plot_number }}&deed={{ verification.deed_number }}" class="px-4 py-2 rounded-xl text-xs font-semibold text-navy-950 bg-cyan-400 hover:bg-cyan-300 transition-colors flex items-center gap-2">
+                <i data-lucide="alert-circle" class="w-4 h-4"></i>
+                <span>File Grievance</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Status Header -->
+    <div class="p-6 rounded-2xl border shadow-xl flex items-center justify-between gap-4 {% if verification.overall_status == 'CLEAR_FOR_STANDARD_PROCESSING' %}bg-emerald-950/70 border-emerald-500/50{% elif verification.overall_status == 'CONFIRMED_INCONSISTENCY' %}bg-rose-950/70 border-rose-500/50{% elif verification.overall_status == 'MISSING_EVIDENCE' %}bg-amber-950/70 border-amber-500/50{% else %}bg-indigo-950/70 border-indigo-500/50{% endif %}">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 {% if verification.overall_status == 'CLEAR_FOR_STANDARD_PROCESSING' %}bg-emerald-900 text-emerald-300{% elif verification.overall_status == 'CONFIRMED_INCONSISTENCY' %}bg-rose-900 text-rose-300{% elif verification.overall_status == 'MISSING_EVIDENCE' %}bg-amber-900 text-amber-300{% else %}bg-indigo-900 text-indigo-300{% endif %}">
+                <i data-lucide="{% if verification.overall_status == 'CLEAR_FOR_STANDARD_PROCESSING' %}check-circle{% elif verification.overall_status == 'CONFIRMED_INCONSISTENCY' %}alert-octagon{% else %}alert-triangle{% endif %}" class="w-6 h-6"></i>
+            </div>
+            <div>
+                <div class="text-[11px] font-mono font-bold tracking-wider uppercase text-slate-300">DOSSIER #{{ verification.verification_id }}</div>
+                <div class="text-xl font-extrabold text-white">{{ verification.overall_status|replace('_', ' ') }}</div>
+                <div class="text-xs text-slate-300 mt-0.5">{{ verification.recommended_action }}</div>
+            </div>
+        </div>
+        <div class="text-right font-mono text-xs text-slate-400">
+            <div>{{ verification.timestamp[:19]|replace('T', ' ') }}</div>
+            <div class="text-cyan-400 font-semibold mt-1">XGBoost Risk: {{ (verification.ml_risk_score * 100)|round(1) }}%</div>
+        </div>
+    </div>
+
+    <!-- Deed & Parcel Specifications -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div class="glass-panel p-5 rounded-2xl border border-slate-800">
+            <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Deed Specifications</h3>
+            <div class="space-y-2 text-xs font-mono text-slate-300">
+                <div class="flex justify-between py-1 border-b border-slate-800/60"><span>Deed Number</span><span class="text-white">{{ verification.deed_number }}</span></div>
+                <div class="flex justify-between py-1 border-b border-slate-800/60"><span>Dag Plot Number</span><span class="text-cyan-400">{{ verification.dag_plot_number }}</span></div>
+                <div class="flex justify-between py-1 border-b border-slate-800/60"><span>Transferred Area</span><span class="text-white">{{ verification.transferred_area_decimal }} Decimal</span></div>
+                <div class="flex justify-between py-1 border-b border-slate-800/60"><span>Execution Date</span><span class="text-white">{{ verification.execution_date }}</span></div>
+                <div class="flex justify-between py-1 border-b border-slate-800/60"><span>Seller NID</span><span class="text-slate-400">{{ verification.seller_nid }}</span></div>
+                <div class="flex justify-between py-1"><span>Buyer NID</span><span class="text-slate-400">{{ verification.buyer_nid }}</span></div>
+            </div>
+        </div>
+
+        <div class="glass-panel p-5 rounded-2xl border border-slate-800">
+            <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Multi-Modal AI &amp; CV Signals</h3>
+            <div class="space-y-2 text-xs text-slate-300">
+                <div class="flex justify-between py-1 border-b border-slate-800/60">
+                    <span>XGBoost Supplementary Risk</span>
+                    <span class="font-mono {% if verification.ml_risk_score > 0.35 %}text-rose-400 font-bold{% else %}text-emerald-400{% endif %}">{{ (verification.ml_risk_score * 100)|round(2) }}%</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-slate-800/60">
+                    <span>Visual Physical Tampering</span>
+                    <span class="font-mono {% if verification.cv_evidence.visual_anomaly_detected %}text-rose-400 font-bold{% else %}text-emerald-400{% endif %}">
+                        {{ 'ANOMALY DETECTED (' ~ (verification.cv_evidence.visual_anomaly_score * 100)|round(1) ~ '%)' if verification.cv_evidence.visual_anomaly_detected else 'CLEAR' }}
+                    </span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-slate-800/60">
+                    <span>Official Registry Seal</span>
+                    <span class="font-mono text-white">{{ 'DETECTED' if verification.cv_evidence.seal_present else 'MISSING / UNCERTAIN' }}</span>
+                </div>
+                <div class="flex justify-between py-1">
+                    <span>Sub-Registrar Signature</span>
+                    <span class="font-mono text-white">{{ 'PRESENT' if verification.cv_evidence.signature_present else 'MISSING / UNCERTAIN' }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statutory Rules Findings Table -->
+    <div class="glass-panel p-6 rounded-2xl border border-slate-800">
+        <h3 class="text-sm font-bold text-white mb-3">Triggered Deterministic Statutory Rules</h3>
+        {% if verification.rules_triggered %}
+        <div class="space-y-3">
+            {% for r in verification.rules_triggered %}
+            <div class="p-4 rounded-xl bg-slate-900/80 border border-rose-500/30">
+                <div class="flex items-center justify-between mb-1">
+                    <span class="font-mono font-bold text-xs text-rose-300">{{ r.rule_code }}</span>
+                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-rose-950 text-rose-300 border border-rose-800/50 uppercase">{{ r.severity }}</span>
+                </div>
+                <p class="text-xs text-slate-300 leading-relaxed">{{ r.explanation }}</p>
+                <div class="text-[10px] text-slate-500 font-mono mt-2">Statutory Authority: {{ r.statutory_reference }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="p-4 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-xs text-emerald-300">
+            No statutory rules violated. The deed is clear for standard registry processing.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

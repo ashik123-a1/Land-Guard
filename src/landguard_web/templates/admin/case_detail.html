@@ -1,0 +1,188 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}Case Workspace {{ case.case_id }} — LandGuard AI{% endblock %}
+
+{% block portal_content %}
+<div class="max-w-5xl mx-auto space-y-6">
+    <!-- Breadcrumb & Nav -->
+    <div class="flex items-center justify-between">
+        <a href="/admin/cases" class="text-xs text-slate-400 hover:text-white inline-flex items-center gap-1.5">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            <span>Back to Case Docket</span>
+        </a>
+        <div class="flex items-center gap-2">
+            <a href="/user/parcels/{{ case.dag_plot_number }}" target="_blank" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-300 glass-panel hover:bg-slate-800 transition-colors flex items-center gap-1.5 border border-slate-700">
+                <i data-lucide="layers" class="w-3.5 h-3.5 text-cyan-400"></i>
+                <span>Inspect Parcel #{{ case.dag_plot_number }}</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Case Header & Administrative Controls -->
+    <div class="glass-panel p-6 rounded-2xl border border-slate-800 space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+            <div>
+                <div class="flex items-center gap-3">
+                    <span class="font-mono text-base font-bold text-indigo-400">{{ case.case_id }}</span>
+                    <span class="px-2.5 py-0.5 rounded-lg text-xs font-mono font-bold {% if case.priority == 'CRITICAL' %}bg-rose-950 text-rose-300 border border-rose-800/40{% elif case.priority == 'HIGH' %}bg-amber-950 text-amber-300 border border-amber-800/40{% else %}bg-slate-800 text-slate-400{% endif %}">
+                        {{ case.priority }}
+                    </span>
+                    <span class="px-2.5 py-0.5 rounded-lg text-xs font-mono font-semibold {% if case.status == 'UNDER_REVIEW' %}bg-indigo-950 text-indigo-300 border border-indigo-800/40{% elif case.status == 'RESOLVED' %}bg-emerald-950 text-emerald-300 border border-emerald-800/40{% else %}bg-slate-800 text-slate-300{% endif %}">
+                        {{ case.status }}
+                    </span>
+                </div>
+                <h1 class="text-xl font-bold text-white mt-1.5">{{ case.title }}</h1>
+            </div>
+
+            <div class="text-right text-xs font-mono text-slate-400">
+                <div>Created: <span class="text-slate-200">{{ case.created_at[:10] }}</span></div>
+                <div class="mt-1">Assigned: <span class="text-indigo-400 font-bold">{{ case.assigned_officer }}</span></div>
+            </div>
+        </div>
+
+        <!-- Authorized Officer State Controls -->
+        <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-3">
+            <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                <i data-lucide="sliders" class="w-3.5 h-3.5 text-indigo-400"></i>
+                <span>Authorized Officer Case Controls</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                    <label class="block text-[11px] text-slate-400 mb-1">Investigation Status</label>
+                    <select id="case-status-select" class="glass-input w-full px-3 py-1.5 rounded-lg text-xs font-mono">
+                        <option value="OPEN" {% if case.status == 'OPEN' %}selected{% endif %}>OPEN</option>
+                        <option value="UNDER_REVIEW" {% if case.status == 'UNDER_REVIEW' %}selected{% endif %}>UNDER_REVIEW</option>
+                        <option value="AWAITING_INFORMATION" {% if case.status == 'AWAITING_INFORMATION' %}selected{% endif %}>AWAITING_INFORMATION</option>
+                        <option value="ESCALATED" {% if case.status == 'ESCALATED' %}selected{% endif %}>ESCALATED</option>
+                        <option value="RESOLVED" {% if case.status == 'RESOLVED' %}selected{% endif %}>RESOLVED</option>
+                        <option value="CLOSED" {% if case.status == 'CLOSED' %}selected{% endif %}>CLOSED</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] text-slate-400 mb-1">Priority Classification</label>
+                    <select id="case-priority-select" class="glass-input w-full px-3 py-1.5 rounded-lg text-xs font-mono">
+                        <option value="CRITICAL" {% if case.priority == 'CRITICAL' %}selected{% endif %}>CRITICAL</option>
+                        <option value="HIGH" {% if case.priority == 'HIGH' %}selected{% endif %}>HIGH</option>
+                        <option value="NORMAL" {% if case.priority == 'NORMAL' %}selected{% endif %}>NORMAL</option>
+                        <option value="LOW" {% if case.priority == 'LOW' %}selected{% endif %}>LOW</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] text-slate-400 mb-1">Assigned Investigator</label>
+                    <select id="case-officer-select" class="glass-input w-full px-3 py-1.5 rounded-lg text-xs font-mono">
+                        <option value="Inspector S. Karim" {% if case.assigned_officer == 'Inspector S. Karim' %}selected{% endif %}>Inspector S. Karim</option>
+                        <option value="Senior Registrar M. Rahman" {% if case.assigned_officer == 'Senior Registrar M. Rahman' %}selected{% endif %}>Senior Registrar M. Rahman</option>
+                        <option value="Unassigned" {% if case.assigned_officer == 'Unassigned' %}selected{% endif %}>Unassigned</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex justify-end pt-2">
+                <button type="button" onclick="updateCaseControls()" class="px-4 py-1.5 rounded-lg text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 transition-colors flex items-center gap-1.5">
+                    <i data-lucide="check" class="w-3.5 h-3.5"></i>
+                    <span>Apply Updates</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Evidence Summary -->
+        <div>
+            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Evidence &amp; Statutory Background</h3>
+            <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800 text-xs text-slate-200 leading-relaxed font-sans">
+                {{ case.evidence_summary or 'No additional narrative provided.' }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Officer Notes & Audit Timeline -->
+    <div class="glass-panel p-6 rounded-2xl border border-slate-800 space-y-6">
+        <h2 class="text-base font-bold text-white flex items-center gap-2">
+            <i data-lucide="message-square" class="w-4 h-4 text-indigo-400"></i>
+            <span>Investigation Notes &amp; Audit Trail</span>
+        </h2>
+
+        <!-- Notes Stream -->
+        <div class="space-y-3">
+            {% for n in case.officer_notes %}
+            <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800 text-xs">
+                <div class="flex items-center justify-between mb-1.5">
+                    <span class="font-bold text-indigo-300 font-mono">{{ n.author }}</span>
+                    <span class="text-[10px] font-mono text-slate-500">{{ n.timestamp[:19]|replace('T', ' ') }}</span>
+                </div>
+                <p class="text-slate-300 leading-relaxed font-sans">{{ n.note }}</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Add Note Form -->
+        <form onsubmit="addCaseNote(event)" class="pt-4 border-t border-slate-800 space-y-3">
+            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider">Append Investigator Note</label>
+            <textarea id="officer-note-input" rows="3" required placeholder="Record interview findings, subpoena requests, archival check results, or forensic determinations..."
+                      class="glass-input w-full p-3 rounded-xl text-xs"></textarea>
+            <div class="flex justify-end">
+                <button type="submit" id="add-note-btn" class="px-5 py-2 rounded-xl text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 transition-colors flex items-center gap-1.5">
+                    <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                    <span>Append Official Note</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    async function updateCaseControls() {
+        const payload = {
+            status: document.getElementById('case-status-select').value,
+            priority: document.getElementById('case-priority-select').value,
+            assigned_officer: document.getElementById('case-officer-select').value
+        };
+
+        try {
+            const res = await fetch('/api/cases/{{ case.case_id }}', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if (res.ok) {
+                showToast("Case controls updated successfully!", "success");
+                setTimeout(() => location.reload(), 1000);
+            } else {
+                showToast(data.detail || "Update failed", "error");
+            }
+        } catch (err) {
+            showToast("Error: " + err.message, "error");
+        }
+    }
+
+    async function addCaseNote(event) {
+        event.preventDefault();
+        const note = document.getElementById('officer-note-input').value;
+        if (!note) return;
+
+        try {
+            const res = await fetch('/api/cases/{{ case.case_id }}/notes', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    note: note,
+                    author: "{{ current_user.full_name if current_user else 'Inspector S. Karim' }}"
+                })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                showToast("Note appended to case docket!", "success");
+                setTimeout(() => location.reload(), 1000);
+            } else {
+                showToast(data.detail || "Failed to append note", "error");
+            }
+        } catch (err) {
+            showToast("Error: " + err.message, "error");
+        }
+    }
+</script>
+{% endblock %}

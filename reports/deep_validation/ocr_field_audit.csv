@@ -1,0 +1,89 @@
+image_id,document_type,quality_class,language,field_name,field_label,ground_truth_raw,ocr_extracted_raw,normalized_ground_truth,normalized_ocr_extracted,exact_field_match,error_taxonomy,image_overall_cer,image_overall_wer
+IMG-4F67AAA0,SALE_DEED,clean_digital,bn,deed_number,Deed Serial Number,DEED-2001-35323,DEED-2001-35323,DEED-2001-35323,DEED-2001-35323,1,EXACT_MATCH,0.2444,0.2762
+IMG-4F67AAA0,SALE_DEED,clean_digital,bn,dag_plot_number,Cadastral Dag Plot Number,9044,9043,9044,9043,0,CHARACTER_SUBSTITUTION_OR_SPLIT,0.2444,0.2762
+IMG-4F67AAA0,SALE_DEED,clean_digital,bn,transferred_area_decimal,Transferred Land Area (Decimals),9.24,9.24,9.24,9.24,1,EXACT_MATCH,0.2444,0.2762
+IMG-4F67AAA0,SALE_DEED,clean_digital,bn,execution_date,Deed Execution Date,2001-08-21,,2001-08-21,,0,FIELD_OMISSION_OR_DETECTION_MISS,0.2444,0.2762
+IMG-24DCC9AE,SALE_DEED,clean_scan,bn,deed_number,Deed Serial Number,DEED-2006-18946,DEED-2006-18946,DEED-2006-18946,DEED-2006-18946,1,EXACT_MATCH,0.2902,0.3271
+IMG-24DCC9AE,SALE_DEED,clean_scan,bn,dag_plot_number,Cadastral Dag Plot Number,7873,7873,7873,7873,1,EXACT_MATCH,0.2902,0.3271
+IMG-24DCC9AE,SALE_DEED,clean_scan,bn,transferred_area_decimal,Transferred Land Area (Decimals),8.38,8.38,8.38,8.38,1,EXACT_MATCH,0.2902,0.3271
+IMG-24DCC9AE,SALE_DEED,clean_scan,bn,execution_date,Deed Execution Date,2006-11-11,,2006-11-11,,0,FIELD_OMISSION_OR_DETECTION_MISS,0.2902,0.3271
+IMG-56611CF8,SALE_DEED,grayscale_scan,bn,deed_number,Deed Serial Number,DEED-2001-62672,DEED-2001-62672,DEED-2001-62672,DEED-2001-62672,1,EXACT_MATCH,0.2927,0.3271
+IMG-56611CF8,SALE_DEED,grayscale_scan,bn,dag_plot_number,Cadastral Dag Plot Number,8593,8593,8593,8593,1,EXACT_MATCH,0.2927,0.3271
+IMG-56611CF8,SALE_DEED,grayscale_scan,bn,transferred_area_decimal,Transferred Land Area (Decimals),81.95,81.95,81.95,81.95,1,EXACT_MATCH,0.2927,0.3271
+IMG-56611CF8,SALE_DEED,grayscale_scan,bn,execution_date,Deed Execution Date,2001-07-09,,2001-07-09,,0,FIELD_OMISSION_OR_DETECTION_MISS,0.2927,0.3271
+IMG-00C932E3,SALE_DEED,low_resolution,bn,deed_number,Deed Serial Number,DEED-2007-26266,,DEED-2007-26266,,0,FIELD_OMISSION_OR_DETECTION_MISS,0.6884,0.9346
+IMG-00C932E3,SALE_DEED,low_resolution,bn,dag_plot_number,Cadastral Dag Plot Number,6906,,6906,,0,FIELD_OMISSION_OR_DETECTION_MISS,0.6884,0.9346
+IMG-00C932E3,SALE_DEED,low_resolution,bn,transferred_area_decimal,Transferred Land Area (Decimals),81.95,81.95,81.95,81.95,1,EXACT_MATCH,0.6884,0.9346
+IMG-00C932E3,SALE_DEED,low_resolution,bn,execution_date,Deed Execution Date,2007-07-20,,2007-07-20,,0,FIELD_OMISSION_OR_DETECTION_MISS,0.6884,0.9346
+IMG-34AA49E9,SALE_DEED,mild_rotation,bn,deed_number,Deed Serial Number,DEED-2012-84268,DEED-2012-84268,DEED-2012-84268,DEED-2012-84268,1,EXACT_MATCH,0.3256,0.4393
+IMG-34AA49E9,SALE_DEED,mild_rotation,bn,dag_plot_number,Cadastral Dag Plot Number,5869,5869,5869,5869,1,EXACT_MATCH,0.3256,0.4393
+IMG-34AA49E9,SALE_DEED,mild_rotation,bn,transferred_area_decimal,Transferred Land Area (Decimals),81.95,81.95,81.95,81.95,1,EXACT_MATCH,0.3256,0.4393
+IMG-34AA49E9,SALE_DEED,mild_rotation,bn,execution_date,Deed Execution Date,2012-06-16,,2012-06-16,,0,FIELD_OMISSION_OR_DETECTION_MISS,0.3256,0.4393
+IMG-37B97E26,SALE_DEED,skewed_scan,bn,deed_number,Deed Serial Number,DEED-2016-42496,DEED-2016-42496,DEED-2016-42496,DEED-2016-42496,1,EXACT_MATCH,0.3338,0.4112
+IMG-37B97E26,SALE_DEED,skewed_scan,bn,dag_plot_number,Cadastral Dag Plot Number,829,829,829,829,1,EXACT_MATCH,0.3338,0.4112
+IMG-37B97E26,SALE_DEED,skewed_scan,bn,transferred_area_decimal,Transferred Land Area (Decimals),26.93,26.93,26.93,26.93,1,EXACT_MATCH,0.3338,0.4112
+IMG-37B97E26,SALE_DEED,skewed_scan,bn,execution_date,Deed Execution Date,2016-12-03,,2016-12-03,,0,FIELD_OMISSION_OR_DETECTION_MISS,0.3338,0.4112
+IMG-8622B0A7,SALE_DEED,low_contrast,bn,deed_number,Deed Serial Number,DEED-1999-51197,DEED-1999-51197,DEED-1999-51197,DEED-1999-51197,1,EXACT_MATCH,0.2592,0.3458
+IMG-8622B0A7,SALE_DEED,low_contrast,bn,dag_plot_number,Cadastral Dag Plot Number,9262,9262,9262,9262,1,EXACT_MATCH,0.2592,0.3458
+IMG-8622B0A7,SALE_DEED,low_contrast,bn,transferred_area_decimal,Transferred Land Area (Decimals),16.47,16.47,16.47,16.47,1,EXACT_MATCH,0.2592,0.3458
+IMG-8622B0A7,SALE_DEED,low_contrast,bn,execution_date,Deed Execution Date,1999-09-21,,1999-09-21,,0,FIELD_OMISSION_OR_DETECTION_MISS,0.2592,0.3458
+IMG-4B02B3DB,SALE_DEED,uneven_illumination,bn,deed_number,Deed Serial Number,DEED-2005-38604,DEED-2005-38604,DEED-2005-38604,DEED-2005-38604,1,EXACT_MATCH,0.5885,0.7664
+IMG-4B02B3DB,SALE_DEED,uneven_illumination,bn,dag_plot_number,Cadastral Dag Plot Number,4303,4303,4303,4303,1,EXACT_MATCH,0.5885,0.7664
+IMG-4B02B3DB,SALE_DEED,uneven_illumination,bn,transferred_area_decimal,Transferred Land Area (Decimals),16.47,16.47,16.47,16.47,1,EXACT_MATCH,0.5885,0.7664
+IMG-4B02B3DB,SALE_DEED,uneven_illumination,bn,execution_date,Deed Execution Date,2005-09-18,,2005-09-18,,0,FIELD_OMISSION_OR_DETECTION_MISS,0.5885,0.7664
+IMG-FC665927,KHATIAN_PORCHA,clean_digital,bn,dag_plot_number,Cadastral Dag Plot Number,9044,9044,9044,9044,1,EXACT_MATCH,0.7031,0.7385
+IMG-FC665927,KHATIAN_PORCHA,clean_digital,bn,khatian_number,Survey Khatian Number,1001,1001,1001,1001,1,EXACT_MATCH,0.7031,0.7385
+IMG-DA4FA159,KHATIAN_PORCHA,clean_scan,bn,dag_plot_number,Cadastral Dag Plot Number,7873,7873,7873,7873,1,EXACT_MATCH,0.6836,0.7385
+IMG-DA4FA159,KHATIAN_PORCHA,clean_scan,bn,khatian_number,Survey Khatian Number,1002,1002,1002,1002,1,EXACT_MATCH,0.6836,0.7385
+IMG-E682210A,KHATIAN_PORCHA,grayscale_scan,bn,dag_plot_number,Cadastral Dag Plot Number,8593,8593,8593,8593,1,EXACT_MATCH,0.5685,0.6133
+IMG-E682210A,KHATIAN_PORCHA,grayscale_scan,bn,khatian_number,Survey Khatian Number,1003,1003,1003,1003,1,EXACT_MATCH,0.5685,0.6133
+IMG-09A0330E,KHATIAN_PORCHA,low_resolution,bn,dag_plot_number,Cadastral Dag Plot Number,6906,,6906,,0,FIELD_OMISSION_OR_DETECTION_MISS,0.753,0.9692
+IMG-09A0330E,KHATIAN_PORCHA,low_resolution,bn,khatian_number,Survey Khatian Number,1004,,1004,,0,FIELD_OMISSION_OR_DETECTION_MISS,0.753,0.9692
+IMG-A4E82FD3,KHATIAN_PORCHA,mild_rotation,bn,dag_plot_number,Cadastral Dag Plot Number,5869,5869,5869,5869,1,EXACT_MATCH,0.5012,0.5538
+IMG-A4E82FD3,KHATIAN_PORCHA,mild_rotation,bn,khatian_number,Survey Khatian Number,1005,1005,1005,1005,1,EXACT_MATCH,0.5012,0.5538
+IMG-40B06039,KHATIAN_PORCHA,skewed_scan,bn,dag_plot_number,Cadastral Dag Plot Number,829,829,829,829,1,EXACT_MATCH,0.5212,0.5385
+IMG-40B06039,KHATIAN_PORCHA,skewed_scan,bn,khatian_number,Survey Khatian Number,1006,1006,1006,1006,1,EXACT_MATCH,0.5212,0.5385
+IMG-6C4845A2,KHATIAN_PORCHA,low_contrast,bn,dag_plot_number,Cadastral Dag Plot Number,9262,9262,9262,9262,1,EXACT_MATCH,0.4378,0.48
+IMG-6C4845A2,KHATIAN_PORCHA,low_contrast,bn,khatian_number,Survey Khatian Number,1007,1007,1007,1007,1,EXACT_MATCH,0.4378,0.48
+IMG-58235186,KHATIAN_PORCHA,uneven_illumination,bn,dag_plot_number,Cadastral Dag Plot Number,4303,4303,4303,4303,1,EXACT_MATCH,0.9024,0.9714
+IMG-58235186,KHATIAN_PORCHA,uneven_illumination,bn,khatian_number,Survey Khatian Number,1008,1008,1008,1008,1,EXACT_MATCH,0.9024,0.9714
+IMG-F0EA2687,MUTATION_RECORD,clean_digital,bn,dag_plot_number,Cadastral Dag Plot Number,9044,9044,9044,9044,1,EXACT_MATCH,0.1638,0.2407
+IMG-F0EA2687,MUTATION_RECORD,clean_digital,bn,transferred_area_decimal,Transferred Land Area (Decimals),9.24,9.24,9.24,9.24,1,EXACT_MATCH,0.1638,0.2407
+IMG-04A1B22B,MUTATION_RECORD,clean_scan,bn,dag_plot_number,Cadastral Dag Plot Number,7873,7873,7873,7873,1,EXACT_MATCH,0.2009,0.2857
+IMG-04A1B22B,MUTATION_RECORD,clean_scan,bn,transferred_area_decimal,Transferred Land Area (Decimals),81.95,81.95,81.95,81.95,1,EXACT_MATCH,0.2009,0.2857
+IMG-017D7820,MUTATION_RECORD,grayscale_scan,bn,dag_plot_number,Cadastral Dag Plot Number,8593,8593,8593,8593,1,EXACT_MATCH,0.2423,0.3393
+IMG-017D7820,MUTATION_RECORD,grayscale_scan,bn,transferred_area_decimal,Transferred Land Area (Decimals),16.47,16.47,16.47,16.47,1,EXACT_MATCH,0.2423,0.3393
+IMG-EDDD69AA,MUTATION_RECORD,low_resolution,bn,dag_plot_number,Cadastral Dag Plot Number,6906,6906,6906,6906,1,EXACT_MATCH,0.5522,0.8393
+IMG-EDDD69AA,MUTATION_RECORD,low_resolution,bn,transferred_area_decimal,Transferred Land Area (Decimals),54.52,,54.52,,0,FIELD_OMISSION_OR_DETECTION_MISS,0.5522,0.8393
+IMG-68CC3CF5,MUTATION_RECORD,mild_rotation,bn,dag_plot_number,Cadastral Dag Plot Number,5869,5869,5869,5869,1,EXACT_MATCH,0.1161,0.2321
+IMG-68CC3CF5,MUTATION_RECORD,mild_rotation,bn,transferred_area_decimal,Transferred Land Area (Decimals),70.82,70.82,70.82,70.82,1,EXACT_MATCH,0.1161,0.2321
+IMG-3DE01429,MUTATION_RECORD,skewed_scan,bn,dag_plot_number,Cadastral Dag Plot Number,829,829,829,829,1,EXACT_MATCH,0.2042,0.25
+IMG-3DE01429,MUTATION_RECORD,skewed_scan,bn,transferred_area_decimal,Transferred Land Area (Decimals),73.65,73.65,73.65,73.65,1,EXACT_MATCH,0.2042,0.25
+IMG-C3480F6B,MUTATION_RECORD,low_contrast,bn,dag_plot_number,Cadastral Dag Plot Number,9262,9262,9262,9262,1,EXACT_MATCH,0.2141,0.3214
+IMG-C3480F6B,MUTATION_RECORD,low_contrast,bn,transferred_area_decimal,Transferred Land Area (Decimals),87.25,87.25,87.25,87.25,1,EXACT_MATCH,0.2141,0.3214
+IMG-C7C1897B,MUTATION_RECORD,uneven_illumination,bn,dag_plot_number,Cadastral Dag Plot Number,4303,4303,4303,4303,1,EXACT_MATCH,0.9149,1.0
+IMG-C7C1897B,MUTATION_RECORD,uneven_illumination,bn,transferred_area_decimal,Transferred Land Area (Decimals),23.81,23.81,23.81,23.81,1,EXACT_MATCH,0.9149,1.0
+IMG-977F14CF,TAX_RECEIPT,clean_digital,bn,dag_plot_number,Cadastral Dag Plot Number,9044,9044,9044,9044,1,EXACT_MATCH,0.2454,0.3488
+IMG-F867A379,TAX_RECEIPT,clean_scan,bn,dag_plot_number,Cadastral Dag Plot Number,7873,7873,7873,7873,1,EXACT_MATCH,0.1993,0.3256
+IMG-21D58931,TAX_RECEIPT,grayscale_scan,bn,dag_plot_number,Cadastral Dag Plot Number,8593,8593,8593,8593,1,EXACT_MATCH,0.1282,0.2558
+IMG-3B430CB3,TAX_RECEIPT,low_resolution,bn,dag_plot_number,Cadastral Dag Plot Number,6906,,6906,,0,FIELD_OMISSION_OR_DETECTION_MISS,0.6606,0.907
+IMG-1B1CBE74,TAX_RECEIPT,mild_rotation,bn,dag_plot_number,Cadastral Dag Plot Number,5869,5869,5869,5869,1,EXACT_MATCH,0.1912,0.3488
+IMG-92B735A3,TAX_RECEIPT,skewed_scan,bn,dag_plot_number,Cadastral Dag Plot Number,829,829,829,829,1,EXACT_MATCH,0.1898,0.4186
+IMG-E2696EFA,TAX_RECEIPT,low_contrast,bn,dag_plot_number,Cadastral Dag Plot Number,9262,9262,9262,9262,1,EXACT_MATCH,0.1455,0.3721
+IMG-17B1193C,TAX_RECEIPT,uneven_illumination,bn,dag_plot_number,Cadastral Dag Plot Number,4303,4303,4303,4303,1,EXACT_MATCH,0.8745,0.9767
+IMG-81110EDE,PARCEL_MAP,clean_digital,en,dag_plot_number,Cadastral Dag Plot Number,9044,9044,9044,9044,1,EXACT_MATCH,0.1196,0.2727
+IMG-57739E34,PARCEL_MAP,clean_scan,en,dag_plot_number,Cadastral Dag Plot Number,7873,7873,7873,7873,1,EXACT_MATCH,0.1557,0.2727
+IMG-43620FFE,PARCEL_MAP,grayscale_scan,en,dag_plot_number,Cadastral Dag Plot Number,8593,8593,8593,8593,1,EXACT_MATCH,0.1698,0.2727
+IMG-7930580A,PARCEL_MAP,low_resolution,en,dag_plot_number,Cadastral Dag Plot Number,6906,6905,6906,6905,0,LOW_RESOLUTION_BLUR,0.2406,0.4242
+IMG-36A2ACD0,PARCEL_MAP,mild_rotation,en,dag_plot_number,Cadastral Dag Plot Number,5869,5869,5869,5869,1,EXACT_MATCH,0.2123,0.303
+IMG-C3872A21,PARCEL_MAP,skewed_scan,en,dag_plot_number,Cadastral Dag Plot Number,829,829,829,829,1,EXACT_MATCH,0.1483,0.2424
+IMG-66E5073B,PARCEL_MAP,low_contrast,en,dag_plot_number,Cadastral Dag Plot Number,9262,9262,9262,9262,1,EXACT_MATCH,0.1209,0.2727
+IMG-CBFECD7A,PARCEL_MAP,uneven_illumination,en,dag_plot_number,Cadastral Dag Plot Number,4303,4303,4303,4303,1,EXACT_MATCH,0.5991,0.7576
+IMG-F94726FE,APPLICATION_COMPLAINT,clean_digital,bn,dag_plot_number,Cadastral Dag Plot Number,9044,9044,9044,9044,1,EXACT_MATCH,0.162,0.3433
+IMG-038744A5,APPLICATION_COMPLAINT,clean_scan,bn,dag_plot_number,Cadastral Dag Plot Number,7873,7873,7873,7873,1,EXACT_MATCH,0.2137,0.3881
+IMG-081D1B8A,APPLICATION_COMPLAINT,grayscale_scan,bn,dag_plot_number,Cadastral Dag Plot Number,8593,8593,8593,8593,1,EXACT_MATCH,0.1834,0.3731
+IMG-93C98419,APPLICATION_COMPLAINT,low_resolution,bn,dag_plot_number,Cadastral Dag Plot Number,6906,6906,6906,6906,1,EXACT_MATCH,0.4801,0.7612
+IMG-D58235A1,APPLICATION_COMPLAINT,mild_rotation,bn,dag_plot_number,Cadastral Dag Plot Number,5869,5869,5869,5869,1,EXACT_MATCH,0.2189,0.3731
+IMG-90960857,APPLICATION_COMPLAINT,skewed_scan,bn,dag_plot_number,Cadastral Dag Plot Number,829,829,829,829,1,EXACT_MATCH,0.2246,0.4478
+IMG-3D2B91B3,APPLICATION_COMPLAINT,low_contrast,bn,dag_plot_number,Cadastral Dag Plot Number,9262,9262,9262,9262,1,EXACT_MATCH,0.2699,0.403
+IMG-96CB2B10,APPLICATION_COMPLAINT,uneven_illumination,bn,dag_plot_number,Cadastral Dag Plot Number,4303,4303,4303,4303,1,EXACT_MATCH,0.9151,0.9851

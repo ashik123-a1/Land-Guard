@@ -1,0 +1,6 @@
+Model,Accuracy,Precision,Recall,F1-Score,ROC-AUC,PR-AUC,Brier,ECE,FP Count,FN Count
+Majority Baseline,0.664,0.664,1.0,0.7981,0.5,0.664,0.336,0.336,168,0
+Deterministic Rule Baseline,0.948,0.9274,1.0,0.9623,N/A,N/A,N/A,N/A,26,0
+Logistic Regression,0.976,0.9706,0.994,0.9821,0.9985,0.9993,0.0152,0.0188,10,2
+Random Forest,0.96,0.9509,0.991,0.9705,0.9963,0.9982,0.0447,0.0847,17,3
+XGBoost Classifier,0.982,0.9792,0.994,0.9865,0.9994,0.9997,0.0104,0.0185,7,2

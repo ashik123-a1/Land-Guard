@@ -1,0 +1,108 @@
+{
+  "manifest_version": "1.0.0",
+  "total_tracked_files_in_data_full": 603,
+  "image_files_on_disk": 600,
+  "structured_record_counts": {
+    "owners": 15000,
+    "parcels": 10000,
+    "khatians": 30000,
+    "transactions": 25000,
+    "mutations": 10000,
+    "tax_receipts": 10000,
+    "scenarios": 2500,
+    "fraud_scenarios": 1664
+  },
+  "total_structured_records": 100000,
+  "document_category_breakdown": {
+    "SALE_DEED": 150,
+    "KHATIAN_PORCHA": 120,
+    "MUTATION_RECORD": 120,
+    "TAX_RECEIPT": 90,
+    "PARCEL_MAP": 60,
+    "APPLICATION_COMPLAINT": 60
+  },
+  "image_quality_class_breakdown": {
+    "clean_digital": 40,
+    "clean_scan": 40,
+    "grayscale_scan": 40,
+    "low_resolution": 40,
+    "mild_rotation": 40,
+    "skewed_scan": 40,
+    "low_contrast": 40,
+    "uneven_illumination": 40,
+    "blur": 40,
+    "compression_artifacts": 40,
+    "light_noise": 40,
+    "wrinkled_paper": 40,
+    "mild_stains": 40,
+    "shadow_phone_photo": 40,
+    "cropped_edges": 40
+  },
+  "core_file_checksums": [
+    {
+      "path": "annotations/canonical_annotations.json",
+      "sha256": "6ed1732a70c30c7f521b7f02a081a9e424e10619c5266c4423c96c9803ed5ee1",
+      "size_bytes": 2275872
+    },
+    {
+      "path": "records/canonical_records.json",
+      "sha256": "c77e0da855e2c58f64b01610f236d1150afd7ffc287950e86c283aed760f9f18",
+      "size_bytes": 14241662
+    },
+    {
+      "path": "records/simulator_audit_metadata.json",
+      "sha256": "1be1f105e0ad2e7d1fd8de84cb30e0cb6917663608ee2c2caea0dd891ef4a240",
+      "size_bytes": 1093642
+    },
+    {
+      "path": "images/IMG-0016B17A.png",
+      "sha256": "829a4ffa9c2c182e8e8ba0dbc8729fa32509c3cf2e0ac92c64b76681d8b30bb3",
+      "size_bytes": 289890
+    },
+    {
+      "path": "images/IMG-00224D5D.png",
+      "sha256": "666ab56dbec188e74d80e69233f05eb35698db92741dfb4202e1e152b92c0d67",
+      "size_bytes": 190089
+    },
+    {
+      "path": "images/IMG-002885BB.png",
+      "sha256": "d488342e91f4d98d22f817fc89b1c2c9cf8eb4a2f7e79ff5bbe4be508657eaf3",
+      "size_bytes": 74481
+    },
+    {
+      "path": "images/IMG-00C932E3.png",
+      "sha256": "bf8428d7e109a6af66507ab4cf9b7a8d0609a80a735b38412c979b8ffa385376",
+      "size_bytes": 103552
+    },
+    {
+      "path": "images/IMG-00D9F406.png",
+      "sha256": "74c8c1125a9e041ebfedb26a6be801e5ca7cb513e2d6e7de0b034efadfb15350",
+      "size_bytes": 169155
+    },
+    {
+      "path": "images/IMG-00E65E7B.png",
+      "sha256": "2e43b7b752a3d45d2be99999206fdcea39277d2163e4492ec518b273759c29c3",
+      "size_bytes": 167225
+    },
+    {
+      "path": "images/IMG-016C3242.png",
+      "sha256": "f408d3e33a3d18ca6457ef365bbde109253cfd9a5f7d12a75a202768f711c1d7",
+      "size_bytes": 161474
+    },
+    {
+      "path": "images/IMG-017D7820.png",
+      "sha256": "d791cf120ae907477b0586caa9f709601f42b33e91304707df6269717568a533",
+      "size_bytes": 153786
+    },
+    {
+      "path": "images/IMG-0180B295.png",
+      "sha256": "e593ed43f04685f09f12d744daeae17e7ae21d42e286a822820e31d50ac78525",
+      "size_bytes": 197523
+    },
+    {
+      "path": "images/IMG-01B6F7FF.png",
+      "sha256": "275e7616f4a50974c8cc3a29b2e60160a77163a252c0c3be3dc2445397c856b3",
+      "size_bytes": 238972
+    }
+  ]
+}

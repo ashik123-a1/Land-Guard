@@ -1,0 +1,57 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}User Directory & RBAC — LandGuard Operations{% endblock %}
+
+{% block portal_content %}
+<div class="space-y-6">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">User Directory &amp; RBAC Clearance</h1>
+            <p class="text-xs sm:text-sm text-slate-400 mt-1">Role-based access control directory for Citizens, Investigators, and Chief Registrars.</p>
+        </div>
+        <div class="text-xs font-mono text-indigo-400 px-3 py-1.5 rounded-xl bg-indigo-950/60 border border-indigo-500/30">
+            {{ users|length }} Active Accounts
+        </div>
+    </div>
+
+    <!-- Users Table -->
+    <div class="glass-panel rounded-2xl border border-slate-800 overflow-hidden shadow-xl">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs font-mono">
+                <thead class="bg-slate-900/80 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
+                    <tr>
+                        <th class="p-4">User Identifier</th>
+                        <th class="p-4">Full Legal Name</th>
+                        <th class="p-4">Email Address</th>
+                        <th class="p-4">Clearance Role</th>
+                        <th class="p-4">Staff / Digital ID</th>
+                        <th class="p-4">Jurisdiction / Unit</th>
+                        <th class="p-4">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800/60 text-slate-300">
+                    {% for u in users %}
+                    <tr class="hover:bg-slate-900/40 transition-colors">
+                        <td class="p-4 font-bold text-white">{{ u.user_id }}</td>
+                        <td class="p-4 font-sans font-bold text-white">{{ u.full_name }}</td>
+                        <td class="p-4 text-slate-400">{{ u.email }}</td>
+                        <td class="p-4">
+                            <span class="inline-flex px-2 py-0.5 rounded text-[10px] font-bold {% if u.role == 'ADMIN' %}bg-rose-950 text-rose-300 border border-rose-800/40{% elif u.role == 'INVESTIGATOR' %}bg-indigo-950 text-indigo-300 border border-indigo-800/40{% else %}bg-cyan-950 text-cyan-300 border border-cyan-800/40{% endif %}">
+                                {{ u.role }}
+                            </span>
+                        </td>
+                        <td class="p-4 text-cyan-400 font-bold">{{ u.staff_id or u.digital_identity_id }}</td>
+                        <td class="p-4 font-sans text-slate-400">{{ u.department or u.upazila ~ ', ' ~ u.division }}</td>
+                        <td class="p-4">
+                            <span class="px-2 py-0.5 rounded text-[10px] bg-emerald-950 text-emerald-300 border border-emerald-800/40 font-semibold">
+                                ACTIVE
+                            </span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

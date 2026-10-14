@@ -1,0 +1,106 @@
+{% extends "user/layout.html" %}
+
+{% block title %}Citizen Profile & Identity — LandGuard AI{% endblock %}
+
+{% block portal_content %}
+<div class="max-w-4xl mx-auto space-y-8">
+    <div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Digital Citizen Profile</h1>
+        <p class="text-xs sm:text-sm text-slate-400 mt-1">Verified citizen landholding identity and clearance credential.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+        <!-- Identity Card (5 cols) -->
+        <div class="md:col-span-5 flex flex-col items-center">
+            <div class="identity-card w-full">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="shield-check" class="w-5 h-5 text-cyan-300"></i>
+                            <span class="text-xs font-mono font-bold tracking-widest text-cyan-200 uppercase">LandGuard Identity</span>
+                        </div>
+                        <div class="text-[9px] font-mono text-cyan-400/80 uppercase tracking-widest">People's Republic of Bangladesh</div>
+                    </div>
+                    <div class="chip-icon"></div>
+                </div>
+
+                <div class="my-4 flex items-center justify-between">
+                    <div>
+                        <div class="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Citizen Cardholder</div>
+                        <div class="text-base font-extrabold tracking-wider text-white font-mono uppercase">{{ user.full_name }}</div>
+                    </div>
+                    <div class="w-10 h-10 rounded-full border border-cyan-400/40 bg-cyan-950/40 flex items-center justify-center text-cyan-300">
+                        <i data-lucide="fingerprint" class="w-6 h-6"></i>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="text-xs font-mono tracking-widest text-cyan-300 mb-2 font-semibold">{{ user.digital_identity_id }}</div>
+                    <div class="flex items-center justify-between text-[10px] font-mono text-slate-400 border-t border-cyan-500/20 pt-2">
+                        <div>UPAZILA: <span class="text-white">{{ user.upazila }}, {{ user.division }}</span></div>
+                        <div>VALID THRU: <span class="text-white">{{ user.card_valid_thru or '12/28' }}</span></div>
+                    </div>
+                    <div class="text-[8px] text-cyan-400/70 font-mono tracking-tighter text-center mt-1">
+                        SYNTHETIC DEMO &bull; NOT A PAYMENT CARD &bull; P3 BENCHMARK
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 text-[11px] text-slate-500 text-center font-mono">
+                Cryptographically bound to National ID hash. Fictional demo identity.
+            </div>
+        </div>
+
+        <!-- Account Data (7 cols) -->
+        <div class="md:col-span-7 space-y-5">
+            <div class="glass-panel p-6 rounded-2xl border border-slate-800">
+                <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4">Official Registry Information</h3>
+                <div class="space-y-3 text-xs font-mono">
+                    <div class="flex justify-between py-2 border-b border-slate-800/80">
+                        <span class="text-slate-400">Full Legal Name</span>
+                        <span class="text-white font-bold">{{ user.full_name }}</span>
+                    </div>
+                    <div class="flex justify-between py-2 border-b border-slate-800/80">
+                        <span class="text-slate-400">Account Role</span>
+                        <span class="text-cyan-400 font-bold">{{ user.role }}</span>
+                    </div>
+                    <div class="flex justify-between py-2 border-b border-slate-800/80">
+                        <span class="text-slate-400">National ID Reference</span>
+                        <span class="text-white">1988-XXXX-XXXX-7890</span>
+                    </div>
+                    <div class="flex justify-between py-2 border-b border-slate-800/80">
+                        <span class="text-slate-400">Email Address</span>
+                        <span class="text-white">{{ user.email }}</span>
+                    </div>
+                    <div class="flex justify-between py-2 border-b border-slate-800/80">
+                        <span class="text-slate-400">Registered Phone</span>
+                        <span class="text-white">{{ user.phone or '+880 1712-345678' }}</span>
+                    </div>
+                    <div class="flex justify-between py-2">
+                        <span class="text-slate-400">Jurisdiction Upazila</span>
+                        <span class="text-white">{{ user.upazila }}, {{ user.district }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-panel p-6 rounded-2xl border border-slate-800">
+                <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Linked Synthetic Land Holdings</h3>
+                <div class="space-y-2">
+                    <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center justify-between text-xs font-mono">
+                        <div>
+                            <span class="text-white font-bold">Dag Plot #9044</span> &bull; <span class="text-slate-400">Savar, Dhaka</span>
+                        </div>
+                        <a href="/user/parcels/9044" class="text-cyan-400 hover:underline">Inspect Cadastral Title &rarr;</a>
+                    </div>
+                    <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center justify-between text-xs font-mono">
+                        <div>
+                            <span class="text-white font-bold">Dag Plot #7025</span> &bull; <span class="text-slate-400">Paba, Rajshahi</span>
+                        </div>
+                        <a href="/user/parcels/7025" class="text-cyan-400 hover:underline">Inspect Cadastral Title &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

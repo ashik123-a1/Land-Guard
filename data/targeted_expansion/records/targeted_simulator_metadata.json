@@ -1,0 +1,1568 @@
+[
+  {
+    "scenario_id": "SCN-BDD640FB",
+    "scenario_category": "LEGITIMATE_LONG_CHAIN_PENDING_MUTATION",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-BDD640FB",
+      "scenario_category": "LEGITIMATE_LONG_CHAIN_PENDING_MUTATION",
+      "injected_modifications": [
+        "5-link legitimate title chain with recent purchase awaiting Namzari mutation"
+      ],
+      "expected_rule_violations": [
+        "RULE_MUTATION_PENDING_REVIEW"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-757750A9",
+    "scenario_category": "LEGITIMATE_LONG_CHAIN_PENDING_MUTATION",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-757750A9",
+      "scenario_category": "LEGITIMATE_LONG_CHAIN_PENDING_MUTATION",
+      "injected_modifications": [
+        "5-link legitimate title chain with recent purchase awaiting Namzari mutation"
+      ],
+      "expected_rule_violations": [
+        "RULE_MUTATION_PENDING_REVIEW"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-E64D1BCB",
+    "scenario_category": "LEGITIMATE_LONG_CHAIN_PENDING_MUTATION",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-E64D1BCB",
+      "scenario_category": "LEGITIMATE_LONG_CHAIN_PENDING_MUTATION",
+      "injected_modifications": [
+        "5-link legitimate title chain with recent purchase awaiting Namzari mutation"
+      ],
+      "expected_rule_violations": [
+        "RULE_MUTATION_PENDING_REVIEW"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-98326856",
+    "scenario_category": "LEGITIMATE_LONG_CHAIN_PENDING_MUTATION",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-98326856",
+      "scenario_category": "LEGITIMATE_LONG_CHAIN_PENDING_MUTATION",
+      "injected_modifications": [
+        "5-link legitimate title chain with recent purchase awaiting Namzari mutation"
+      ],
+      "expected_rule_violations": [
+        "RULE_MUTATION_PENDING_REVIEW"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-5D59CD2A",
+    "scenario_category": "LEGITIMATE_LONG_CHAIN_PENDING_MUTATION",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-5D59CD2A",
+      "scenario_category": "LEGITIMATE_LONG_CHAIN_PENDING_MUTATION",
+      "injected_modifications": [
+        "5-link legitimate title chain with recent purchase awaiting Namzari mutation"
+      ],
+      "expected_rule_violations": [
+        "RULE_MUTATION_PENDING_REVIEW"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-4BB00F20",
+    "scenario_category": "LEGITIMATE_LONG_CHAIN_PENDING_MUTATION",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-4BB00F20",
+      "scenario_category": "LEGITIMATE_LONG_CHAIN_PENDING_MUTATION",
+      "injected_modifications": [
+        "5-link legitimate title chain with recent purchase awaiting Namzari mutation"
+      ],
+      "expected_rule_violations": [
+        "RULE_MUTATION_PENDING_REVIEW"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-E7A37E81",
+    "scenario_category": "LEGITIMATE_LONG_CHAIN_PENDING_MUTATION",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-E7A37E81",
+      "scenario_category": "LEGITIMATE_LONG_CHAIN_PENDING_MUTATION",
+      "injected_modifications": [
+        "5-link legitimate title chain with recent purchase awaiting Namzari mutation"
+      ],
+      "expected_rule_violations": [
+        "RULE_MUTATION_PENDING_REVIEW"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-75B17A55",
+    "scenario_category": "LEGITIMATE_LONG_CHAIN_PENDING_MUTATION",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-75B17A55",
+      "scenario_category": "LEGITIMATE_LONG_CHAIN_PENDING_MUTATION",
+      "injected_modifications": [
+        "5-link legitimate title chain with recent purchase awaiting Namzari mutation"
+      ],
+      "expected_rule_violations": [
+        "RULE_MUTATION_PENDING_REVIEW"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-F0E98B3B",
+    "scenario_category": "LEGITIMATE_LONG_CHAIN_PENDING_MUTATION",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-F0E98B3B",
+      "scenario_category": "LEGITIMATE_LONG_CHAIN_PENDING_MUTATION",
+      "injected_modifications": [
+        "5-link legitimate title chain with recent purchase awaiting Namzari mutation"
+      ],
+      "expected_rule_violations": [
+        "RULE_MUTATION_PENDING_REVIEW"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-84DAD06A",
+    "scenario_category": "LEGITIMATE_LONG_CHAIN_PENDING_MUTATION",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-84DAD06A",
+      "scenario_category": "LEGITIMATE_LONG_CHAIN_PENDING_MUTATION",
+      "injected_modifications": [
+        "5-link legitimate title chain with recent purchase awaiting Namzari mutation"
+      ],
+      "expected_rule_violations": [
+        "RULE_MUTATION_PENDING_REVIEW"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-0B2C782A",
+    "scenario_category": "LEGITIMATE_LONG_CHAIN_PENDING_MUTATION",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-0B2C782A",
+      "scenario_category": "LEGITIMATE_LONG_CHAIN_PENDING_MUTATION",
+      "injected_modifications": [
+        "5-link legitimate title chain with recent purchase awaiting Namzari mutation"
+      ],
+      "expected_rule_violations": [
+        "RULE_MUTATION_PENDING_REVIEW"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-DA743152",
+    "scenario_category": "LEGITIMATE_LONG_CHAIN_PENDING_MUTATION",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-DA743152",
+      "scenario_category": "LEGITIMATE_LONG_CHAIN_PENDING_MUTATION",
+      "injected_modifications": [
+        "5-link legitimate title chain with recent purchase awaiting Namzari mutation"
+      ],
+      "expected_rule_violations": [
+        "RULE_MUTATION_PENDING_REVIEW"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-7421FF46",
+    "scenario_category": "LEGITIMATE_LONG_CHAIN_PENDING_MUTATION",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-7421FF46",
+      "scenario_category": "LEGITIMATE_LONG_CHAIN_PENDING_MUTATION",
+      "injected_modifications": [
+        "5-link legitimate title chain with recent purchase awaiting Namzari mutation"
+      ],
+      "expected_rule_violations": [
+        "RULE_MUTATION_PENDING_REVIEW"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-466772CE",
+    "scenario_category": "LEGITIMATE_LONG_CHAIN_PENDING_MUTATION",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-466772CE",
+      "scenario_category": "LEGITIMATE_LONG_CHAIN_PENDING_MUTATION",
+      "injected_modifications": [
+        "5-link legitimate title chain with recent purchase awaiting Namzari mutation"
+      ],
+      "expected_rule_violations": [
+        "RULE_MUTATION_PENDING_REVIEW"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-45A88829",
+    "scenario_category": "LEGITIMATE_LONG_CHAIN_PENDING_MUTATION",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-45A88829",
+      "scenario_category": "LEGITIMATE_LONG_CHAIN_PENDING_MUTATION",
+      "injected_modifications": [
+        "5-link legitimate title chain with recent purchase awaiting Namzari mutation"
+      ],
+      "expected_rule_violations": [
+        "RULE_MUTATION_PENDING_REVIEW"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-E1CDE87F",
+    "scenario_category": "LEGITIMATE_MULTI_HEIR_PARTITION",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-E1CDE87F",
+      "scenario_category": "LEGITIMATE_MULTI_HEIR_PARTITION",
+      "injected_modifications": [
+        "Valid multi-heir partition where cumulative shares equal parcel capacity"
+      ],
+      "expected_rule_violations": [
+        "RULE_PARTIAL_SUBDIVISION_CAPACITY_CHECK"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-68A51C68",
+    "scenario_category": "LEGITIMATE_MULTI_HEIR_PARTITION",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-68A51C68",
+      "scenario_category": "LEGITIMATE_MULTI_HEIR_PARTITION",
+      "injected_modifications": [
+        "Valid multi-heir partition where cumulative shares equal parcel capacity"
+      ],
+      "expected_rule_violations": [
+        "RULE_PARTIAL_SUBDIVISION_CAPACITY_CHECK"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-7C7C404E",
+    "scenario_category": "LEGITIMATE_MULTI_HEIR_PARTITION",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-7C7C404E",
+      "scenario_category": "LEGITIMATE_MULTI_HEIR_PARTITION",
+      "injected_modifications": [
+        "Valid multi-heir partition where cumulative shares equal parcel capacity"
+      ],
+      "expected_rule_violations": [
+        "RULE_PARTIAL_SUBDIVISION_CAPACITY_CHECK"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-3BE79DF4",
+    "scenario_category": "LEGITIMATE_MULTI_HEIR_PARTITION",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-3BE79DF4",
+      "scenario_category": "LEGITIMATE_MULTI_HEIR_PARTITION",
+      "injected_modifications": [
+        "Valid multi-heir partition where cumulative shares equal parcel capacity"
+      ],
+      "expected_rule_violations": [
+        "RULE_PARTIAL_SUBDIVISION_CAPACITY_CHECK"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-EADA79A3",
+    "scenario_category": "LEGITIMATE_MULTI_HEIR_PARTITION",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-EADA79A3",
+      "scenario_category": "LEGITIMATE_MULTI_HEIR_PARTITION",
+      "injected_modifications": [
+        "Valid multi-heir partition where cumulative shares equal parcel capacity"
+      ],
+      "expected_rule_violations": [
+        "RULE_PARTIAL_SUBDIVISION_CAPACITY_CHECK"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-86ABD4E7",
+    "scenario_category": "LEGITIMATE_MULTI_HEIR_PARTITION",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-86ABD4E7",
+      "scenario_category": "LEGITIMATE_MULTI_HEIR_PARTITION",
+      "injected_modifications": [
+        "Valid multi-heir partition where cumulative shares equal parcel capacity"
+      ],
+      "expected_rule_violations": [
+        "RULE_PARTIAL_SUBDIVISION_CAPACITY_CHECK"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-0C3CE284",
+    "scenario_category": "LEGITIMATE_MULTI_HEIR_PARTITION",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-0C3CE284",
+      "scenario_category": "LEGITIMATE_MULTI_HEIR_PARTITION",
+      "injected_modifications": [
+        "Valid multi-heir partition where cumulative shares equal parcel capacity"
+      ],
+      "expected_rule_violations": [
+        "RULE_PARTIAL_SUBDIVISION_CAPACITY_CHECK"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-AD973B67",
+    "scenario_category": "LEGITIMATE_MULTI_HEIR_PARTITION",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-AD973B67",
+      "scenario_category": "LEGITIMATE_MULTI_HEIR_PARTITION",
+      "injected_modifications": [
+        "Valid multi-heir partition where cumulative shares equal parcel capacity"
+      ],
+      "expected_rule_violations": [
+        "RULE_PARTIAL_SUBDIVISION_CAPACITY_CHECK"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-AE92EA71",
+    "scenario_category": "LEGITIMATE_MULTI_HEIR_PARTITION",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-AE92EA71",
+      "scenario_category": "LEGITIMATE_MULTI_HEIR_PARTITION",
+      "injected_modifications": [
+        "Valid multi-heir partition where cumulative shares equal parcel capacity"
+      ],
+      "expected_rule_violations": [
+        "RULE_PARTIAL_SUBDIVISION_CAPACITY_CHECK"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-20DA8972",
+    "scenario_category": "LEGITIMATE_MULTI_HEIR_PARTITION",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-20DA8972",
+      "scenario_category": "LEGITIMATE_MULTI_HEIR_PARTITION",
+      "injected_modifications": [
+        "Valid multi-heir partition where cumulative shares equal parcel capacity"
+      ],
+      "expected_rule_violations": [
+        "RULE_PARTIAL_SUBDIVISION_CAPACITY_CHECK"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-4C24A053",
+    "scenario_category": "LEGITIMATE_MULTI_HEIR_PARTITION",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-4C24A053",
+      "scenario_category": "LEGITIMATE_MULTI_HEIR_PARTITION",
+      "injected_modifications": [
+        "Valid multi-heir partition where cumulative shares equal parcel capacity"
+      ],
+      "expected_rule_violations": [
+        "RULE_PARTIAL_SUBDIVISION_CAPACITY_CHECK"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-64AB851B",
+    "scenario_category": "LEGITIMATE_MULTI_HEIR_PARTITION",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-64AB851B",
+      "scenario_category": "LEGITIMATE_MULTI_HEIR_PARTITION",
+      "injected_modifications": [
+        "Valid multi-heir partition where cumulative shares equal parcel capacity"
+      ],
+      "expected_rule_violations": [
+        "RULE_PARTIAL_SUBDIVISION_CAPACITY_CHECK"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-E4A4474C",
+    "scenario_category": "LEGITIMATE_MULTI_HEIR_PARTITION",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-E4A4474C",
+      "scenario_category": "LEGITIMATE_MULTI_HEIR_PARTITION",
+      "injected_modifications": [
+        "Valid multi-heir partition where cumulative shares equal parcel capacity"
+      ],
+      "expected_rule_violations": [
+        "RULE_PARTIAL_SUBDIVISION_CAPACITY_CHECK"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-80773E33",
+    "scenario_category": "LEGITIMATE_MULTI_HEIR_PARTITION",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-80773E33",
+      "scenario_category": "LEGITIMATE_MULTI_HEIR_PARTITION",
+      "injected_modifications": [
+        "Valid multi-heir partition where cumulative shares equal parcel capacity"
+      ],
+      "expected_rule_violations": [
+        "RULE_PARTIAL_SUBDIVISION_CAPACITY_CHECK"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-A7EDC8D8",
+    "scenario_category": "LEGITIMATE_MULTI_HEIR_PARTITION",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-A7EDC8D8",
+      "scenario_category": "LEGITIMATE_MULTI_HEIR_PARTITION",
+      "injected_modifications": [
+        "Valid multi-heir partition where cumulative shares equal parcel capacity"
+      ],
+      "expected_rule_violations": [
+        "RULE_PARTIAL_SUBDIVISION_CAPACITY_CHECK"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-EFC9909E",
+    "scenario_category": "LEGITIMATE_INITIALED_CORRECTION_DEED",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-EFC9909E",
+      "scenario_category": "LEGITIMATE_INITIALED_CORRECTION_DEED",
+      "injected_modifications": [
+        "Clerical strikeover initialed by Sub-Registrar on rectification deed"
+      ],
+      "expected_rule_violations": [
+        "RULE_VISUAL_TAMPERING_DETECTED"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-2FAABE0B",
+    "scenario_category": "LEGITIMATE_INITIALED_CORRECTION_DEED",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-2FAABE0B",
+      "scenario_category": "LEGITIMATE_INITIALED_CORRECTION_DEED",
+      "injected_modifications": [
+        "Clerical strikeover initialed by Sub-Registrar on rectification deed"
+      ],
+      "expected_rule_violations": [
+        "RULE_VISUAL_TAMPERING_DETECTED"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-AAF407F7",
+    "scenario_category": "LEGITIMATE_INITIALED_CORRECTION_DEED",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-AAF407F7",
+      "scenario_category": "LEGITIMATE_INITIALED_CORRECTION_DEED",
+      "injected_modifications": [
+        "Clerical strikeover initialed by Sub-Registrar on rectification deed"
+      ],
+      "expected_rule_violations": [
+        "RULE_VISUAL_TAMPERING_DETECTED"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-13FE8A29",
+    "scenario_category": "LEGITIMATE_INITIALED_CORRECTION_DEED",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-13FE8A29",
+      "scenario_category": "LEGITIMATE_INITIALED_CORRECTION_DEED",
+      "injected_modifications": [
+        "Clerical strikeover initialed by Sub-Registrar on rectification deed"
+      ],
+      "expected_rule_violations": [
+        "RULE_VISUAL_TAMPERING_DETECTED"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-DE9F6F5B",
+    "scenario_category": "LEGITIMATE_INITIALED_CORRECTION_DEED",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-DE9F6F5B",
+      "scenario_category": "LEGITIMATE_INITIALED_CORRECTION_DEED",
+      "injected_modifications": [
+        "Clerical strikeover initialed by Sub-Registrar on rectification deed"
+      ],
+      "expected_rule_violations": [
+        "RULE_VISUAL_TAMPERING_DETECTED"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-379EF467",
+    "scenario_category": "LEGITIMATE_INITIALED_CORRECTION_DEED",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-379EF467",
+      "scenario_category": "LEGITIMATE_INITIALED_CORRECTION_DEED",
+      "injected_modifications": [
+        "Clerical strikeover initialed by Sub-Registrar on rectification deed"
+      ],
+      "expected_rule_violations": [
+        "RULE_VISUAL_TAMPERING_DETECTED"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-2F12B150",
+    "scenario_category": "LEGITIMATE_INITIALED_CORRECTION_DEED",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-2F12B150",
+      "scenario_category": "LEGITIMATE_INITIALED_CORRECTION_DEED",
+      "injected_modifications": [
+        "Clerical strikeover initialed by Sub-Registrar on rectification deed"
+      ],
+      "expected_rule_violations": [
+        "RULE_VISUAL_TAMPERING_DETECTED"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-42F5B3F5",
+    "scenario_category": "LEGITIMATE_INITIALED_CORRECTION_DEED",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-42F5B3F5",
+      "scenario_category": "LEGITIMATE_INITIALED_CORRECTION_DEED",
+      "injected_modifications": [
+        "Clerical strikeover initialed by Sub-Registrar on rectification deed"
+      ],
+      "expected_rule_violations": [
+        "RULE_VISUAL_TAMPERING_DETECTED"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-E3AD64D4",
+    "scenario_category": "LEGITIMATE_INITIALED_CORRECTION_DEED",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-E3AD64D4",
+      "scenario_category": "LEGITIMATE_INITIALED_CORRECTION_DEED",
+      "injected_modifications": [
+        "Clerical strikeover initialed by Sub-Registrar on rectification deed"
+      ],
+      "expected_rule_violations": [
+        "RULE_VISUAL_TAMPERING_DETECTED"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-DBB44021",
+    "scenario_category": "LEGITIMATE_INITIALED_CORRECTION_DEED",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-DBB44021",
+      "scenario_category": "LEGITIMATE_INITIALED_CORRECTION_DEED",
+      "injected_modifications": [
+        "Clerical strikeover initialed by Sub-Registrar on rectification deed"
+      ],
+      "expected_rule_violations": [
+        "RULE_VISUAL_TAMPERING_DETECTED"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-1375EE90",
+    "scenario_category": "AMBIGUOUS_UNTRACED_PRE1972_DEED",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-1375EE90",
+      "scenario_category": "AMBIGUOUS_UNTRACED_PRE1972_DEED",
+      "injected_modifications": [
+        "Pre-1972 ancestral conveyance cited where archive index is unindexed/damaged: UNINDEXED_PRE1972_VOLUME_189"
+      ],
+      "expected_rule_violations": [
+        "RULE_BROKEN_CHAIN_OF_TITLE"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-8E969227",
+    "scenario_category": "AMBIGUOUS_UNTRACED_PRE1972_DEED",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-8E969227",
+      "scenario_category": "AMBIGUOUS_UNTRACED_PRE1972_DEED",
+      "injected_modifications": [
+        "Pre-1972 ancestral conveyance cited where archive index is unindexed/damaged: UNINDEXED_PRE1972_VOLUME_437"
+      ],
+      "expected_rule_violations": [
+        "RULE_BROKEN_CHAIN_OF_TITLE"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-D0C30018",
+    "scenario_category": "AMBIGUOUS_UNTRACED_PRE1972_DEED",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-D0C30018",
+      "scenario_category": "AMBIGUOUS_UNTRACED_PRE1972_DEED",
+      "injected_modifications": [
+        "Pre-1972 ancestral conveyance cited where archive index is unindexed/damaged: UNINDEXED_PRE1972_VOLUME_990"
+      ],
+      "expected_rule_violations": [
+        "RULE_BROKEN_CHAIN_OF_TITLE"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-09697101",
+    "scenario_category": "AMBIGUOUS_UNTRACED_PRE1972_DEED",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-09697101",
+      "scenario_category": "AMBIGUOUS_UNTRACED_PRE1972_DEED",
+      "injected_modifications": [
+        "Pre-1972 ancestral conveyance cited where archive index is unindexed/damaged: UNINDEXED_PRE1972_VOLUME_847"
+      ],
+      "expected_rule_violations": [
+        "RULE_BROKEN_CHAIN_OF_TITLE"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-57D337D3",
+    "scenario_category": "AMBIGUOUS_UNTRACED_PRE1972_DEED",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-57D337D3",
+      "scenario_category": "AMBIGUOUS_UNTRACED_PRE1972_DEED",
+      "injected_modifications": [
+        "Pre-1972 ancestral conveyance cited where archive index is unindexed/damaged: UNINDEXED_PRE1972_VOLUME_104"
+      ],
+      "expected_rule_violations": [
+        "RULE_BROKEN_CHAIN_OF_TITLE"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-47419B48",
+    "scenario_category": "AMBIGUOUS_UNTRACED_PRE1972_DEED",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-47419B48",
+      "scenario_category": "AMBIGUOUS_UNTRACED_PRE1972_DEED",
+      "injected_modifications": [
+        "Pre-1972 ancestral conveyance cited where archive index is unindexed/damaged: UNINDEXED_PRE1972_VOLUME_154"
+      ],
+      "expected_rule_violations": [
+        "RULE_BROKEN_CHAIN_OF_TITLE"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-02740F73",
+    "scenario_category": "AMBIGUOUS_UNTRACED_PRE1972_DEED",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-02740F73",
+      "scenario_category": "AMBIGUOUS_UNTRACED_PRE1972_DEED",
+      "injected_modifications": [
+        "Pre-1972 ancestral conveyance cited where archive index is unindexed/damaged: UNINDEXED_PRE1972_VOLUME_853"
+      ],
+      "expected_rule_violations": [
+        "RULE_BROKEN_CHAIN_OF_TITLE"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-3F5E3B8C",
+    "scenario_category": "AMBIGUOUS_UNTRACED_PRE1972_DEED",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-3F5E3B8C",
+      "scenario_category": "AMBIGUOUS_UNTRACED_PRE1972_DEED",
+      "injected_modifications": [
+        "Pre-1972 ancestral conveyance cited where archive index is unindexed/damaged: UNINDEXED_PRE1972_VOLUME_160"
+      ],
+      "expected_rule_violations": [
+        "RULE_BROKEN_CHAIN_OF_TITLE"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-A7E8D18E",
+    "scenario_category": "AMBIGUOUS_UNTRACED_PRE1972_DEED",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-A7E8D18E",
+      "scenario_category": "AMBIGUOUS_UNTRACED_PRE1972_DEED",
+      "injected_modifications": [
+        "Pre-1972 ancestral conveyance cited where archive index is unindexed/damaged: UNINDEXED_PRE1972_VOLUME_850"
+      ],
+      "expected_rule_violations": [
+        "RULE_BROKEN_CHAIN_OF_TITLE"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-755CEE2A",
+    "scenario_category": "AMBIGUOUS_UNTRACED_PRE1972_DEED",
+    "is_fraud_risk": false,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-755CEE2A",
+      "scenario_category": "AMBIGUOUS_UNTRACED_PRE1972_DEED",
+      "injected_modifications": [
+        "Pre-1972 ancestral conveyance cited where archive index is unindexed/damaged: UNINDEXED_PRE1972_VOLUME_179"
+      ],
+      "expected_rule_violations": [
+        "RULE_BROKEN_CHAIN_OF_TITLE"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-84FA4C72",
+    "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-84FA4C72",
+      "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+      "injected_modifications": [
+        "Compound fraud: Conflicting double sale combined with altered plot number on deed"
+      ],
+      "expected_rule_violations": [
+        "RULE_CONFLICTING_DOUBLE_DISPOSITION",
+        "RULE_PLOT_MISMATCH_WITH_KHATIAN"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-E03635FC",
+    "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-E03635FC",
+      "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+      "injected_modifications": [
+        "Compound fraud: Conflicting double sale combined with altered plot number on deed"
+      ],
+      "expected_rule_violations": [
+        "RULE_CONFLICTING_DOUBLE_DISPOSITION",
+        "RULE_PLOT_MISMATCH_WITH_KHATIAN"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-6A59C043",
+    "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-6A59C043",
+      "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+      "injected_modifications": [
+        "Compound fraud: Conflicting double sale combined with altered plot number on deed"
+      ],
+      "expected_rule_violations": [
+        "RULE_CONFLICTING_DOUBLE_DISPOSITION",
+        "RULE_PLOT_MISMATCH_WITH_KHATIAN"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-C7F7BDA1",
+    "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-C7F7BDA1",
+      "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+      "injected_modifications": [
+        "Compound fraud: Conflicting double sale combined with altered plot number on deed"
+      ],
+      "expected_rule_violations": [
+        "RULE_CONFLICTING_DOUBLE_DISPOSITION",
+        "RULE_PLOT_MISMATCH_WITH_KHATIAN"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-EA75752D",
+    "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-EA75752D",
+      "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+      "injected_modifications": [
+        "Compound fraud: Conflicting double sale combined with altered plot number on deed"
+      ],
+      "expected_rule_violations": [
+        "RULE_CONFLICTING_DOUBLE_DISPOSITION",
+        "RULE_PLOT_MISMATCH_WITH_KHATIAN"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-F8F9A45D",
+    "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-F8F9A45D",
+      "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+      "injected_modifications": [
+        "Compound fraud: Conflicting double sale combined with altered plot number on deed"
+      ],
+      "expected_rule_violations": [
+        "RULE_CONFLICTING_DOUBLE_DISPOSITION",
+        "RULE_PLOT_MISMATCH_WITH_KHATIAN"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-131EB723",
+    "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-131EB723",
+      "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+      "injected_modifications": [
+        "Compound fraud: Conflicting double sale combined with altered plot number on deed"
+      ],
+      "expected_rule_violations": [
+        "RULE_CONFLICTING_DOUBLE_DISPOSITION",
+        "RULE_PLOT_MISMATCH_WITH_KHATIAN"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-4C80D33A",
+    "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-4C80D33A",
+      "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+      "injected_modifications": [
+        "Compound fraud: Conflicting double sale combined with altered plot number on deed"
+      ],
+      "expected_rule_violations": [
+        "RULE_CONFLICTING_DOUBLE_DISPOSITION",
+        "RULE_PLOT_MISMATCH_WITH_KHATIAN"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-6D39DA75",
+    "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-6D39DA75",
+      "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+      "injected_modifications": [
+        "Compound fraud: Conflicting double sale combined with altered plot number on deed"
+      ],
+      "expected_rule_violations": [
+        "RULE_CONFLICTING_DOUBLE_DISPOSITION",
+        "RULE_PLOT_MISMATCH_WITH_KHATIAN"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-58129EB2",
+    "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-58129EB2",
+      "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+      "injected_modifications": [
+        "Compound fraud: Conflicting double sale combined with altered plot number on deed"
+      ],
+      "expected_rule_violations": [
+        "RULE_CONFLICTING_DOUBLE_DISPOSITION",
+        "RULE_PLOT_MISMATCH_WITH_KHATIAN"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-CE7334F2",
+    "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-CE7334F2",
+      "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+      "injected_modifications": [
+        "Compound fraud: Conflicting double sale combined with altered plot number on deed"
+      ],
+      "expected_rule_violations": [
+        "RULE_CONFLICTING_DOUBLE_DISPOSITION",
+        "RULE_PLOT_MISMATCH_WITH_KHATIAN"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-2CE3D822",
+    "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-2CE3D822",
+      "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+      "injected_modifications": [
+        "Compound fraud: Conflicting double sale combined with altered plot number on deed"
+      ],
+      "expected_rule_violations": [
+        "RULE_CONFLICTING_DOUBLE_DISPOSITION",
+        "RULE_PLOT_MISMATCH_WITH_KHATIAN"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-6B6E64C5",
+    "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-6B6E64C5",
+      "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+      "injected_modifications": [
+        "Compound fraud: Conflicting double sale combined with altered plot number on deed"
+      ],
+      "expected_rule_violations": [
+        "RULE_CONFLICTING_DOUBLE_DISPOSITION",
+        "RULE_PLOT_MISMATCH_WITH_KHATIAN"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-2A3D418D",
+    "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-2A3D418D",
+      "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+      "injected_modifications": [
+        "Compound fraud: Conflicting double sale combined with altered plot number on deed"
+      ],
+      "expected_rule_violations": [
+        "RULE_CONFLICTING_DOUBLE_DISPOSITION",
+        "RULE_PLOT_MISMATCH_WITH_KHATIAN"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-907276EA",
+    "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-907276EA",
+      "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+      "injected_modifications": [
+        "Compound fraud: Conflicting double sale combined with altered plot number on deed"
+      ],
+      "expected_rule_violations": [
+        "RULE_CONFLICTING_DOUBLE_DISPOSITION",
+        "RULE_PLOT_MISMATCH_WITH_KHATIAN"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-2C41CBD3",
+    "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-2C41CBD3",
+      "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+      "injected_modifications": [
+        "Compound fraud: Conflicting double sale combined with altered plot number on deed"
+      ],
+      "expected_rule_violations": [
+        "RULE_CONFLICTING_DOUBLE_DISPOSITION",
+        "RULE_PLOT_MISMATCH_WITH_KHATIAN"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-C926A021",
+    "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-C926A021",
+      "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+      "injected_modifications": [
+        "Compound fraud: Conflicting double sale combined with altered plot number on deed"
+      ],
+      "expected_rule_violations": [
+        "RULE_CONFLICTING_DOUBLE_DISPOSITION",
+        "RULE_PLOT_MISMATCH_WITH_KHATIAN"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-711456DE",
+    "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-711456DE",
+      "scenario_category": "COMPOUND_DOUBLE_SALE_AND_ALTERED_PLOT",
+      "injected_modifications": [
+        "Compound fraud: Conflicting double sale combined with altered plot number on deed"
+      ],
+      "expected_rule_violations": [
+        "RULE_CONFLICTING_DOUBLE_DISPOSITION",
+        "RULE_PLOT_MISMATCH_WITH_KHATIAN"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-7D2120AD",
+    "scenario_category": "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-7D2120AD",
+      "scenario_category": "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS",
+      "injected_modifications": [
+        "Compound fraud: Exaggerated area transfer accompanied by fabricated mutation citation"
+      ],
+      "expected_rule_violations": [
+        "RULE_AREA_EXCEEDS_CAPACITY",
+        "RULE_UNVERIFIED_MUTATION_RECORD"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-A9902071",
+    "scenario_category": "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-A9902071",
+      "scenario_category": "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS",
+      "injected_modifications": [
+        "Compound fraud: Exaggerated area transfer accompanied by fabricated mutation citation"
+      ],
+      "expected_rule_violations": [
+        "RULE_AREA_EXCEEDS_CAPACITY",
+        "RULE_UNVERIFIED_MUTATION_RECORD"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-2B843EF3",
+    "scenario_category": "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-2B843EF3",
+      "scenario_category": "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS",
+      "injected_modifications": [
+        "Compound fraud: Exaggerated area transfer accompanied by fabricated mutation citation"
+      ],
+      "expected_rule_violations": [
+        "RULE_AREA_EXCEEDS_CAPACITY",
+        "RULE_UNVERIFIED_MUTATION_RECORD"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-FC9476B1",
+    "scenario_category": "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-FC9476B1",
+      "scenario_category": "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS",
+      "injected_modifications": [
+        "Compound fraud: Exaggerated area transfer accompanied by fabricated mutation citation"
+      ],
+      "expected_rule_violations": [
+        "RULE_AREA_EXCEEDS_CAPACITY",
+        "RULE_UNVERIFIED_MUTATION_RECORD"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-39EC8CA1",
+    "scenario_category": "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-39EC8CA1",
+      "scenario_category": "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS",
+      "injected_modifications": [
+        "Compound fraud: Exaggerated area transfer accompanied by fabricated mutation citation"
+      ],
+      "expected_rule_violations": [
+        "RULE_AREA_EXCEEDS_CAPACITY",
+        "RULE_UNVERIFIED_MUTATION_RECORD"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-8C1AB2C7",
+    "scenario_category": "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-8C1AB2C7",
+      "scenario_category": "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS",
+      "injected_modifications": [
+        "Compound fraud: Exaggerated area transfer accompanied by fabricated mutation citation"
+      ],
+      "expected_rule_violations": [
+        "RULE_AREA_EXCEEDS_CAPACITY",
+        "RULE_UNVERIFIED_MUTATION_RECORD"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-E8294A67",
+    "scenario_category": "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-E8294A67",
+      "scenario_category": "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS",
+      "injected_modifications": [
+        "Compound fraud: Exaggerated area transfer accompanied by fabricated mutation citation"
+      ],
+      "expected_rule_violations": [
+        "RULE_AREA_EXCEEDS_CAPACITY",
+        "RULE_UNVERIFIED_MUTATION_RECORD"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-700E0EFC",
+    "scenario_category": "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-700E0EFC",
+      "scenario_category": "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS",
+      "injected_modifications": [
+        "Compound fraud: Exaggerated area transfer accompanied by fabricated mutation citation"
+      ],
+      "expected_rule_violations": [
+        "RULE_AREA_EXCEEDS_CAPACITY",
+        "RULE_UNVERIFIED_MUTATION_RECORD"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-3FA2BDE0",
+    "scenario_category": "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-3FA2BDE0",
+      "scenario_category": "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS",
+      "injected_modifications": [
+        "Compound fraud: Exaggerated area transfer accompanied by fabricated mutation citation"
+      ],
+      "expected_rule_violations": [
+        "RULE_AREA_EXCEEDS_CAPACITY",
+        "RULE_UNVERIFIED_MUTATION_RECORD"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-34F43404",
+    "scenario_category": "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-34F43404",
+      "scenario_category": "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS",
+      "injected_modifications": [
+        "Compound fraud: Exaggerated area transfer accompanied by fabricated mutation citation"
+      ],
+      "expected_rule_violations": [
+        "RULE_AREA_EXCEEDS_CAPACITY",
+        "RULE_UNVERIFIED_MUTATION_RECORD"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-011C4544",
+    "scenario_category": "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-011C4544",
+      "scenario_category": "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS",
+      "injected_modifications": [
+        "Compound fraud: Exaggerated area transfer accompanied by fabricated mutation citation"
+      ],
+      "expected_rule_violations": [
+        "RULE_AREA_EXCEEDS_CAPACITY",
+        "RULE_UNVERIFIED_MUTATION_RECORD"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-D7654A18",
+    "scenario_category": "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-D7654A18",
+      "scenario_category": "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS",
+      "injected_modifications": [
+        "Compound fraud: Exaggerated area transfer accompanied by fabricated mutation citation"
+      ],
+      "expected_rule_violations": [
+        "RULE_AREA_EXCEEDS_CAPACITY",
+        "RULE_UNVERIFIED_MUTATION_RECORD"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-FBC398D8",
+    "scenario_category": "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-FBC398D8",
+      "scenario_category": "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS",
+      "injected_modifications": [
+        "Compound fraud: Exaggerated area transfer accompanied by fabricated mutation citation"
+      ],
+      "expected_rule_violations": [
+        "RULE_AREA_EXCEEDS_CAPACITY",
+        "RULE_UNVERIFIED_MUTATION_RECORD"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-72173FA3",
+    "scenario_category": "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-72173FA3",
+      "scenario_category": "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS",
+      "injected_modifications": [
+        "Compound fraud: Exaggerated area transfer accompanied by fabricated mutation citation"
+      ],
+      "expected_rule_violations": [
+        "RULE_AREA_EXCEEDS_CAPACITY",
+        "RULE_UNVERIFIED_MUTATION_RECORD"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-C6097CD8",
+    "scenario_category": "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-C6097CD8",
+      "scenario_category": "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS",
+      "injected_modifications": [
+        "Compound fraud: Exaggerated area transfer accompanied by fabricated mutation citation"
+      ],
+      "expected_rule_violations": [
+        "RULE_AREA_EXCEEDS_CAPACITY",
+        "RULE_UNVERIFIED_MUTATION_RECORD"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-B864A47B",
+    "scenario_category": "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-B864A47B",
+      "scenario_category": "COMPOUND_FABRICATED_MUTATION_AND_AREA_EXCESS",
+      "injected_modifications": [
+        "Compound fraud: Exaggerated area transfer accompanied by fabricated mutation citation"
+      ],
+      "expected_rule_violations": [
+        "RULE_AREA_EXCEEDS_CAPACITY",
+        "RULE_UNVERIFIED_MUTATION_RECORD"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-ABC53545",
+    "scenario_category": "COMPOUND_IMPOSTER_AND_TAMPERED_DEED",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-ABC53545",
+      "scenario_category": "COMPOUND_IMPOSTER_AND_TAMPERED_DEED",
+      "injected_modifications": [
+        "Compound fraud: Imposter seller with physical paste-over alteration and missing registrar seal"
+      ],
+      "expected_rule_violations": [
+        "RULE_SELLER_NOT_TITLEHOLDER",
+        "RULE_MANDATORY_REGISTRAR_SEAL_ABSENT",
+        "RULE_VISUAL_TAMPERING_DETECTED"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-9B4BF377",
+    "scenario_category": "COMPOUND_IMPOSTER_AND_TAMPERED_DEED",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-9B4BF377",
+      "scenario_category": "COMPOUND_IMPOSTER_AND_TAMPERED_DEED",
+      "injected_modifications": [
+        "Compound fraud: Imposter seller with physical paste-over alteration and missing registrar seal"
+      ],
+      "expected_rule_violations": [
+        "RULE_SELLER_NOT_TITLEHOLDER",
+        "RULE_MANDATORY_REGISTRAR_SEAL_ABSENT",
+        "RULE_VISUAL_TAMPERING_DETECTED"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-80499BBF",
+    "scenario_category": "COMPOUND_IMPOSTER_AND_TAMPERED_DEED",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-80499BBF",
+      "scenario_category": "COMPOUND_IMPOSTER_AND_TAMPERED_DEED",
+      "injected_modifications": [
+        "Compound fraud: Imposter seller with physical paste-over alteration and missing registrar seal"
+      ],
+      "expected_rule_violations": [
+        "RULE_SELLER_NOT_TITLEHOLDER",
+        "RULE_MANDATORY_REGISTRAR_SEAL_ABSENT",
+        "RULE_VISUAL_TAMPERING_DETECTED"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-390FECF5",
+    "scenario_category": "COMPOUND_IMPOSTER_AND_TAMPERED_DEED",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-390FECF5",
+      "scenario_category": "COMPOUND_IMPOSTER_AND_TAMPERED_DEED",
+      "injected_modifications": [
+        "Compound fraud: Imposter seller with physical paste-over alteration and missing registrar seal"
+      ],
+      "expected_rule_violations": [
+        "RULE_SELLER_NOT_TITLEHOLDER",
+        "RULE_MANDATORY_REGISTRAR_SEAL_ABSENT",
+        "RULE_VISUAL_TAMPERING_DETECTED"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-A9681FC1",
+    "scenario_category": "COMPOUND_IMPOSTER_AND_TAMPERED_DEED",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-A9681FC1",
+      "scenario_category": "COMPOUND_IMPOSTER_AND_TAMPERED_DEED",
+      "injected_modifications": [
+        "Compound fraud: Imposter seller with physical paste-over alteration and missing registrar seal"
+      ],
+      "expected_rule_violations": [
+        "RULE_SELLER_NOT_TITLEHOLDER",
+        "RULE_MANDATORY_REGISTRAR_SEAL_ABSENT",
+        "RULE_VISUAL_TAMPERING_DETECTED"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-215D3B1F",
+    "scenario_category": "COMPOUND_IMPOSTER_AND_TAMPERED_DEED",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-215D3B1F",
+      "scenario_category": "COMPOUND_IMPOSTER_AND_TAMPERED_DEED",
+      "injected_modifications": [
+        "Compound fraud: Imposter seller with physical paste-over alteration and missing registrar seal"
+      ],
+      "expected_rule_violations": [
+        "RULE_SELLER_NOT_TITLEHOLDER",
+        "RULE_MANDATORY_REGISTRAR_SEAL_ABSENT",
+        "RULE_VISUAL_TAMPERING_DETECTED"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-8EBC6D7E",
+    "scenario_category": "COMPOUND_IMPOSTER_AND_TAMPERED_DEED",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-8EBC6D7E",
+      "scenario_category": "COMPOUND_IMPOSTER_AND_TAMPERED_DEED",
+      "injected_modifications": [
+        "Compound fraud: Imposter seller with physical paste-over alteration and missing registrar seal"
+      ],
+      "expected_rule_violations": [
+        "RULE_SELLER_NOT_TITLEHOLDER",
+        "RULE_MANDATORY_REGISTRAR_SEAL_ABSENT",
+        "RULE_VISUAL_TAMPERING_DETECTED"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-85609E8A",
+    "scenario_category": "COMPOUND_IMPOSTER_AND_TAMPERED_DEED",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-85609E8A",
+      "scenario_category": "COMPOUND_IMPOSTER_AND_TAMPERED_DEED",
+      "injected_modifications": [
+        "Compound fraud: Imposter seller with physical paste-over alteration and missing registrar seal"
+      ],
+      "expected_rule_violations": [
+        "RULE_SELLER_NOT_TITLEHOLDER",
+        "RULE_MANDATORY_REGISTRAR_SEAL_ABSENT",
+        "RULE_VISUAL_TAMPERING_DETECTED"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-EE01B9E0",
+    "scenario_category": "COMPOUND_IMPOSTER_AND_TAMPERED_DEED",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-EE01B9E0",
+      "scenario_category": "COMPOUND_IMPOSTER_AND_TAMPERED_DEED",
+      "injected_modifications": [
+        "Compound fraud: Imposter seller with physical paste-over alteration and missing registrar seal"
+      ],
+      "expected_rule_violations": [
+        "RULE_SELLER_NOT_TITLEHOLDER",
+        "RULE_MANDATORY_REGISTRAR_SEAL_ABSENT",
+        "RULE_VISUAL_TAMPERING_DETECTED"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-BFB0942C",
+    "scenario_category": "COMPOUND_IMPOSTER_AND_TAMPERED_DEED",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-BFB0942C",
+      "scenario_category": "COMPOUND_IMPOSTER_AND_TAMPERED_DEED",
+      "injected_modifications": [
+        "Compound fraud: Imposter seller with physical paste-over alteration and missing registrar seal"
+      ],
+      "expected_rule_violations": [
+        "RULE_SELLER_NOT_TITLEHOLDER",
+        "RULE_MANDATORY_REGISTRAR_SEAL_ABSENT",
+        "RULE_VISUAL_TAMPERING_DETECTED"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-0DDCA788",
+    "scenario_category": "COMPOUND_IMPOSTER_AND_TAMPERED_DEED",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-0DDCA788",
+      "scenario_category": "COMPOUND_IMPOSTER_AND_TAMPERED_DEED",
+      "injected_modifications": [
+        "Compound fraud: Imposter seller with physical paste-over alteration and missing registrar seal"
+      ],
+      "expected_rule_violations": [
+        "RULE_SELLER_NOT_TITLEHOLDER",
+        "RULE_MANDATORY_REGISTRAR_SEAL_ABSENT",
+        "RULE_VISUAL_TAMPERING_DETECTED"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-7FE5A4B6",
+    "scenario_category": "COMPOUND_IMPOSTER_AND_TAMPERED_DEED",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-7FE5A4B6",
+      "scenario_category": "COMPOUND_IMPOSTER_AND_TAMPERED_DEED",
+      "injected_modifications": [
+        "Compound fraud: Imposter seller with physical paste-over alteration and missing registrar seal"
+      ],
+      "expected_rule_violations": [
+        "RULE_SELLER_NOT_TITLEHOLDER",
+        "RULE_MANDATORY_REGISTRAR_SEAL_ABSENT",
+        "RULE_VISUAL_TAMPERING_DETECTED"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-9B0707E5",
+    "scenario_category": "COMPOUND_IMPOSTER_AND_TAMPERED_DEED",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-9B0707E5",
+      "scenario_category": "COMPOUND_IMPOSTER_AND_TAMPERED_DEED",
+      "injected_modifications": [
+        "Compound fraud: Imposter seller with physical paste-over alteration and missing registrar seal"
+      ],
+      "expected_rule_violations": [
+        "RULE_SELLER_NOT_TITLEHOLDER",
+        "RULE_MANDATORY_REGISTRAR_SEAL_ABSENT",
+        "RULE_VISUAL_TAMPERING_DETECTED"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-B5DEF807",
+    "scenario_category": "COMPOUND_IMPOSTER_AND_TAMPERED_DEED",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-B5DEF807",
+      "scenario_category": "COMPOUND_IMPOSTER_AND_TAMPERED_DEED",
+      "injected_modifications": [
+        "Compound fraud: Imposter seller with physical paste-over alteration and missing registrar seal"
+      ],
+      "expected_rule_violations": [
+        "RULE_SELLER_NOT_TITLEHOLDER",
+        "RULE_MANDATORY_REGISTRAR_SEAL_ABSENT",
+        "RULE_VISUAL_TAMPERING_DETECTED"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-7172F636",
+    "scenario_category": "COMPOUND_IMPOSTER_AND_TAMPERED_DEED",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-7172F636",
+      "scenario_category": "COMPOUND_IMPOSTER_AND_TAMPERED_DEED",
+      "injected_modifications": [
+        "Compound fraud: Imposter seller with physical paste-over alteration and missing registrar seal"
+      ],
+      "expected_rule_violations": [
+        "RULE_SELLER_NOT_TITLEHOLDER",
+        "RULE_MANDATORY_REGISTRAR_SEAL_ABSENT",
+        "RULE_VISUAL_TAMPERING_DETECTED"
+      ]
+    }
+  },
+  {
+    "scenario_id": "SCN-5FA72012",
+    "scenario_category": "COMPOUND_IMPOSTER_AND_TAMPERED_DEED",
+    "is_fraud_risk": true,
+    "simulator_audit_metadata": {
+      "scenario_id": "SCN-5FA72012",
+      "scenario_category": "COMPOUND_IMPOSTER_AND_TAMPERED_DEED",
+      "injected_modifications": [
+        "Compound fraud: Imposter seller with physical paste-over alteration and missing registrar seal"
+      ],
+      "expected_rule_violations": [
+        "RULE_SELLER_NOT_TITLEHOLDER",
+        "RULE_MANDATORY_REGISTRAR_SEAL_ABSENT",
+        "RULE_VISUAL_TAMPERING_DETECTED"
+      ]
+    }
+  }
+]

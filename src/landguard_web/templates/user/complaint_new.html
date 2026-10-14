@@ -1,0 +1,139 @@
+{% extends "user/layout.html" %}
+
+{% block title %}File Dispute Grievance — LandGuard AI{% endblock %}
+
+{% block portal_content %}
+<div class="max-w-3xl mx-auto space-y-6">
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">File Land Record Dispute</h1>
+            <p class="text-xs sm:text-sm text-slate-400 mt-1">Submit formal notice of double-selling, forgery, or boundary contradiction.</p>
+        </div>
+        <a href="/user/complaints" class="text-xs text-slate-400 hover:text-white glass-panel px-3 py-1.5 rounded-lg">
+            Cancel
+        </a>
+    </div>
+
+    <!-- Grievance Form -->
+    <div class="glass-panel p-6 sm:p-8 rounded-2xl border border-slate-800 shadow-xl">
+        <form id="complaint-form" onsubmit="submitComplaint(event)" class="space-y-5">
+            <div>
+                <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Grievance Category</label>
+                <select id="category" required class="glass-input w-full px-3 py-2.5 rounded-xl text-xs">
+                    <option value="SUSPECTED_DOUBLE_SALE">Suspected Double Sale / Concurrent Conveyance (Registration Act s.47)</option>
+                    <option value="DOCUMENT_INTEGRITY_CONCERN">Document Integrity / Physical Tampering / Whiteout Alteration</option>
+                    <option value="REGISTRATION_MUTATION_MISMATCH">Registration vs AC Land Mutation Contradiction (SAT Act s.143)</option>
+                    <option value="AREA_EXCESS_CONCERN">Exaggerated Land Area / Holding Capacity Excess</option>
+                    <option value="OWNERSHIP_CONFLICT">Ancestral Title Chain Discrepancy / Broken Succession</option>
+                    <option value="OTHER">Other Statutory Dispute</option>
+                </select>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Cadastral Dag Plot Number</label>
+                    <input type="text" id="dag_plot_number" required value="{{ prefill_dag or '' }}" placeholder="e.g. 6792, 9044, 9262"
+                           class="glass-input w-full px-3 py-2.5 rounded-xl text-xs font-mono">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Disputed Deed Reference</label>
+                    <input type="text" id="deed_number" required value="{{ prefill_deed or '' }}" placeholder="e.g. DEED-2005-23539"
+                           class="glass-input w-full px-3 py-2.5 rounded-xl text-xs font-mono">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Grievance Title / Headline</label>
+                <input type="text" id="title" required placeholder="Brief summary of dispute (e.g. Conflicting sale deed presented by broker)..."
+                       class="glass-input w-full px-3 py-2.5 rounded-xl text-xs">
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Detailed Narrative &amp; Facts</label>
+                <textarea id="narrative_description" rows="5" required placeholder="State all relevant facts, seller declarations, previous deeds, witness references, and discrepancies noticed..."
+                          class="glass-input w-full p-3 rounded-xl text-xs leading-relaxed"></textarea>
+            </div>
+
+            <!-- Expedited Review Option -->
+            <div class="p-4 rounded-xl bg-indigo-950/40 border border-indigo-500/30 space-y-3">
+                <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" id="is_expedited" onchange="toggleExpediteReason(this)" class="rounded bg-navy-900 border-indigo-500 text-indigo-500 focus:ring-indigo-400">
+                    <span class="text-xs font-bold text-indigo-200 flex items-center gap-1.5">
+                        <i data-lucide="zap" class="w-3.5 h-3.5 text-indigo-400"></i>
+                        <span>Request Expedited Review (Urgent Impending Transaction)</span>
+                    </span>
+                </label>
+                <div id="expedite-reason-container" class="hidden pl-6">
+                    <label class="block text-[11px] text-slate-300 mb-1">State Statutory Justification for Urgency:</label>
+                    <input type="text" id="expedite_reason" placeholder="e.g. Imminent vendor earnest money forfeit deadline, court registration hearing..."
+                           class="glass-input w-full px-3 py-2 rounded-lg text-xs placeholder:text-slate-500">
+                </div>
+            </div>
+
+            <div class="pt-2 flex items-center justify-end gap-3">
+                <a href="/user/complaints" class="px-5 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white glass-panel transition-colors">
+                    Cancel
+                </a>
+                <button type="submit" id="submit-btn" class="px-6 py-2.5 rounded-xl text-xs font-semibold text-navy-950 bg-gradient-to-r from-cyan-400 to-cyan-500 hover:from-cyan-300 hover:to-cyan-400 shadow-lg shadow-cyan-500/25 transition-all flex items-center gap-2">
+                    <span id="btn-text">Submit Grievance to Registry</span>
+                    <i data-lucide="send" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    function toggleExpediteReason(checkbox) {
+        const container = document.getElementById('expedite-reason-container');
+        if (checkbox.checked) {
+            container.classList.remove('hidden');
+        } else {
+            container.classList.add('hidden');
+        }
+    }
+
+    async function submitComplaint(event) {
+        event.preventDefault();
+        const payload = {
+            category: document.getElementById('category').value,
+            dag_plot_number: document.getElementById('dag_plot_number').value,
+            deed_number: document.getElementById('deed_number').value,
+            title: document.getElementById('title').value,
+            narrative_description: document.getElementById('narrative_description').value,
+            is_expedited: document.getElementById('is_expedited').checked,
+            expedite_reason: document.getElementById('expedite_reason').value,
+        };
+
+        const btn = document.getElementById('submit-btn');
+        btn.disabled = true;
+        document.getElementById('btn-text').innerText = "Registering Grievance...";
+
+        try {
+            const res = await fetch('/api/complaints', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if (res.ok) {
+                showToast(`Complaint registered successfully as ${data.complaint_id}!`, "success");
+                setTimeout(() => {
+                    window.location.href = `/user/complaints/${data.complaint_id}`;
+                }, 1000);
+            } else {
+                showToast(data.detail || "Submission failed", "error");
+                btn.disabled = false;
+                document.getElementById('btn-text').innerText = "Submit Grievance to Registry";
+            }
+        } catch (err) {
+            showToast("Network error: " + err.message, "error");
+            btn.disabled = false;
+            document.getElementById('btn-text').innerText = "Submit Grievance to Registry";
+        }
+    }
+</script>
+{% endblock %}

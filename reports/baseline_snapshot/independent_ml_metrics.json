@@ -1,0 +1,1051 @@
+{
+  "root_cause_of_100_percent_baseline_scores": {
+    "primary_cause": "In src/landguard_data/generate_scenarios.py, all 4 legitimate scenario categories execute the exact same unmodified base generator with zero administrative or clerical noise, while each of the 8 fraud categories deterministically flips exactly 1 of 7 binary indicator features. Furthermore, 3 of those 7 indicators (visual_tampering_flag, seal_omitted_flag, plot_discrepancy_flag) are populated as noiseless oracle booleans on the transaction JSON by the scenario generator rather than being extracted by the actual OCR/CV pipeline.",
+    "entity_overlap_diagnosis": {
+      "unique_parcels_in_2500_scenarios": 2500,
+      "parcel_overlap_across_scenario_split": 0,
+      "seller_pool_size_in_scenarios": 500,
+      "seller_overlap_in_scenario_split": "252/259 test sellers appeared in train set, but grouping by primary_seller_id (0 overlap) still yields 1.0000 on oracle features because the 8 rules are noiseless."
+    }
+  },
+  "regime_a_seller_disjoint_oracle_16_features": {
+    "split_verification": {
+      "is_leakage_free": true,
+      "train_count": 1715,
+      "val_count": 385,
+      "test_count": 400,
+      "train_val_overlap": 0,
+      "train_test_overlap": 0,
+      "val_test_overlap": 0,
+      "doc_overlap": 0
+    },
+    "parcel_verification": {
+      "is_leakage_free": true,
+      "train_count": 1715,
+      "val_count": 385,
+      "test_count": 400,
+      "train_val_overlap": 0,
+      "train_test_overlap": 0,
+      "val_test_overlap": 0,
+      "doc_overlap": 0
+    },
+    "models": {
+      "Majority Baseline": {
+        "model_name": "Majority Baseline",
+        "accuracy": 0.6675,
+        "precision": 0.6675,
+        "recall": 1.0,
+        "f1_score": 0.8006,
+        "roc_auc": 0.5,
+        "pr_auc": 0.6675,
+        "confusion_matrix": [
+          [
+            0,
+            133
+          ],
+          [
+            0,
+            267
+          ]
+        ],
+        "per_class_metrics": {
+          "legitimate": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "fraud": {
+            "precision": 0.6675,
+            "recall": 1.0,
+            "f1": 0.8006
+          }
+        },
+        "false_positive_count": 133,
+        "false_negative_count": 0,
+        "sample_fp_indices": [
+          0,
+          5,
+          8,
+          15,
+          16
+        ],
+        "sample_fn_indices": []
+      },
+      "Logistic Regression": {
+        "model_name": "Logistic Regression",
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "roc_auc": 1.0,
+        "pr_auc": 1.0,
+        "confusion_matrix": [
+          [
+            133,
+            0
+          ],
+          [
+            0,
+            267
+          ]
+        ],
+        "per_class_metrics": {
+          "legitimate": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "fraud": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          }
+        },
+        "false_positive_count": 0,
+        "false_negative_count": 0,
+        "sample_fp_indices": [],
+        "sample_fn_indices": []
+      },
+      "Random Forest": {
+        "model_name": "Random Forest",
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "roc_auc": 1.0,
+        "pr_auc": 1.0,
+        "confusion_matrix": [
+          [
+            133,
+            0
+          ],
+          [
+            0,
+            267
+          ]
+        ],
+        "per_class_metrics": {
+          "legitimate": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "fraud": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          }
+        },
+        "false_positive_count": 0,
+        "false_negative_count": 0,
+        "sample_fp_indices": [],
+        "sample_fn_indices": []
+      },
+      "XGBoost Classifier": {
+        "model_name": "XGBoost Classifier",
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "roc_auc": 1.0,
+        "pr_auc": 1.0,
+        "confusion_matrix": [
+          [
+            133,
+            0
+          ],
+          [
+            0,
+            267
+          ]
+        ],
+        "per_class_metrics": {
+          "legitimate": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "fraud": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          }
+        },
+        "false_positive_count": 0,
+        "false_negative_count": 0,
+        "sample_fp_indices": [],
+        "sample_fn_indices": []
+      },
+      "Deterministic Rule Baseline": {
+        "model_name": "Deterministic Rule Baseline",
+        "total_evaluated": 400,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "accuracy": 1.0,
+        "confusion_matrix": [
+          [
+            133,
+            0
+          ],
+          [
+            0,
+            267
+          ]
+        ],
+        "false_positive_count": 0,
+        "false_negative_count": 0,
+        "rule_trigger_breakdown": {
+          "RULE_VISUAL_TAMPERING_DETECTED": 40,
+          "RULE_CONFLICTING_DOUBLE_DISPOSITION": 26,
+          "RULE_SELLER_NOT_TITLEHOLDER": 41,
+          "RULE_MANDATORY_REGISTRAR_SEAL_ABSENT": 30,
+          "RULE_PLOT_MISMATCH_WITH_KHATIAN": 35,
+          "RULE_UNVERIFIED_MUTATION_RECORD": 36,
+          "RULE_BROKEN_CHAIN_OF_TITLE": 34,
+          "RULE_AREA_EXCEEDS_CAPACITY": 35
+        },
+        "sample_false_positives": [],
+        "sample_false_negatives": []
+      }
+    }
+  },
+  "regime_b_strict_registry_only_13_features": {
+    "excluded_oracle_document_features": [
+      "seal_omitted_flag",
+      "plot_discrepancy_flag",
+      "visual_tampering_flag"
+    ],
+    "retained_features": [
+      "transferred_area_decimal",
+      "parcel_total_area_decimal",
+      "area_ratio",
+      "area_excess_flag",
+      "price_per_decimal",
+      "has_previous_deed_ref",
+      "is_ancestral_ref",
+      "previous_deed_verified_flag",
+      "chain_length",
+      "seller_was_previous_buyer",
+      "mutation_present",
+      "tax_year_delta",
+      "conflicting_sale_flag"
+    ],
+    "models": {
+      "Majority Baseline": {
+        "model_name": "Majority Baseline",
+        "accuracy": 0.6507,
+        "precision": 0.6507,
+        "recall": 1.0,
+        "f1_score": 0.7884,
+        "roc_auc": 0.5,
+        "pr_auc": 0.6507,
+        "confusion_matrix": [
+          [
+            0,
+            131
+          ],
+          [
+            0,
+            244
+          ]
+        ],
+        "per_class_metrics": {
+          "legitimate": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "fraud": {
+            "precision": 0.6507,
+            "recall": 1.0,
+            "f1": 0.7884
+          }
+        },
+        "false_positive_count": 131,
+        "false_negative_count": 0,
+        "sample_fp_indices": [
+          0,
+          2,
+          3,
+          4,
+          7
+        ],
+        "sample_fn_indices": []
+      },
+      "Logistic Regression": {
+        "model_name": "Logistic Regression",
+        "accuracy": 0.7493,
+        "precision": 1.0,
+        "recall": 0.6148,
+        "f1_score": 0.7614,
+        "roc_auc": 0.7973,
+        "pr_auc": 0.9086,
+        "confusion_matrix": [
+          [
+            131,
+            0
+          ],
+          [
+            94,
+            150
+          ]
+        ],
+        "per_class_metrics": {
+          "legitimate": {
+            "precision": 0.5822,
+            "recall": 1.0,
+            "f1": 0.736
+          },
+          "fraud": {
+            "precision": 1.0,
+            "recall": 0.6148,
+            "f1": 0.7614
+          }
+        },
+        "false_positive_count": 0,
+        "false_negative_count": 94,
+        "sample_fp_indices": [],
+        "sample_fn_indices": [
+          9,
+          18,
+          19,
+          30,
+          33
+        ]
+      },
+      "Random Forest": {
+        "model_name": "Random Forest",
+        "accuracy": 0.7307,
+        "precision": 0.8667,
+        "recall": 0.6926,
+        "f1_score": 0.7699,
+        "roc_auc": 0.8019,
+        "pr_auc": 0.9111,
+        "confusion_matrix": [
+          [
+            105,
+            26
+          ],
+          [
+            75,
+            169
+          ]
+        ],
+        "per_class_metrics": {
+          "legitimate": {
+            "precision": 0.5833,
+            "recall": 0.8015,
+            "f1": 0.6752
+          },
+          "fraud": {
+            "precision": 0.8667,
+            "recall": 0.6926,
+            "f1": 0.7699
+          }
+        },
+        "false_positive_count": 26,
+        "false_negative_count": 75,
+        "sample_fp_indices": [
+          0,
+          7,
+          20,
+          45,
+          50
+        ],
+        "sample_fn_indices": [
+          18,
+          30,
+          36,
+          42,
+          46
+        ]
+      },
+      "XGBoost Classifier": {
+        "model_name": "XGBoost Classifier",
+        "accuracy": 0.7333,
+        "precision": 0.8214,
+        "recall": 0.7541,
+        "f1_score": 0.7863,
+        "roc_auc": 0.8052,
+        "pr_auc": 0.9132,
+        "confusion_matrix": [
+          [
+            91,
+            40
+          ],
+          [
+            60,
+            184
+          ]
+        ],
+        "per_class_metrics": {
+          "legitimate": {
+            "precision": 0.6026,
+            "recall": 0.6947,
+            "f1": 0.6454
+          },
+          "fraud": {
+            "precision": 0.8214,
+            "recall": 0.7541,
+            "f1": 0.7863
+          }
+        },
+        "false_positive_count": 40,
+        "false_negative_count": 60,
+        "sample_fp_indices": [
+          0,
+          20,
+          29,
+          50,
+          61
+        ],
+        "sample_fn_indices": [
+          18,
+          33,
+          36,
+          42,
+          46
+        ]
+      },
+      "Deterministic Rule Baseline (Registry-Only)": {
+        "model_name": "Deterministic Rule Baseline",
+        "total_evaluated": 375,
+        "precision": 1.0,
+        "recall": 0.6148,
+        "f1_score": 0.7614,
+        "accuracy": 0.7493,
+        "confusion_matrix": [
+          [
+            131,
+            0
+          ],
+          [
+            94,
+            150
+          ]
+        ],
+        "false_positive_count": 0,
+        "false_negative_count": 94,
+        "rule_trigger_breakdown": {
+          "RULE_CONFLICTING_DOUBLE_DISPOSITION": 31,
+          "RULE_SELLER_NOT_TITLEHOLDER": 42,
+          "RULE_BROKEN_CHAIN_OF_TITLE": 30,
+          "RULE_AREA_EXCEEDS_CAPACITY": 28,
+          "RULE_UNVERIFIED_MUTATION_RECORD": 28
+        },
+        "sample_false_positives": [],
+        "sample_false_negatives": [
+          {
+            "transaction_id": "TXN-75C0E907",
+            "scenario_category": "VISUAL_OVERLAY_TAMPERING"
+          },
+          {
+            "transaction_id": "TXN-6B5F0AB6",
+            "scenario_category": "SYNTHETIC_SEAL_ABSENT_SUSPICIOUS"
+          },
+          {
+            "transaction_id": "TXN-C4928398",
+            "scenario_category": "VISUAL_OVERLAY_TAMPERING"
+          },
+          {
+            "transaction_id": "TXN-05C24A40",
+            "scenario_category": "ALTERED_PLOT_NUMBER"
+          },
+          {
+            "transaction_id": "TXN-B137A1A7",
+            "scenario_category": "ALTERED_PLOT_NUMBER"
+          }
+        ]
+      }
+    }
+  },
+  "regime_c_leave_one_fraud_family_out": {
+    "description": "Each fold holds out 1 of the 8 fraud scenario categories completely from training to test unseen fraud generalization.",
+    "mean_unseen_fraud_recall": {
+      "Rule Engine": 1.0,
+      "Logistic Regression": 0.0427,
+      "Random Forest": 0.0427,
+      "XGBoost Classifier": 0.0427
+    },
+    "folds": [
+      {
+        "held_out_fraud_category": "ALTERED_OWNER_NAME",
+        "unseen_fraud_test_count": 208,
+        "legitimate_test_count": 126,
+        "unseen_fraud_recall": {
+          "Rule Engine": 1.0,
+          "Logistic Regression": 0.0048,
+          "Random Forest": 0.0048,
+          "XGBoost Classifier": 0.0048
+        },
+        "combined_test_f1": {
+          "Rule Engine": 1.0,
+          "Logistic Regression": 0.0096,
+          "Random Forest": 0.0096,
+          "XGBoost Classifier": 0.0096
+        }
+      },
+      {
+        "held_out_fraud_category": "ALTERED_PLOT_NUMBER",
+        "unseen_fraud_test_count": 208,
+        "legitimate_test_count": 126,
+        "unseen_fraud_recall": {
+          "Rule Engine": 1.0,
+          "Logistic Regression": 0.0,
+          "Random Forest": 0.0,
+          "XGBoost Classifier": 0.0
+        },
+        "combined_test_f1": {
+          "Rule Engine": 1.0,
+          "Logistic Regression": 0.0,
+          "Random Forest": 0.0,
+          "XGBoost Classifier": 0.0
+        }
+      },
+      {
+        "held_out_fraud_category": "BROKEN_CHAIN_OF_TITLE",
+        "unseen_fraud_test_count": 208,
+        "legitimate_test_count": 126,
+        "unseen_fraud_recall": {
+          "Rule Engine": 1.0,
+          "Logistic Regression": 0.0,
+          "Random Forest": 0.0,
+          "XGBoost Classifier": 0.0
+        },
+        "combined_test_f1": {
+          "Rule Engine": 1.0,
+          "Logistic Regression": 0.0,
+          "Random Forest": 0.0,
+          "XGBoost Classifier": 0.0
+        }
+      },
+      {
+        "held_out_fraud_category": "CONFLICTING_DOUBLE_SALE",
+        "unseen_fraud_test_count": 208,
+        "legitimate_test_count": 126,
+        "unseen_fraud_recall": {
+          "Rule Engine": 1.0,
+          "Logistic Regression": 0.3317,
+          "Random Forest": 0.3317,
+          "XGBoost Classifier": 0.3317
+        },
+        "combined_test_f1": {
+          "Rule Engine": 1.0,
+          "Logistic Regression": 0.4982,
+          "Random Forest": 0.4982,
+          "XGBoost Classifier": 0.4982
+        }
+      },
+      {
+        "held_out_fraud_category": "EXAGGERATED_LAND_AREA",
+        "unseen_fraud_test_count": 208,
+        "legitimate_test_count": 126,
+        "unseen_fraud_recall": {
+          "Rule Engine": 1.0,
+          "Logistic Regression": 0.0,
+          "Random Forest": 0.0,
+          "XGBoost Classifier": 0.0
+        },
+        "combined_test_f1": {
+          "Rule Engine": 1.0,
+          "Logistic Regression": 0.0,
+          "Random Forest": 0.0,
+          "XGBoost Classifier": 0.0
+        }
+      },
+      {
+        "held_out_fraud_category": "SYNTHETIC_SEAL_ABSENT_SUSPICIOUS",
+        "unseen_fraud_test_count": 208,
+        "legitimate_test_count": 126,
+        "unseen_fraud_recall": {
+          "Rule Engine": 1.0,
+          "Logistic Regression": 0.0,
+          "Random Forest": 0.0,
+          "XGBoost Classifier": 0.0
+        },
+        "combined_test_f1": {
+          "Rule Engine": 1.0,
+          "Logistic Regression": 0.0,
+          "Random Forest": 0.0,
+          "XGBoost Classifier": 0.0
+        }
+      },
+      {
+        "held_out_fraud_category": "UNREGISTERED_MUTATION_MISMATCH",
+        "unseen_fraud_test_count": 208,
+        "legitimate_test_count": 126,
+        "unseen_fraud_recall": {
+          "Rule Engine": 1.0,
+          "Logistic Regression": 0.0048,
+          "Random Forest": 0.0048,
+          "XGBoost Classifier": 0.0048
+        },
+        "combined_test_f1": {
+          "Rule Engine": 1.0,
+          "Logistic Regression": 0.0096,
+          "Random Forest": 0.0096,
+          "XGBoost Classifier": 0.0096
+        }
+      },
+      {
+        "held_out_fraud_category": "VISUAL_OVERLAY_TAMPERING",
+        "unseen_fraud_test_count": 208,
+        "legitimate_test_count": 126,
+        "unseen_fraud_recall": {
+          "Rule Engine": 1.0,
+          "Logistic Regression": 0.0,
+          "Random Forest": 0.0,
+          "XGBoost Classifier": 0.0
+        },
+        "combined_test_f1": {
+          "Rule Engine": 1.0,
+          "Logistic Regression": 0.0,
+          "Random Forest": 0.0,
+          "XGBoost Classifier": 0.0
+        }
+      }
+    ]
+  },
+  "regime_d_realistic_operational_coupling": {
+    "description": "Couples CV/OCR features to empirical detector error rates and introduces realistic administrative noise (pending mutations, correction deed plot updates).",
+    "models": {
+      "Majority Baseline": {
+        "model_name": "Majority Baseline",
+        "accuracy": 0.6507,
+        "precision": 0.6507,
+        "recall": 1.0,
+        "f1_score": 0.7884,
+        "roc_auc": 0.5,
+        "pr_auc": 0.6507,
+        "confusion_matrix": [
+          [
+            0,
+            131
+          ],
+          [
+            0,
+            244
+          ]
+        ],
+        "per_class_metrics": {
+          "legitimate": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "fraud": {
+            "precision": 0.6507,
+            "recall": 1.0,
+            "f1": 0.7884
+          }
+        },
+        "false_positive_count": 131,
+        "false_negative_count": 0,
+        "sample_fp_indices": [
+          0,
+          2,
+          3,
+          4,
+          7
+        ],
+        "sample_fn_indices": []
+      },
+      "Logistic Regression": {
+        "model_name": "Logistic Regression",
+        "accuracy": 0.904,
+        "precision": 0.8969,
+        "recall": 0.9631,
+        "f1_score": 0.9289,
+        "roc_auc": 0.9468,
+        "pr_auc": 0.971,
+        "confusion_matrix": [
+          [
+            104,
+            27
+          ],
+          [
+            9,
+            235
+          ]
+        ],
+        "per_class_metrics": {
+          "legitimate": {
+            "precision": 0.9204,
+            "recall": 0.7939,
+            "f1": 0.8525
+          },
+          "fraud": {
+            "precision": 0.8969,
+            "recall": 0.9631,
+            "f1": 0.9289
+          }
+        },
+        "false_positive_count": 27,
+        "false_negative_count": 9,
+        "sample_fp_indices": [
+          0,
+          20,
+          32,
+          56,
+          66
+        ],
+        "sample_fn_indices": [
+          99,
+          119,
+          140,
+          146,
+          163
+        ]
+      },
+      "Random Forest": {
+        "model_name": "Random Forest",
+        "accuracy": 0.888,
+        "precision": 0.8855,
+        "recall": 0.9508,
+        "f1_score": 0.917,
+        "roc_auc": 0.9455,
+        "pr_auc": 0.9726,
+        "confusion_matrix": [
+          [
+            101,
+            30
+          ],
+          [
+            12,
+            232
+          ]
+        ],
+        "per_class_metrics": {
+          "legitimate": {
+            "precision": 0.8938,
+            "recall": 0.771,
+            "f1": 0.8279
+          },
+          "fraud": {
+            "precision": 0.8855,
+            "recall": 0.9508,
+            "f1": 0.917
+          }
+        },
+        "false_positive_count": 30,
+        "false_negative_count": 12,
+        "sample_fp_indices": [
+          0,
+          20,
+          32,
+          56,
+          66
+        ],
+        "sample_fn_indices": [
+          52,
+          99,
+          119,
+          140,
+          146
+        ]
+      },
+      "XGBoost Classifier": {
+        "model_name": "XGBoost Classifier",
+        "accuracy": 0.88,
+        "precision": 0.8996,
+        "recall": 0.918,
+        "f1_score": 0.9087,
+        "roc_auc": 0.9445,
+        "pr_auc": 0.9711,
+        "confusion_matrix": [
+          [
+            106,
+            25
+          ],
+          [
+            20,
+            224
+          ]
+        ],
+        "per_class_metrics": {
+          "legitimate": {
+            "precision": 0.8413,
+            "recall": 0.8092,
+            "f1": 0.8249
+          },
+          "fraud": {
+            "precision": 0.8996,
+            "recall": 0.918,
+            "f1": 0.9087
+          }
+        },
+        "false_positive_count": 25,
+        "false_negative_count": 20,
+        "sample_fp_indices": [
+          0,
+          20,
+          32,
+          56,
+          66
+        ],
+        "sample_fn_indices": [
+          52,
+          76,
+          99,
+          108,
+          109
+        ]
+      },
+      "Deterministic Rule Baseline": {
+        "model_name": "Deterministic Rule Baseline",
+        "total_evaluated": 375,
+        "precision": 0.8969,
+        "recall": 0.9631,
+        "f1_score": 0.9289,
+        "accuracy": 0.904,
+        "confusion_matrix": [
+          [
+            104,
+            27
+          ],
+          [
+            9,
+            235
+          ]
+        ],
+        "false_positive_count": 27,
+        "false_negative_count": 9,
+        "rule_trigger_breakdown": {
+          "RULE_UNVERIFIED_MUTATION_RECORD": 43,
+          "RULE_CONFLICTING_DOUBLE_DISPOSITION": 31,
+          "RULE_PLOT_MISMATCH_WITH_KHATIAN": 46,
+          "RULE_SELLER_NOT_TITLEHOLDER": 42,
+          "RULE_VISUAL_TAMPERING_DETECTED": 27,
+          "RULE_BROKEN_CHAIN_OF_TITLE": 30,
+          "RULE_AREA_EXCEEDS_CAPACITY": 26,
+          "RULE_MANDATORY_REGISTRAR_SEAL_ABSENT": 38
+        },
+        "sample_false_positives": [
+          {
+            "transaction_id": "TXN-8FAA1F66",
+            "scenario_category": "LEGITIMATE_PARTIAL_SUBDIVISION",
+            "violations": [
+              {
+                "rule_code": "RULE_UNVERIFIED_MUTATION_RECORD",
+                "category": "CONFIRMED_INCONSISTENCY",
+                "severity": "HIGH",
+                "reason": "Mutation record reference 'MUT-2016-4800/Savar' is unverified in Land Revenue mutation records."
+              }
+            ]
+          },
+          {
+            "transaction_id": "TXN-B438E8F2",
+            "scenario_category": "LEGITIMATE_CORRECTION_DEED",
+            "violations": [
+              {
+                "rule_code": "RULE_PLOT_MISMATCH_WITH_KHATIAN",
+                "category": "CONFIRMED_INCONSISTENCY",
+                "severity": "CRITICAL",
+                "reason": "Deed cites plot #4223, which conflicts with registered survey dag #4222."
+              }
+            ]
+          },
+          {
+            "transaction_id": "TXN-C072BBA3",
+            "scenario_category": "LEGITIMATE_INHERITANCE",
+            "violations": [
+              {
+                "rule_code": "RULE_UNVERIFIED_MUTATION_RECORD",
+                "category": "CONFIRMED_INCONSISTENCY",
+                "severity": "HIGH",
+                "reason": "Mutation record reference 'MUT-2017-7298/Beanibazar' is unverified in Land Revenue mutation records."
+              }
+            ]
+          },
+          {
+            "transaction_id": "TXN-DE8BEEC1",
+            "scenario_category": "LEGITIMATE_PARTIAL_SUBDIVISION",
+            "violations": [
+              {
+                "rule_code": "RULE_MANDATORY_REGISTRAR_SEAL_ABSENT",
+                "category": "CONFIRMED_INCONSISTENCY",
+                "severity": "HIGH",
+                "reason": "Official Sub-Registry authentication seal is missing from deed."
+              }
+            ]
+          },
+          {
+            "transaction_id": "TXN-EAE12F7A",
+            "scenario_category": "LEGITIMATE_PARTIAL_SUBDIVISION",
+            "violations": [
+              {
+                "rule_code": "RULE_UNVERIFIED_MUTATION_RECORD",
+                "category": "CONFIRMED_INCONSISTENCY",
+                "severity": "HIGH",
+                "reason": "Mutation record reference 'MUT-2005-8494/Savar' is unverified in Land Revenue mutation records."
+              }
+            ]
+          }
+        ],
+        "sample_false_negatives": [
+          {
+            "transaction_id": "TXN-94F7B0AD",
+            "scenario_category": "UNREGISTERED_MUTATION_MISMATCH"
+          },
+          {
+            "transaction_id": "TXN-05C6870F",
+            "scenario_category": "ALTERED_PLOT_NUMBER"
+          },
+          {
+            "transaction_id": "TXN-6E61836F",
+            "scenario_category": "VISUAL_OVERLAY_TAMPERING"
+          },
+          {
+            "transaction_id": "TXN-AA06187C",
+            "scenario_category": "VISUAL_OVERLAY_TAMPERING"
+          },
+          {
+            "transaction_id": "TXN-070E7463",
+            "scenario_category": "VISUAL_OVERLAY_TAMPERING"
+          }
+        ]
+      }
+    },
+    "xgboost_feature_importances": {
+      "area_excess_flag": 0.1921,
+      "area_ratio": 0.1179,
+      "seal_omitted_flag": 0.1152,
+      "seller_was_previous_buyer": 0.1077,
+      "previous_deed_verified_flag": 0.107,
+      "visual_tampering_flag": 0.0953,
+      "conflicting_sale_flag": 0.0874,
+      "plot_discrepancy_flag": 0.0777,
+      "mutation_present": 0.0568,
+      "parcel_total_area_decimal": 0.0113,
+      "transferred_area_decimal": 0.0113,
+      "price_per_decimal": 0.0113,
+      "chain_length": 0.009,
+      "has_previous_deed_ref": 0.0,
+      "is_ancestral_ref": 0.0,
+      "tax_year_delta": 0.0
+    }
+  },
+  "per_scenario_category_accuracy_comparison": {
+    "ALTERED_OWNER_NAME": {
+      "test_count": 33,
+      "ground_truth_label": 1,
+      "oracle_16feat_accuracy": 1.0,
+      "registry_only_xgb_accuracy": 1.0,
+      "operational_rule_accuracy": 1.0,
+      "operational_lr_accuracy": 1.0,
+      "operational_rf_accuracy": 1.0,
+      "operational_xgb_accuracy": 1.0
+    },
+    "ALTERED_PLOT_NUMBER": {
+      "test_count": 34,
+      "ground_truth_label": 1,
+      "oracle_16feat_accuracy": 1.0,
+      "registry_only_xgb_accuracy": 0.3529,
+      "operational_rule_accuracy": 0.9706,
+      "operational_lr_accuracy": 0.9706,
+      "operational_rf_accuracy": 0.9118,
+      "operational_xgb_accuracy": 0.8235
+    },
+    "BROKEN_CHAIN_OF_TITLE": {
+      "test_count": 30,
+      "ground_truth_label": 1,
+      "oracle_16feat_accuracy": 1.0,
+      "registry_only_xgb_accuracy": 1.0,
+      "operational_rule_accuracy": 1.0,
+      "operational_lr_accuracy": 1.0,
+      "operational_rf_accuracy": 1.0,
+      "operational_xgb_accuracy": 1.0
+    },
+    "CONFLICTING_DOUBLE_SALE": {
+      "test_count": 31,
+      "ground_truth_label": 1,
+      "oracle_16feat_accuracy": 1.0,
+      "registry_only_xgb_accuracy": 1.0,
+      "operational_rule_accuracy": 1.0,
+      "operational_lr_accuracy": 1.0,
+      "operational_rf_accuracy": 1.0,
+      "operational_xgb_accuracy": 1.0
+    },
+    "EXAGGERATED_LAND_AREA": {
+      "test_count": 28,
+      "ground_truth_label": 1,
+      "oracle_16feat_accuracy": 1.0,
+      "registry_only_xgb_accuracy": 1.0,
+      "operational_rule_accuracy": 0.9286,
+      "operational_lr_accuracy": 0.9286,
+      "operational_rf_accuracy": 0.9286,
+      "operational_xgb_accuracy": 0.9286
+    },
+    "LEGITIMATE_CORRECTION_DEED": {
+      "test_count": 31,
+      "ground_truth_label": 0,
+      "oracle_16feat_accuracy": 1.0,
+      "registry_only_xgb_accuracy": 0.5161,
+      "operational_rule_accuracy": 0.5806,
+      "operational_lr_accuracy": 0.5806,
+      "operational_rf_accuracy": 0.5806,
+      "operational_xgb_accuracy": 0.6452
+    },
+    "LEGITIMATE_INHERITANCE": {
+      "test_count": 32,
+      "ground_truth_label": 0,
+      "oracle_16feat_accuracy": 1.0,
+      "registry_only_xgb_accuracy": 0.7812,
+      "operational_rule_accuracy": 0.7188,
+      "operational_lr_accuracy": 0.7188,
+      "operational_rf_accuracy": 0.6875,
+      "operational_xgb_accuracy": 0.75
+    },
+    "LEGITIMATE_NORMAL_SALE": {
+      "test_count": 31,
+      "ground_truth_label": 0,
+      "oracle_16feat_accuracy": 1.0,
+      "registry_only_xgb_accuracy": 0.871,
+      "operational_rule_accuracy": 0.9677,
+      "operational_lr_accuracy": 0.9677,
+      "operational_rf_accuracy": 0.9355,
+      "operational_xgb_accuracy": 0.9677
+    },
+    "LEGITIMATE_PARTIAL_SUBDIVISION": {
+      "test_count": 37,
+      "ground_truth_label": 0,
+      "oracle_16feat_accuracy": 1.0,
+      "registry_only_xgb_accuracy": 0.6216,
+      "operational_rule_accuracy": 0.8919,
+      "operational_lr_accuracy": 0.8919,
+      "operational_rf_accuracy": 0.8649,
+      "operational_xgb_accuracy": 0.8649
+    },
+    "SYNTHETIC_SEAL_ABSENT_SUSPICIOUS": {
+      "test_count": 33,
+      "ground_truth_label": 1,
+      "oracle_16feat_accuracy": 1.0,
+      "registry_only_xgb_accuracy": 0.303,
+      "operational_rule_accuracy": 1.0,
+      "operational_lr_accuracy": 1.0,
+      "operational_rf_accuracy": 1.0,
+      "operational_xgb_accuracy": 1.0
+    },
+    "UNREGISTERED_MUTATION_MISMATCH": {
+      "test_count": 28,
+      "ground_truth_label": 1,
+      "oracle_16feat_accuracy": 1.0,
+      "registry_only_xgb_accuracy": 1.0,
+      "operational_rule_accuracy": 0.9286,
+      "operational_lr_accuracy": 0.9286,
+      "operational_rf_accuracy": 0.8929,
+      "operational_xgb_accuracy": 0.75
+    },
+    "VISUAL_OVERLAY_TAMPERING": {
+      "test_count": 27,
+      "ground_truth_label": 1,
+      "oracle_16feat_accuracy": 1.0,
+      "registry_only_xgb_accuracy": 0.4444,
+      "operational_rule_accuracy": 0.8519,
+      "operational_lr_accuracy": 0.8519,
+      "operational_rf_accuracy": 0.8519,
+      "operational_xgb_accuracy": 0.8148
+    }
+  }
+}

@@ -1,0 +1,42 @@
+# Configuration for Canonical Synthetic Land Data Generation
+seed: 42
+target_records_count: 100000
+pilot_records_count: 100
+min_fraud_scenarios: 2000
+
+locations:
+  districts:
+    - name: "Dhaka"
+      upazilas: ["Dhamrai", "Savar", "Keraniganj", "Tejgaon"]
+    - name: "Chattogram"
+      upazilas: ["Sitakunda", "Mirsharai", "Patiya", "Hathazari"]
+    - name: "Sylhet"
+      upazilas: ["Beanibazar", "Golapganj", "Sylhet Sadar", "Fenchuganj"]
+    - name: "Rajshahi"
+      upazilas: ["Paba", "Godagari", "Charghat", "Bagha"]
+    - name: "Khulna"
+      upazilas: ["Rupsha", "Dighalia", "Batiaghata", "Dumuria"]
+
+mouza_names:
+  - "Bagbari"
+  - "Mirpur"
+  - "Rajarbag"
+  - "Nawabganj"
+  - "Chawkbazar"
+  - "Dhanmondi"
+  - "Uttara"
+  - "Mohakhali"
+  - "Pahartali"
+  - "Bibirhat"
+
+land_classes:
+  - "Viti"
+  - "Nal"
+  - "Bari"
+  - "Pukur"
+  - "Chala"
+  - "Dokan"
+
+watermark:
+  text: "SYNTHETIC DEMO — NOT AN OFFICIAL DOCUMENT"
+  opacity: 0.25

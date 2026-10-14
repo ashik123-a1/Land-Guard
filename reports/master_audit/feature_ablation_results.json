@@ -1,0 +1,152 @@
+[
+  {
+    "regime": "1_MAJORITY_CLASS_BASELINE",
+    "features": "Constant (No features)",
+    "feature_count": 0,
+    "model": "Majority Class Heuristic",
+    "accuracy": 0.664,
+    "precision": 0.664,
+    "recall": 1.0,
+    "specificity": 0.0,
+    "f1_score": 0.7981,
+    "roc_auc": 0.5,
+    "pr_auc": 0.664,
+    "brier_score": 0.336,
+    "ece": 0.336,
+    "confusion_matrix": [
+      [
+        0,
+        168
+      ],
+      [
+        0,
+        332
+      ]
+    ]
+  },
+  {
+    "regime": "2_LOGISTIC_REGRESSION_REGISTRY",
+    "features": "Registry Only",
+    "feature_count": 15,
+    "model": "Logistic Regression (L2)",
+    "accuracy": 0.896,
+    "precision": 0.8763,
+    "recall": 0.9819,
+    "specificity": 0.7262,
+    "f1_score": 0.9261,
+    "roc_auc": 0.9629,
+    "pr_auc": 0.9811,
+    "brier_score": 0.0762,
+    "ece": 0.0681,
+    "confusion_matrix": [
+      [
+        122,
+        46
+      ],
+      [
+        6,
+        326
+      ]
+    ]
+  },
+  {
+    "regime": "3_RANDOM_FOREST_REGISTRY",
+    "features": "Registry Only",
+    "feature_count": 15,
+    "model": "Random Forest (150 trees)",
+    "accuracy": 0.928,
+    "precision": 0.9229,
+    "recall": 0.9729,
+    "specificity": 0.8393,
+    "f1_score": 0.9472,
+    "roc_auc": 0.9735,
+    "pr_auc": 0.9861,
+    "brier_score": 0.0581,
+    "ece": 0.0386,
+    "confusion_matrix": [
+      [
+        141,
+        27
+      ],
+      [
+        9,
+        323
+      ]
+    ]
+  },
+  {
+    "regime": "4_XGBOOST_REGISTRY",
+    "features": "Registry Only",
+    "feature_count": 15,
+    "model": "XGBoost Classifier",
+    "accuracy": 0.924,
+    "precision": 0.8973,
+    "recall": 1.0,
+    "specificity": 0.7738,
+    "f1_score": 0.9459,
+    "roc_auc": 0.9737,
+    "pr_auc": 0.9866,
+    "brier_score": 0.0554,
+    "ece": 0.0363,
+    "confusion_matrix": [
+      [
+        130,
+        38
+      ],
+      [
+        0,
+        332
+      ]
+    ]
+  },
+  {
+    "regime": "5_XGBOOST_REGISTRY_PLUS_OCR",
+    "features": "Registry + OCR Discrepancies",
+    "feature_count": 17,
+    "model": "XGBoost Classifier",
+    "accuracy": 0.922,
+    "precision": 0.9621,
+    "recall": 0.9187,
+    "specificity": 0.9286,
+    "f1_score": 0.9399,
+    "roc_auc": 0.9876,
+    "pr_auc": 0.9939,
+    "brier_score": 0.042,
+    "ece": 0.027,
+    "confusion_matrix": [
+      [
+        156,
+        12
+      ],
+      [
+        27,
+        305
+      ]
+    ]
+  },
+  {
+    "regime": "6_XGBOOST_FULL_MULTIMODAL",
+    "features": "Registry + OCR + CV Observables",
+    "feature_count": 19,
+    "model": "XGBoost Classifier",
+    "accuracy": 0.998,
+    "precision": 0.997,
+    "recall": 1.0,
+    "specificity": 0.994,
+    "f1_score": 0.9985,
+    "roc_auc": 1.0,
+    "pr_auc": 1.0,
+    "brier_score": 0.0013,
+    "ece": 0.011,
+    "confusion_matrix": [
+      [
+        167,
+        1
+      ],
+      [
+        0,
+        332
+      ]
+    ]
+  }
+]

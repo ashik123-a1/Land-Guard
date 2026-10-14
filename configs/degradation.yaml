@@ -1,0 +1,46 @@
+# Document Image Degradation and Scan Simulation Schedule
+seed: 42
+
+quality_classes:
+  - name: "clean_digital"
+    weight: 0.15
+    params: {}
+  - name: "clean_scan"
+    weight: 0.15
+    params: { blur_radius: 0.4, noise_sigma: 2 }
+  - name: "grayscale_scan"
+    weight: 0.10
+    params: { to_gray: true, contrast: 1.1 }
+  - name: "low_resolution"
+    weight: 0.10
+    params: { downscale_factor: 0.45 }
+  - name: "mild_rotation"
+    weight: 0.08
+    params: { max_angle_deg: 3.5 }
+  - name: "skewed_scan"
+    weight: 0.07
+    params: { perspective_shear: 0.04 }
+  - name: "low_contrast"
+    weight: 0.05
+    params: { contrast: 0.65, brightness: 1.1 }
+  - name: "uneven_illumination"
+    weight: 0.05
+    params: { gradient_strength: 0.35 }
+  - name: "blur"
+    weight: 0.05
+    params: { gaussian_kernel: 5 }
+  - name: "compression_artifacts"
+    weight: 0.05
+    params: { jpeg_quality: 35 }
+  - name: "light_noise"
+    weight: 0.05
+    params: { noise_sigma: 15 }
+  - name: "wrinkled_paper"
+    weight: 0.04
+    params: { wrinkle_lines: 4 }
+  - name: "mild_stains"
+    weight: 0.03
+    params: { stain_count: 2 }
+  - name: "shadow_phone_photo"
+    weight: 0.03
+    params: { corner_shadow: true }

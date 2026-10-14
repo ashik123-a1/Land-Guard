@@ -1,0 +1,143 @@
+{
+  "signature_detection_examples": {
+    "success_true_positive_assisted": {
+      "image_id": "IMG-24DCC9AE",
+      "image_path": "data/full/images/IMG-24DCC9AE.png",
+      "document_type": "SALE_DEED",
+      "quality_class": "clean_scan",
+      "candidate_signature_bbox_y1_x1_y2_x2": [
+        1040,
+        700,
+        1090,
+        850
+      ],
+      "ground_truth_signature_label": true,
+      "assisted_predicted_label": true,
+      "assisted_stroke_density": 0.0603,
+      "assisted_edge_density": 0.0819,
+      "unassisted_predicted_label": false,
+      "unassisted_stroke_density": 0.0236,
+      "outcome_type": "TRUE_POSITIVE (Assisted Signature Detection Success)"
+    },
+    "success_true_negative_omitted_signature": {
+      "image_id": "IMG-4F67AAA0",
+      "image_path": "data/full/images/IMG-4F67AAA0.png",
+      "document_type": "SALE_DEED",
+      "quality_class": "clean_digital",
+      "candidate_signature_bbox_y1_x1_y2_x2": [
+        1040,
+        700,
+        1090,
+        850
+      ],
+      "ground_truth_signature_label": false,
+      "assisted_predicted_label": false,
+      "assisted_stroke_density": 0.0,
+      "assisted_edge_density": 0.0,
+      "unassisted_predicted_label": true,
+      "unassisted_stroke_density": 0.0141,
+      "outcome_type": "TRUE_NEGATIVE (Omitted Signature Correctly Rejected)"
+    },
+    "failure_false_positive": {
+      "image_id": "IMG-9A9BB83D",
+      "image_path": "data/full/images/IMG-9A9BB83D.png",
+      "document_type": "SALE_DEED",
+      "quality_class": "cropped_edges",
+      "candidate_signature_bbox_y1_x1_y2_x2": [
+        1040,
+        700,
+        1090,
+        850
+      ],
+      "ground_truth_signature_label": false,
+      "assisted_predicted_label": true,
+      "assisted_stroke_density": 0.1191,
+      "assisted_edge_density": 0.0991,
+      "unassisted_predicted_label": true,
+      "unassisted_stroke_density": 0.0186,
+      "outcome_type": "FALSE_POSITIVE (Stroke Noise/Border Lines Triggered Presence)"
+    },
+    "failure_false_negative_unassisted_quadrant": {
+      "image_id": "IMG-24DCC9AE",
+      "image_path": "data/full/images/IMG-24DCC9AE.png",
+      "document_type": "SALE_DEED",
+      "quality_class": "clean_scan",
+      "candidate_signature_bbox_y1_x1_y2_x2": [
+        1040,
+        700,
+        1090,
+        850
+      ],
+      "ground_truth_signature_label": true,
+      "assisted_predicted_label": true,
+      "assisted_stroke_density": 0.0603,
+      "assisted_edge_density": 0.0819,
+      "unassisted_predicted_label": false,
+      "unassisted_stroke_density": 0.0236,
+      "outcome_type": "FALSE_NEGATIVE (Unassisted Quadrant Search Failure due to Stroke Dilution)"
+    }
+  },
+  "seal_detection_examples": {
+    "success_true_positive": {
+      "image_id": "IMG-24DCC9AE",
+      "image_path": "data/full/images/IMG-24DCC9AE.png",
+      "document_type": "SALE_DEED",
+      "quality_class": "clean_scan",
+      "candidate_seal_bbox_y1_x1_y2_x2": [
+        1040,
+        80,
+        1180,
+        220
+      ],
+      "ground_truth_seal_label": true,
+      "predicted_seal_label": true,
+      "detector_details": {
+        "presence_detected": true,
+        "status": "SEAL_PRESENT",
+        "best_circularity": 0.8968,
+        "has_colored_ink": true,
+        "verification_status": "SYNTHETIC_REFERENCE_MATCH"
+      },
+      "outcome_type": "TRUE_POSITIVE (Official Seal Contour Detected)"
+    },
+    "success_true_negative_omitted_seal": {
+      "image_id": "IMG-4F67AAA0",
+      "image_path": "data/full/images/IMG-4F67AAA0.png",
+      "document_type": "SALE_DEED",
+      "quality_class": "clean_digital",
+      "candidate_seal_bbox_y1_x1_y2_x2": [
+        1040,
+        80,
+        1180,
+        220
+      ],
+      "ground_truth_seal_label": false,
+      "predicted_seal_label": false,
+      "detector_details": {
+        "presence_detected": false,
+        "status": "SEAL_ABSENT",
+        "best_circularity": 0.0,
+        "has_colored_ink": false,
+        "verification_status": "SYNTHETIC_MISMATCH"
+      },
+      "outcome_type": "TRUE_NEGATIVE (Omitted Registrar Seal Correctly Rejected)"
+    },
+    "failure_false_negative_degraded_map": {
+      "image_id": "IMG-36E289B2",
+      "image_path": "data/full/images/IMG-36E289B2.png",
+      "document_type": "PARCEL_MAP",
+      "quality_class": "wrinkled_paper",
+      "candidate_seal_bbox_y1_x1_y2_x2": null,
+      "ground_truth_seal_label": true,
+      "predicted_seal_label": false,
+      "detector_details": {
+        "presence_detected": false,
+        "status": "SEAL_ABSENT",
+        "best_circularity": 0.3034,
+        "has_colored_ink": false,
+        "verification_status": "SYNTHETIC_MISMATCH"
+      },
+      "outcome_type": "FALSE_NEGATIVE (Severe Blur/Noise Degraded Circular Seal Contour)"
+    }
+  }
+}

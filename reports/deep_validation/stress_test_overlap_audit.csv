@@ -1,0 +1,8 @@
+audit_dimension,canonical_pool_count,stress_test_count,intersection_count,contamination_risk_status,isolation_mechanism
+Scenario IDs,2500,100,0,ZERO_LEAKAGE (Completely Disjoint),Cryptographic UUID Hex Generation with SCN- Prefix
+Parcels (Cadastral Entities),2500,100,0,ZERO_LEAKAGE (Completely Disjoint),Dedicated Target Entity Partition (Seed Offset +1000)
+Owner Entities (Sellers & Buyers),4957,196,0,ZERO_LEAKAGE (Completely Disjoint),600 Isolated Synthetic Owners Pool
+Template Cohorts (Document Stencils),25,2,0,ZERO_LEAKAGE (Completely Disjoint),TMPL-COHORT-EXP-01/02 Dedicated Namespace
+Train-Set Owner Overlap,3370,196,0,ZERO_LEAKAGE (Completely Disjoint),Strict Group-Disjoint Split Architecture
+Val-Set Owner Overlap,596,196,0,ZERO_LEAKAGE (Completely Disjoint),Strict Group-Disjoint Split Architecture
+Test-Set Owner Overlap,991,196,0,ZERO_LEAKAGE (Completely Disjoint),Strict Group-Disjoint Split Architecture

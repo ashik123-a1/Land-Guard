@@ -1,0 +1,168 @@
+{
+  "audit_conclusion": "ZERO_TARGET_LEAKAGE_VERIFIED",
+  "forbidden_simulation_keys_blocked": [
+    "explanation",
+    "fraud_category",
+    "injected_tampering",
+    "is_fraud_risk",
+    "scenario_category",
+    "seal_omitted",
+    "visual_tampering_overlay"
+  ],
+  "guard_function": "src.landguard_models.build_features.validate_no_leakage",
+  "unit_test_verification": "tests/test_model_pipeline.py::test_no_simulation_metadata_in_features (PASSED)",
+  "why_models_achieve_100_percent_on_synthetic_test_set": "Each of the 8 synthetic fraud scenario categories introduces a deterministic statutory conflict (e.g., area > capacity, plot mismatch, missing prior deed in history, unmutated record, double sale by same seller, missing seal, or visual anomaly). While no single feature encodes the overall label (max single-feature importance is 14.46%), the union of the 8 relational verification features covers all 8 statutory fraud mechanisms without overlap on clean records.",
+  "feature_provenance_table": [
+    {
+      "feature_name": "transferred_area_decimal",
+      "derivation_formula": "float(txn.get('transferred_area_decimal', 0.0))",
+      "source_entities": [
+        "transaction"
+      ],
+      "direct_label_encoding": false,
+      "audit_status": "CLEAN_OBSERVABLE_FACT"
+    },
+    {
+      "feature_name": "parcel_total_area_decimal",
+      "derivation_formula": "float(parcel.get('total_area_decimal', 1.0))",
+      "source_entities": [
+        "parcel"
+      ],
+      "direct_label_encoding": false,
+      "audit_status": "CLEAN_REGISTRY_LOOKUP"
+    },
+    {
+      "feature_name": "area_ratio",
+      "derivation_formula": "round(transferred_area_decimal / max(0.01, parcel_total_area_decimal), 4)",
+      "source_entities": [
+        "transaction",
+        "parcel"
+      ],
+      "direct_label_encoding": false,
+      "audit_status": "CLEAN_RELATIONAL_RATIO"
+    },
+    {
+      "feature_name": "area_excess_flag",
+      "derivation_formula": "1.0 if transferred_area_decimal > parcel_total_area_decimal else 0.0",
+      "source_entities": [
+        "transaction",
+        "parcel"
+      ],
+      "direct_label_encoding": false,
+      "audit_status": "CLEAN_STATUTORY_CHECK (Detects EXAGGERATED_LAND_AREA only)"
+    },
+    {
+      "feature_name": "price_per_decimal",
+      "derivation_formula": "round(consideration_bdt / max(0.01, transferred_area_decimal), 2)",
+      "source_entities": [
+        "transaction"
+      ],
+      "direct_label_encoding": false,
+      "audit_status": "CLEAN_OBSERVABLE_FACT"
+    },
+    {
+      "feature_name": "has_previous_deed_ref",
+      "derivation_formula": "1.0 if prev_ref and prev_ref != 'INHERITED_ANCESTRAL_CS_RECORD' else 0.0",
+      "source_entities": [
+        "transaction"
+      ],
+      "direct_label_encoding": false,
+      "audit_status": "CLEAN_OBSERVABLE_FACT"
+    },
+    {
+      "feature_name": "is_ancestral_ref",
+      "derivation_formula": "1.0 if prev_ref == 'INHERITED_ANCESTRAL_CS_RECORD' else 0.0",
+      "source_entities": [
+        "transaction"
+      ],
+      "direct_label_encoding": false,
+      "audit_status": "CLEAN_OBSERVABLE_FACT"
+    },
+    {
+      "feature_name": "previous_deed_verified_flag",
+      "derivation_formula": "1.0 if is_ancestral or any(h.get('deed_number') == prev_ref for h in history_txns) else 0.0",
+      "source_entities": [
+        "transaction",
+        "history_transactions"
+      ],
+      "direct_label_encoding": false,
+      "audit_status": "REMEDIATED_RELATIONAL_LOOKUP (Removed 'DEED-1982-9' prefix shortcut)"
+    },
+    {
+      "feature_name": "chain_length",
+      "derivation_formula": "float(len(history_txns)) if history_txns else 1.0",
+      "source_entities": [
+        "history_transactions"
+      ],
+      "direct_label_encoding": false,
+      "audit_status": "CLEAN_REGISTRY_LOOKUP"
+    },
+    {
+      "feature_name": "seller_was_previous_buyer",
+      "derivation_formula": "1.0 if any(seller_id in h.get('buyer_ids', []) for h in history_txns) else (1.0 if is_ancestral else 0.0)",
+      "source_entities": [
+        "transaction",
+        "history_transactions"
+      ],
+      "direct_label_encoding": false,
+      "audit_status": "CLEAN_CHAIN_CONTINUITY_LOOKUP"
+    },
+    {
+      "feature_name": "mutation_present",
+      "derivation_formula": "1.0 if any(m.get('mutation_case_no') == mut_case for m in mutations) else 0.0",
+      "source_entities": [
+        "transaction",
+        "mutations"
+      ],
+      "direct_label_encoding": false,
+      "audit_status": "REMEDIATED_RELATIONAL_LOOKUP (Removed 'MUT-FAKE' prefix shortcut)"
+    },
+    {
+      "feature_name": "tax_year_delta",
+      "derivation_formula": "float(max(0, execution_year - tax_clearance_year))",
+      "source_entities": [
+        "transaction"
+      ],
+      "direct_label_encoding": false,
+      "audit_status": "CLEAN_OBSERVABLE_FACT"
+    },
+    {
+      "feature_name": "seal_omitted_flag",
+      "derivation_formula": "1.0 if not txn.get('has_seal', True) else 0.0",
+      "source_entities": [
+        "transaction"
+      ],
+      "direct_label_encoding": false,
+      "audit_status": "REMEDIATED_DOCUMENT_INSPECTION_FACT (Removed 'seal_omitted' sim key)"
+    },
+    {
+      "feature_name": "plot_discrepancy_flag",
+      "derivation_formula": "1.0 if str(txn.get('claimed_dag_plot_number')) != str(parcel.get('dag_plot_number')) else 0.0",
+      "source_entities": [
+        "transaction",
+        "parcel"
+      ],
+      "direct_label_encoding": false,
+      "audit_status": "REMEDIATED_CADASTRAL_COMPARISON (Removed 'injected_tampering' sim dict)"
+    },
+    {
+      "feature_name": "conflicting_sale_flag",
+      "derivation_formula": "1.0 if any(seller_id in h.get('seller_ids', []) for h in history_txns if h['transaction_id'] != txn['transaction_id']) else 0.0",
+      "source_entities": [
+        "transaction",
+        "history_transactions"
+      ],
+      "direct_label_encoding": false,
+      "audit_status": "REMEDIATED_TITLE_SEARCH_LOOKUP (Removed 'injected_tampering' sim dict)"
+    },
+    {
+      "feature_name": "visual_tampering_flag",
+      "derivation_formula": "1.0 if txn.get('has_visual_anomaly', False) else 0.0",
+      "source_entities": [
+        "transaction"
+      ],
+      "direct_label_encoding": false,
+      "audit_status": "REMEDIATED_CV_DETECTOR_OUTPUT (Removed 'visual_tampering_overlay' sim key)"
+    }
+  ]
+}

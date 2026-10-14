@@ -1,0 +1,73 @@
+{% extends "user/layout.html" %}
+
+{% block title %}My Complaints & Cases — LandGuard AI{% endblock %}
+
+{% block portal_content %}
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Grievances &amp; Case Tracking</h1>
+            <p class="text-xs sm:text-sm text-slate-400 mt-1">Official citizen dispute registry with real-time investigator status updates.</p>
+        </div>
+        <a href="/user/complaints/new" class="px-4 py-2 rounded-xl text-xs font-semibold text-navy-950 bg-cyan-400 hover:bg-cyan-300 transition-colors inline-flex items-center gap-1.5 self-start">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            <span>File New Grievance</span>
+        </a>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="flex items-center gap-2 overflow-x-auto pb-2 text-xs">
+        <span class="text-[11px] font-mono text-slate-400 uppercase mr-2">Status:</span>
+        <a href="/user/complaints" class="px-3 py-1.5 rounded-lg bg-cyan-950 text-cyan-300 border border-cyan-500/40 font-semibold">All Complaints</a>
+        <a href="/user/complaints?status=UNDER_REVIEW" class="px-3 py-1.5 rounded-lg bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700">Under Review</a>
+        <a href="/user/complaints?status=SUBMITTED" class="px-3 py-1.5 rounded-lg bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700">Submitted</a>
+        <a href="/user/complaints?status=RESOLVED" class="px-3 py-1.5 rounded-lg bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700">Resolved</a>
+    </div>
+
+    <!-- Complaints Grid -->
+    <div class="space-y-4">
+        {% for c in complaints %}
+        <div class="glass-panel p-5 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="space-y-2 flex-1">
+                <div class="flex items-center gap-2.5 flex-wrap">
+                    <span class="font-mono text-xs font-bold text-cyan-400">{{ c.complaint_id }}</span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-mono font-semibold {% if c.status == 'UNDER_REVIEW' %}bg-amber-950 text-amber-300 border border-amber-800/40{% elif c.status == 'RESOLVED' %}bg-emerald-950 text-emerald-300 border border-emerald-800/40{% else %}bg-slate-800 text-slate-300{% endif %}">
+                        {{ c.status|replace('_', ' ') }}
+                    </span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-800 text-slate-400 border border-slate-700">
+                        {{ c.category|replace('_', ' ') }}
+                    </span>
+                    {% if c.is_expedited %}
+                    <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-indigo-950 text-indigo-300 border border-indigo-500/30 inline-flex items-center gap-1">
+                        <i data-lucide="zap" class="w-3 h-3 text-indigo-400"></i>
+                        <span>EXPEDITED ({{ c.expedite_status }})</span>
+                    </span>
+                    {% endif %}
+                </div>
+
+                <h3 class="text-sm font-bold text-white">{{ c.title }}</h3>
+                <p class="text-xs text-slate-400 line-clamp-2">{{ c.narrative_description }}</p>
+
+                <div class="text-[11px] text-slate-500 font-mono flex items-center gap-4 pt-1">
+                    <span>Dag Plot: <strong class="text-slate-300">#{{ c.dag_plot_number }}</strong></span>
+                    <span>Assigned Officer: <strong class="text-slate-300">{{ c.assigned_officer }}</strong></span>
+                    <span>Date: <strong class="text-slate-300">{{ c.created_at[:10] }}</strong></span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2 self-end md:self-center">
+                <a href="/user/complaints/{{ c.complaint_id }}" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-200 glass-panel hover:bg-slate-800 transition-colors border border-slate-700 flex items-center gap-1.5">
+                    <span>View Case Progress</span>
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-cyan-400"></i>
+                </a>
+            </div>
+        </div>
+        {% else %}
+        <div class="glass-panel p-10 rounded-2xl border border-slate-800 text-center text-slate-500 text-xs">
+            No complaints found matching criteria.
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

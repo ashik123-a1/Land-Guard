@@ -1,0 +1,41 @@
+# LandGuard AI Evaluation & Research
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Large generated datasets and images (keep manifests, samples, and reports in Git)
+data/full/
+data/pilot/
+data/raw/
+data/images/
+data/cache/
+data/uploads/
+*.parquet
+*.sqlite3
+
+# Model binaries
+models/*.bin
+models/*.onnx
+!models/README.md
+!models/xgboost_risk_model.joblib
+!models/model_metadata.json
+
+# OS and IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Pytest & Coverage
+.pytest_cache/
+.coverage
+htmlcov/

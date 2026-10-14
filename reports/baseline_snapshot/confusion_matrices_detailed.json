@@ -1,0 +1,208 @@
+{
+  "fraud_risk_models_test_set_375_scenarios": {
+    "Majority Baseline": {
+      "TP": 244,
+      "FP": 131,
+      "TN": 0,
+      "FN": 0,
+      "matrix_2x2_TN_FP_FN_TP": [
+        [
+          0,
+          131
+        ],
+        [
+          0,
+          244
+        ]
+      ],
+      "accuracy": 0.6507,
+      "precision": 0.6507,
+      "recall": 1.0,
+      "f1_score": 0.7884
+    },
+    "Deterministic Rule Baseline": {
+      "TP": 244,
+      "FP": 0,
+      "TN": 131,
+      "FN": 0,
+      "matrix_2x2_TN_FP_FN_TP": [
+        [
+          131,
+          0
+        ],
+        [
+          0,
+          244
+        ]
+      ],
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0
+    },
+    "Logistic Regression": {
+      "TP": 244,
+      "FP": 0,
+      "TN": 131,
+      "FN": 0,
+      "matrix_2x2_TN_FP_FN_TP": [
+        [
+          131,
+          0
+        ],
+        [
+          0,
+          244
+        ]
+      ],
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0
+    },
+    "Random Forest": {
+      "TP": 244,
+      "FP": 0,
+      "TN": 131,
+      "FN": 0,
+      "matrix_2x2_TN_FP_FN_TP": [
+        [
+          131,
+          0
+        ],
+        [
+          0,
+          244
+        ]
+      ],
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0
+    },
+    "XGBoost Classifier": {
+      "TP": 244,
+      "FP": 0,
+      "TN": 131,
+      "FN": 0,
+      "matrix_2x2_TN_FP_FN_TP": [
+        [
+          131,
+          0
+        ],
+        [
+          0,
+          244
+        ]
+      ],
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0
+    }
+  },
+  "computer_vision_600_images": {
+    "signature_assisted": {
+      "TP": 281,
+      "FP": 186,
+      "TN": 133,
+      "FN": 0
+    },
+    "signature_unassisted": {
+      "TP": 60,
+      "FP": 152,
+      "TN": 167,
+      "FN": 221
+    },
+    "signature_by_document_type": {
+      "SALE_DEED": {
+        "TP": 128,
+        "FP": 19,
+        "TN": 3,
+        "FN": 0
+      },
+      "KHATIAN_PORCHA": {
+        "TP": 0,
+        "FP": 0,
+        "TN": 120,
+        "FN": 0
+      },
+      "MUTATION_RECORD": {
+        "TP": 102,
+        "FP": 16,
+        "TN": 2,
+        "FN": 0
+      },
+      "TAX_RECEIPT": {
+        "TP": 0,
+        "FP": 90,
+        "TN": 0,
+        "FN": 0
+      },
+      "PARCEL_MAP": {
+        "TP": 0,
+        "FP": 60,
+        "TN": 0,
+        "FN": 0
+      },
+      "APPLICATION_COMPLAINT": {
+        "TP": 51,
+        "FP": 1,
+        "TN": 8,
+        "FN": 0
+      }
+    },
+    "seal_overall": {
+      "TP": 511,
+      "FP": 0,
+      "TN": 87,
+      "FN": 2
+    },
+    "seal_by_document_type": {
+      "SALE_DEED": {
+        "TP": 135,
+        "FP": 0,
+        "TN": 15,
+        "FN": 0
+      },
+      "KHATIAN_PORCHA": {
+        "TP": 120,
+        "FP": 0,
+        "TN": 0,
+        "FN": 0
+      },
+      "MUTATION_RECORD": {
+        "TP": 108,
+        "FP": 0,
+        "TN": 12,
+        "FN": 0
+      },
+      "TAX_RECEIPT": {
+        "TP": 90,
+        "FP": 0,
+        "TN": 0,
+        "FN": 0
+      },
+      "PARCEL_MAP": {
+        "TP": 58,
+        "FP": 0,
+        "TN": 0,
+        "FN": 2
+      },
+      "APPLICATION_COMPLAINT": {
+        "TP": 0,
+        "FP": 0,
+        "TN": 60,
+        "FN": 0
+      }
+    },
+    "visual_anomaly": {
+      "clean_digital_TN": 40,
+      "clean_digital_FP": 0,
+      "overall_600_clean_TN": 590,
+      "overall_600_clean_FP": 10,
+      "controlled_50_altered_TP": 32,
+      "controlled_50_altered_FN": 18
+    }
+  }
+}

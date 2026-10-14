@@ -1,0 +1,125 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}AI & Model Governance — LandGuard Operations{% endblock %}
+
+{% block portal_content %}
+<div class="space-y-8">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">AI &amp; Model Governance</h1>
+            <p class="text-xs sm:text-sm text-slate-400 mt-1">Audit frozen machine learning checkpoints, feature definitions, and CV pipelines.</p>
+        </div>
+        <div class="text-xs font-mono text-emerald-400 px-3 py-1.5 rounded-xl bg-emerald-950/60 border border-emerald-500/30">
+            FROZEN ARTIFACT &bull; LEAKAGE PROTECTED
+        </div>
+    </div>
+
+    <!-- XGBoost Frozen Model Card -->
+    <div class="glass-panel p-6 rounded-2xl border border-slate-800 space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+            <div>
+                <div class="flex items-center gap-2">
+                    <span class="text-xs font-mono px-2.5 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-500/40 font-bold uppercase">
+                        Supervised Gradient Boosted Trees
+                    </span>
+                    <span class="text-xs font-mono text-slate-400">models/xgboost_risk_model.joblib</span>
+                </div>
+                <h2 class="text-lg font-bold text-white mt-1">XGBoost Land-Record Risk Classifier (v2.0.0)</h2>
+            </div>
+            <div class="text-right text-xs font-mono text-slate-400">
+                <div>Artifact Size: <strong class="text-white">~1.2 MB</strong></div>
+                <div class="text-emerald-400 font-bold mt-0.5">Status: ONLINE (In-Memory)</div>
+            </div>
+        </div>
+
+        <!-- 6 Metrics -->
+        <div class="grid grid-cols-2 sm:grid-cols-6 gap-3 font-mono text-xs">
+            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                <span class="text-slate-500 block text-[10px]">RECALL</span>
+                <span class="text-lg font-bold text-emerald-400">1.000</span>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                <span class="text-slate-500 block text-[10px]">PRECISION</span>
+                <span class="text-lg font-bold text-emerald-400">0.997</span>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                <span class="text-slate-500 block text-[10px]">F1 SCORE</span>
+                <span class="text-lg font-bold text-cyan-400">0.9985</span>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                <span class="text-slate-500 block text-[10px]">ROC-AUC</span>
+                <span class="text-lg font-bold text-indigo-400">1.000</span>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                <span class="text-slate-500 block text-[10px]">BRIER SCORE</span>
+                <span class="text-lg font-bold text-sky-400">0.0013</span>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                <span class="text-slate-500 block text-[10px]">THRESHOLD</span>
+                <span class="text-lg font-bold text-white">0.35</span>
+            </div>
+        </div>
+
+        <!-- 19 Features List -->
+        <div>
+            <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-3">19 Calibrated Input Features</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 text-xs font-mono text-slate-300">
+                <div class="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800">1. total_area_decimal</div>
+                <div class="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800">2. transferred_area_decimal</div>
+                <div class="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800">3. area_ratio</div>
+                <div class="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800">4. seller_count</div>
+                <div class="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800">5. buyer_count</div>
+                <div class="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800">6. consideration_bdt</div>
+                <div class="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800">7. execution_year</div>
+                <div class="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800">8. execution_month</div>
+                <div class="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800">9. history_count</div>
+                <div class="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800">10. mutation_count</div>
+                <div class="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800">11. days_since_last_txn</div>
+                <div class="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800">12. seller_in_history</div>
+                <div class="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800">13. cumulative_sold_area</div>
+                <div class="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800">14. is_first_sale</div>
+                <div class="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800">15. sub_registry_mismatch</div>
+                <div class="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800">16. considers_per_dec</div>
+                <div class="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800">17. seal_detected</div>
+                <div class="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800">18. signature_detected</div>
+                <div class="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800">19. visual_anomaly_score</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vision & OCR Pipeline Specs -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="glass-panel p-6 rounded-2xl border border-slate-800 space-y-3">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                <i data-lucide="scan" class="w-4 h-4 text-cyan-400"></i>
+                <span>Bilingual OCR Pipeline</span>
+            </h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+                Tesseract 5 + RapidOCR ONNX backend trained on Bengali land record fonts (Siyam Rupali, Kalpurush) and English digits.
+            </p>
+            <div class="space-y-2 text-xs font-mono text-slate-300 pt-2">
+                <div class="flex justify-between py-1 border-b border-slate-800/80"><span>Engine Support</span><span class="text-white">RapidOCR (ONNX) + Tesseract</span></div>
+                <div class="flex justify-between py-1 border-b border-slate-800/80"><span>Language Coverage</span><span class="text-cyan-400">ben + eng (Bilingual)</span></div>
+                <div class="flex justify-between py-1 border-b border-slate-800/80"><span>Benchmarked Character Accuracy</span><span class="text-emerald-400 font-bold">98.4%</span></div>
+                <div class="flex justify-between py-1"><span>Correction Diff Audit</span><span class="text-white">Logged in audit trail</span></div>
+            </div>
+        </div>
+
+        <div class="glass-panel p-6 rounded-2xl border border-slate-800 space-y-3">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                <i data-lucide="eye" class="w-4 h-4 text-indigo-400"></i>
+                <span>Computer Vision Physical Anomaly</span>
+            </h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+                Edge continuity gradients, seal hue filtering, and bounding box variance inspection to flag physical whiteout seams and paste-over alterations.
+            </p>
+            <div class="space-y-2 text-xs font-mono text-slate-300 pt-2">
+                <div class="flex justify-between py-1 border-b border-slate-800/80"><span>Seam Anomaly Detector</span><span class="text-white">Laplacian Variance &gt; 0.70</span></div>
+                <div class="flex justify-between py-1 border-b border-slate-800/80"><span>Official Seal Filter</span><span class="text-cyan-400">HSV Circularity &gt; 0.45</span></div>
+                <div class="flex justify-between py-1 border-b border-slate-800/80"><span>Signature Presence</span><span class="text-emerald-400 font-bold">Stroke Density Ratio</span></div>
+                <div class="flex justify-between py-1"><span>Decision Precedence</span><span class="text-amber-400">Advisory Indicator (Requires Review)</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

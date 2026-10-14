@@ -1,0 +1,61 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}Immutable Audit Log — LandGuard Operations{% endblock %}
+
+{% block portal_content %}
+<div class="space-y-6">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Security &amp; Action Audit Trail</h1>
+            <p class="text-xs sm:text-sm text-slate-400 mt-1">Immutable forensic log of logins, statutory determinations, and case updates.</p>
+        </div>
+        <div class="text-xs font-mono text-indigo-400 px-3 py-1.5 rounded-xl bg-indigo-950/60 border border-indigo-500/30">
+            Append-Only Database Store
+        </div>
+    </div>
+
+    <!-- Audit Table -->
+    <div class="glass-panel rounded-2xl border border-slate-800 overflow-hidden shadow-xl">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs font-mono">
+                <thead class="bg-slate-900/80 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
+                    <tr>
+                        <th class="p-4">Event ID</th>
+                        <th class="p-4">Timestamp</th>
+                        <th class="p-4">Actor ID</th>
+                        <th class="p-4">Action Type</th>
+                        <th class="p-4">Target Entity</th>
+                        <th class="p-4">Target ID</th>
+                        <th class="p-4">Event Details</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800/60 text-slate-300">
+                    {% for ev in audit_events %}
+                    <tr class="hover:bg-slate-900/40 transition-colors">
+                        <td class="p-4 text-slate-400 font-bold">{{ ev.event_id }}</td>
+                        <td class="p-4 text-slate-400">{{ ev.created_at[:19]|replace('T', ' ') }}</td>
+                        <td class="p-4 text-white font-bold">{{ ev.actor_id }}</td>
+                        <td class="p-4">
+                            <span class="inline-flex px-2 py-0.5 rounded text-[10px] font-bold {% if 'EXPEDITE' in ev.action_type %}bg-indigo-950 text-indigo-300 border border-indigo-500/40{% elif 'LOGIN' in ev.action_type %}bg-cyan-950 text-cyan-300 border border-cyan-500/40{% elif 'COMPLAINT' in ev.action_type %}bg-amber-950 text-amber-300 border border-amber-500/40{% else %}bg-slate-800 text-slate-300 border border-slate-700{% endif %}">
+                                {{ ev.action_type }}
+                            </span>
+                        </td>
+                        <td class="p-4 text-cyan-400">{{ ev.target_entity }}</td>
+                        <td class="p-4 text-slate-300 font-bold">{{ ev.target_id or '—' }}</td>
+                        <td class="p-4 font-sans text-slate-400 text-[11px] max-w-xs truncate" title="{{ ev.details|tojson }}">
+                            {{ ev.details|tojson }}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="7" class="p-8 text-center text-slate-500 font-sans">
+                            No audit trail events recorded yet.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

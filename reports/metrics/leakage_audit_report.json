@@ -1,0 +1,29 @@
+{
+  "audit_conclusion": "ZERO_TARGET_LEAKAGE_AND_MULTI_ENTITY_DISJOINT_SPLITS_VERIFIED",
+  "forbidden_simulation_keys_blocked": [
+    "claimed_dag_plot_number",
+    "expected_rule_violations",
+    "explanation",
+    "fraud_category",
+    "ground_truth_label",
+    "has_seal",
+    "has_visual_anomaly",
+    "injected_modifications",
+    "injected_tampering",
+    "is_fraud_risk",
+    "scenario_category",
+    "seal_omitted",
+    "simulator_audit_metadata",
+    "visual_anomaly_score",
+    "visual_tampering_overlay"
+  ],
+  "guard_function": "src.landguard_models.build_features.validate_no_leakage",
+  "unit_test_verification": [
+    "tests/test_model_pipeline.py::test_no_simulation_metadata_in_features (PASSED)",
+    "tests/test_explainable_risk_and_leakage.py::test_forbidden_oracle_keys_rejected_on_transaction (PASSED)",
+    "tests/test_explainable_risk_and_leakage.py::test_forbidden_columns_rejected_in_feature_matrix (PASSED)",
+    "tests/test_explainable_risk_and_leakage.py::test_training_to_inference_feature_parity (PASSED)",
+    "tests/test_explainable_risk_and_leakage.py::test_multi_entity_group_disjoint_splits (PASSED)"
+  ],
+  "feature_availability_audit_csv": "reports/feature_availability_audit.csv"
+}

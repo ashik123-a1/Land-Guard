@@ -1,0 +1,180 @@
+{
+  "manifest_name": "LandGuard Demo Scenarios Manifest",
+  "version": "2.0.0",
+  "disclaimer": "SYNTHETIC DEMO — NOT AN OFFICIAL DOCUMENT",
+  "scenarios": [
+    {
+      "demo_id": "DEMO-CLEAN",
+      "title": "Clean Legitimate Sale Deed",
+      "scenario_type": "LEGITIMATE_NORMAL_SALE",
+      "data_source": "data/full/records/canonical_records.json",
+      "image_path": "data/full/images/IMG-24DCC9AE.png",
+      "preset_fields": {
+        "deed_number": "DEED-2006-18946",
+        "dag_plot_number": "9044",
+        "transferred_area_decimal": "8.38",
+        "execution_date": "2006-11-11",
+        "seller_nid": "OWN-11CE5DD2",
+        "buyer_nid": "OWN-CE177B4E",
+        "previous_deed_ref": "DEED-2001-35323",
+        "mutation_case_no": "MUT-2006-5364/Rupsha",
+        "consideration_bdt": "955246.39",
+        "khatian_number": "1420"
+      },
+      "expected_behavior": {
+        "status": "CLEAR_FOR_STANDARD_PROCESSING",
+        "rule_violations_count": 0,
+        "max_ml_risk": 0.15,
+        "recommended_action": "PROCEED_TO_REGISTRATION"
+      }
+    },
+    {
+      "demo_id": "DEMO-MUTATION-MISMATCH",
+      "title": "Registration–Mutation Mismatch / Unverified Namzari",
+      "scenario_type": "UNREGISTERED_MUTATION_MISMATCH",
+      "data_source": "data/full/records/canonical_records.json",
+      "image_path": "data/full/images/IMG-24DCC9AE.png",
+      "preset_fields": {
+        "deed_number": "DEED-2017-55696",
+        "dag_plot_number": "7025",
+        "transferred_area_decimal": "47.94",
+        "execution_date": "2017-09-21",
+        "seller_nid": "OWN-C5CE099C",
+        "buyer_nid": "OWN-7C16128D",
+        "previous_deed_ref": "DEED-2011-17890",
+        "mutation_case_no": "MUT-2017-5331/Paba",
+        "consideration_bdt": "3221507.33",
+        "khatian_number": "384"
+      },
+      "expected_behavior": {
+        "status": "CONFIRMED_INCONSISTENCY",
+        "expected_rule": "RULE_UNVERIFIED_MUTATION_RECORD",
+        "min_ml_risk": 0.70,
+        "recommended_action": "REJECT_OR_DEMAND_RECORD_AUDIT"
+      }
+    },
+    {
+      "demo_id": "DEMO-DOUBLE-SALE",
+      "title": "Conflicting Double Disposition",
+      "scenario_type": "CONFLICTING_DOUBLE_SALE",
+      "data_source": "data/full/records/canonical_records.json",
+      "image_path": "data/full/images/IMG-025DAECA.png",
+      "preset_fields": {
+        "deed_number": "DEED-2005-23539",
+        "dag_plot_number": "6792",
+        "transferred_area_decimal": "31.82",
+        "execution_date": "2005-09-30",
+        "seller_nid": "OWN-025DAECA",
+        "buyer_nid": "OWN-BUYER-04",
+        "previous_deed_ref": "DEED-2000-41374",
+        "mutation_case_no": "MUT-2005-9264/Paba",
+        "consideration_bdt": "2800000.00",
+        "khatian_number": "1123"
+      },
+      "expected_behavior": {
+        "status": "CONFIRMED_INCONSISTENCY",
+        "expected_rule": "RULE_SELLER_NOT_TITLEHOLDER",
+        "min_ml_risk": 0.80,
+        "recommended_action": "REJECT_OR_DEMAND_RECORD_AUDIT"
+      }
+    },
+    {
+      "demo_id": "DEMO-MISSING-ARCHIVE",
+      "title": "Unindexed Pre-1972 Archival Reference",
+      "scenario_type": "AMBIGUOUS_UNTRACED_PRE1972_DEED",
+      "data_source": "data/targeted_expansion/records/targeted_records.json",
+      "image_path": "data/targeted_expansion/images/IMG-EXP-0001.png",
+      "preset_fields": {
+        "deed_number": "DEED-2013-52068",
+        "dag_plot_number": "9289",
+        "transferred_area_decimal": "11.58",
+        "execution_date": "2013-07-23",
+        "seller_nid": "OWN-76EB16AC",
+        "buyer_nid": "OWN-87924578",
+        "previous_deed_ref": "UNINDEXED_PRE1972_VOLUME_189",
+        "mutation_case_no": "MUT-2013-1845/Keraniganj",
+        "consideration_bdt": "1646073.97",
+        "khatian_number": "604"
+      },
+      "expected_behavior": {
+        "status": "MISSING_EVIDENCE",
+        "expected_rule": "RULE_BROKEN_CHAIN_OF_TITLE",
+        "recommended_action": "REQUEST_MISSING_RECORDS"
+      }
+    },
+    {
+      "demo_id": "DEMO-AREA-EXCESS",
+      "title": "Cadastral Area Excess Fraud",
+      "scenario_type": "EXAGGERATED_LAND_AREA",
+      "data_source": "data/full/records/canonical_records.json",
+      "image_path": "data/full/images/IMG-8B4D3063.png",
+      "preset_fields": {
+        "deed_number": "DEED-2012-85693",
+        "dag_plot_number": "9262",
+        "transferred_area_decimal": "203.89",
+        "execution_date": "2012-05-18",
+        "seller_nid": "OWN-8B4D3063",
+        "buyer_nid": "OWN-BUYER-02",
+        "previous_deed_ref": "DEED-2005-20185",
+        "mutation_case_no": "MUT-2012-2083/Sitakunda",
+        "consideration_bdt": "15500000.00",
+        "khatian_number": "812"
+      },
+      "expected_behavior": {
+        "status": "CONFIRMED_INCONSISTENCY",
+        "expected_rule": "RULE_AREA_EXCEEDS_CAPACITY",
+        "min_ml_risk": 0.85,
+        "recommended_action": "REJECT_OR_DEMAND_RECORD_AUDIT"
+      }
+    },
+    {
+      "demo_id": "DEMO-ALTERED-PLOT",
+      "title": "Altered Dag Plot Discrepancy",
+      "scenario_type": "ALTERED_PLOT_NUMBER",
+      "data_source": "data/full/records/canonical_records.json",
+      "image_path": "data/full/images/IMG-9A9BB83D.png",
+      "preset_fields": {
+        "deed_number": "DEED-2011-19951",
+        "dag_plot_number": "6274",
+        "transferred_area_decimal": "51.96",
+        "execution_date": "2011-08-19",
+        "seller_nid": "OWN-9A9BB83D",
+        "buyer_nid": "OWN-BUYER-03",
+        "previous_deed_ref": "DEED-2003-50160",
+        "mutation_case_no": "MUT-2011-540/Savar",
+        "consideration_bdt": "4200000.00",
+        "khatian_number": "905"
+      },
+      "expected_behavior": {
+        "status": "CONFIRMED_INCONSISTENCY",
+        "expected_rule": "RULE_PLOT_NOT_FOUND_IN_REGISTRY",
+        "min_ml_risk": 0.75,
+        "recommended_action": "REJECT_OR_DEMAND_RECORD_AUDIT"
+      }
+    },
+    {
+      "demo_id": "DEMO-VISUAL-TAMPERING",
+      "title": "Physical Tampering / Paste-Over Seam",
+      "scenario_type": "VISUAL_OVERLAY_TAMPERING",
+      "data_source": "data/targeted_expansion/records/targeted_records.json",
+      "image_path": "data/targeted_expansion/images/IMG-EXP-0013.png",
+      "preset_fields": {
+        "deed_number": "DEED-2021-65260",
+        "dag_plot_number": "5235",
+        "transferred_area_decimal": "49.50",
+        "execution_date": "2021-08-28",
+        "seller_nid": "OWN-ADC08EC2",
+        "buyer_nid": "OWN-C796273C",
+        "previous_deed_ref": "DEED-2017-81623",
+        "mutation_case_no": "MUT-2021-7367/Hathazari",
+        "consideration_bdt": "6649816.61",
+        "khatian_number": "76"
+      },
+      "expected_behavior": {
+        "status": "CONFIRMED_INCONSISTENCY",
+        "expected_rule": "RULE_VISUAL_TAMPERING_DETECTED",
+        "recommended_action": "REJECT_OR_DEMAND_RECORD_AUDIT"
+      }
+    }
+  ]
+}

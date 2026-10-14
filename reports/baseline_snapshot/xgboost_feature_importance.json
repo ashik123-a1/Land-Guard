@@ -1,0 +1,18 @@
+{
+  "area_excess_flag": 0.1446,
+  "area_ratio": 0.1221,
+  "visual_tampering_flag": 0.1161,
+  "previous_deed_verified_flag": 0.1155,
+  "mutation_present": 0.1128,
+  "seal_omitted_flag": 0.1094,
+  "plot_discrepancy_flag": 0.1041,
+  "seller_was_previous_buyer": 0.0984,
+  "conflicting_sale_flag": 0.0762,
+  "transferred_area_decimal": 0.0004,
+  "chain_length": 0.0002,
+  "price_per_decimal": 0.0002,
+  "parcel_total_area_decimal": 0.0001,
+  "has_previous_deed_ref": 0.0,
+  "is_ancestral_ref": 0.0,
+  "tax_year_delta": 0.0
+}

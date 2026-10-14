@@ -1,0 +1,241 @@
+{
+  "total_images_tested": 600,
+  "signature_presence": {
+    "assisted_candidate_region": {
+      "accuracy": 0.98,
+      "precision": 0.959,
+      "recall": 1.0,
+      "f1_score": 0.9791,
+      "confusion_matrix": {
+        "TP": 281,
+        "FP": 12,
+        "TN": 307,
+        "FN": 0
+      }
+    },
+    "unassisted_quadrant": {
+      "accuracy": 0.6533,
+      "precision": 0.7626,
+      "recall": 0.3772,
+      "f1_score": 0.5047,
+      "confusion_matrix": {
+        "TP": 106,
+        "FP": 33,
+        "TN": 286,
+        "FN": 175
+      }
+    },
+    "by_document_type": {
+      "SALE_DEED": {
+        "accuracy": 0.98,
+        "precision": 0.9771,
+        "recall": 1.0,
+        "f1_score": 0.9884,
+        "confusion_matrix": {
+          "TP": 128,
+          "FP": 3,
+          "TN": 19,
+          "FN": 0
+        }
+      },
+      "KHATIAN_PORCHA": {
+        "accuracy": 1.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0.0,
+        "confusion_matrix": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 120,
+          "FN": 0
+        }
+      },
+      "MUTATION_RECORD": {
+        "accuracy": 0.9917,
+        "precision": 0.9903,
+        "recall": 1.0,
+        "f1_score": 0.9951,
+        "confusion_matrix": {
+          "TP": 102,
+          "FP": 1,
+          "TN": 17,
+          "FN": 0
+        }
+      },
+      "TAX_RECEIPT": {
+        "accuracy": 1.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0.0,
+        "confusion_matrix": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 90,
+          "FN": 0
+        }
+      },
+      "PARCEL_MAP": {
+        "accuracy": 0.9,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0.0,
+        "confusion_matrix": {
+          "TP": 0,
+          "FP": 6,
+          "TN": 54,
+          "FN": 0
+        }
+      },
+      "APPLICATION_COMPLAINT": {
+        "accuracy": 0.9667,
+        "precision": 0.9623,
+        "recall": 1.0,
+        "f1_score": 0.9808,
+        "confusion_matrix": {
+          "TP": 51,
+          "FP": 2,
+          "TN": 7,
+          "FN": 0
+        }
+      }
+    },
+    "legal_distinction_notice": "Presence detection evaluates only ink stroke edge density and stroke geometry in candidate regions. It does NOT establish handwriting authenticity, human identity, or legal execution validity."
+  },
+  "seal_presence": {
+    "overall": {
+      "accuracy": 0.9967,
+      "precision": 1.0,
+      "recall": 0.9961,
+      "f1_score": 0.998,
+      "confusion_matrix": {
+        "TP": 511,
+        "FP": 0,
+        "TN": 87,
+        "FN": 2
+      }
+    },
+    "by_document_type": {
+      "SALE_DEED": {
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "confusion_matrix": {
+          "TP": 135,
+          "FP": 0,
+          "TN": 15,
+          "FN": 0
+        }
+      },
+      "KHATIAN_PORCHA": {
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "confusion_matrix": {
+          "TP": 120,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0
+        }
+      },
+      "MUTATION_RECORD": {
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "confusion_matrix": {
+          "TP": 108,
+          "FP": 0,
+          "TN": 12,
+          "FN": 0
+        }
+      },
+      "TAX_RECEIPT": {
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "confusion_matrix": {
+          "TP": 90,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0
+        }
+      },
+      "PARCEL_MAP": {
+        "accuracy": 0.9667,
+        "precision": 1.0,
+        "recall": 0.9667,
+        "f1_score": 0.9831,
+        "confusion_matrix": {
+          "TP": 58,
+          "FP": 0,
+          "TN": 0,
+          "FN": 2
+        }
+      },
+      "APPLICATION_COMPLAINT": {
+        "accuracy": 1.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0.0,
+        "confusion_matrix": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 60,
+          "FN": 0
+        }
+      }
+    },
+    "legal_distinction_notice": "Presence detection evaluates circular boundary contour geometry. It does NOT verify official government authorization or seal legitimacy."
+  },
+  "visual_anomalies": {
+    "clean_dataset_evaluation": {
+      "total_clean_images_evaluated": 600,
+      "clean_digital_samples_tested": 40,
+      "clean_digital_false_positive_count": 0,
+      "clean_digital_false_positive_rate": 0.0,
+      "overall_dataset_false_positive_count": 3,
+      "overall_dataset_false_positive_rate": 0.005
+    },
+    "controlled_altered_evaluation": {
+      "altered_samples_tested": 50,
+      "altered_samples_detected": 50,
+      "detection_recall": 1.0,
+      "by_document_category": {
+        "SALE_DEED": {
+          "tested": 10,
+          "detected": 10,
+          "recall": 1.0
+        },
+        "KHATIAN_PORCHA": {
+          "tested": 10,
+          "detected": 10,
+          "recall": 1.0
+        },
+        "MUTATION_RECORD": {
+          "tested": 10,
+          "detected": 10,
+          "recall": 1.0
+        },
+        "TAX_RECEIPT": {
+          "tested": 10,
+          "detected": 10,
+          "recall": 1.0
+        },
+        "PARCEL_MAP": {
+          "tested": 8,
+          "detected": 8,
+          "recall": 1.0
+        },
+        "APPLICATION_COMPLAINT": {
+          "tested": 2,
+          "detected": 2,
+          "recall": 1.0
+        }
+      }
+    },
+    "root_cause_and_fix_notice": "Previous baseline had 0% recall on Khatian Porcha because paste-over contour at x=385 aligned with a table column header coordinate, triggering a naive collinear neighbor filter. Refining grid filtering to require multi-cell row or column structures restored full detection across table documents without inflating false positives."
+  }
+}

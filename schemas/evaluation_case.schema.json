@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EvaluationCaseRecord",
+  "type": "object",
+  "required": [
+    "case_id",
+    "scenario_id",
+    "feature_vector_id",
+    "split",
+    "ground_truth_label",
+    "expected_risk_category"
+  ],
+  "properties": {
+    "case_id": {
+      "type": "string",
+      "pattern": "^CASE-[0-9A-F]{8}$"
+    },
+    "scenario_id": {
+      "type": "string"
+    },
+    "feature_vector_id": {
+      "type": "string"
+    },
+    "split": {
+      "type": "string",
+      "enum": ["train", "val", "test"]
+    },
+    "ground_truth_label": {
+      "type": "integer",
+      "enum": [0, 1]
+    },
+    "expected_risk_category": {
+      "type": "string"
+    },
+    "metadata": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false
+}

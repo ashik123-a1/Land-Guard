@@ -1,0 +1,147 @@
+{
+  "environment": {
+    "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+    "platform": "Windows-10-10.0.19045-SP0",
+    "tesseract_version": "5.4.0.20240606 (ben+eng)",
+    "package_versions": {
+      "numpy": "2.4.6",
+      "pandas": "3.0.6",
+      "scikit-learn": "1.9.1",
+      "xgboost": "3.2.0",
+      "Pillow": "12.1.1",
+      "opencv-python": "5.0.0.93",
+      "rapidocr-onnxruntime": "1.4.4",
+      "pytesseract": "0.3.13",
+      "matplotlib": "3.11.2",
+      "pytest": "9.1.1",
+      "jsonschema": "4.26.0",
+      "PyYAML": "6.0.3"
+    }
+  },
+  "executed_pipeline_commands": [
+    {
+      "step": 1,
+      "command": "python scripts/generate_all.py --num-images 600 --seed 42",
+      "exit_code": 0,
+      "verified_output": "100,000 structured records + 2,500 multi-feature scenarios (disjoint seller cohorts) + 600 PNG images + simulator_audit_metadata.json"
+    },
+    {
+      "step": 2,
+      "command": "python scripts/validate_all.py",
+      "exit_code": 0,
+      "verified_output": "Schema Validation PASSED (banned oracle keys rejected), 600/600 SHA-256 checksums matched, 600/600 synthetic watermarks verified"
+    },
+    {
+      "step": 3,
+      "command": "python scripts/run_model_evaluation.py",
+      "exit_code": 0,
+      "verified_output": "500 held-out group-disjoint test scenarios: Majority Acc=0.6640, Rule Engine Acc=0.9480 (F1=0.9623), LR Acc=0.9760 (F1=0.9821), RF Acc=0.9600 (F1=0.9705), XGB Acc=0.9820 (F1=0.9865)"
+    },
+    {
+      "step": 4,
+      "command": "python scripts/run_independent_ml_validation.py",
+      "exit_code": 0,
+      "verified_output": "5-Regime Evaluation (Regime A/C 19-feat F1=0.9865; Regime B 15-feat Registry-Only XGB F1=0.9445 vs Rule F1=0.8470; Regime D LOFFO RF Mean Recall=0.8383; Regime E Noisy Operational XGB F1=0.9706)"
+    },
+    {
+      "step": 5,
+      "command": "python scripts/run_ocr_repair_eval.py",
+      "exit_code": 0,
+      "verified_output": "48 stratified images with Tesseract 5.4.0 (ben+eng) + RapidOCR: Overall CER=0.3702 (down from 0.8143), EN CER=0.3598 (down from 0.8868), BN CER=0.4435 (down from 1.0000), Exact Field Match=0.9000 (Precision=0.9730, F1=0.9351)"
+    },
+    {
+      "step": 6,
+      "command": "python scripts/run_vision_validation.py",
+      "exit_code": 0,
+      "verified_output": "600 images + 50 multi-alteration samples (4 mechanisms): Signature Assisted Acc=0.9817 (F1=0.9808), Signature Unassisted Acc=0.6533 (F1=0.5000), Seal Acc=0.9950 (F1=0.9971), Clean Digital FPR=0.0000, Overall FPR=0.0083 (5/600), Multi-Alteration Recall=0.9600 (48/50)"
+    },
+    {
+      "step": 7,
+      "command": "python -m pytest -v",
+      "exit_code": 0,
+      "verified_output": "35 passed in 1.43s (100% pass rate)"
+    }
+  ],
+  "generated_evidence_artifacts": {
+    "evidence/metrics/dataset_manifest.json": {
+      "sha256": "741bebb1a264572564edd631fedd370175e2cc8ad1e6a8ab877e4f440f62c5c4",
+      "size_bytes": 102901
+    },
+    "evidence/metrics/dataset_manifest_summary.json": {
+      "sha256": "773d5a116d26149886928ce57b1b82298c163d8685ffe4027b0934714cd97d84",
+      "size_bytes": 3311
+    },
+    "evidence/metrics/dataset_validation_report.json": {
+      "sha256": "673fcf7510e9f49d334191381d92f6a179b3aa03b800d43189fab33c822a478a",
+      "size_bytes": 214
+    },
+    "evidence/metrics/model_comparison.csv": {
+      "sha256": "8d83c877d01b6e159d672506c8561bc596d88a1a7652155f50a1156b6a014f79",
+      "size_bytes": 460
+    },
+    "evidence/metrics/model_comparison.json": {
+      "sha256": "8359639b2826e86117f008ec63cf877cf7528554b9263e703a022481e7bff46e",
+      "size_bytes": 9895
+    },
+    "evidence/metrics/ml_test_predictions.csv": {
+      "sha256": "10f1e827676ada7f26abf22787cf22a269dae91773d9d05e2e5bf5ebf5724d8b",
+      "size_bytes": 97506
+    },
+    "evidence/metrics/ml_test_predictions.json": {
+      "sha256": "fb1f333476c11a4edc413be3430704ac1b4cb1945da48658a2d83a9670569830",
+      "size_bytes": 347195
+    },
+    "evidence/metrics/independent_ml_metrics.json": {
+      "sha256": "0b7e0b3741d1a8821e8614c834eeb8e17c02e8e1e51fe0dd109aab6e8a4f3b73",
+      "size_bytes": 57097
+    },
+    "evidence/metrics/independent_ml_predictions.csv": {
+      "sha256": "81a48f23536467111efb8ac131c9c0a755bddec31d507fe4b3b25b24b9dd1dbb",
+      "size_bytes": 92661
+    },
+    "evidence/metrics/feature_availability_audit.csv": {
+      "sha256": "5a9e234fda9446e946cfa79c20831db3631946219743f8bb0f57c12136419d62",
+      "size_bytes": 4447
+    },
+    "evidence/metrics/xgboost_feature_importance.json": {
+      "sha256": "addfd7e204dc93c09ee9ae53fcd252720e9135315a5323430df0208fcb1a1ed6",
+      "size_bytes": 670
+    },
+    "evidence/metrics/confusion_matrices_detailed.json": {
+      "sha256": "d92f309f07451788105764ce3c912c3c59bf25b6045248fbb3504d62e5e05e8e",
+      "size_bytes": 4359
+    },
+    "evidence/metrics/leakage_audit_report.json": {
+      "sha256": "228b62a3157e0eaf2fe5e7e5c924215e7cbcd99230a787cb02cc86732ba5a72e",
+      "size_bytes": 1248
+    },
+    "evidence/metrics/ocr_evaluation_report.json": {
+      "sha256": "64f75dc36b7db8fa683fbcedbca8b7ee2c8e0fb366d67e4c36f14c97939014a6",
+      "size_bytes": 16349
+    },
+    "evidence/metrics/ocr_metrics.json": {
+      "sha256": "031394b68d9832044ff448d256666cfa557002705dca7d9658c067e07ef3a2a5",
+      "size_bytes": 54285
+    },
+    "evidence/metrics/ocr_predictions.csv": {
+      "sha256": "1f075ea137fb58ace0d2075f27fa2cc3e61bcc09aeb8a8cecb696af2361179c9",
+      "size_bytes": 98621
+    },
+    "evidence/metrics/ocr_side_by_side_examples.json": {
+      "sha256": "c16b2e079007045250c0cebcb5dae8d8875131612a39b40b2afafc404ed7eeb6",
+      "size_bytes": 35951
+    },
+    "evidence/metrics/signature_seal_evaluation.json": {
+      "sha256": "b890f2f545f42c616d709865d1497bf40e6e7fe282481fdea859e7934a9825e3",
+      "size_bytes": 6748
+    },
+    "evidence/metrics/vision_validation_metrics.json": {
+      "sha256": "1aad1798e34f56640eff19b3e4abf0f92270e4b40f63791c20788a06e56f4af5",
+      "size_bytes": 13932
+    },
+    "evidence/metrics/vision_detection_examples.json": {
+      "sha256": "317230decf1e08045a0d938a8d6beeaa3cabf1ae2ff0fca5d0efb81dae49cf10",
+      "size_bytes": 4910
+    }
+  }
+}

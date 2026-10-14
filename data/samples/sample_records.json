@@ -1,0 +1,613 @@
+{
+  "owners_sample": [
+    {
+      "owner_id": "OWN-BC8960A9",
+      "full_name_en": "Sultana Hossain",
+      "full_name_bn": "\u09b8\u09c1\u09b2\u09a4\u09be\u09a8\u09be \u09b9\u09cb\u09b8\u09c7\u09a8",
+      "fictional_nid": "SYN-1819600133",
+      "father_or_spouse_name": "Late Mohammad Begum",
+      "fictional_address": "Village: Fatehabad, Post: Hathazari, District: Chattogram",
+      "district": "Chattogram",
+      "upazila": "Hathazari",
+      "mouza": "Fatehabad",
+      "is_synthetic": true
+    },
+    {
+      "owner_id": "OWN-8B8148F6",
+      "full_name_en": "Habibur Miah",
+      "full_name_bn": "\u09b9\u09be\u09ac\u09bf\u09ac\u09c1\u09b0 \u09ae\u09bf\u09af\u09bc\u09be",
+      "fictional_nid": "SYN-6379402654",
+      "father_or_spouse_name": "Late Mohammad Sikder",
+      "fictional_address": "Village: Barabkunda, Post: Sitakunda, District: Chattogram",
+      "district": "Chattogram",
+      "upazila": "Sitakunda",
+      "mouza": "Barabkunda",
+      "is_synthetic": true
+    },
+    {
+      "owner_id": "OWN-D8F56413",
+      "full_name_en": "Rokeya Chowdhury",
+      "full_name_bn": "\u09b0\u09cb\u0995\u09c7\u09af\u09bc\u09be \u099a\u09cc\u09a7\u09c1\u09b0\u09c0",
+      "fictional_nid": "SYN-5940781618",
+      "father_or_spouse_name": "Late Farida Hossain",
+      "fictional_address": "Village: Kushura, Post: Dhamrai, District: Dhaka",
+      "district": "Dhaka",
+      "upazila": "Dhamrai",
+      "mouza": "Kushura",
+      "is_synthetic": true
+    },
+    {
+      "owner_id": "OWN-11CE5DD2",
+      "full_name_en": "Anowar Bhuiyan",
+      "full_name_bn": "\u0986\u09a8\u09cb\u09af\u09bc\u09be\u09b0 \u09ad\u09c2\u0981\u0987\u09af\u09bc\u09be",
+      "fictional_nid": "SYN-0341316475",
+      "father_or_spouse_name": "Late Sultana Miah",
+      "fictional_address": "Village: Kurarbazar, Post: Beanibazar, District: Sylhet",
+      "district": "Sylhet",
+      "upazila": "Beanibazar",
+      "mouza": "Kurarbazar",
+      "is_synthetic": true
+    },
+    {
+      "owner_id": "OWN-A5E5A5AB",
+      "full_name_en": "Jahanara Haque",
+      "full_name_bn": "\u099c\u09be\u09b9\u09be\u09a8\u09be\u09b0\u09be \u09b9\u0995",
+      "fictional_nid": "SYN-1928327648",
+      "father_or_spouse_name": "Late Tahmina Chowdhury",
+      "fictional_address": "Village: Fatehabad, Post: Hathazari, District: Chattogram",
+      "district": "Chattogram",
+      "upazila": "Hathazari",
+      "mouza": "Fatehabad",
+      "is_synthetic": true
+    }
+  ],
+  "parcels_sample": [
+    {
+      "parcel_id": "PAR-D861D6F3",
+      "district": "Khulna",
+      "upazila": "Rupsha",
+      "mouza": "Naihati",
+      "jl_number": 48,
+      "dag_plot_number": 9044,
+      "total_area_decimal": 9.24,
+      "land_classification": "Viti",
+      "boundaries": {
+        "north": "Plot #9043",
+        "south": "Plot #9045",
+        "east": "Road / Plot #9049",
+        "west": "Canal / Plot #9040"
+      },
+      "coordinates_relative": [
+        [
+          0,
+          0
+        ],
+        [
+          43.31164813670376,
+          -4.871644646445242
+        ],
+        [
+          40.59607441133309,
+          61.65597906394486
+        ],
+        [
+          4.323991398064084,
+          61.65597906394486
+        ]
+      ],
+      "is_synthetic": true
+    },
+    {
+      "parcel_id": "PAR-D30ABEFE",
+      "district": "Dhaka",
+      "upazila": "Savar",
+      "mouza": "Bagbari",
+      "jl_number": 142,
+      "dag_plot_number": 7873,
+      "total_area_decimal": 81.95,
+      "land_classification": "Nal",
+      "boundaries": {
+        "north": "Plot #7872",
+        "south": "Plot #7874",
+        "east": "Road / Plot #7878",
+        "west": "Canal / Plot #7869"
+      },
+      "coordinates_relative": [
+        [
+          0,
+          0
+        ],
+        [
+          99.41346269985144,
+          -0.14225260948531826
+        ],
+        [
+          99.59376307320319,
+          64.0572451573727
+        ],
+        [
+          -3.075550051553698,
+          64.0572451573727
+        ]
+      ],
+      "is_synthetic": true
+    },
+    {
+      "parcel_id": "PAR-CE47CD2F",
+      "district": "Dhaka",
+      "upazila": "Savar",
+      "mouza": "Bagbari",
+      "jl_number": 142,
+      "dag_plot_number": 8593,
+      "total_area_decimal": 16.47,
+      "land_classification": "Bari",
+      "boundaries": {
+        "north": "Plot #8592",
+        "south": "Plot #8594",
+        "east": "Road / Plot #8598",
+        "west": "Canal / Plot #8589"
+      },
+      "coordinates_relative": [
+        [
+          0,
+          0
+        ],
+        [
+          81.91207402221643,
+          -2.0181618437009066
+        ],
+        [
+          77.54364413946709,
+          66.88326641507918
+        ],
+        [
+          3.44872758964285,
+          66.88326641507918
+        ]
+      ],
+      "is_synthetic": true
+    },
+    {
+      "parcel_id": "PAR-74E75B7F",
+      "district": "Dhaka",
+      "upazila": "Keraniganj",
+      "mouza": "Ruhitpur",
+      "jl_number": 55,
+      "dag_plot_number": 6906,
+      "total_area_decimal": 54.52,
+      "land_classification": "Viti",
+      "boundaries": {
+        "north": "Plot #6905",
+        "south": "Plot #6907",
+        "east": "Road / Plot #6911",
+        "west": "Canal / Plot #6902"
+      },
+      "coordinates_relative": [
+        [
+          0,
+          0
+        ],
+        [
+          97.85631936745219,
+          0.770171423251746
+        ],
+        [
+          93.70874543944166,
+          77.60024735786672
+        ],
+        [
+          3.1190108697854644,
+          77.60024735786672
+        ]
+      ],
+      "is_synthetic": true
+    },
+    {
+      "parcel_id": "PAR-2EAB5D89",
+      "district": "Dhaka",
+      "upazila": "Savar",
+      "mouza": "Bagbari",
+      "jl_number": 142,
+      "dag_plot_number": 5869,
+      "total_area_decimal": 70.82,
+      "land_classification": "Nal",
+      "boundaries": {
+        "north": "Plot #5868",
+        "south": "Plot #5870",
+        "east": "Road / Plot #5874",
+        "west": "Canal / Plot #5865"
+      },
+      "coordinates_relative": [
+        [
+          0,
+          0
+        ],
+        [
+          84.61104058178071,
+          1.6324659298308166
+        ],
+        [
+          85.50638078571069,
+          47.56434975958244
+        ],
+        [
+          -0.05292992984150313,
+          47.56434975958244
+        ]
+      ],
+      "is_synthetic": true
+    }
+  ],
+  "khatians_sample": [
+    {
+      "record_id": "REC-BDD640FB",
+      "khatian_type": "CS",
+      "khatian_number": 1001,
+      "parcel_id": "PAR-D861D6F3",
+      "owners": [
+        {
+          "owner_id": "OWN-63188695",
+          "share_fraction": 1.0
+        }
+      ],
+      "effective_year": 1939,
+      "status": "SUPERSEDED",
+      "is_synthetic": true
+    },
+    {
+      "record_id": "REC-E465E150",
+      "khatian_type": "SA",
+      "khatian_number": 1002,
+      "parcel_id": "PAR-D861D6F3",
+      "owners": [
+        {
+          "owner_id": "OWN-76465156",
+          "share_fraction": 1.0
+        }
+      ],
+      "effective_year": 1964,
+      "status": "SUPERSEDED",
+      "is_synthetic": true
+    },
+    {
+      "record_id": "REC-3B8FAA18",
+      "khatian_type": "RS",
+      "khatian_number": 1003,
+      "parcel_id": "PAR-D861D6F3",
+      "owners": [
+        {
+          "owner_id": "OWN-AD91F456",
+          "share_fraction": 0.3811
+        },
+        {
+          "owner_id": "OWN-CF6DABF6",
+          "share_fraction": 0.3744
+        },
+        {
+          "owner_id": "OWN-B827BA99",
+          "share_fraction": 0.2445
+        }
+      ],
+      "effective_year": 1986,
+      "status": "SUPERSEDED",
+      "is_synthetic": true
+    },
+    {
+      "record_id": "REC-CF36D58B",
+      "khatian_type": "BS",
+      "khatian_number": 1004,
+      "parcel_id": "PAR-D861D6F3",
+      "owners": [
+        {
+          "owner_id": "OWN-51F9D147",
+          "share_fraction": 1.0
+        }
+      ],
+      "effective_year": 1998,
+      "status": "ACTIVE",
+      "is_synthetic": true
+    },
+    {
+      "record_id": "REC-F50BEA63",
+      "khatian_type": "CS",
+      "khatian_number": 1005,
+      "parcel_id": "PAR-D30ABEFE",
+      "owners": [
+        {
+          "owner_id": "OWN-825AAC2E",
+          "share_fraction": 1.0
+        }
+      ],
+      "effective_year": 1940,
+      "status": "SUPERSEDED",
+      "is_synthetic": true
+    }
+  ],
+  "transactions_sample": [
+    {
+      "transaction_id": "TXN-BA940444",
+      "deed_number": "DEED-2001-35323",
+      "deed_type": "Sale Deed (Kabala)",
+      "execution_date": "2001-08-21",
+      "registration_sub_office": "Rupsha Sub-Registry Office, Khulna",
+      "seller_ids": [
+        "OWN-CE177B4E"
+      ],
+      "buyer_ids": [
+        "OWN-11CE5DD2"
+      ],
+      "parcel_id": "PAR-D861D6F3",
+      "transferred_area_decimal": 9.24,
+      "consideration_bdt": 2246000.0,
+      "previous_deed_ref": "INHERITED_ANCESTRAL_CS_RECORD",
+      "mutation_case_no": "MUT-2001-9502/Rupsha",
+      "tax_clearance_year": 2001,
+      "scenario_id": "SCN-E76BF424",
+      "is_synthetic": true
+    },
+    {
+      "transaction_id": "TXN-B0699F63",
+      "deed_number": "DEED-2006-18946",
+      "deed_type": "Sale Deed (Kabala)",
+      "execution_date": "2006-11-11",
+      "registration_sub_office": "Rupsha Sub-Registry Office, Khulna",
+      "seller_ids": [
+        "OWN-11CE5DD2"
+      ],
+      "buyer_ids": [
+        "OWN-CE177B4E"
+      ],
+      "parcel_id": "PAR-D861D6F3",
+      "transferred_area_decimal": 8.38,
+      "consideration_bdt": 955246.39,
+      "previous_deed_ref": "DEED-2001-35323",
+      "mutation_case_no": "MUT-2006-5364/Rupsha",
+      "tax_clearance_year": 2006,
+      "scenario_id": "SCN-E76BF424",
+      "is_synthetic": true
+    },
+    {
+      "transaction_id": "TXN-65950B2C",
+      "deed_number": "DEED-2001-62672",
+      "deed_type": "Sale Deed (Kabala)",
+      "execution_date": "2001-07-09",
+      "registration_sub_office": "Savar Sub-Registry Office, Dhaka",
+      "seller_ids": [
+        "OWN-295B4715"
+      ],
+      "buyer_ids": [
+        "OWN-FEC21BBE"
+      ],
+      "parcel_id": "PAR-D30ABEFE",
+      "transferred_area_decimal": 81.95,
+      "consideration_bdt": 32484000.0,
+      "previous_deed_ref": "INHERITED_ANCESTRAL_CS_RECORD",
+      "mutation_case_no": "MUT-2001-7111/Savar",
+      "tax_clearance_year": 2001,
+      "scenario_id": "SCN-5FE4A7A1",
+      "is_synthetic": true
+    },
+    {
+      "transaction_id": "TXN-951C8748",
+      "deed_number": "DEED-2007-26266",
+      "deed_type": "Sale Deed (Kabala)",
+      "execution_date": "2007-07-20",
+      "registration_sub_office": "Savar Sub-Registry Office, Dhaka",
+      "seller_ids": [
+        "OWN-FEC21BBE"
+      ],
+      "buyer_ids": [
+        "OWN-1C8EAEE9"
+      ],
+      "parcel_id": "PAR-D30ABEFE",
+      "transferred_area_decimal": 81.95,
+      "consideration_bdt": 32363000.0,
+      "previous_deed_ref": "DEED-2001-62672",
+      "mutation_case_no": "MUT-2007-7469/Savar",
+      "tax_clearance_year": 2007,
+      "scenario_id": "SCN-5FE4A7A1",
+      "is_synthetic": true
+    },
+    {
+      "transaction_id": "TXN-AD339596",
+      "deed_number": "DEED-2012-84268",
+      "deed_type": "Sale Deed (Kabala)",
+      "execution_date": "2012-06-16",
+      "registration_sub_office": "Savar Sub-Registry Office, Dhaka",
+      "seller_ids": [
+        "OWN-1C8EAEE9"
+      ],
+      "buyer_ids": [
+        "OWN-D0E6E660"
+      ],
+      "parcel_id": "PAR-D30ABEFE",
+      "transferred_area_decimal": 81.95,
+      "consideration_bdt": 11498000.0,
+      "previous_deed_ref": "DEED-2007-26266",
+      "mutation_case_no": "MUT-2012-3896/Savar",
+      "tax_clearance_year": 2012,
+      "scenario_id": "SCN-5FE4A7A1",
+      "is_synthetic": true
+    }
+  ],
+  "mutations_sample": [
+    {
+      "mutation_id": "MUTREC-BA940444",
+      "mutation_case_no": "MUT-2001-9502/Rupsha",
+      "parcel_id": "PAR-D861D6F3",
+      "previous_owner_id": "OWN-CE177B4E",
+      "new_owner_id": "OWN-11CE5DD2",
+      "khatian_type": "BS (Namzari)",
+      "effective_date": "2001-10-24",
+      "status": "APPROVED",
+      "scenario_id": "SCN-E76BF424",
+      "is_synthetic": true
+    },
+    {
+      "mutation_id": "MUTREC-B0699F63",
+      "mutation_case_no": "MUT-2006-5364/Rupsha",
+      "parcel_id": "PAR-D861D6F3",
+      "previous_owner_id": "OWN-11CE5DD2",
+      "new_owner_id": "OWN-CE177B4E",
+      "khatian_type": "BS (Namzari)",
+      "effective_date": "2007-05-03",
+      "status": "APPROVED",
+      "scenario_id": "SCN-E76BF424",
+      "is_synthetic": true
+    },
+    {
+      "mutation_id": "MUTREC-65950B2C",
+      "mutation_case_no": "MUT-2001-7111/Savar",
+      "parcel_id": "PAR-D30ABEFE",
+      "previous_owner_id": "OWN-295B4715",
+      "new_owner_id": "OWN-FEC21BBE",
+      "khatian_type": "BS (Namzari)",
+      "effective_date": "2001-12-27",
+      "status": "APPROVED",
+      "scenario_id": "SCN-5FE4A7A1",
+      "is_synthetic": true
+    },
+    {
+      "mutation_id": "MUTREC-951C8748",
+      "mutation_case_no": "MUT-2007-7469/Savar",
+      "parcel_id": "PAR-D30ABEFE",
+      "previous_owner_id": "OWN-FEC21BBE",
+      "new_owner_id": "OWN-1C8EAEE9",
+      "khatian_type": "BS (Namzari)",
+      "effective_date": "2007-11-26",
+      "status": "APPROVED",
+      "scenario_id": "SCN-5FE4A7A1",
+      "is_synthetic": true
+    },
+    {
+      "mutation_id": "MUTREC-AD339596",
+      "mutation_case_no": "MUT-2012-3896/Savar",
+      "parcel_id": "PAR-D30ABEFE",
+      "previous_owner_id": "OWN-1C8EAEE9",
+      "new_owner_id": "OWN-D0E6E660",
+      "khatian_type": "BS (Namzari)",
+      "effective_date": "2012-10-07",
+      "status": "APPROVED",
+      "scenario_id": "SCN-5FE4A7A1",
+      "is_synthetic": true
+    }
+  ],
+  "scenarios_sample": [
+    {
+      "scenario_id": "SCN-E76BF424",
+      "scenario_category": "LEGITIMATE_NORMAL_SALE",
+      "is_fraud_risk": false,
+      "description": "Legitimate conveyance with unbroken chain and verified or pending mutation",
+      "document_evidence": {
+        "doc_dag_plot_number": 9044,
+        "doc_transferred_area_decimal": 8.38,
+        "cv_seal_present": true,
+        "cv_signature_present": true,
+        "cv_visual_anomaly_detected": false,
+        "cv_visual_anomaly_score": 0.099,
+        "ocr_confidence": 0.874
+      },
+      "simulator_audit_metadata": {
+        "scenario_id": "SCN-E76BF424",
+        "scenario_category": "LEGITIMATE_NORMAL_SALE",
+        "injected_modifications": [],
+        "expected_rule_violations": []
+      },
+      "ground_truth_label": "LEGITIMATE"
+    },
+    {
+      "scenario_id": "SCN-5FE4A7A1",
+      "scenario_category": "LEGITIMATE_INHERITANCE",
+      "is_fraud_risk": false,
+      "description": "Valid ancestral heirship distribution under succession law",
+      "document_evidence": {
+        "doc_dag_plot_number": 7873,
+        "doc_transferred_area_decimal": 26.93,
+        "cv_seal_present": true,
+        "cv_signature_present": true,
+        "cv_visual_anomaly_detected": false,
+        "cv_visual_anomaly_score": 0.097,
+        "ocr_confidence": 0.869
+      },
+      "simulator_audit_metadata": {
+        "scenario_id": "SCN-5FE4A7A1",
+        "scenario_category": "LEGITIMATE_INHERITANCE",
+        "injected_modifications": [],
+        "expected_rule_violations": []
+      },
+      "ground_truth_label": "LEGITIMATE"
+    },
+    {
+      "scenario_id": "SCN-4FA46B4C",
+      "scenario_category": "LEGITIMATE_PARTIAL_SUBDIVISION",
+      "is_fraud_risk": false,
+      "description": "Valid partial transfer of portion of plot within total capacity",
+      "document_evidence": {
+        "doc_dag_plot_number": 8593,
+        "doc_transferred_area_decimal": 6.79,
+        "cv_seal_present": true,
+        "cv_signature_present": true,
+        "cv_visual_anomaly_detected": false,
+        "cv_visual_anomaly_score": 0.175,
+        "ocr_confidence": 0.941
+      },
+      "simulator_audit_metadata": {
+        "scenario_id": "SCN-4FA46B4C",
+        "scenario_category": "LEGITIMATE_PARTIAL_SUBDIVISION",
+        "injected_modifications": [
+          "Seller executed prior partial subdivision within total parcel capacity"
+        ],
+        "expected_rule_violations": []
+      },
+      "ground_truth_label": "LEGITIMATE"
+    },
+    {
+      "scenario_id": "SCN-1FAEB8AA",
+      "scenario_category": "LEGITIMATE_CORRECTION_DEED",
+      "is_fraud_risk": false,
+      "description": "Legitimate rectification deed amending minor typographical detail",
+      "document_evidence": {
+        "doc_dag_plot_number": 6906,
+        "doc_transferred_area_decimal": 41.69,
+        "cv_seal_present": true,
+        "cv_signature_present": true,
+        "cv_visual_anomaly_detected": false,
+        "cv_visual_anomaly_score": 0.173,
+        "ocr_confidence": 0.955
+      },
+      "simulator_audit_metadata": {
+        "scenario_id": "SCN-1FAEB8AA",
+        "scenario_category": "LEGITIMATE_CORRECTION_DEED",
+        "injected_modifications": [],
+        "expected_rule_violations": []
+      },
+      "ground_truth_label": "LEGITIMATE"
+    },
+    {
+      "scenario_id": "SCN-4340822B",
+      "scenario_category": "ALTERED_PLOT_NUMBER",
+      "is_fraud_risk": true,
+      "description": "Deed schedule cites plot number conflicting with underlying cadastral khatian",
+      "document_evidence": {
+        "doc_dag_plot_number": 6274,
+        "doc_transferred_area_decimal": 51.96,
+        "cv_seal_present": true,
+        "cv_signature_present": true,
+        "cv_visual_anomaly_detected": false,
+        "cv_visual_anomaly_score": 0.093,
+        "ocr_confidence": 0.897
+      },
+      "simulator_audit_metadata": {
+        "scenario_id": "SCN-4340822B",
+        "scenario_category": "ALTERED_PLOT_NUMBER",
+        "injected_modifications": [
+          "Plot altered on deed schedule from 5869 to 6274"
+        ],
+        "expected_rule_violations": [
+          "RULE_PLOT_MISMATCH_WITH_KHATIAN"
+        ]
+      },
+      "ground_truth_label": "FRAUD_RISK"
+    }
+  ]
+}

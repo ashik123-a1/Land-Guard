@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FictionalLandOwner",
+  "type": "object",
+  "required": [
+    "owner_id",
+    "full_name_en",
+    "full_name_bn",
+    "fictional_nid",
+    "father_or_spouse_name",
+    "fictional_address",
+    "is_synthetic"
+  ],
+  "properties": {
+    "owner_id": {
+      "type": "string",
+      "pattern": "^OWN-[0-9A-F]{8}$"
+    },
+    "full_name_en": {
+      "type": "string",
+      "minLength": 3
+    },
+    "full_name_bn": {
+      "type": "string",
+      "minLength": 3
+    },
+    "fictional_nid": {
+      "type": "string",
+      "pattern": "^SYN-[0-9]{10}$"
+    },
+    "father_or_spouse_name": {
+      "type": "string"
+    },
+    "fictional_address": {
+      "type": "string"
+    },
+    "district": {
+      "type": "string"
+    },
+    "upazila": {
+      "type": "string"
+    },
+    "mouza": {
+      "type": "string"
+    },
+    "is_synthetic": {
+      "type": "boolean",
+      "const": true
+    }
+  },
+  "additionalProperties": false
+}

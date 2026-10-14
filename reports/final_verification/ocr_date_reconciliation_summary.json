@@ -1,0 +1,22 @@
+{
+  "evaluation_timestamp": "2026-10-14 02:48:22",
+  "evaluation_command": "python scripts/reconcile_ocr_date_eval.py",
+  "dataset_annotations_path": "data/full/annotations/canonical_annotations.json",
+  "test_set_identity": "split_assignment == 'test' and 'execution_date' in ground_truth_fields",
+  "total_test_samples": 24,
+  "exact_matches": 23,
+  "mismatches": 1,
+  "exact_match_rate": 0.9583,
+  "mismatch_details": [
+    {
+      "test_index": 24,
+      "image_id": "IMG-5909F3D5",
+      "document_type": "SALE_DEED",
+      "quality_class": "wrinkled_paper",
+      "ground_truth_date": "2008-06-10",
+      "predicted_date": "2003-06-10",
+      "match_status": "MISMATCH",
+      "is_exact_match": false
+    }
+  ]
+}

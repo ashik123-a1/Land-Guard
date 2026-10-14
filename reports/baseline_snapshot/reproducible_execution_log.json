@@ -1,0 +1,125 @@
+{
+  "environment": {
+    "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+    "platform": "Windows-10-10.0.19045-SP0",
+    "package_versions": {
+      "numpy": "2.4.6",
+      "pandas": "3.0.6",
+      "scikit-learn": "1.9.1",
+      "xgboost": "3.2.0",
+      "Pillow": "12.1.1",
+      "opencv-python": "5.0.0.93",
+      "rapidocr-onnxruntime": "1.4.4",
+      "matplotlib": "3.11.2",
+      "pytest": "9.1.1",
+      "jsonschema": "4.26.0",
+      "PyYAML": "6.0.3"
+    }
+  },
+  "executed_pipeline_commands": [
+    {
+      "step": 1,
+      "command": "python scripts/generate_all.py --num-images 600",
+      "exit_code": 0,
+      "verified_output": "100,000 structured records + 600 PNG images + canonical_annotations.json + dataset_manifest.json"
+    },
+    {
+      "step": 2,
+      "command": "python scripts/validate_all.py",
+      "exit_code": 0,
+      "verified_output": "Schema Validation PASSED, 600/600 SHA-256 checksums matched, 600/600 synthetic watermarks verified"
+    },
+    {
+      "step": 3,
+      "command": "python scripts/investigate_bengali_ocr.py",
+      "exit_code": 0,
+      "verified_output": "Bangla CER=1.0000 (RapidOCR lacks Bengali Unicode head; Tesseract absent), English CER=0.6772"
+    },
+    {
+      "step": 4,
+      "command": "python scripts/run_ocr_evaluation.py",
+      "exit_code": 0,
+      "verified_output": "48 stratified images evaluated: Overall CER=0.8143, EN CER=0.8868, BN CER=1.0000, Exact Field Match=47.50% (38/80)"
+    },
+    {
+      "step": 5,
+      "command": "python scripts/run_signature_seal_tests.py",
+      "exit_code": 0,
+      "verified_output": "600 images: Signature Assisted Acc=0.6900 (Rec=1.0000), Signature Unassisted Acc=0.3783 (Rec=0.2135), Seal Acc=0.9967, Anomaly Clean Digital FP=0.0000, Altered Recall=0.6400"
+    },
+    {
+      "step": 6,
+      "command": "python scripts/run_model_evaluation.py",
+      "exit_code": 0,
+      "verified_output": "375 held-out test scenarios: Majority Baseline Acc=0.6507 (FP=131), Rules/LR/RF/XGB Acc=1.0000, 375 per-scenario predictions exported"
+    },
+    {
+      "step": 7,
+      "command": "python -m pytest -v",
+      "exit_code": 0,
+      "verified_output": "21 passed in 1.30s (100% pass rate)"
+    }
+  ],
+  "generated_evidence_artifacts": {
+    "evidence/metrics/dataset_manifest.json": {
+      "sha256": "b2de472004fce16897de8ae54229c72c9b3c61ab41abf9a6513a6eaa14c8ede7",
+      "size_bytes": 102718
+    },
+    "evidence/metrics/dataset_manifest_summary.json": {
+      "sha256": "13ae8d7b3c3c783ce8e40609528c994b203a804ea1aad067798e7aa839e249ff",
+      "size_bytes": 3128
+    },
+    "evidence/metrics/dataset_validation_report.json": {
+      "sha256": "673fcf7510e9f49d334191381d92f6a179b3aa03b800d43189fab33c822a478a",
+      "size_bytes": 214
+    },
+    "evidence/metrics/model_comparison.csv": {
+      "sha256": "1cdc3e4ccf1de2d70e2c5939182b8c00cb5bec2bb5b94f8963c029fb70efb38a",
+      "size_bytes": 333
+    },
+    "evidence/metrics/model_comparison.json": {
+      "sha256": "b3420fd8b81333dc36baba2617eeb622a4b73862c10a977b57f9bf383f67e65c",
+      "size_bytes": 3551
+    },
+    "evidence/metrics/ml_test_predictions.csv": {
+      "sha256": "a87f8e072c0400a8e548d4925b0d3655c67be2648db7ab75e09cc75d5fffd11a",
+      "size_bytes": 47201
+    },
+    "evidence/metrics/ml_test_predictions.json": {
+      "sha256": "222f0aba1c38c69fdff07cf97bebba2bd974189696de00bfff37b946e9e3ed36",
+      "size_bytes": 213424
+    },
+    "evidence/metrics/xgboost_feature_importance.json": {
+      "sha256": "d5faf930373c94b4ca7fdd1d6392ee63cfd6dc53240b3bd44c2cb6d98793c888",
+      "size_bytes": 537
+    },
+    "evidence/metrics/confusion_matrices_detailed.json": {
+      "sha256": "be9425fd7d0294f8864bba1220247c31c639a865520fcf4a9ba808c3a9f36996",
+      "size_bytes": 3792
+    },
+    "evidence/metrics/leakage_audit_report.json": {
+      "sha256": "4c7830b0279c6790578eef39a0108a4da82457c6a813bc75758ad9883af5652d",
+      "size_bytes": 6523
+    },
+    "evidence/metrics/ocr_evaluation_report.json": {
+      "sha256": "300d983d1e6f176ee1a9ca21acf6e143f5f932a5e63dee6c02f113f796b04e54",
+      "size_bytes": 10021
+    },
+    "evidence/metrics/bengali_ocr_investigation.json": {
+      "sha256": "c7f7ed683eb06c5f94f7b622351ebdf2449ceae0405ba32988ad620125c0510e",
+      "size_bytes": 8401
+    },
+    "evidence/metrics/ocr_side_by_side_examples.json": {
+      "sha256": "3e2bb787fe984d9c7422bf54a3df6612bae473f12c6ae80c4e29916b7fad30ca",
+      "size_bytes": 22240
+    },
+    "evidence/metrics/signature_seal_evaluation.json": {
+      "sha256": "ad6a5becbd6137301ec678e210570c9a7b47d25973fc57b76b58a297a47d2313",
+      "size_bytes": 6134
+    },
+    "evidence/metrics/vision_detection_examples.json": {
+      "sha256": "98248749e8ff78698c2f43b5869d58635b984daaa29e89bc149ec16e2bd81625",
+      "size_bytes": 4894
+    }
+  }
+}

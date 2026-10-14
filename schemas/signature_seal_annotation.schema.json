@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SignatureAndSealAnnotation",
+  "type": "object",
+  "required": [
+    "annotation_id",
+    "image_id",
+    "region_type",
+    "bbox",
+    "presence_ground_truth",
+    "visual_clarity",
+    "reference_match_status"
+  ],
+  "properties": {
+    "annotation_id": {
+      "type": "string"
+    },
+    "image_id": {
+      "type": "string"
+    },
+    "region_type": {
+      "type": "string",
+      "enum": ["SIGNATURE", "OFFICIAL_SEAL", "REVENUE_STAMP"]
+    },
+    "bbox": {
+      "type": "array",
+      "items": { "type": "number" },
+      "minItems": 4,
+      "maxItems": 4,
+      "description": "[ymin, xmin, ymax, xmax] normalized or pixel coords"
+    },
+    "presence_ground_truth": {
+      "type": "boolean"
+    },
+    "visual_clarity": {
+      "type": "string",
+      "enum": ["CLEAR", "BLURRED", "PARTIALLY_OBSCURED", "LOW_RESOLUTION"]
+    },
+    "reference_match_status": {
+      "type": "string",
+      "enum": [
+        "SYNTHETIC_REFERENCE_MATCH",
+        "SYNTHETIC_MISMATCH",
+        "SYNTHETIC_INCONCLUSIVE",
+        "NOT_APPLICABLE"
+      ]
+    },
+    "is_synthetic": {
+      "type": "boolean",
+      "const": true
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,112 @@
+{
+  "model_name": "LandGuard XGBoost Fraud-Risk Benchmark",
+  "model_version": "1.0.0",
+  "model_file": "xgboost_risk_model.joblib",
+  "sha256": "af74a704ca2e7d9fb9b6bc0bd0731b4cc504a464f32d8c5f219adb878b506d95",
+  "creation_timestamp": "2026-10-13T20:09:40.149330+00:00",
+  "framework": "xgboost",
+  "random_seed": 42,
+  "feature_schema": {
+    "feature_count": 19,
+    "columns": [
+      "transferred_area_decimal",
+      "parcel_total_area_decimal",
+      "area_ratio",
+      "area_excess_flag",
+      "cumulative_seller_area_ratio",
+      "price_per_decimal",
+      "has_previous_deed_ref",
+      "is_ancestral_ref",
+      "previous_deed_verified_flag",
+      "chain_length",
+      "seller_was_previous_buyer",
+      "mutation_present",
+      "mutation_pending_flag",
+      "tax_year_delta",
+      "conflicting_sale_flag",
+      "doc_plot_discrepancy_flag",
+      "doc_area_discrepancy_flag",
+      "cv_seal_absent_flag",
+      "cv_visual_anomaly_score"
+    ],
+    "registry_feature_columns": [
+      "transferred_area_decimal",
+      "parcel_total_area_decimal",
+      "area_ratio",
+      "area_excess_flag",
+      "cumulative_seller_area_ratio",
+      "price_per_decimal",
+      "has_previous_deed_ref",
+      "is_ancestral_ref",
+      "previous_deed_verified_flag",
+      "chain_length",
+      "seller_was_previous_buyer",
+      "mutation_present",
+      "mutation_pending_flag",
+      "tax_year_delta",
+      "conflicting_sale_flag"
+    ],
+    "document_evidence_columns": [
+      "doc_plot_discrepancy_flag",
+      "doc_area_discrepancy_flag",
+      "cv_seal_absent_flag",
+      "cv_visual_anomaly_score"
+    ]
+  },
+  "hyperparameters": {
+    "n_estimators": 250,
+    "max_depth": 5,
+    "learning_rate": 0.05,
+    "subsample": 0.85,
+    "colsample_bytree": 0.85,
+    "eval_metric": "logloss",
+    "random_state": 42,
+    "n_jobs": -1
+  },
+  "training_metadata": {
+    "source_records_path": "data/full/records/canonical_records.json",
+    "source_records_sha256": "24b1bee2a3cb27a71a272e0577d41b5600a9670cc57632993122c08b0c45cc6c",
+    "split_group_key": "template_cohort",
+    "train_samples": 1700,
+    "val_samples": 300,
+    "test_samples": 500,
+    "decision_threshold": 0.5
+  },
+  "test_evaluation_metrics": {
+    "accuracy": 0.998,
+    "precision": 0.997,
+    "recall": 1.0,
+    "f1_score": 0.9985,
+    "roc_auc": 1.0,
+    "pr_auc": 1.0,
+    "brier_score": 0.0013,
+    "expected_calibration_error": 0.011,
+    "confusion_matrix": {
+      "true_negative": 167,
+      "false_positive": 1,
+      "false_negative": 0,
+      "true_positive": 332
+    }
+  },
+  "top_feature_importances": {
+    "area_ratio": 0.3095,
+    "mutation_pending_flag": 0.0916,
+    "has_previous_deed_ref": 0.0823,
+    "tax_year_delta": 0.0795,
+    "doc_plot_discrepancy_flag": 0.0618,
+    "cumulative_seller_area_ratio": 0.0574,
+    "previous_deed_verified_flag": 0.0573,
+    "cv_seal_absent_flag": 0.0551,
+    "mutation_present": 0.0526,
+    "price_per_decimal": 0.0485,
+    "seller_was_previous_buyer": 0.0473,
+    "cv_visual_anomaly_score": 0.0405,
+    "is_ancestral_ref": 0.011,
+    "chain_length": 0.0021,
+    "parcel_total_area_decimal": 0.002,
+    "transferred_area_decimal": 0.0016,
+    "area_excess_flag": 0.0,
+    "conflicting_sale_flag": 0.0,
+    "doc_area_discrepancy_flag": 0.0
+  }
+}

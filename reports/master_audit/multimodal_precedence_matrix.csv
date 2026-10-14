@@ -1,0 +1,6 @@
+test_name,ml_score,expected_overall,actual_overall,recommended_action,test_status
+Precedence A: Statutory Contradiction overrides low ML score,0.05,CONFIRMED_INCONSISTENCY,CONFIRMED_INCONSISTENCY,"HOLD_FOR_STATUTORY_VERIFICATION: Inspect physical volume register, Khatian survey sheet, and Namzari mutation dossier to resolve confirmed evidentiary contradiction.",PASS
+Precedence B: Clean registry with high ML score routes to RISK_INDICATOR (never fraud),0.88,RISK_INDICATOR,RISK_INDICATOR,"SECONDARY_SCREENING_RECOMMENDED: Statistical or heuristic risk indicators present (e.g., tax arrears or valuation gap); perform secondary clerk review.",PASS
+Precedence C: Damaged historical archive with high ML score routes to MISSING_EVIDENCE,0.94,MISSING_EVIDENCE,MISSING_EVIDENCE,REQUEST_MISSING_RECORDS: Obtain missing historical deed index or mutation register extract before completing verification.,PASS
+Precedence D: Pending Namzari mutation routes to REVIEW_REQUIRED,0.4,REVIEW_REQUIRED,REVIEW_REQUIRED,"MANUAL_OFFICER_REVIEW: Verify pending Namzari mutation status, subdivision sketch, or initialed clerical rectification mark.",PASS
+Precedence E: Verified conveyance routes to CLEAR_FOR_STANDARD_PROCESSING,0.02,CLEAR_FOR_STANDARD_PROCESSING,CLEAR_FOR_STANDARD_PROCESSING,PROCEED_WITH_STANDARD_REVIEW: No statutory contradictions or risk indicators observed.,PASS
