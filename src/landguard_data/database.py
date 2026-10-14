@@ -9,36 +9,61 @@ import datetime
 from typing import Dict, Any, List, Optional
 import json
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
+try:
+    import psycopg2
+    from psycopg2.extras import RealDictCursor
+    PSYCOPG2_AVAILABLE = True
+except ImportError:
+    PSYCOPG2_AVAILABLE = False
+
 
 class LandGuardDatabase:
     """Operational database manager for LandGuard state and audit logging."""
 
     def __init__(self, db_path: Optional[str] = None):
         self.database_url = os.environ.get("DATABASE_URL")
-        self.db_type = "POSTGRESQL" if self.database_url else "SQLITE"
         self.db_path = db_path or os.path.abspath("data/landguard_operational.db")
         os.makedirs(os.path.dirname(self.db_path), exist_ok=True)
+        
+        # Determine active driver and test connection
+        self.db_type = "SQLITE"
+        if self.database_url and PSYCOPG2_AVAILABLE:
+            try:
+                test_conn = psycopg2.connect(self.database_url)
+                test_conn.close()
+                self.db_type = "POSTGRESQL"
+                print(f"[LandGuard DB] Connected to Neon PostgreSQL at {self.database_url.split('@')[-1]}")
+            except Exception as e:
+                print(f"[LandGuard DB] PostgreSQL connection error ({e}). Falling back to local SQLite.")
+                self.db_type = "SQLITE"
+        else:
+            self.db_type = "SQLITE"
+
         self._init_database()
 
     def _get_connection(self):
         """Returns database connection with row factory."""
-        if self.db_type == "SQLITE":
-            conn = sqlite3.connect(self.db_path)
-            conn.row_factory = sqlite3.Row
-            conn.execute("PRAGMA foreign_keys = ON;")
-            return conn
-        else:
-            # PostgreSQL / Neon driver placeholder if configured
+        if self.db_type == "POSTGRESQL":
             try:
-                import psycopg2
                 return psycopg2.connect(self.database_url)
             except Exception as e:
-                print(f"[LandGuard DB] Warning: PostgreSQL driver error: {e}. Falling back to SQLite.")
+                print(f"[LandGuard DB] PostgreSQL reconnect error: {e}. Falling back to SQLite.")
                 self.db_type = "SQLITE"
                 conn = sqlite3.connect(self.db_path)
                 conn.row_factory = sqlite3.Row
                 conn.execute("PRAGMA foreign_keys = ON;")
                 return conn
+        else:
+            conn = sqlite3.connect(self.db_path)
+            conn.row_factory = sqlite3.Row
+            conn.execute("PRAGMA foreign_keys = ON;")
+            return conn
 
     def _init_database(self):
         """Executes migration schema idempotently."""
@@ -51,7 +76,13 @@ class LandGuardDatabase:
 
         conn = self._get_connection()
         try:
-            if self.db_type == "SQLITE":
+            if self.db_type == "POSTGRESQL":
+                cur = conn.cursor()
+                cur.execute(sql_script)
+                conn.commit()
+                cur.close()
+                print("[LandGuard DB] Initialized PostgreSQL / Neon schema idempotently.")
+            else:
                 # Convert PostgreSQL-specific syntax for SQLite compatibility
                 sqlite_script = sql_script.replace("BOOLEAN DEFAULT TRUE", "INTEGER DEFAULT 1")
                 sqlite_script = sqlite_script.replace("BOOLEAN DEFAULT FALSE", "INTEGER DEFAULT 0")
@@ -81,14 +112,26 @@ class LandGuardDatabase:
 
         conn = self._get_connection()
         try:
-            conn.execute(
-                """
-                INSERT INTO audit_events (event_id, actor_id, action_type, target_entity, target_id, details, ip_address, created_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                """,
-                (event_id, actor_id, action_type, target_entity, target_id, details_str, ip_address, now),
-            )
-            conn.commit()
+            if self.db_type == "POSTGRESQL":
+                cur = conn.cursor()
+                cur.execute(
+                    """
+                    INSERT INTO audit_events (event_id, actor_id, action_type, target_entity, target_id, details, ip_address, created_at)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                    """,
+                    (event_id, actor_id, action_type, target_entity, target_id, details_str, ip_address, now),
+                )
+                conn.commit()
+                cur.close()
+            else:
+                conn.execute(
+                    """
+                    INSERT INTO audit_events (event_id, actor_id, action_type, target_entity, target_id, details, ip_address, created_at)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                    """,
+                    (event_id, actor_id, action_type, target_entity, target_id, details_str, ip_address, now),
+                )
+                conn.commit()
         except Exception as e:
             print(f"[LandGuard DB] Failed to log audit event: {e}")
         finally:
@@ -98,23 +141,43 @@ class LandGuardDatabase:
         """Retrieves recent audit events sorted newest first."""
         conn = self._get_connection()
         try:
-            cursor = conn.execute(
-                """
-                SELECT event_id, actor_id, action_type, target_entity, target_id, details, ip_address, created_at
-                FROM audit_events ORDER BY created_at DESC LIMIT ?
-                """,
-                (limit,),
-            )
-            rows = cursor.fetchall()
             events = []
-            for r in rows:
-                ev = dict(r)
-                if isinstance(ev.get("details"), str):
-                    try:
-                        ev["details"] = json.loads(ev["details"])
-                    except Exception:
-                        pass
-                events.append(ev)
+            if self.db_type == "POSTGRESQL":
+                cur = conn.cursor(cursor_factory=RealDictCursor)
+                cur.execute(
+                    """
+                    SELECT event_id, actor_id, action_type, target_entity, target_id, details, ip_address, created_at
+                    FROM audit_events ORDER BY created_at DESC LIMIT %s
+                    """,
+                    (limit,),
+                )
+                rows = cur.fetchall()
+                for r in rows:
+                    ev = dict(r)
+                    if isinstance(ev.get("details"), str):
+                        try:
+                            ev["details"] = json.loads(ev["details"])
+                        except Exception:
+                            pass
+                    events.append(ev)
+                cur.close()
+            else:
+                cursor = conn.execute(
+                    """
+                    SELECT event_id, actor_id, action_type, target_entity, target_id, details, ip_address, created_at
+                    FROM audit_events ORDER BY created_at DESC LIMIT ?
+                    """,
+                    (limit,),
+                )
+                rows = cursor.fetchall()
+                for r in rows:
+                    ev = dict(r)
+                    if isinstance(ev.get("details"), str):
+                        try:
+                            ev["details"] = json.loads(ev["details"])
+                        except Exception:
+                            pass
+                    events.append(ev)
             return events
         except Exception as e:
             print(f"[LandGuard DB] Error fetching audit events: {e}")
