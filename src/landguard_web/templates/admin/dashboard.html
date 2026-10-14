@@ -1,118 +1,558 @@
 {% extends "admin/layout.html" %}
 
-{% block title %}Command Center — LandGuard Operations{% endblock %}
+{% block title %}LandGuard Intelligence — Command Center Dashboard{% endblock %}
+
+{% block extra_head %}
+<!-- Chart.js CDN for Dynamic Bento Charts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    /* Theme-adaptive Bento Variables */
+    :root {
+        --bento-card-bg: #111827;
+        --bento-elevated-bg: #1E293B;
+        --bento-border: rgba(255, 255, 255, 0.08);
+        --bento-text: #F8FAFC;
+        --bento-muted: #94A3B8;
+        --bento-accent-cyan: #06B6D4;
+        --bento-accent-violet: #8B5CF6;
+        --bento-accent-pink: #EC4899;
+    }
+    html.light {
+        --bento-card-bg: #FFFFFF;
+        --bento-elevated-bg: #F8FAFC;
+        --bento-border: #E2E8F0;
+        --bento-text: #0F172A;
+        --bento-muted: #64748B;
+        --bento-accent-cyan: #0891B2;
+        --bento-accent-violet: #7C3AED;
+        --bento-accent-pink: #DB2777;
+    }
+
+    .bento-card {
+        background-color: var(--bento-card-bg);
+        border: 1px solid var(--bento-border);
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .bento-card:hover {
+        border-color: rgba(6, 182, 212, 0.3);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2), 0 0 15px rgba(6, 182, 212, 0.05);
+    }
+    html.light .bento-card:hover {
+        border-color: #94A3B8;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Active KPI selection highlight */
+    .kpi-card-active {
+        ring: 2px solid var(--bento-accent-cyan);
+        border-color: var(--bento-accent-cyan) !important;
+        box-shadow: 0 0 20px rgba(6, 182, 212, 0.2) !important;
+        transform: translateY(-2px);
+    }
+    .kpi-card-active.accent-pink {
+        border-color: #EC4899 !important;
+        box-shadow: 0 0 20px rgba(236, 72, 153, 0.2) !important;
+    }
+    .kpi-card-active.accent-amber {
+        border-color: #F59E0B !important;
+        box-shadow: 0 0 20px rgba(245, 158, 11, 0.2) !important;
+    }
+    .kpi-card-active.accent-violet {
+        border-color: #8B5CF6 !important;
+        box-shadow: 0 0 20px rgba(139, 92, 246, 0.2) !important;
+    }
+    .kpi-card-active.accent-emerald {
+        border-color: #10B981 !important;
+        box-shadow: 0 0 20px rgba(16, 185, 129, 0.2) !important;
+    }
+
+    /* Circular Progress Ring */
+    .progress-ring__circle {
+        transition: stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        transform: rotate(-90deg);
+        transform-origin: 50% 50%;
+    }
+
+    /* Month timeline pill active state */
+    .month-pill-active {
+        background-color: #06B6D4 !important;
+        color: #070B16 !important;
+        font-weight: 700 !important;
+        box-shadow: 0 0 12px rgba(6, 182, 212, 0.4);
+    }
+    html.light .month-pill-active {
+        background-color: #0891B2 !important;
+        color: #FFFFFF !important;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .bento-card, .progress-ring__circle {
+            transition: none !important;
+            animation: none !important;
+        }
+    }
+</style>
+{% endblock %}
 
 {% block portal_content %}
-<div class="space-y-8">
-    <!-- Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Investigator Command Center</h1>
-            <p class="text-xs sm:text-sm text-slate-400 mt-1">
-                Operational oversight of statutory deed verifications, double-sale flags, and citizen grievance dockets.
-            </p>
-        </div>
+<div class="space-y-6">
 
-        <div class="flex items-center gap-2">
-            <a href="/admin/cases" class="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 transition-colors shadow-lg shadow-indigo-600/20 flex items-center gap-1.5">
-                <i data-lucide="folder-kanban" class="w-4 h-4"></i>
-                <span>Open Full Case Docket</span>
-            </a>
-            <a href="/admin/verifications" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-300 glass-panel hover:bg-slate-800 transition-colors border border-slate-700 flex items-center gap-1.5">
-                <i data-lucide="check-square" class="w-4 h-4 text-cyan-400"></i>
-                <span>Verification Queue</span>
-            </a>
-        </div>
-    </div>
-
-    <!-- 6 KPI Stat Cards -->
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
-        <div class="glass-panel p-4 rounded-xl border border-slate-800">
-            <div class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Total Scanned</div>
-            <div class="text-2xl font-bold font-mono text-white mt-1">{{ stats.session.total_verifications }}</div>
-            <div class="text-[10px] text-cyan-400 font-mono mt-1">Dossiers logged</div>
-        </div>
-        <div class="glass-panel p-4 rounded-xl border border-slate-800">
-            <div class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Review Queue</div>
-            <div class="text-2xl font-bold font-mono text-amber-400 mt-1">{{ review_queue_count }}</div>
-            <div class="text-[10px] text-amber-400 font-mono mt-1">Pending review</div>
-        </div>
-        <div class="glass-panel p-4 rounded-xl border border-slate-800">
-            <div class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Inconsistencies</div>
-            <div class="text-2xl font-bold font-mono text-rose-400 mt-1">{{ inconsistencies_count }}</div>
-            <div class="text-[10px] text-rose-400 font-mono mt-1">Confirmed conflicts</div>
-        </div>
-        <div class="glass-panel p-4 rounded-xl border border-slate-800">
-            <div class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Open Cases</div>
-            <div class="text-2xl font-bold font-mono text-indigo-400 mt-1">{{ stats.session.open_cases }}</div>
-            <div class="text-[10px] text-indigo-400 font-mono mt-1">Active investigations</div>
-        </div>
-        <div class="glass-panel p-4 rounded-xl border border-slate-800">
-            <div class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Resolved</div>
-            <div class="text-2xl font-bold font-mono text-emerald-400 mt-1">{{ stats.session.resolved_cases }}</div>
-            <div class="text-[10px] text-emerald-400 font-mono mt-1">Closed with finding</div>
-        </div>
-        <div class="glass-panel p-4 rounded-xl border border-slate-800">
-            <div class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">XGBoost Engine</div>
-            <div class="text-lg font-bold font-mono text-emerald-400 mt-1">ONLINE</div>
-            <div class="text-[10px] text-slate-400 font-mono mt-1">19 features calibrated</div>
-        </div>
-    </div>
-
-    <!-- Expedite Review Alert Queue -->
-    {% if pending_expedites %}
-    <div class="glass-panel-glow p-5 rounded-2xl border border-indigo-500/40 shadow-xl space-y-3">
-        <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2 text-indigo-300 font-bold text-sm">
-                <i data-lucide="zap" class="w-4 h-4 text-indigo-400"></i>
-                <span>Expedited Review Queue — Citizen Urgency Requests</span>
+    <!-- ========================================================================= -->
+    <!-- SECTION A: HEADER & INTELLIGENCE CONTROLS                                 -->
+    <!-- ========================================================================= -->
+    <header class="bento-card rounded-2xl p-5 sm:p-6 shadow-xl">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+            
+            <!-- Left: Title, Subtitle & Status Badge -->
+            <div class="space-y-1.5">
+                <div class="flex items-center gap-2.5 flex-wrap">
+                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold tracking-wider uppercase bg-cyan-950/80 text-cyan-300 border border-cyan-500/40">
+                        Investigator Command Center
+                    </span>
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-emerald-950/80 text-emerald-300 border border-emerald-500/40">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span id="systemStatusLabel">SYSTEM OPERATIONAL</span>
+                    </span>
+                    <span class="text-[11px] font-mono text-slate-400 hidden sm:inline">
+                        100k Benchmark &bull; 19 Features Calibrated
+                    </span>
+                </div>
+                
+                <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white flex items-center gap-2">
+                    <span>LandGuard Intelligence</span>
+                    <span class="text-xs px-2 py-0.5 rounded-md bg-indigo-900/60 text-indigo-300 font-mono font-normal">v2.0 P3</span>
+                </h1>
+                
+                <p class="text-xs sm:text-sm text-slate-400">
+                    Land Verification &amp; Risk Monitoring &bull; Multi-modal statutory conflict prevention for LandTech 2026.
+                </p>
             </div>
-            <span class="text-xs font-mono text-indigo-400">{{ pending_expedites|length }} Pending Action</span>
+
+            <!-- Right: Controls (Search, Year Filter, Theme Toggle, Profile Menu) -->
+            <div class="flex items-center gap-2.5 flex-wrap">
+                
+                <!-- Quick Parcel/Case Search Trigger -->
+                <div class="relative">
+                    <input type="text" id="quickSearchInput" placeholder="Search Plot / Deed / Case..."
+                           class="w-48 sm:w-60 px-3.5 py-2 pl-9 rounded-xl text-xs bg-slate-900/90 text-slate-200 border border-slate-700/80 focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-500 transition-all placeholder:text-slate-500"
+                           onkeyup="handleQuickSearch(event)">
+                    <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
+                    <div id="quickSearchResults" class="hidden absolute top-full left-0 mt-1 w-72 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl p-2 z-50 text-xs space-y-1"></div>
+                </div>
+
+                <!-- Year Filter Selector -->
+                <div class="inline-flex items-center p-1 rounded-xl bg-slate-900/80 border border-slate-700/80 text-xs">
+                    <button type="button" onclick="selectYear('2026')" id="yearBtn2026"
+                            class="px-2.5 py-1 rounded-lg font-mono font-semibold text-cyan-400 bg-cyan-950/80 border border-cyan-500/30 transition-all">
+                        2026
+                    </button>
+                    <button type="button" onclick="selectYear('2025')" id="yearBtn2025"
+                            class="px-2.5 py-1 rounded-lg font-mono font-semibold text-slate-400 hover:text-white transition-all">
+                        2025
+                    </button>
+                    <button type="button" onclick="selectYear('ALL')" id="yearBtnALL"
+                            class="px-2.5 py-1 rounded-lg font-mono font-semibold text-slate-400 hover:text-white transition-all">
+                        All
+                    </button>
+                </div>
+
+                <!-- Dark / Light Theme Toggle -->
+                <button type="button" onclick="toggleTheme()" id="themeToggleBtn" title="Toggle Dark/Light Theme"
+                        class="p-2 rounded-xl bg-slate-900/80 border border-slate-700/80 text-slate-300 hover:text-cyan-400 hover:border-cyan-500/50 transition-all">
+                    <i data-lucide="moon" id="themeIconMoon" class="w-4 h-4"></i>
+                    <i data-lucide="sun" id="themeIconSun" class="w-4 h-4 hidden"></i>
+                </button>
+
+                <!-- Case Docket Shortcut -->
+                <a href="/admin/cases" class="px-3.5 py-2 rounded-xl text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 transition-all shadow-lg shadow-indigo-600/25 flex items-center gap-1.5 shrink-0">
+                    <i data-lucide="folder-kanban" class="w-4 h-4"></i>
+                    <span class="hidden sm:inline">Cases</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- ========================================================================= -->
+    <!-- SECTION B: 5 INTERACTIVE SELECTABLE BENTO KPI CARDS                       -->
+    <!-- ========================================================================= -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4" role="region" aria-label="Interactive KPI Indicators">
+        
+        <!-- CARD 1: VERIFICATION VOLUME -->
+        <div id="kpiCard-verifications" tabindex="0" role="button" aria-pressed="true"
+             onclick="selectMetric('verifications')" onkeydown="handleCardKey(event, 'verifications')"
+             class="bento-card kpi-card-active rounded-2xl p-4 cursor-pointer flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between text-xs mb-2">
+                    <span class="font-semibold text-slate-400 tracking-wide flex items-center gap-1.5">
+                        <i data-lucide="check-square" class="w-3.5 h-3.5 text-cyan-400"></i>
+                        <span>Verifications</span>
+                    </span>
+                    <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-cyan-950/60 text-cyan-300 border border-cyan-800/40">
+                        {{ analytics.kpis.verifications.mom_change_pct }}
+                    </span>
+                </div>
+                <div class="text-2xl font-black font-mono text-white tracking-tight" id="kpiVal-verifications">
+                    {{ analytics.kpis.verifications.total_requests }}
+                </div>
+                <div class="text-[11px] text-slate-400 mt-1">
+                    <span class="text-cyan-400 font-bold" id="kpiCompleted-verifications">{{ analytics.kpis.verifications.completed_verifications }}</span> completed dossiers
+                </div>
+            </div>
+
+            <!-- Mini Sparkline in Cyan -->
+            <div class="mt-3 pt-2 border-t border-slate-800/60 flex items-center justify-between">
+                <span class="text-[10px] font-mono text-slate-500">12-Mo Trend</span>
+                <svg class="w-20 h-6 text-cyan-400 overflow-visible" viewBox="0 0 80 24">
+                    <polyline fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                              points="0,18 7,16 14,12 21,15 28,11 35,6 42,9 49,4 56,8 63,12 70,7 80,3" />
+                </svg>
+            </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {% for exp in pending_expedites %}
-            <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center justify-between text-xs font-mono mb-1">
-                        <span class="text-white font-bold">{{ exp.complaint_id }} &bull; Plot #{{ exp.dag_plot_number }}</span>
-                        <span class="text-amber-400">PENDING_DECISION</span>
+        <!-- CARD 2: FRAUD-RISK INDICATORS -->
+        <div id="kpiCard-risk" tabindex="0" role="button" aria-pressed="false"
+             onclick="selectMetric('risk')" onkeydown="handleCardKey(event, 'risk')"
+             class="bento-card rounded-2xl p-4 cursor-pointer flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between text-xs mb-2">
+                    <span class="font-semibold text-slate-400 tracking-wide flex items-center gap-1.5">
+                        <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-pink-400"></i>
+                        <span>Fraud-Risk</span>
+                    </span>
+                    <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-pink-950/60 text-pink-300 border border-pink-800/40">
+                        Risk &gt; 0.35
+                    </span>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-black font-mono text-pink-400 tracking-tight" id="kpiVal-risk">
+                            {{ analytics.kpis.risk.high_risk_awaiting_review }}
+                        </div>
+                        <div class="text-[11px] text-slate-400 mt-0.5">
+                            <span class="text-rose-400 font-bold">{{ analytics.kpis.risk.confirmed_inconsistencies }}</span> confirmed findings
+                        </div>
                     </div>
-                    <div class="text-xs text-slate-300 font-semibold">{{ exp.title }}</div>
-                    <div class="text-[11px] text-slate-400 mt-1 italic">"{{ exp.expedite_reason }}"</div>
-                </div>
-                <div class="flex items-center justify-end gap-2 mt-3 pt-2 border-t border-slate-800/80">
-                    <button type="button" onclick="handleExpediteDecision('{{ exp.complaint_id }}', 'REJECTED')"
-                            class="px-2.5 py-1 rounded-lg text-[11px] text-slate-400 hover:text-white glass-panel">
-                        Reject
-                    </button>
-                    <button type="button" onclick="handleExpediteDecision('{{ exp.complaint_id }}', 'APPROVED')"
-                            class="px-3 py-1 rounded-lg text-[11px] font-semibold text-white bg-indigo-600 hover:bg-indigo-500">
-                        Approve Expedite
-                    </button>
+
+                    <!-- Circular Progress Ring Gauge (28.4%) -->
+                    <div class="relative w-11 h-11 shrink-0">
+                        <svg class="w-11 h-11" viewBox="0 0 36 36">
+                            <path class="text-slate-800" stroke-width="3.5" stroke="currentColor" fill="none"
+                                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <path class="text-pink-500 progress-ring__circle" stroke-dasharray="100, 100" stroke-dashoffset="71.6"
+                                  stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none"
+                                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        </svg>
+                        <span class="absolute inset-0 flex items-center justify-center text-[9px] font-mono font-bold text-pink-300">
+                            28%
+                        </span>
+                    </div>
                 </div>
             </div>
-            {% endfor %}
-        </div>
-    </div>
-    {% endif %}
 
-    <!-- Investigation Cases Docket & Verification Queue Stream -->
+            <div class="mt-3 pt-2 border-t border-slate-800/60 text-[10px] text-slate-500 truncate" title="Model prediction distinct from confirmed statutory fraud">
+                Model indicator &ne; confirmed fraud
+            </div>
+        </div>
+
+        <!-- CARD 3: OWNERSHIP CONFLICTS -->
+        <div id="kpiCard-conflicts" tabindex="0" role="button" aria-pressed="false"
+             onclick="selectMetric('conflicts')" onkeydown="handleCardKey(event, 'conflicts')"
+             class="bento-card rounded-2xl p-4 cursor-pointer flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between text-xs mb-2">
+                    <span class="font-semibold text-slate-400 tracking-wide flex items-center gap-1.5">
+                        <i data-lucide="copy" class="w-3.5 h-3.5 text-amber-400"></i>
+                        <span>Conflicts</span>
+                    </span>
+                    <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-950/60 text-amber-300 border border-amber-800/40">
+                        Sec. 47
+                    </span>
+                </div>
+                <div class="text-2xl font-black font-mono text-amber-400 tracking-tight" id="kpiVal-conflicts">
+                    {{ analytics.kpis.conflicts.double_selling_conflicts }}
+                </div>
+                <div class="text-[11px] text-slate-400 mt-1">
+                    <span class="text-amber-300 font-bold">{{ analytics.kpis.conflicts.registration_mutation_discrepancies }}</span> mutation mismatches
+                </div>
+            </div>
+
+            <div class="mt-3 pt-2 border-t border-slate-800/60 flex items-center justify-between">
+                <span class="text-[10px] font-mono text-slate-500">Double Sales</span>
+                <svg class="w-20 h-6 text-amber-400 overflow-visible" viewBox="0 0 80 24">
+                    <polyline fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                              points="0,15 7,12 14,14 21,11 28,13 35,9 42,10 49,6 56,12 63,14 70,8 80,6" />
+                </svg>
+            </div>
+        </div>
+
+        <!-- CARD 4: INVESTIGATION QUEUE -->
+        <div id="kpiCard-cases" tabindex="0" role="button" aria-pressed="false"
+             onclick="selectMetric('cases')" onkeydown="handleCardKey(event, 'cases')"
+             class="bento-card rounded-2xl p-4 cursor-pointer flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between text-xs mb-2">
+                    <span class="font-semibold text-slate-400 tracking-wide flex items-center gap-1.5">
+                        <i data-lucide="folder-kanban" class="w-3.5 h-3.5 text-violet-400"></i>
+                        <span>Docket Queue</span>
+                    </span>
+                    <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-violet-950/60 text-violet-300 border border-violet-800/40">
+                        Active
+                    </span>
+                </div>
+                <div class="text-2xl font-black font-mono text-violet-300 tracking-tight" id="kpiVal-cases">
+                    {{ analytics.kpis.cases.open_cases }}
+                </div>
+                <div class="text-[11px] text-slate-400 mt-1 flex items-center gap-1.5">
+                    <span class="px-1.5 py-0.2 rounded text-[9px] font-mono bg-rose-950 text-rose-300 border border-rose-800/50">
+                        Crit: {{ analytics.kpis.cases.priority_distribution.CRITICAL }}
+                    </span>
+                    <span class="px-1.5 py-0.2 rounded text-[9px] font-mono bg-amber-950 text-amber-300 border border-amber-800/50">
+                        High: {{ analytics.kpis.cases.priority_distribution.HIGH }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="mt-3 pt-2 border-t border-slate-800/60 flex items-center justify-between">
+                <span class="text-[10px] text-slate-500 font-mono">{{ analytics.kpis.cases.awaiting_assignment }} unassigned</span>
+                <a href="/admin/cases" class="text-[11px] font-semibold text-violet-400 hover:text-violet-300 flex items-center gap-0.5">
+                    <span>Manage</span> &rarr;
+                </a>
+            </div>
+        </div>
+
+        <!-- CARD 5: DOCUMENT INTELLIGENCE -->
+        <div id="kpiCard-documents" tabindex="0" role="button" aria-pressed="false"
+             onclick="selectMetric('documents')" onkeydown="handleCardKey(event, 'documents')"
+             class="bento-card rounded-2xl p-4 cursor-pointer flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between text-xs mb-2">
+                    <span class="font-semibold text-slate-400 tracking-wide flex items-center gap-1.5">
+                        <i data-lucide="file-text" class="w-3.5 h-3.5 text-emerald-400"></i>
+                        <span>Document AI</span>
+                    </span>
+                    <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-950/60 text-emerald-300 border border-emerald-800/40">
+                        {{ analytics.kpis.documents.ocr_extraction_success_pct }}% OCR
+                    </span>
+                </div>
+                <div class="text-2xl font-black font-mono text-emerald-400 tracking-tight" id="kpiVal-documents">
+                    {{ analytics.kpis.documents.documents_processed }}
+                </div>
+                <div class="text-[11px] text-slate-400 mt-1">
+                    <span class="text-emerald-300 font-bold">{{ analytics.kpis.documents.cv_findings_count }}</span> CV tampering alerts
+                </div>
+            </div>
+
+            <div class="mt-3 pt-2 border-t border-slate-800/60 flex items-center justify-between">
+                <span class="text-[10px] font-mono text-slate-500">Failures: {{ analytics.kpis.documents.service_failures_pct }}%</span>
+                <span class="text-[10px] font-mono text-emerald-400">Bengali+Eng</span>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================================= -->
+    <!-- SECTION C: DYNAMIC MAIN CHART (55%) + EXPEDITE & DIAGNOSTICS (45%)        -->
+    <!-- ========================================================================= -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <!-- High-Priority Cases Docket (7 cols) -->
-        <div class="lg:col-span-7 glass-panel p-6 rounded-2xl border border-slate-800">
+        
+        <!-- LEFT: DYNAMIC MAIN CHART PANEL (~58% / 7 cols) -->
+        <div class="lg:col-span-7 bento-card rounded-2xl p-5 sm:p-6 shadow-xl flex flex-col justify-between">
+            <div>
+                <!-- Dynamic Header & Summary Badges -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                    <div>
+                        <h2 class="text-base sm:text-lg font-bold text-white tracking-tight flex items-center gap-2">
+                            <span id="chartIconContainer">
+                                <i data-lucide="bar-chart-3" class="w-5 h-5 text-cyan-400"></i>
+                            </span>
+                            <span id="chartTitleText">{{ analytics.time_series.verifications.title }}</span>
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-0.5" id="chartSubtitleText">
+                            {{ analytics.time_series.verifications.subtitle }}
+                        </p>
+                    </div>
+
+                    <!-- Selected Metric Live Badge Row -->
+                    <div class="flex items-center gap-2 shrink-0" id="chartSummaryBadges">
+                        <div class="px-2.5 py-1 rounded-xl bg-slate-900 border border-slate-800 text-right">
+                            <div class="text-[9px] font-mono text-slate-500 uppercase">Period Volume</div>
+                            <div class="text-xs font-mono font-bold text-cyan-400" id="summaryBadge1">
+                                {{ analytics.kpis.verifications.total_requests }}
+                            </div>
+                        </div>
+                        <div class="px-2.5 py-1 rounded-xl bg-slate-900 border border-slate-800 text-right">
+                            <div class="text-[9px] font-mono text-slate-500 uppercase">Completion Rate</div>
+                            <div class="text-xs font-mono font-bold text-emerald-400" id="summaryBadge2">
+                                {{ analytics.kpis.verifications.completion_rate_pct }}%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 12-Month Horizontal Pill Timeline Filter (JAN - DEC + ALL) -->
+                <div class="mb-5 p-1 rounded-xl bg-slate-900/90 border border-slate-800 flex items-center gap-1 overflow-x-auto text-[11px] font-mono">
+                    <button type="button" onclick="selectMonth(null)" id="monthPill-all"
+                            class="month-pill-active px-2.5 py-1 rounded-lg font-semibold shrink-0 transition-all">
+                        ALL
+                    </button>
+                    {% for m in ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'] %}
+                    <button type="button" onclick="selectMonth({{ loop.index0 }})" id="monthPill-{{ loop.index0 }}"
+                            class="px-2.5 py-1 rounded-lg text-slate-400 hover:text-white shrink-0 transition-all">
+                        {{ m }}
+                    </button>
+                    {% endfor %}
+                </div>
+
+                <!-- Chart.js Dynamic Canvas Container -->
+                <div class="relative w-full h-72 sm:h-80">
+                    <canvas id="mainDashboardChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Chart Footer with Provenance Disclosure -->
+            <div class="mt-4 pt-3 border-t border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[10px] text-slate-500">
+                <span class="flex items-center gap-1.5 font-mono">
+                    <i data-lucide="info" class="w-3.5 h-3.5 text-cyan-400 shrink-0"></i>
+                    <span>Selected View: <strong class="text-slate-300 font-mono" id="selectedViewLabel">Verifications (Full Year)</strong></span>
+                </span>
+                <span class="font-mono text-amber-400/90">
+                    SYNTHETIC RESEARCH BENCHMARK DATA &bull; P3 FRAUD TRACK
+                </span>
+            </div>
+        </div>
+
+        <!-- RIGHT: EXPEDITED REVIEW QUEUE & AI MODEL OPS (~42% / 5 cols) -->
+        <div class="lg:col-span-5 space-y-6 flex flex-col justify-between">
+            
+            <!-- Bento Sub-Panel 1: Expedited Review Urgency Queue -->
+            <div class="bento-card rounded-2xl p-5 shadow-xl border-indigo-500/30">
+                <div class="flex items-center justify-between mb-3.5">
+                    <div class="flex items-center gap-2 text-indigo-300 font-bold text-sm">
+                        <i data-lucide="zap" class="w-4 h-4 text-indigo-400"></i>
+                        <span>Expedited Review Urgency Queue</span>
+                    </div>
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-indigo-950 text-indigo-300 border border-indigo-500/40">
+                        {{ pending_expedites|length }} Urgency
+                    </span>
+                </div>
+
+                <div class="space-y-3">
+                    {% for exp in pending_expedites %}
+                    <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-slate-700 transition-all">
+                        <div class="flex items-center justify-between text-xs font-mono mb-1">
+                            <span class="text-white font-bold">{{ exp.complaint_id }} &bull; Plot #{{ exp.dag_plot_number }}</span>
+                            <span class="px-1.5 py-0.2 rounded text-[9px] bg-amber-950 text-amber-300 border border-amber-800/50">
+                                PENDING_DECISION
+                            </span>
+                        </div>
+                        <div class="text-xs font-semibold text-slate-200">{{ exp.title }}</div>
+                        <div class="text-[11px] text-slate-400 italic mt-1 bg-slate-950/60 p-2 rounded-lg border border-slate-800">
+                            "{{ exp.expedite_reason }}"
+                        </div>
+                        <div class="flex items-center justify-end gap-2 mt-3 pt-2 border-t border-slate-800/80">
+                            <button type="button" onclick="handleExpediteDecision('{{ exp.complaint_id }}', 'REJECTED')"
+                                    class="px-2.5 py-1 rounded-lg text-[11px] text-slate-400 hover:text-white glass-panel transition-all">
+                                Reject
+                            </button>
+                            <button type="button" onclick="handleExpediteDecision('{{ exp.complaint_id }}', 'APPROVED')"
+                                    class="px-3 py-1 rounded-lg text-[11px] font-semibold text-white bg-indigo-600 hover:bg-indigo-500 transition-all shadow-md shadow-indigo-600/30">
+                                Approve Expedite
+                            </button>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="p-6 rounded-xl bg-slate-900/40 border border-slate-800/60 text-center">
+                        <i data-lucide="check-circle" class="w-7 h-7 text-emerald-400 mx-auto mb-2 opacity-80"></i>
+                        <div class="text-xs font-semibold text-slate-300">All Citizen Urgency Requests Reviewed</div>
+                        <div class="text-[11px] text-slate-500 mt-0.5">No pending expedited review requests in queue.</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Bento Sub-Panel 2: AI Model Governance & Verified Benchmarks -->
+            <div class="bento-card rounded-2xl p-5 shadow-xl">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-2 text-white font-bold text-sm">
+                        <i data-lucide="cpu" class="w-4 h-4 text-cyan-400"></i>
+                        <span>AI Model Governance &amp; Engines</span>
+                    </div>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-950 text-emerald-300 border border-emerald-500/40">
+                        {{ analytics.system_health.xgb_model_status }}
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
+                    <div class="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 text-center">
+                        <div class="text-[9px] font-mono text-slate-400 uppercase">Recall</div>
+                        <div class="text-base font-bold font-mono text-emerald-400">1.000</div>
+                        <div class="text-[8px] text-slate-500">Zero missed</div>
+                    </div>
+                    <div class="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 text-center">
+                        <div class="text-[9px] font-mono text-slate-400 uppercase">Precision</div>
+                        <div class="text-base font-bold font-mono text-emerald-400">0.997</div>
+                        <div class="text-[8px] text-slate-500">Low false alarm</div>
+                    </div>
+                    <div class="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 text-center">
+                        <div class="text-[9px] font-mono text-slate-400 uppercase">F1-Score</div>
+                        <div class="text-base font-bold font-mono text-cyan-400">0.9985</div>
+                        <div class="text-[8px] text-slate-500">Harmonic</div>
+                    </div>
+                    <div class="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 text-center">
+                        <div class="text-[9px] font-mono text-slate-400 uppercase">Brier</div>
+                        <div class="text-base font-bold font-mono text-sky-400">0.0013</div>
+                        <div class="text-[8px] text-slate-500">Calibrated</div>
+                    </div>
+                </div>
+
+                <!-- Secondary Engines Status -->
+                <div class="space-y-2 text-xs">
+                    <div class="p-2 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="languages" class="w-3.5 h-3.5 text-indigo-400"></i>
+                            <span class="text-slate-300 font-medium">Bilingual OCR Engine</span>
+                        </div>
+                        <span class="font-mono text-[10px] text-emerald-400">Matra Realign + Levenshtein</span>
+                    </div>
+                    <div class="p-2 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="scan" class="w-3.5 h-3.5 text-cyan-400"></i>
+                            <span class="text-slate-300 font-medium">Computer Vision Tamper Detector</span>
+                        </div>
+                        <span class="font-mono text-[10px] text-cyan-400">Seal HSV + Texture Anomaly</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================================= -->
+    <!-- SECTION D: PRIORITY DOCKET & REAL-TIME INCONSISTENCY ALERTS               -->
+    <!-- ========================================================================= -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Priority Investigation Docket (6 cols) -->
+        <div class="lg:col-span-6 bento-card rounded-2xl p-5 sm:p-6 shadow-xl">
             <div class="flex items-center justify-between mb-4">
                 <h2 class="text-base font-bold text-white flex items-center gap-2">
                     <i data-lucide="folder-kanban" class="w-4 h-4 text-indigo-400"></i>
                     <span>Priority Investigation Docket</span>
                 </h2>
-                <a href="/admin/cases" class="text-xs text-indigo-400 hover:text-indigo-300 font-medium">All Cases &rarr;</a>
+                <a href="/admin/cases" class="text-xs text-indigo-400 hover:text-indigo-300 font-semibold flex items-center gap-1">
+                    <span>Full Docket</span> &rarr;
+                </a>
             </div>
 
             <div class="space-y-3">
                 {% for c in cases %}
-                <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800/80 hover:border-slate-700 transition-all flex items-start justify-between gap-3">
-                    <div class="space-y-1.5 flex-1">
+                <div class="p-3.5 rounded-xl bg-slate-900/70 border border-slate-800 hover:border-slate-700 transition-all flex items-start justify-between gap-3">
+                    <div class="space-y-1 flex-1">
                         <div class="flex items-center gap-2 flex-wrap">
                             <span class="font-mono text-xs font-bold text-white">{{ c.case_id }}</span>
                             <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold {% if c.priority == 'CRITICAL' %}bg-rose-950 text-rose-300 border border-rose-800/40{% elif c.priority == 'HIGH' %}bg-amber-950 text-amber-300 border border-amber-800/40{% else %}bg-slate-800 text-slate-400{% endif %}">
@@ -122,58 +562,615 @@
                                 {{ c.status }}
                             </span>
                         </div>
-                        <div class="text-xs font-bold text-slate-200">{{ c.title }}</div>
-                        <div class="text-[11px] text-slate-400">Plot: #{{ c.dag_plot_number }} &bull; Assigned: {{ c.assigned_officer }}</div>
+                        <div class="text-xs font-semibold text-slate-200">{{ c.title }}</div>
+                        <div class="text-[11px] text-slate-400">Plot #{{ c.dag_plot_number }} &bull; Assigned: {{ c.assigned_officer }}</div>
                     </div>
                     <a href="/admin/cases/{{ c.case_id }}" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white glass-panel border border-slate-700 shrink-0">
                         Open Workspace
                     </a>
                 </div>
                 {% else %}
-                <div class="text-center py-6 text-xs text-slate-500">
+                <div class="text-center py-8 text-xs text-slate-500">
                     No active cases in docket.
                 </div>
                 {% endfor %}
             </div>
         </div>
 
-        <!-- Recent Verification Flag Stream (5 cols) -->
-        <div class="lg:col-span-5 glass-panel p-6 rounded-2xl border border-slate-800">
+        <!-- Real-Time Inconsistency Alerts & Verification Stream (6 cols) -->
+        <div class="lg:col-span-6 bento-card rounded-2xl p-5 sm:p-6 shadow-xl">
             <div class="flex items-center justify-between mb-4">
                 <h2 class="text-base font-bold text-white flex items-center gap-2">
                     <i data-lucide="shield-alert" class="w-4 h-4 text-cyan-400"></i>
                     <span>Real-Time Inconsistency Alerts</span>
                 </h2>
-                <a href="/admin/verifications" class="text-xs text-cyan-400 hover:text-cyan-300 font-medium">Full Queue &rarr;</a>
+                <a href="/admin/verifications" class="text-xs text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1">
+                    <span>All Queue</span> &rarr;
+                </a>
             </div>
 
             <div class="space-y-3">
                 {% for v in recent_verifications %}
-                <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800/80">
-                    <div class="flex items-center justify-between text-xs font-mono mb-1">
-                        <span class="text-white font-bold">{{ v.deed_number }} &bull; #{{ v.dag_plot_number }}</span>
-                        <span class="px-1.5 py-0.2 rounded text-[10px] {% if v.overall_status == 'CONFIRMED_INCONSISTENCY' %}text-rose-400 bg-rose-950/80{% elif v.overall_status == 'CLEAR_FOR_STANDARD_PROCESSING' %}text-emerald-400 bg-emerald-950/80{% else %}text-amber-400 bg-amber-950/80{% endif %}">
-                            {{ v.overall_status }}
-                        </span>
+                <div class="p-3.5 rounded-xl bg-slate-900/70 border border-slate-800 hover:border-slate-700 transition-all flex items-start justify-between gap-3">
+                    <div class="space-y-1 flex-1">
+                        <div class="flex items-center justify-between text-xs font-mono">
+                            <span class="text-white font-bold">{{ v.deed_number }} &bull; Plot #{{ v.dag_plot_number }}</span>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold {% if v.overall_status == 'CONFIRMED_INCONSISTENCY' %}text-rose-400 bg-rose-950/80 border border-rose-800/40{% elif v.overall_status == 'CLEAR_FOR_STANDARD_PROCESSING' %}text-emerald-400 bg-emerald-950/80 border border-emerald-800/40{% else %}text-amber-400 bg-amber-950/80 border border-amber-800/40{% endif %}">
+                                {{ v.overall_status }}
+                            </span>
+                        </div>
+                        <div class="text-[11px] text-slate-400">
+                            Risk Score: <strong class="text-slate-200">{{ (v.ml_risk_score * 100)|round(1) }}%</strong> &bull; Triggered Rules: {{ v.rules_triggered|length }}
+                        </div>
                     </div>
-                    <div class="text-[11px] text-slate-400">Risk Score: <strong class="text-slate-200">{{ (v.ml_risk_score * 100)|round(1) }}%</strong> &bull; Rules: {{ v.rules_triggered|length }}</div>
-                    <a href="/admin/verifications/{{ v.verification_id }}" class="text-[11px] text-cyan-400 hover:underline mt-1 block">Inspect Dossier &rarr;</a>
+                    <a href="/admin/verifications/{{ v.verification_id }}" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-cyan-400 hover:text-white glass-panel border border-cyan-800/40 shrink-0">
+                        Inspect Dossier
+                    </a>
                 </div>
                 {% else %}
-                <div class="text-center py-6 text-xs text-slate-500">
-                    No alerts logged yet.
+                <div class="text-center py-8 text-xs text-slate-500">
+                    No inconsistency alerts logged yet.
                 </div>
                 {% endfor %}
             </div>
         </div>
+
     </div>
+
+
+    <!-- ========================================================================= -->
+    <!-- SECTION E: QUICK ACTION COMMAND BAR                                       -->
+    <!-- ========================================================================= -->
+    <div class="bento-card rounded-2xl p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-500 flex items-center justify-center text-white shrink-0 shadow-lg shadow-cyan-500/20">
+                <i data-lucide="command" class="w-5 h-5"></i>
+            </div>
+            <div>
+                <div class="text-sm font-bold text-white">Investigator Action Protocols</div>
+                <div class="text-xs text-slate-400">Statutory deeds verification, land holding audit, and certified dossier generation.</div>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2 flex-wrap">
+            <a href="/admin/verifications" class="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white glass-panel hover:bg-slate-800 transition-all flex items-center gap-1.5 border border-slate-700">
+                <i data-lucide="check-square" class="w-4 h-4 text-cyan-400"></i>
+                <span>Review Scans</span>
+            </a>
+            <a href="/admin/parcels" class="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white glass-panel hover:bg-slate-800 transition-all flex items-center gap-1.5 border border-slate-700">
+                <i data-lucide="layers" class="w-4 h-4 text-indigo-400"></i>
+                <span>Cadastral Registry</span>
+            </a>
+            <a href="/admin/reports" class="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white glass-panel hover:bg-slate-800 transition-all flex items-center gap-1.5 border border-slate-700">
+                <i data-lucide="file-check" class="w-4 h-4 text-emerald-400"></i>
+                <span>Evidence Dossiers</span>
+            </a>
+            <a href="/user/verify" class="px-3.5 py-2 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-cyan-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 transition-all shadow-lg shadow-cyan-600/20 flex items-center gap-1.5">
+                <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                <span>New Deed Scan</span>
+            </a>
+        </div>
+    </div>
+
 </div>
 {% endblock %}
 
+
 {% block extra_scripts %}
 <script>
+    // Initial Analytics Payload passed from FastAPI SSR
+    let analyticsData = {{ analytics|tojson }};
+    
+    // Shared Dashboard State Model
+    const DashboardState = {
+        activeMetric: 'verifications', // 'verifications' | 'risk' | 'conflicts' | 'cases' | 'documents'
+        selectedMonth: null,          // null for ALL, or 0..11
+        selectedYear: '2026',
+        theme: localStorage.getItem('landguard_admin_theme') || 'dark',
+    };
+
+    let mainChartInstance = null;
+
+    // Initialize Bento Dashboard
+    document.addEventListener("DOMContentLoaded", () => {
+        initTheme();
+        initChart();
+        updateSelectedViewLabel();
+        if (window.lucide) window.lucide.createIcons();
+    });
+
+    // -------------------------------------------------------------------------
+    // THEME ENGINE
+    // -------------------------------------------------------------------------
+    function initTheme() {
+        const theme = DashboardState.theme;
+        applyTheme(theme);
+    }
+
+    function toggleTheme() {
+        const nextTheme = DashboardState.theme === 'dark' ? 'light' : 'dark';
+        DashboardState.theme = nextTheme;
+        localStorage.setItem('landguard_admin_theme', nextTheme);
+        applyTheme(nextTheme);
+        if (mainChartInstance) {
+            updateChartTheme();
+            mainChartInstance.update();
+        }
+    }
+
+    function applyTheme(theme) {
+        const moonIcon = document.getElementById('themeIconMoon');
+        const sunIcon = document.getElementById('themeIconSun');
+
+        if (theme === 'light') {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.classList.add('light');
+            document.body.classList.add('light');
+            if (moonIcon && sunIcon) {
+                moonIcon.classList.add('hidden');
+                sunIcon.classList.remove('hidden');
+            }
+        } else {
+            document.documentElement.classList.add('dark');
+            document.documentElement.classList.remove('light');
+            document.body.classList.remove('light');
+            if (moonIcon && sunIcon) {
+                moonIcon.classList.remove('hidden');
+                sunIcon.classList.add('hidden');
+            }
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // METRIC & TIME SELECTION
+    // -------------------------------------------------------------------------
+    function selectMetric(metricKey) {
+        if (!['verifications', 'risk', 'conflicts', 'cases', 'documents'].includes(metricKey)) return;
+        DashboardState.activeMetric = metricKey;
+
+        // Update card active classes
+        ['verifications', 'risk', 'conflicts', 'cases', 'documents'].forEach(key => {
+            const card = document.getElementById(`kpiCard-${key}`);
+            if (!card) return;
+            if (key === metricKey) {
+                card.classList.add('kpi-card-active');
+                if (key === 'risk') card.classList.add('accent-pink');
+                if (key === 'conflicts') card.classList.add('accent-amber');
+                if (key === 'cases') card.classList.add('accent-violet');
+                if (key === 'documents') card.classList.add('accent-emerald');
+                card.setAttribute('aria-pressed', 'true');
+            } else {
+                card.classList.remove('kpi-card-active', 'accent-pink', 'accent-amber', 'accent-violet', 'accent-emerald');
+                card.setAttribute('aria-pressed', 'false');
+            }
+        });
+
+        updateChartData();
+        updateSelectedViewLabel();
+    }
+
+    function handleCardKey(e, metricKey) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            selectMetric(metricKey);
+        }
+    }
+
+    function selectMonth(monthIndex) {
+        DashboardState.selectedMonth = monthIndex;
+
+        // Update month pill UI
+        const allBtn = document.getElementById('monthPill-all');
+        if (monthIndex === null) {
+            allBtn.classList.add('month-pill-active');
+            for (let i = 0; i < 12; i++) {
+                const btn = document.getElementById(`monthPill-${i}`);
+                if (btn) btn.classList.remove('month-pill-active');
+            }
+        } else {
+            allBtn.classList.remove('month-pill-active');
+            for (let i = 0; i < 12; i++) {
+                const btn = document.getElementById(`monthPill-${i}`);
+                if (btn) {
+                    if (i === monthIndex) btn.classList.add('month-pill-active');
+                    else btn.classList.remove('month-pill-active');
+                }
+            }
+        }
+
+        updateChartData();
+        updateSelectedViewLabel();
+    }
+
+    async function selectYear(yearStr) {
+        DashboardState.selectedYear = yearStr;
+
+        // Update year button UI
+        ['2026', '2025', 'ALL'].forEach(y => {
+            const btn = document.getElementById(`yearBtn${y}`);
+            if (!btn) return;
+            if (y === yearStr) {
+                btn.className = "px-2.5 py-1 rounded-lg font-mono font-semibold text-cyan-400 bg-cyan-950/80 border border-cyan-500/30 transition-all";
+            } else {
+                btn.className = "px-2.5 py-1 rounded-lg font-mono font-semibold text-slate-400 hover:text-white transition-all";
+            }
+        });
+
+        // Fetch fresh analytics from API
+        try {
+            const res = await fetch(`/api/admin/dashboard-analytics?year=${yearStr}`);
+            if (res.ok) {
+                analyticsData = await res.json();
+                updateKPIsDisplay();
+                updateChartData();
+                updateSelectedViewLabel();
+                showToast(`Loaded ${yearStr} analytics trajectory`, "info");
+            }
+        } catch (err) {
+            console.error("Failed to fetch analytics for year:", yearStr, err);
+        }
+    }
+
+    function updateKPIsDisplay() {
+        if (!analyticsData || !analyticsData.kpis) return;
+        const k = analyticsData.kpis;
+        
+        const vEl = document.getElementById('kpiVal-verifications');
+        if (vEl) vEl.innerText = k.verifications.total_requests;
+        const vComp = document.getElementById('kpiCompleted-verifications');
+        if (vComp) vComp.innerText = k.verifications.completed_verifications;
+
+        const rEl = document.getElementById('kpiVal-risk');
+        if (rEl) rEl.innerText = k.risk.high_risk_awaiting_review;
+
+        const cEl = document.getElementById('kpiVal-conflicts');
+        if (cEl) cEl.innerText = k.conflicts.double_selling_conflicts;
+
+        const csEl = document.getElementById('kpiVal-cases');
+        if (csEl) csEl.innerText = k.cases.open_cases;
+
+        const dEl = document.getElementById('kpiVal-documents');
+        if (dEl) dEl.innerText = k.documents.documents_processed;
+    }
+
+    function updateSelectedViewLabel() {
+        const metricNames = {
+            'verifications': 'Verification Volume',
+            'risk': 'Fraud-Risk Indicators',
+            'conflicts': 'Ownership Conflicts',
+            'cases': 'Investigation Queue',
+            'documents': 'Document Intelligence'
+        };
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const mLabel = DashboardState.selectedMonth === null ? 'Full Year' : months[DashboardState.selectedMonth];
+        const lbl = document.getElementById('selectedViewLabel');
+        if (lbl) {
+            lbl.innerText = `${metricNames[DashboardState.activeMetric]} (${DashboardState.selectedYear} &bull; ${mLabel})`;
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // DYNAMIC CHART.JS ENGINE
+    // -------------------------------------------------------------------------
+    function initChart() {
+        const ctx = document.getElementById('mainDashboardChart').getContext('2d');
+        const config = getChartConfig(DashboardState.activeMetric);
+        mainChartInstance = new Chart(ctx, config);
+    }
+
+    function updateChartTheme() {
+        if (!mainChartInstance) return;
+        const isLight = DashboardState.theme === 'light';
+        const gridColor = isLight ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.06)';
+        const textColor = isLight ? '#475569' : '#94A3B8';
+
+        mainChartInstance.options.scales.x.grid.color = gridColor;
+        mainChartInstance.options.scales.x.ticks.color = textColor;
+        mainChartInstance.options.scales.y.grid.color = gridColor;
+        mainChartInstance.options.scales.y.ticks.color = textColor;
+        mainChartInstance.options.plugins.legend.labels.color = textColor;
+    }
+
+    function getChartConfig(metricKey) {
+        const isLight = DashboardState.theme === 'light';
+        const gridColor = isLight ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.06)';
+        const textColor = isLight ? '#475569' : '#94A3B8';
+        const months = analyticsData.time_series.months || ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+        let data = {};
+        const selectedMonth = DashboardState.selectedMonth;
+
+        // Helper to highlight a selected month point
+        function makePointRadius(arr) {
+            if (selectedMonth === null) return 4;
+            return arr.map((_, i) => i === selectedMonth ? 8 : 2);
+        }
+
+        switch (metricKey) {
+            case 'verifications':
+                const vSeries = analyticsData.time_series.verifications;
+                data = {
+                    labels: months,
+                    datasets: [
+                        {
+                            type: 'bar',
+                            label: 'Total Verification Scans',
+                            data: vSeries.volume,
+                            backgroundColor: selectedMonth === null 
+                                ? 'rgba(6, 182, 212, 0.65)' 
+                                : vSeries.volume.map((_, i) => i === selectedMonth ? '#06B6D4' : 'rgba(6, 182, 212, 0.25)'),
+                            borderRadius: 6,
+                            borderWidth: 0,
+                            order: 2,
+                        },
+                        {
+                            type: 'line',
+                            label: 'Completed Dossiers',
+                            data: vSeries.completed,
+                            borderColor: '#38BDF8',
+                            backgroundColor: 'rgba(56, 189, 248, 0.1)',
+                            fill: true,
+                            tension: 0.35,
+                            borderWidth: 2.5,
+                            pointRadius: makePointRadius(vSeries.completed),
+                            pointHoverRadius: 8,
+                            pointBackgroundColor: '#38BDF8',
+                            order: 1,
+                        }
+                    ]
+                };
+                break;
+
+            case 'risk':
+                const rSeries = analyticsData.time_series.risk;
+                data = {
+                    labels: months,
+                    datasets: [
+                        {
+                            type: 'line',
+                            label: 'Model Risk Indicators (>0.35)',
+                            data: rSeries.model_indicators,
+                            borderColor: '#EC4899',
+                            backgroundColor: 'rgba(236, 72, 153, 0.15)',
+                            fill: true,
+                            tension: 0.35,
+                            borderWidth: 2.5,
+                            pointRadius: makePointRadius(rSeries.model_indicators),
+                            pointHoverRadius: 8,
+                            pointBackgroundColor: '#EC4899',
+                        },
+                        {
+                            type: 'line',
+                            label: 'Confirmed Inconsistencies (Statutory Contradictions)',
+                            data: rSeries.confirmed_inconsistencies,
+                            borderColor: '#F43F5E',
+                            backgroundColor: 'transparent',
+                            borderDash: [5, 5],
+                            tension: 0.35,
+                            borderWidth: 2,
+                            pointRadius: makePointRadius(rSeries.confirmed_inconsistencies),
+                            pointBackgroundColor: '#F43F5E',
+                        }
+                    ]
+                };
+                break;
+
+            case 'conflicts':
+                const cSeries = analyticsData.time_series.conflicts;
+                data = {
+                    labels: months,
+                    datasets: [
+                        {
+                            type: 'bar',
+                            label: 'Double-Selling Conflicts (Sec. 47)',
+                            data: cSeries.double_selling,
+                            backgroundColor: selectedMonth === null 
+                                ? 'rgba(245, 158, 11, 0.7)' 
+                                : cSeries.double_selling.map((_, i) => i === selectedMonth ? '#F59E0B' : 'rgba(245, 158, 11, 0.25)'),
+                            borderRadius: 6,
+                        },
+                        {
+                            type: 'bar',
+                            label: 'Mutation Discrepancies (Sec. 143)',
+                            data: cSeries.mutation_discrepancies,
+                            backgroundColor: selectedMonth === null 
+                                ? 'rgba(217, 119, 6, 0.5)' 
+                                : cSeries.mutation_discrepancies.map((_, i) => i === selectedMonth ? '#D97706' : 'rgba(217, 119, 6, 0.2)'),
+                            borderRadius: 6,
+                        }
+                    ]
+                };
+                break;
+
+            case 'cases':
+                const csSeries = analyticsData.time_series.cases;
+                data = {
+                    labels: months,
+                    datasets: [
+                        {
+                            type: 'bar',
+                            label: 'Critical Priority Cases',
+                            data: csSeries.critical_priority,
+                            backgroundColor: 'rgba(244, 63, 94, 0.8)',
+                            borderRadius: 6,
+                            stack: 'cases',
+                        },
+                        {
+                            type: 'bar',
+                            label: 'High Priority Cases',
+                            data: csSeries.high_priority,
+                            backgroundColor: 'rgba(245, 158, 11, 0.8)',
+                            borderRadius: 6,
+                            stack: 'cases',
+                        },
+                        {
+                            type: 'bar',
+                            label: 'Normal Priority Cases',
+                            data: csSeries.normal_priority,
+                            backgroundColor: 'rgba(139, 92, 246, 0.7)',
+                            borderRadius: 6,
+                            stack: 'cases',
+                        },
+                        {
+                            type: 'line',
+                            label: 'Resolved Cases',
+                            data: csSeries.resolved_cases,
+                            borderColor: '#10B981',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            fill: false,
+                            pointRadius: makePointRadius(csSeries.resolved_cases),
+                        }
+                    ]
+                };
+                break;
+
+            case 'documents':
+                const dSeries = analyticsData.time_series.documents;
+                data = {
+                    labels: months,
+                    datasets: [
+                        {
+                            type: 'bar',
+                            label: 'Deeds Processed',
+                            data: dSeries.processed,
+                            backgroundColor: selectedMonth === null 
+                                ? 'rgba(16, 185, 129, 0.65)' 
+                                : dSeries.processed.map((_, i) => i === selectedMonth ? '#10B981' : 'rgba(16, 185, 129, 0.25)'),
+                            borderRadius: 6,
+                        },
+                        {
+                            type: 'line',
+                            label: 'OCR Success Extractions',
+                            data: dSeries.ocr_success,
+                            borderColor: '#34D399',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            fill: false,
+                            pointRadius: makePointRadius(dSeries.ocr_success),
+                        },
+                        {
+                            type: 'line',
+                            label: 'CV Tampering Flags',
+                            data: dSeries.cv_tampering_anomalies,
+                            borderColor: '#EC4899',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            fill: false,
+                            pointRadius: makePointRadius(dSeries.cv_tampering_anomalies),
+                        }
+                    ]
+                };
+                break;
+        }
+
+        return {
+            type: 'bar',
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: {
+                    duration: 400,
+                    easing: 'easeOutQuart',
+                },
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: textColor,
+                            font: { family: 'Inter', size: 11, weight: '500' },
+                            boxWidth: 12,
+                            usePointStyle: true,
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(11, 15, 25, 0.95)',
+                        titleColor: '#F8FAFC',
+                        bodyColor: '#E2E8F0',
+                        borderColor: 'rgba(6, 182, 212, 0.4)',
+                        borderWidth: 1,
+                        padding: 10,
+                        boxPadding: 4,
+                        usePointStyle: true,
+                        titleFont: { family: 'Inter', size: 12, weight: '700' },
+                        bodyFont: { family: 'JetBrains Mono', size: 11 },
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { color: gridColor, drawBorder: false },
+                        ticks: { color: textColor, font: { family: 'JetBrains Mono', size: 10 } }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: gridColor, drawBorder: false },
+                        ticks: { color: textColor, font: { family: 'JetBrains Mono', size: 10 } }
+                    }
+                }
+            }
+        };
+    }
+
+    function updateChartData() {
+        if (!mainChartInstance) return;
+        const metricKey = DashboardState.activeMetric;
+        const config = getChartConfig(metricKey);
+
+        mainChartInstance.data = config.data;
+        mainChartInstance.options = config.options;
+        mainChartInstance.update();
+
+        // Update Chart Title & Subtitle text
+        const titleEl = document.getElementById('chartTitleText');
+        const subEl = document.getElementById('chartSubtitleText');
+        const seriesInfo = analyticsData.time_series[metricKey];
+
+        if (titleEl && seriesInfo) titleEl.innerText = seriesInfo.title;
+        if (subEl && seriesInfo) subEl.innerText = seriesInfo.subtitle;
+
+        // Update Summary Badges
+        updateHeaderSummaryBadges(metricKey);
+    }
+
+    function updateHeaderSummaryBadges(metricKey) {
+        const b1 = document.getElementById('summaryBadge1');
+        const b2 = document.getElementById('summaryBadge2');
+        if (!b1 || !b2 || !analyticsData.kpis[metricKey]) return;
+
+        const k = analyticsData.kpis[metricKey];
+        const m = DashboardState.selectedMonth;
+
+        if (metricKey === 'verifications') {
+            b1.innerText = m === null ? k.total_requests : analyticsData.time_series.verifications.volume[m];
+            b2.innerText = `${k.completion_rate_pct}%`;
+        } else if (metricKey === 'risk') {
+            b1.innerText = m === null ? k.high_risk_awaiting_review : analyticsData.time_series.risk.model_indicators[m];
+            b2.innerText = m === null ? `${k.confirmed_inconsistencies} Confirmed` : `${analyticsData.time_series.risk.confirmed_inconsistencies[m]} Confirmed`;
+        } else if (metricKey === 'conflicts') {
+            b1.innerText = m === null ? k.double_selling_conflicts : analyticsData.time_series.conflicts.double_selling[m];
+            b2.innerText = m === null ? `${k.registration_mutation_discrepancies} Mutations` : `${analyticsData.time_series.conflicts.mutation_discrepancies[m]} Mutations`;
+        } else if (metricKey === 'cases') {
+            b1.innerText = m === null ? k.open_cases : analyticsData.time_series.cases.new_cases[m];
+            b2.innerText = m === null ? `${k.resolved_cases} Closed` : `${analyticsData.time_series.cases.resolved_cases[m]} Closed`;
+        } else if (metricKey === 'documents') {
+            b1.innerText = m === null ? k.documents_processed : analyticsData.time_series.documents.processed[m];
+            b2.innerText = `${k.ocr_extraction_success_pct}% OCR`;
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // EXPEDITE DECISION HANDLER
+    // -------------------------------------------------------------------------
     async function handleExpediteDecision(complaintId, decision) {
-        const reason = prompt(`Provide statutory justification for ${decision} decision on ${complaintId}:`, decision === 'APPROVED' ? "Approved: Urgent impending transfer verified." : "Rejected: Standard investigation queue sufficient.");
+        const reason = prompt(
+            `Provide statutory justification for ${decision} decision on ${complaintId}:`,
+            decision === 'APPROVED' ? "Approved: Urgent impending transfer verified." : "Rejected: Standard investigation queue sufficient."
+        );
         if (reason === null) return;
 
         try {
@@ -185,7 +1182,7 @@
             const data = await res.json();
             if (res.ok) {
                 showToast(`Expedited review ${decision.toLowerCase()}!`, "success");
-                setTimeout(() => location.reload(), 1000);
+                setTimeout(() => location.reload(), 900);
             } else {
                 showToast(data.detail || "Decision update failed", "error");
             }
@@ -193,5 +1190,53 @@
             showToast("Error: " + err.message, "error");
         }
     }
+
+    // -------------------------------------------------------------------------
+    // QUICK SEARCH AUTOCOMPLETE
+    // -------------------------------------------------------------------------
+    let searchTimeout = null;
+    function handleQuickSearch(e) {
+        const q = e.target.value.trim();
+        const resultsBox = document.getElementById('quickSearchResults');
+        if (!resultsBox) return;
+
+        if (q.length < 2) {
+            resultsBox.classList.add('hidden');
+            resultsBox.innerHTML = '';
+            return;
+        }
+
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(async () => {
+            try {
+                const res = await fetch(`/api/parcels/search?q=${encodeURIComponent(q)}&limit=5`);
+                if (res.ok) {
+                    const parcels = await res.json();
+                    if (parcels.length === 0) {
+                        resultsBox.innerHTML = '<div class="p-2 text-slate-500 text-center">No matching records</div>';
+                    } else {
+                        resultsBox.innerHTML = parcels.map(p => `
+                            <a href="/admin/parcels" class="block p-2 rounded-lg hover:bg-slate-800 transition-colors text-slate-200">
+                                <div class="font-bold font-mono text-cyan-400">Plot #${p.dag_plot_number} &bull; ${p.mouza}</div>
+                                <div class="text-[10px] text-slate-400">Area: ${p.total_area_decimal} dec &bull; Deeds: ${p.transaction_count}</div>
+                            </a>
+                        `).join('');
+                    }
+                    resultsBox.classList.remove('hidden');
+                }
+            } catch (err) {
+                console.error("Search failed:", err);
+            }
+        }, 250);
+    }
+
+    // Close search box when clicking outside
+    document.addEventListener('click', (e) => {
+        const box = document.getElementById('quickSearchResults');
+        const input = document.getElementById('quickSearchInput');
+        if (box && !box.contains(e.target) && e.target !== input) {
+            box.classList.add('hidden');
+        }
+    });
 </script>
 {% endblock %}

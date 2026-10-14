@@ -505,9 +505,10 @@ async def citizen_settings(request: Request):
 
 @app.get("/admin/dashboard", response_class=HTMLResponse)
 async def admin_dashboard(request: Request):
-    """Investigator / Admin Command Center with metrics, expedite queue, and recent alerts."""
+    """Investigator / Admin Command Center with Bento-grid metrics, expedite queue, and recent alerts."""
     user = require_admin_access(request)
     stats = service.get_dashboard_stats()
+    analytics = service.get_admin_dashboard_analytics(year="2026")
     all_cases = service.list_cases()
     history = service.get_audit_history()
 
@@ -521,8 +522,9 @@ async def admin_dashboard(request: Request):
         context={
             "current_user": user,
             "stats": stats,
-            "cases": all_cases[:5],
-            "recent_verifications": history[:5],
+            "analytics": analytics,
+            "cases": all_cases[:6],
+            "recent_verifications": history[:6],
             "pending_expedites": pending_expedites,
             "review_queue_count": review_queue_count,
             "inconsistencies_count": inconsistencies_count,
@@ -771,6 +773,13 @@ async def health_check():
 async def get_dashboard_statistics():
     """Returns comprehensive truthful statistics on datasets, models, and cases."""
     return service.get_dashboard_stats()
+
+
+@app.get("/api/admin/dashboard-analytics")
+async def get_admin_dashboard_analytics_endpoint(request: Request, year: Optional[str] = "2026"):
+    """Returns interactive Bento-grid dashboard time-series and KPI analytics."""
+    user = require_admin_access(request)
+    return service.get_admin_dashboard_analytics(year=year)
 
 
 @app.get("/api/samples")
