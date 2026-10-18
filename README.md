@@ -37,7 +37,7 @@
 
 - [1. Executive Summary & Purpose](#1-executive-summary--purpose)
 - [2. Key Capabilities & Statutory Vectors](#2-key-capabilities--statutory-vectors)
-- [3. System Architecture & Hybrid Deployment](#3-system-architecture--hybrid-deployment)
+- [3. System Architecture](#3-system-architecture)
 - [4. Database Entity-Relationship Model](#4-database-entity-relationship-model)
 - [5. End-to-End Verification & QR Journey](#5-end-to-end-verification--qr-journey)
 - [6. Multimodal AI & Statutory Rules Decision Pipeline](#6-multimodal-ai--statutory-rules-decision-pipeline)
@@ -127,7 +127,7 @@ $$\Large \text{Deterministic Statutory Predicates} \succ \text{Human Review / Cl
 
 ---
 
-## 3. System Architecture & Hybrid Deployment
+## 3. System Architecture
 
 LandGuard utilizes a hybrid cloud architecture combining **Render's persistent backend compute** with **Vercel's global edge network**.
 
