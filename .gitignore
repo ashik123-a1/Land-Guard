@@ -63,3 +63,10 @@ extract_prompt.py
 test_bn_output.pdf
 test_tile.jpg
 
+# Internal Sprint Audit & Intermediate Reports (Preserved in External Backup)
+*_extracted.txt
+DEMO_READINESS.md
+LANDGUARD_*_AUDIT.md
+LANDGUARD_*_REPORT.md
+!LANDGUARD_REPOSITORY_CLEANUP_REPORT.md
+
