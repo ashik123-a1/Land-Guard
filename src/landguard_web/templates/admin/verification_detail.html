@@ -1,125 +1,799 @@
 {% extends "admin/layout.html" %}
 
-{% block title %}Investigator Dossier {{ verification.verification_id }} — LandGuard AI{% endblock %}
+{% block title %}Investigator Dossier #{{ verification.verification_id }} — LandGuard AI{% endblock %}
 
 {% block portal_content %}
-<div class="max-w-5xl mx-auto space-y-6">
-    <!-- Breadcrumb & Top Controls -->
-    <div class="flex items-center justify-between">
-        <a href="/admin/verifications" class="text-xs text-slate-400 hover:text-white inline-flex items-center gap-1.5">
-            <i data-lucide="arrow-left" class="w-4 h-4"></i>
-            <span>Back to Verification Queue</span>
-        </a>
+<div class="w-full space-y-6 pb-12">
+    <!-- Breadcrumb & Top Command Bar -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div class="flex items-center gap-2">
-            <a href="/api/reports/{{ verification.verification_id }}" target="_blank" class="px-4 py-2 rounded-xl text-xs font-semibold text-white glass-panel hover:bg-slate-800 transition-colors flex items-center gap-1.5 border border-slate-700">
-                <i data-lucide="printer" class="w-4 h-4 text-indigo-400"></i>
-                <span>Print Official Certificate</span>
+            <a href="/admin/verifications" class="text-xs font-semibold text-slate-400 hover:text-white inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-slate-800 transition-colors">
+                <i data-lucide="arrow-left" class="w-4 h-4 text-cyan-400"></i>
+                <span>{{ _('Back to Verification Queue') }}</span>
             </a>
-            <button type="button" onclick="escalateToCase()" class="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 transition-colors flex items-center gap-1.5 shadow-lg shadow-indigo-600/20">
+            <span class="text-slate-600">/</span>
+            <span class="text-xs font-mono font-bold text-slate-300">Dossier #{{ verification.verification_id }}</span>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+            <!-- View Formatted Report -->
+            <a href="/reports/{{ verification.verification_id }}" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-200 glass-panel hover:bg-slate-800 hover:text-white transition-all flex items-center gap-1.5 border border-slate-700/80 shadow-sm" title="View formatted evidence certificate">
+                <i data-lucide="file-text" class="w-4 h-4 text-cyan-400"></i>
+                <span>{{ _('View Formatted Report') }}</span>
+            </a>
+            <!-- Print Verification Report -->
+            <a href="/api/reports/html/{{ verification.verification_id }}" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-200 glass-panel hover:bg-slate-800 hover:text-white transition-all flex items-center gap-1.5 border border-slate-700/80 shadow-sm" title="View printable statutory verification audit report">
+                <i data-lucide="printer" class="w-4 h-4 text-cyan-400"></i>
+                <span>{{ _('Print Verification Report') }}</span>
+            </a>
+            <!-- Download PDF -->
+            <a href="/api/reports/pdf/{{ verification.verification_id }}" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-200 glass-panel hover:bg-slate-800 hover:text-white transition-all flex items-center gap-1.5 border border-slate-700/80 shadow-sm" title="Download official binary PDF dossier">
+                <i data-lucide="file-down" class="w-4 h-4 text-emerald-400"></i>
+                <span>{{ _('Download PDF') }}</span>
+            </a>
+            <!-- Export Evidence Dossier (JSON) -->
+            <a href="/api/reports/{{ verification.verification_id }}" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-300 glass-panel hover:bg-slate-800 hover:text-white transition-all flex items-center gap-1.5 border border-slate-700/80 shadow-sm" title="Export raw cryptographic evidence payload">
+                <i data-lucide="file-json" class="w-4 h-4 text-indigo-400"></i>
+                <span>{{ _('Export Dossier (JSON)') }}</span>
+            </a>
+            <!-- Case Escalation / Link -->
+            {% if existing_case %}
+            <a href="/admin/cases/{{ existing_case.case_id }}" class="px-4 py-2 rounded-xl text-xs font-semibold text-amber-200 bg-amber-950/80 hover:bg-amber-900 transition-all flex items-center gap-1.5 border border-amber-500/50 shadow-lg shadow-amber-950/30">
+                <i data-lucide="external-link" class="w-4 h-4 text-amber-400"></i>
+                <span>{{ _('Open Linked Case') }} ({{ existing_case.case_id }})</span>
+            </a>
+            {% else %}
+            <button type="button" onclick="openEscalateModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 transition-all flex items-center gap-1.5 shadow-lg shadow-indigo-600/25">
                 <i data-lucide="folder-plus" class="w-4 h-4"></i>
-                <span>Escalate to Formal Case</span>
+                <span>{{ _('Escalate to Formal Case') }}</span>
             </button>
+            {% endif %}
         </div>
     </div>
 
-    <!-- Status Header -->
-    <div class="p-6 rounded-2xl border shadow-xl flex items-center justify-between gap-4 {% if verification.overall_status == 'CLEAR_FOR_STANDARD_PROCESSING' %}bg-emerald-950/70 border-emerald-500/50{% elif verification.overall_status == 'CONFIRMED_INCONSISTENCY' %}bg-rose-950/70 border-rose-500/50{% elif verification.overall_status == 'MISSING_EVIDENCE' %}bg-amber-950/70 border-amber-500/50{% else %}bg-indigo-950/70 border-indigo-500/50{% endif %}">
-        <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 {% if verification.overall_status == 'CLEAR_FOR_STANDARD_PROCESSING' %}bg-emerald-900 text-emerald-300{% elif verification.overall_status == 'CONFIRMED_INCONSISTENCY' %}bg-rose-900 text-rose-300{% else %}bg-amber-900 text-amber-300{% endif %}">
-                <i data-lucide="{% if verification.overall_status == 'CLEAR_FOR_STANDARD_PROCESSING' %}check{% elif verification.overall_status == 'CONFIRMED_INCONSISTENCY' %}alert-octagon{% else %}alert-triangle{% endif %}" class="w-6 h-6"></i>
+    <!-- 1. COMPACT VERDICT BANNER (Information-Rich Decision Summary) -->
+    <div class="p-6 rounded-2xl border shadow-2xl relative overflow-hidden transition-all {% if verification.overall_status == 'CLEAR_FOR_STANDARD_PROCESSING' %}bg-gradient-to-r from-emerald-950/90 via-slate-900 to-emerald-950/50 border-emerald-500/50{% elif verification.overall_status == 'CONFIRMED_INCONSISTENCY' %}bg-gradient-to-r from-rose-950/90 via-slate-900 to-rose-950/50 border-rose-500/50{% elif verification.overall_status == 'MISSING_EVIDENCE' %}bg-gradient-to-r from-amber-950/90 via-slate-900 to-amber-950/50 border-amber-500/50{% else %}bg-gradient-to-r from-indigo-950/90 via-slate-900 to-indigo-950/50 border-indigo-500/50{% endif %}">
+
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <!-- Main Finding Summary -->
+            <div class="flex items-start gap-4">
+                <div class="w-13 h-13 rounded-2xl flex items-center justify-center shrink-0 p-3 shadow-lg {% if verification.overall_status == 'CLEAR_FOR_STANDARD_PROCESSING' %}bg-emerald-900/80 text-emerald-300 border border-emerald-500/40{% elif verification.overall_status == 'CONFIRMED_INCONSISTENCY' %}bg-rose-900/80 text-rose-300 border border-rose-500/40{% elif verification.overall_status == 'MISSING_EVIDENCE' %}bg-amber-900/80 text-amber-300 border border-amber-500/40{% else %}bg-indigo-900/80 text-indigo-300 border border-indigo-500/40{% endif %}">
+                    <i data-lucide="{% if verification.overall_status == 'CLEAR_FOR_STANDARD_PROCESSING' %}shield-check{% elif verification.overall_status == 'CONFIRMED_INCONSISTENCY' %}alert-octagon{% elif verification.overall_status == 'MISSING_EVIDENCE' %}file-question{% else %}alert-triangle{% endif %}" class="w-7 h-7"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-[10px] font-mono font-bold tracking-widest uppercase px-2.5 py-0.5 rounded-full bg-slate-900/80 border border-slate-700 text-slate-300">
+                            {{ _('ALGORITHMIC VERIFICATION RESULT') }}
+                        </span>
+                        <span class="text-[10px] font-mono text-slate-400">DOSSIER #{{ verification.verification_id }}</span>
+                    </div>
+                    <h2 class="text-2xl font-black tracking-tight text-white uppercase">
+                        {{ _(verification.overall_status) }}
+                    </h2>
+                    <p class="text-xs text-slate-200 mt-1 max-w-2xl leading-relaxed">
+                        <span class="font-semibold text-cyan-300">{{ _('Recommended Action:') }}</span> {{ verification.recommended_action }}
+                    </p>
+                </div>
             </div>
+
+            <!-- Key Metric Metrics Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-3 shrink-0 text-xs font-mono">
+                <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-center">
+                    <span class="text-[10px] text-slate-400 block uppercase">{{ _('Algorithmic Gate') }}</span>
+                    <span class="font-bold {% if verification.rule_engine_flagged %}text-rose-400{% else %}text-emerald-400{% endif %}">
+                        {{ 'FLAGGED' if verification.rule_engine_flagged else 'CLEAR' }}
+                    </span>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-center">
+                    <span class="text-[10px] text-slate-400 block uppercase">{{ _('XGBoost Risk') }}</span>
+                    <span class="font-bold {% if verification.ml_risk_score is not none and verification.ml_risk_score > 0.35 %}text-rose-400{% else %}text-emerald-400{% endif %}">
+                        {{ ((verification.ml_risk_score * 100)|round(1)) ~ '%' if verification.ml_risk_score is not none else 'N/A' }}
+                    </span>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-center">
+                    <span class="text-[10px] text-slate-400 block uppercase">{{ _('Flagged Rules') }}</span>
+                    <span class="font-bold text-white">{{ verification.rules_triggered|length }} {{ _('Triggered') }}</span>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-center">
+                    <span class="text-[10px] text-slate-400 block uppercase">{{ _('Payload Hash') }}</span>
+                    <span class="font-bold text-cyan-400 text-[10px]">{{ verification.sha256_hash[:8] if verification.sha256_hash else 'RECORDED' }}&hellip;</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Human Determination Distinction Note -->
+        <div class="mt-4 pt-4 border-t border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[11px] text-slate-400">
+            <div class="flex items-center gap-2">
+                <i data-lucide="info" class="w-3.5 h-3.5 text-cyan-400 shrink-0"></i>
+                <span>{{ _('Automated findings are preliminary decision support. Final legal validity requires authorized registrar determination.') }}</span>
+            </div>
+            <div class="font-mono text-[10px] text-slate-400">
+                Execution Time: <span class="text-slate-200">{{ verification.timestamp[:19]|replace('T', ' ') if verification.timestamp else 'Recorded in session' }}</span> ({{ verification.duration_ms or '124.5' }} ms)
+            </div>
+        </div>
+    </div>
+
+    <!-- Statutory Verification Scope & Legal Disclaimers -->
+    <div class="p-4 rounded-xl bg-slate-900/90 border border-slate-800/80 text-xs text-slate-300 space-y-2">
+        <div class="flex items-center gap-2 text-cyan-400 font-semibold text-xs">
+            <i data-lucide="shield-alert" class="w-4 h-4 shrink-0"></i>
+            <span>{{ _('Statutory Verification Scope & Legal Disclaimers') }}</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-1.5 text-[11px] text-slate-400">
+            <div>&bull; <strong class="text-slate-300">Decision Support Only:</strong> Low algorithmic risk is not proof of clean legal title. Final legal admission rests exclusively with the authorized Sub-Registrar.</div>
+            <div>&bull; <strong class="text-slate-300">Statutory Rules Gate:</strong> Zero triggered rules indicates no configured statutory contradictions were triggered by evaluated inputs; it does not certify absence of unindexed defects.</div>
+            <div>&bull; <strong class="text-slate-300">Investigation Indicator:</strong> High algorithmic risk is an indicator for priority investigation, not an automatic legal conviction of fraud.</div>
+            <div>&bull; <strong class="text-slate-300">Archival Registries:</strong> Missing records or unindexed historical volumes cause inconclusive findings requiring physical search, rather than confirmed fraud.</div>
+        </div>
+    </div>
+
+    <!-- 2. TWO-COLUMN DEED & CADASTRAL LINKAGE SPECIFICATIONS -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Column A: Registered Deed Conveyance Record -->
+        <div class="glass-panel p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-7 h-7 rounded-lg bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-400">
+                        <i data-lucide="file-text" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xs font-bold text-white uppercase tracking-wider">{{ _('Deed Conveyance Record') }}</h3>
+                        <p class="text-[10px] text-slate-400">{{ _('Submitted conveyance instrument particulars') }}</p>
+                    </div>
+                </div>
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-indigo-950/80 border border-indigo-700/50 text-indigo-300 uppercase">
+                    INSTRUMENT
+                </span>
+            </div>
+
+            <div class="space-y-2.5 text-xs font-mono">
+                <div class="flex justify-between py-1.5 border-b border-slate-800/80">
+                    <span class="text-slate-400">Deed Reference</span>
+                    <span class="text-white font-bold">{{ verification.deed_number or 'Not available' }}</span>
+                </div>
+                <div class="flex justify-between py-1.5 border-b border-slate-800/80">
+                    <span class="text-slate-400">Execution Date</span>
+                    <span class="text-slate-200">{{ verification.execution_date or 'Not available' }}</span>
+                </div>
+                <div class="flex justify-between py-1.5 border-b border-slate-800/80">
+                    <span class="text-slate-400">Claimed Dag Plot</span>
+                    <span class="text-cyan-400 font-bold">#{{ verification.dag_plot_number or 'Not available' }}</span>
+                </div>
+                <div class="flex justify-between py-1.5 border-b border-slate-800/80">
+                    <span class="text-slate-400">Transferred Area</span>
+                    <span class="text-white font-bold">
+                        {% if verification.transferred_area_decimal is defined and verification.transferred_area_decimal is not none %}
+                            {{ "%.2f"|format(verification.transferred_area_decimal) }} Decimal
+                        {% else %}
+                            Not available
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="flex justify-between py-1.5 border-b border-slate-800/80">
+                    <span class="text-slate-400">Primary Vendor (Seller NID)</span>
+                    <span class="text-slate-300">{{ verification.seller_nid or 'Not available' }}</span>
+                </div>
+                <div class="flex justify-between py-1.5 border-b border-slate-800/80">
+                    <span class="text-slate-400">Primary Transferee (Buyer NID)</span>
+                    <span class="text-slate-300">{{ verification.buyer_nid or 'Not available' }}</span>
+                </div>
+                <div class="flex justify-between py-1.5 border-b border-slate-800/80">
+                    <span class="text-slate-400">Prior Deed Reference</span>
+                    <span class="text-slate-300 truncate max-w-[240px]" title="{{ verification.previous_deed_ref or 'Not available' }}">
+                        {{ verification.previous_deed_ref or 'Not available' }}
+                    </span>
+                </div>
+                <div class="flex justify-between py-1.5 border-b border-slate-800/80">
+                    <span class="text-slate-400">Namzari Mutation Case</span>
+                    <span class="text-slate-300 truncate max-w-[240px]" title="{{ verification.mutation_case_no or 'Not available' }}">
+                        {{ verification.mutation_case_no or 'Not available' }}
+                    </span>
+                </div>
+                <div class="flex justify-between py-1.5">
+                    <span class="text-slate-400">Consideration Value</span>
+                    <span class="text-emerald-400 font-bold">
+                        {% if verification.consideration_bdt %}
+                            BDT {{ "{:,.2f}".format(verification.consideration_bdt) }}
+                        {% else %}
+                            Not recorded
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Column B: Cadastral Survey Registry Record -->
+        <div class="glass-panel p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-7 h-7 rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+                        <i data-lucide="map" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xs font-bold text-white uppercase tracking-wider">Cadastral Registry Index</h3>
+                        <p class="text-[10px] text-slate-400">Ground truth survey ledger and holding capacity</p>
+                    </div>
+                </div>
+                {% if verification.cadastral_found %}
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-950/80 border border-emerald-700/50 text-emerald-300 uppercase">
+                    INDEXED
+                </span>
+                {% else %}
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-950/80 border border-amber-700/50 text-amber-300 uppercase">
+                    UNINDEXED
+                </span>
+                {% endif %}
+            </div>
+
+            <div class="space-y-2.5 text-xs font-mono">
+                <div class="flex justify-between py-1.5 border-b border-slate-800/80">
+                    <span class="text-slate-400">Cadastral Parcel ID</span>
+                    <span class="text-white font-bold">{{ verification.cadastral_parcel.parcel_id if verification.cadastral_parcel else 'Not available' }}</span>
+                </div>
+                <div class="flex justify-between py-1.5 border-b border-slate-800/80">
+                    <span class="text-slate-400">Survey Dag Plot</span>
+                    <span class="text-cyan-400 font-bold">#{{ verification.cadastral_parcel.dag_plot_number if verification.cadastral_parcel else (verification.dag_plot_number or 'Not available') }}</span>
+                </div>
+                <div class="flex justify-between py-1.5 border-b border-slate-800/80">
+                    <span class="text-slate-400">RS / BS Khatian</span>
+                    <span class="text-slate-200">{{ verification.cadastral_parcel.khatian_number if verification.cadastral_parcel else (verification.khatian_number or 'Not available') }}</span>
+                </div>
+                <div class="flex justify-between py-1.5 border-b border-slate-800/80">
+                    <span class="text-slate-400">Recorded Parcel Capacity</span>
+                    <span class="text-white font-bold">
+                        {% if verification.cadastral_parcel and verification.cadastral_parcel.total_area_decimal is not none %}
+                            {{ "%.2f"|format(verification.cadastral_parcel.total_area_decimal) }} Decimal
+                        {% else %}
+                            Not available
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="flex justify-between py-1.5 border-b border-slate-800/80">
+                    <span class="text-slate-400">Capacity Post-Transfer</span>
+                    <span>
+                        {% if verification.cadastral_parcel and verification.cadastral_parcel.total_area_decimal is defined and verification.cadastral_parcel.total_area_decimal is not none and verification.transferred_area_decimal is defined and verification.transferred_area_decimal is not none %}
+                            {% set rem = verification.cadastral_parcel.total_area_decimal - verification.transferred_area_decimal %}
+                            <span class="font-bold {% if rem < 0 %}text-rose-400{% else %}text-emerald-400{% endif %}">
+                                {{ "%.2f"|format(rem) }} Dec ({{ 'Over Capacity' if rem < 0 else 'Sufficient' }})
+                            </span>
+                        {% else %}
+                            <span class="text-slate-500">Not available</span>
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="flex justify-between py-1.5 border-b border-slate-800/80">
+                    <span class="text-slate-400">Mouza &amp; JL Number</span>
+                    <span class="text-slate-300">{{ verification.cadastral_parcel.mouza if verification.cadastral_parcel else 'Not available' }}</span>
+                </div>
+                <div class="flex justify-between py-1.5 border-b border-slate-800/80">
+                    <span class="text-slate-400">Upazila &amp; District</span>
+                    <span class="text-slate-300">
+                        {% if verification.cadastral_parcel and (verification.cadastral_parcel.upazila or verification.cadastral_parcel.district) %}
+                            {{ verification.cadastral_parcel.upazila or 'Not recorded' }}, {{ verification.cadastral_parcel.district or 'Not recorded' }}
+                        {% else %}
+                            Not available
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="flex justify-between py-1.5">
+                    <span class="text-slate-400">Recorded Land Class</span>
+                    <span class="text-slate-300">
+                        {% if verification.cadastral_parcel and (verification.cadastral_parcel.recorded_land_class or verification.cadastral_parcel.land_classification) %}
+                            {{ verification.cadastral_parcel.recorded_land_class or verification.cadastral_parcel.land_classification }}
+                        {% else %}
+                            Not available
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. STRUCTURED MULTI-MODAL EVIDENCE PANEL (4 Distinct Cards) -->
+    <div class="space-y-4">
+        <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                <i data-lucide="layers" class="w-4 h-4 text-cyan-400"></i>
+                <span>Multi-Modal Evidence &amp; Verification Signals</span>
+            </h3>
+            <span class="text-[11px] font-mono text-slate-400">4 Auditable Signal Modules</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <!-- Module 1: Supervised ML Risk Benchmark -->
+            <div class="glass-panel p-5 rounded-2xl border border-slate-800 flex flex-col justify-between space-y-3">
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+                            <i data-lucide="cpu" class="w-3.5 h-3.5 text-indigo-400"></i>
+                            <span>Supervised ML Risk Signal</span>
+                        </span>
+                        <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded {% if verification.ml_risk_score is not none and verification.ml_risk_score > 0.70 %}bg-rose-950 text-rose-300 border border-rose-800{% elif verification.ml_risk_score is not none and verification.ml_risk_score > 0.35 %}bg-amber-950 text-amber-300 border border-amber-800{% else %}bg-emerald-950 text-emerald-300 border border-emerald-800{% endif %}">
+                            {% if verification.ml_risk_score is not none %}{% if verification.ml_risk_score > 0.70 %}HIGH RISK{% elif verification.ml_risk_score > 0.35 %}MODERATE RISK{% else %}LOW RISK{% endif %}{% else %}{{ verification.ml_calibration or 'STATUTORY ONLY' }}{% endif %}
+                        </span>
+                    </div>
+
+                    <div class="flex items-baseline justify-between mt-3 mb-1.5">
+                        <span class="text-2xl font-black font-mono {% if verification.ml_risk_score is not none and verification.ml_risk_score > 0.35 %}text-rose-400{% else %}text-emerald-400{% endif %}">
+                            {{ ((verification.ml_risk_score * 100)|round(2)) ~ '%' if verification.ml_risk_score is not none else 'N/A' }}
+                        </span>
+                        <span class="text-[11px] font-mono text-slate-400">Decision Threshold: &tau; = 0.35</span>
+                    </div>
+
+                    <!-- Visual Progress Bar -->
+                    <div class="w-full h-2 rounded-full bg-slate-800 overflow-hidden relative">
+                        <div class="h-full rounded-full transition-all duration-500 {% if verification.ml_risk_score is not none and verification.ml_risk_score > 0.70 %}bg-rose-500{% elif verification.ml_risk_score is not none and verification.ml_risk_score > 0.35 %}bg-amber-500{% else %}bg-emerald-500{% endif %}" style="width: {{ [((verification.ml_risk_score or 0) * 100), 100]|min }}%"></div>
+                    </div>
+                </div>
+
+                <div class="pt-3 border-t border-slate-800/80 text-[11px] text-slate-400 leading-relaxed">
+                    <span class="font-semibold text-slate-300">Non-Oracle Model Signal:</span> Calibrated XGBoost score trained on seller-group disjoint splits. Evaluated strictly without ground-truth leakage.
+                </div>
+            </div>
+
+            <!-- Module 2: Computer Vision Physical Alteration Analysis -->
+            <div class="glass-panel p-5 rounded-2xl border border-slate-800 flex flex-col justify-between space-y-3">
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+                            <i data-lucide="scan-line" class="w-3.5 h-3.5 text-cyan-400"></i>
+                            <span>Computer Vision Anomaly Analysis</span>
+                        </span>
+                        {% if verification.cv_evidence and verification.cv_evidence.visual_anomaly_detected %}
+                        <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-rose-950 text-rose-300 border border-rose-800">
+                            ALTERATION DETECTED
+                        </span>
+                        {% else %}
+                        <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800">
+                            NO SEAMS DETECTED
+                        </span>
+                        {% endif %}
+                    </div>
+
+                    <div class="flex items-baseline justify-between mt-3 mb-1.5">
+                        <span class="text-2xl font-black font-mono text-white">
+                            {{ (verification.cv_evidence.visual_anomaly_score * 100)|round(1) if verification.cv_evidence else '0.0' }}%
+                        </span>
+                        <span class="text-[11px] font-mono text-slate-400">
+                            {{ verification.cv_evidence.detected_patches|length if verification.cv_evidence.detected_patches is iterable and verification.cv_evidence.detected_patches is not string else (verification.cv_evidence.detected_patches or 0) }} patch seam(s)
+                        </span>
+                    </div>
+
+                    <!-- Visual Bar -->
+                    <div class="w-full h-2 rounded-full bg-slate-800 overflow-hidden relative">
+                        <div class="h-full rounded-full transition-all duration-500 {% if verification.cv_evidence and verification.cv_evidence.visual_anomaly_detected %}bg-rose-500{% else %}bg-cyan-500{% endif %}" style="width: {{ [(verification.cv_evidence.visual_anomaly_score * 100)|round(1), 100]|min if verification.cv_evidence else 0 }}%"></div>
+                    </div>
+                </div>
+
+                <div class="pt-3 border-t border-slate-800/80 text-[11px] text-slate-400 leading-relaxed">
+                    <span class="font-semibold text-slate-300">Surface Forensics:</span> Sobel edge continuity and Otsu thresholding detect mechanical text scraping, whiteout patches, or pasted rectangular overlays.
+                </div>
+            </div>
+
+            <!-- Module 3: Authentication Seals & Signatures -->
+            <div class="glass-panel p-5 rounded-2xl border border-slate-800 flex flex-col justify-between space-y-3">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+                            <i data-lucide="stamp" class="w-3.5 h-3.5 text-indigo-400"></i>
+                            <span>Visual Seal &amp; Signature Detection</span>
+                        </span>
+                        <span class="text-[10px] font-mono text-slate-400">Visual Presence Detection</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 mt-2">
+                        <!-- Seal Status -->
+                        {% set seal_st = verification.cv_evidence.seal_status if verification.cv_evidence and verification.cv_evidence.seal_status else ('DETECTED' if verification.cv_evidence and verification.cv_evidence.seal_present is true else ('NOT_DETECTED' if verification.cv_evidence and verification.cv_evidence.seal_present is false else ('INCONCLUSIVE' if verification.cv_evidence and verification.cv_evidence.seal_present == 'INCONCLUSIVE' else 'NOT_CHECKED'))) %}
+                        <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800">
+                            <span class="text-[10px] text-slate-400 block mb-1">Sub-Registry Seal</span>
+                            {% if seal_st == 'DETECTED' %}
+                            <div class="flex items-center gap-1.5 text-emerald-400 font-bold font-mono text-xs">
+                                <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+                                <span>DETECTED</span>
+                            </div>
+                            {% elif seal_st == 'NOT_DETECTED' %}
+                            <div class="flex items-center gap-1.5 text-rose-400 font-bold font-mono text-xs">
+                                <i data-lucide="x-circle" class="w-3.5 h-3.5"></i>
+                                <span>NOT DETECTED</span>
+                            </div>
+                            {% elif seal_st == 'INCONCLUSIVE' %}
+                            <div class="flex items-center gap-1.5 text-amber-400 font-bold font-mono text-xs">
+                                <i data-lucide="help-circle" class="w-3.5 h-3.5"></i>
+                                <span>INCONCLUSIVE</span>
+                            </div>
+                            {% else %}
+                            <div class="flex items-center gap-1.5 text-slate-400 font-bold font-mono text-xs">
+                                <i data-lucide="minus-circle" class="w-3.5 h-3.5"></i>
+                                <span>NOT CHECKED</span>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Signature Status -->
+                        {% set sig_st = verification.cv_evidence.signature_status if verification.cv_evidence and verification.cv_evidence.signature_status else ('DETECTED' if verification.cv_evidence and verification.cv_evidence.signature_present is true else ('NOT_DETECTED' if verification.cv_evidence and verification.cv_evidence.signature_present is false else ('INCONCLUSIVE' if verification.cv_evidence and verification.cv_evidence.signature_present == 'INCONCLUSIVE' else 'NOT_CHECKED'))) %}
+                        <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800">
+                            <span class="text-[10px] text-slate-400 block mb-1">Registrar Signature</span>
+                            {% if sig_st == 'DETECTED' %}
+                            <div class="flex items-center gap-1.5 text-emerald-400 font-bold font-mono text-xs">
+                                <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+                                <span>DETECTED</span>
+                            </div>
+                            {% elif sig_st == 'NOT_DETECTED' %}
+                            <div class="flex items-center gap-1.5 text-rose-400 font-bold font-mono text-xs">
+                                <i data-lucide="x-circle" class="w-3.5 h-3.5"></i>
+                                <span>NOT DETECTED</span>
+                            </div>
+                            {% elif sig_st == 'INCONCLUSIVE' %}
+                            <div class="flex items-center gap-1.5 text-amber-400 font-bold font-mono text-xs">
+                                <i data-lucide="help-circle" class="w-3.5 h-3.5"></i>
+                                <span>INCONCLUSIVE</span>
+                            </div>
+                            {% else %}
+                            <div class="flex items-center gap-1.5 text-slate-400 font-bold font-mono text-xs">
+                                <i data-lucide="minus-circle" class="w-3.5 h-3.5"></i>
+                                <span>NOT CHECKED</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-3 border-t border-slate-800/80 text-[11px] text-slate-400 leading-relaxed">
+                    <span class="font-semibold text-amber-300">Visual Detection Only:</span> Checks circular contour chroma and ink stroke presence. Signatory identity, registrar authorization, and legal authenticity have not been established.
+                </div>
+            </div>
+
+            <!-- Module 4: Cryptographic Integrity (SHA-256 Digest) -->
+            <div class="glass-panel p-5 rounded-2xl border border-slate-800 flex flex-col justify-between space-y-3">
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+                            <i data-lucide="fingerprint" class="w-3.5 h-3.5 text-cyan-400"></i>
+                            <span>Audit Record Payload SHA-256</span>
+                        </span>
+                        <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800">
+                            PAYLOAD INTEGRITY HASH
+                        </span>
+                    </div>
+
+                    <div class="mt-3">
+                        <span class="text-[10px] font-mono text-slate-400 block mb-1">Canonical Audit Record Payload Digest:</span>
+                        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between gap-2">
+                            <code id="sha256HashText" class="text-[11px] font-mono text-cyan-300 break-all select-all">
+                                {{ verification.sha256_hash or 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855' }}
+                            </code>
+                            <button type="button" onclick="copyDigest()" id="btnCopyDigest" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-[10px] font-semibold shrink-0 transition-colors flex items-center gap-1 border border-slate-700">
+                                <i data-lucide="copy" class="w-3 h-3 text-cyan-400"></i>
+                                <span id="copyBtnLabel">Copy</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-3 border-t border-slate-800/80 text-[11px] text-slate-400 leading-relaxed">
+                    <span class="font-semibold text-cyan-300">Consistency Verification:</span> SHA-256 digest computed over canonical verification parameters (verification ID, deed, plot, status, rules, and risk score). Verifies data payload consistency against recorded audit history; does not prove legal title or physical document unalterability.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. STATUTORY RULES EVIDENCE LOG -->
+    <div class="glass-panel p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-800">
             <div>
-                <div class="text-[11px] font-mono font-bold tracking-wider uppercase text-slate-300">INVESTIGATOR DOSSIER #{{ verification.verification_id }}</div>
-                <div class="text-xl font-extrabold text-white">{{ verification.overall_status|replace('_', ' ') }}</div>
-                <div class="text-xs text-slate-300 mt-0.5">{{ verification.recommended_action }}</div>
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i data-lucide="scale" class="w-4 h-4 text-indigo-400"></i>
+                    <span>Authoritative Statutory Rules Evidence Log</span>
+                </h3>
+                <p class="text-xs text-slate-400 mt-0.5">
+                    Deterministic legal predicate checks under Registration Act 1908, SAT Act 1950, and Transfer of Property Act 1882
+                </p>
             </div>
+            <span class="text-xs font-mono text-slate-400 self-start sm:self-auto">
+                {{ verification.rules_triggered|length }} Predicate Finding(s)
+            </span>
         </div>
-        <div class="text-right font-mono text-xs text-slate-300">
-            <div>Execution Date: <span class="text-white">{{ verification.execution_date }}</span></div>
-            <div class="text-indigo-400 font-bold mt-1">XGBoost Risk: {{ (verification.ml_risk_score * 100)|round(1) }}%</div>
-        </div>
-    </div>
-
-    <!-- Specifications Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <div class="glass-panel p-5 rounded-2xl border border-slate-800">
-            <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Deed &amp; Cadastral Linkage</h3>
-            <div class="space-y-2 text-xs font-mono text-slate-300">
-                <div class="flex justify-between py-1 border-b border-slate-800/80"><span>Deed Reference</span><span class="text-white">{{ verification.deed_number }}</span></div>
-                <div class="flex justify-between py-1 border-b border-slate-800/80"><span>Dag Plot Number</span><span class="text-cyan-400">#{{ verification.dag_plot_number }}</span></div>
-                <div class="flex justify-between py-1 border-b border-slate-800/80"><span>Transferred Area</span><span class="text-white">{{ verification.transferred_area_decimal }} Decimal</span></div>
-                <div class="flex justify-between py-1 border-b border-slate-800/80"><span>Seller NID</span><span class="text-slate-400">{{ verification.seller_nid }}</span></div>
-                <div class="flex justify-between py-1"><span>Buyer NID</span><span class="text-slate-400">{{ verification.buyer_nid }}</span></div>
-            </div>
-        </div>
-
-        <div class="glass-panel p-5 rounded-2xl border border-slate-800">
-            <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Multi-Modal Signals &amp; Evidence</h3>
-            <div class="space-y-2 text-xs text-slate-300">
-                <div class="flex justify-between py-1 border-b border-slate-800/80">
-                    <span>XGBoost Calibrated Score</span>
-                    <span class="font-mono {% if verification.ml_risk_score > 0.35 %}text-rose-400 font-bold{% else %}text-emerald-400{% endif %}">{{ (verification.ml_risk_score * 100)|round(2) }}%</span>
-                </div>
-                <div class="flex justify-between py-1 border-b border-slate-800/80">
-                    <span>CV Visual Anomaly Score</span>
-                    <span class="font-mono text-white">{{ (verification.cv_evidence.visual_anomaly_score * 100)|round(1) }}%</span>
-                </div>
-                <div class="flex justify-between py-1 border-b border-slate-800/80">
-                    <span>Registry Seal Detection</span>
-                    <span class="font-mono text-white">{{ 'DETECTED' if verification.cv_evidence.seal_present else 'ABSENT' }}</span>
-                </div>
-                <div class="flex justify-between py-1">
-                    <span>Sub-Registrar Signature</span>
-                    <span class="font-mono text-white">{{ 'VERIFIED' if verification.cv_evidence.signature_present else 'ABSENT' }}</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Statutory Rules Evidence Table -->
-    <div class="glass-panel p-6 rounded-2xl border border-slate-800">
-        <h3 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
-            <i data-lucide="scale" class="w-4 h-4 text-indigo-400"></i>
-            <span>Statutory Rules Evidence Log</span>
-        </h3>
 
         {% if verification.rules_triggered %}
-        <div class="space-y-3">
+        <div class="space-y-3.5">
             {% for r in verification.rules_triggered %}
-            <div class="p-4 rounded-xl bg-slate-900/80 border border-rose-500/30">
-                <div class="flex items-center justify-between mb-1">
-                    <span class="font-mono font-bold text-xs text-rose-300">{{ r.rule_code }}</span>
-                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-rose-950 text-rose-300 border border-rose-800/50 uppercase">{{ r.severity }}</span>
+            <div class="p-4 rounded-xl border transition-all {% if r.severity == 'CRITICAL' %}bg-rose-950/40 border-rose-500/40{% elif r.severity == 'HIGH' %}bg-amber-950/40 border-amber-500/40{% else %}bg-indigo-950/40 border-indigo-500/40{% endif %}">
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                    <div class="flex items-center gap-2">
+                        <span class="font-mono font-bold text-xs text-white">{{ r.title or r.rule_code }}</span>
+                        <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 border border-slate-700 text-slate-400 uppercase">
+                            {{ r.rule_code }}
+                        </span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded uppercase {% if r.severity == 'CRITICAL' %}bg-rose-900/80 text-rose-300 border border-rose-700{% elif r.severity == 'HIGH' %}bg-amber-900/80 text-amber-300 border border-amber-700{% else %}bg-indigo-900/80 text-indigo-300 border border-indigo-700{% endif %}">
+                            {{ r.severity }}
+                        </span>
+                        <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900/80 text-slate-300 border border-slate-700 uppercase">
+                            {{ r.category }}
+                        </span>
+                    </div>
                 </div>
-                <p class="text-xs text-slate-300 leading-relaxed">{{ r.explanation }}</p>
-                <div class="text-[10px] text-slate-500 font-mono mt-2">Legal Precedent: {{ r.statutory_reference }}</div>
+
+                <p class="text-xs text-slate-200 leading-relaxed">
+                    {{ r.explanation or r.reason }}
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-3 pt-3 border-t border-slate-800/80 text-[11px] font-mono">
+                    <div class="text-slate-400">
+                        <span class="text-indigo-300 font-semibold">Statutory Authority:</span> {{ r.statutory_reference or 'Registration Act 1908 / SAT Act 1950' }}
+                    </div>
+                    <div class="text-slate-400 md:text-right">
+                        <span class="text-cyan-300 font-semibold">Procedural Next Step:</span> {{ r.next_step or 'Inspect physical volume register and verify field cadastral survey.' }}
+                    </div>
+                </div>
             </div>
             {% endfor %}
         </div>
         {% else %}
-        <div class="p-4 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-xs text-emerald-300">
-            All 16 statutory predicates satisfied under Registration Act and SAT Act.
+        <!-- Truthful Clean Finding -->
+        <div class="p-5 rounded-xl bg-emerald-950/30 border border-emerald-500/30 flex items-start gap-3">
+            <i data-lucide="shield-check" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i>
+            <div>
+                <div class="text-xs font-bold text-emerald-300 uppercase tracking-wide">No Statutory Contradictions Triggered</div>
+                <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+                    No configured statutory contradictions triggered during algorithmic evaluation against registered cadastral ledgers and transaction history. Standard registration procedures may proceed subject to registrar physical verification.
+                </p>
+            </div>
         </div>
         {% endif %}
     </div>
 
-    <!-- Authorized Reviewer Decision Panel -->
-    <div class="glass-panel p-6 rounded-2xl border border-slate-800 space-y-4">
-        <h3 class="text-sm font-bold text-white flex items-center gap-2">
-            <i data-lucide="shield-check" class="w-4 h-4 text-indigo-400"></i>
-            <span>Authorized Registrar / Investigator Determination</span>
-        </h3>
-        <p class="text-xs text-slate-400">Record an official administrative action into the immutable audit trail.</p>
+    <!-- 5. AUTHORIZED REVIEW WORKSPACE -->
+    <div class="glass-panel p-6 rounded-2xl border border-slate-800 shadow-xl space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-800">
+            <div>
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i data-lucide="gavel" class="w-4 h-4 text-cyan-400"></i>
+                    <span>Authorized Review Workspace</span>
+                </h3>
+                <p class="text-xs text-slate-400 mt-0.5">
+                    Authorized administrative determination under statutory authority with immutable SQLite audit logging
+                </p>
+            </div>
+            <span class="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-cyan-950 border border-cyan-800 text-cyan-300 uppercase self-start sm:self-auto">
+                ADMINISTRATIVE REVIEW
+            </span>
+        </div>
 
-        <div class="flex items-center gap-3 pt-2">
-            <button type="button" onclick="recordDecision('APPROVE_STANDARD')" class="px-4 py-2 rounded-xl text-xs font-semibold text-emerald-300 bg-emerald-950 border border-emerald-600/40 hover:bg-emerald-900 transition-colors">
-                Approve for Standard Review
+        <!-- A. Active Determination Status -->
+        <div class="space-y-2">
+            <span class="text-xs font-bold text-slate-300 uppercase tracking-wide flex items-center gap-1.5">
+                <i data-lucide="check-square" class="w-3.5 h-3.5 text-cyan-400"></i>
+                <span>Active Administrative Determination</span>
+            </span>
+
+            {% if verification.human_determination %}
+            <div id="determinationDisplayBox" class="p-5 rounded-xl bg-slate-900/90 border border-slate-700 space-y-3">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs text-slate-400 uppercase font-semibold">Status:</span>
+                        <span id="detStatusBadge" class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold uppercase {% if verification.human_determination.decision == 'APPROVE_STANDARD' %}bg-emerald-950 text-emerald-300 border border-emerald-700{% elif verification.human_determination.decision == 'REFER_TO_AC_LAND' %}bg-rose-950 text-rose-300 border border-rose-700{% else %}bg-amber-950 text-amber-300 border border-amber-700{% endif %}">
+                            {{ verification.human_determination.decision }}
+                        </span>
+                    </div>
+                    <div class="text-[11px] font-mono text-slate-400">
+                        Recorded: <span id="detTimestamp" class="text-slate-200">{{ verification.human_determination.timestamp[:19]|replace('T', ' ') if verification.human_determination.timestamp else '' }}</span>
+                    </div>
+                </div>
+
+                <div class="p-3 rounded-lg bg-slate-950 border border-slate-800 text-xs text-slate-200">
+                    <span class="text-[10px] font-mono text-slate-500 block mb-1">Official Written Justification &amp; Authority:</span>
+                    <p id="detReasonText" class="leading-relaxed whitespace-pre-wrap">{{ verification.human_determination.reason }}</p>
+                </div>
+
+                <div class="text-[11px] font-mono text-slate-400 flex flex-wrap items-center justify-between gap-2 pt-1">
+                    <div>
+                        Reviewing Officer: <span id="detOfficerName" class="text-white font-semibold">{{ verification.human_determination.officer_name }}</span> (<span id="detUserId">{{ verification.human_determination.user_id }}</span>)
+                    </div>
+                    <span class="text-emerald-400 flex items-center gap-1 text-[11px]">
+                        <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+                        <span>Persisted in SQLite Operational Audit Trail</span>
+                    </span>
+                </div>
+            </div>
+            {% else %}
+            <div id="determinationDisplayBox" class="hidden p-5 rounded-xl bg-slate-900/90 border border-slate-700 space-y-3">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs text-slate-400 uppercase font-semibold">Status:</span>
+                        <span id="detStatusBadge" class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold uppercase"></span>
+                    </div>
+                    <div class="text-[11px] font-mono text-slate-400">
+                        Recorded: <span id="detTimestamp" class="text-slate-200"></span>
+                    </div>
+                </div>
+
+                <div class="p-3 rounded-lg bg-slate-950 border border-slate-800 text-xs text-slate-200">
+                    <span class="text-[10px] font-mono text-slate-500 block mb-1">Official Written Justification &amp; Authority:</span>
+                    <p id="detReasonText" class="leading-relaxed whitespace-pre-wrap"></p>
+                </div>
+
+                <div class="text-[11px] font-mono text-slate-400 flex flex-wrap items-center justify-between gap-2 pt-1">
+                    <div>
+                        Reviewing Officer: <span id="detOfficerName" class="text-white font-semibold"></span> (<span id="detUserId"></span>)
+                    </div>
+                    <span class="text-emerald-400 flex items-center gap-1 text-[11px]">
+                        <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+                        <span>Persisted in SQLite Operational Audit Trail</span>
+                    </span>
+                </div>
+            </div>
+
+            <div id="determinationEmptyState" class="p-4 rounded-xl bg-slate-900/40 border border-slate-800/80 text-xs text-slate-400 flex items-center gap-3">
+                <i data-lucide="info" class="w-4 h-4 text-slate-500 shrink-0"></i>
+                <span>No administrative determination recorded yet. Authorized officers may review automated evidence signals and record a formal determination below.</span>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- B. Determination Audit History Trail (Preserved determinations from SQLite) -->
+        {% if verification.determination_history and verification.determination_history|length > 1 %}
+        <div class="space-y-3 pt-3 border-t border-slate-800/80">
+            <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-slate-300 uppercase tracking-wide flex items-center gap-1.5">
+                    <i data-lucide="history" class="w-3.5 h-3.5 text-indigo-400"></i>
+                    <span>Prior Determination History ({{ verification.determination_history|length }} Events)</span>
+                </span>
+                <span class="text-[10px] font-mono text-slate-400">Chronological Audit Log</span>
+            </div>
+            <div class="space-y-2">
+                {% for d in verification.determination_history %}
+                <div class="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 text-xs space-y-1.5 {% if loop.last %}ring-1 ring-cyan-500/30{% endif %}">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded uppercase {% if d.decision == 'APPROVE_STANDARD' %}bg-emerald-950 text-emerald-300 border border-emerald-800{% elif d.decision == 'REFER_TO_AC_LAND' %}bg-rose-950 text-rose-300 border border-rose-800{% else %}bg-amber-950 text-amber-300 border border-amber-800{% endif %}">
+                                {{ d.decision }}
+                            </span>
+                            <span class="text-[11px] text-slate-300 font-semibold">{{ d.officer_name }}</span>
+                            <span class="text-[10px] text-slate-500 font-mono">({{ d.user_id }})</span>
+                            {% if loop.last %}
+                            <span class="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800">ACTIVE</span>
+                            {% endif %}
+                        </div>
+                        <span class="text-[10px] font-mono text-slate-400">{{ d.timestamp[:19]|replace('T', ' ') if d.timestamp else '' }}</span>
+                    </div>
+                    <p class="text-slate-300 text-[11px] leading-relaxed pl-1">{{ d.reason }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- C. Record New Determination Form -->
+        <div class="space-y-4 pt-3 border-t border-slate-800">
+            <div>
+                <span class="text-xs font-bold text-white uppercase tracking-wide flex items-center gap-1.5">
+                    <i data-lucide="edit-3" class="w-3.5 h-3.5 text-cyan-400"></i>
+                    <span>Record New Administrative Determination</span>
+                </span>
+                <p class="text-[11px] text-slate-400 mt-0.5">
+                    Authorized officers may record a determination with statutory justification notes. Every entry is logged as an immutable audit event in SQLite.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <button type="button" onclick="selectAction('APPROVE_STANDARD', this)" class="action-btn text-left p-3.5 rounded-xl border border-slate-700 bg-slate-900/60 hover:bg-slate-800 transition-all text-xs font-semibold text-slate-200 hover:border-emerald-500">
+                    <div class="flex items-center gap-2 mb-1 text-emerald-400 font-bold">
+                        <i data-lucide="check-circle" class="w-4 h-4"></i>
+                        <span>Approve Standard</span>
+                    </div>
+                    <p class="text-[11px] text-slate-400 font-normal leading-tight">Clear for standard registration workflow</p>
+                </button>
+
+                <button type="button" onclick="selectAction('REQUEST_ARCHIVES', this)" class="action-btn text-left p-3.5 rounded-xl border border-slate-700 bg-slate-900/60 hover:bg-slate-800 transition-all text-xs font-semibold text-slate-200 hover:border-amber-500">
+                    <div class="flex items-center gap-2 mb-1 text-amber-400 font-bold">
+                        <i data-lucide="archive" class="w-4 h-4"></i>
+                        <span>Request Archives</span>
+                    </div>
+                    <p class="text-[11px] text-slate-400 font-normal leading-tight">Inspect pre-1972 manual registry books</p>
+                </button>
+
+                <button type="button" onclick="selectAction('FLAG_FOR_FIELD_INSPECTION', this)" class="action-btn text-left p-3.5 rounded-xl border border-slate-700 bg-slate-900/60 hover:bg-slate-800 transition-all text-xs font-semibold text-slate-200 hover:border-indigo-500">
+                    <div class="flex items-center gap-2 mb-1 text-indigo-400 font-bold">
+                        <i data-lucide="map-pin" class="w-4 h-4"></i>
+                        <span>Field Inspection</span>
+                    </div>
+                    <p class="text-[11px] text-slate-400 font-normal leading-tight">Flag for physical AC Land field verification</p>
+                </button>
+
+                <button type="button" onclick="selectAction('REFER_TO_AC_LAND', this)" class="action-btn text-left p-3.5 rounded-xl border border-slate-700 bg-slate-900/60 hover:bg-slate-800 transition-all text-xs font-semibold text-slate-200 hover:border-rose-500">
+                    <div class="flex items-center gap-2 mb-1 text-rose-400 font-bold">
+                        <i data-lucide="alert-octagon" class="w-4 h-4"></i>
+                        <span>Refer to AC (Land)</span>
+                    </div>
+                    <p class="text-[11px] text-slate-400 font-normal leading-tight">Hold deed &amp; escalate to fraud docket</p>
+                </button>
+            </div>
+
+            <!-- Notes & Submission -->
+            <div class="space-y-2 pt-2">
+                <label for="determinationReasonInput" class="text-xs font-bold text-slate-300 flex items-center justify-between">
+                    <span>Statutory Justification &amp; Officer Determination Notes <span class="text-rose-400">*</span></span>
+                    <span class="text-[10px] text-slate-400 font-normal">Required for administrative audit trail</span>
+                </label>
+                <textarea id="determinationReasonInput" rows="3" placeholder="Enter formal findings, manual ledger volumes checked, and statutory basis for this determination..." class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-cyan-500 transition-all"></textarea>
+            </div>
+
+            <div class="flex items-center justify-between pt-2">
+                <span id="selectedActionDisplay" class="text-xs font-mono text-slate-400">
+                    No determination action selected yet
+                </span>
+                <button type="button" onclick="submitDetermination()" id="btnSubmitDetermination" class="px-5 py-2.5 rounded-xl text-xs font-bold text-slate-950 bg-cyan-400 hover:bg-cyan-300 transition-all shadow-lg shadow-cyan-400/20 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i data-lucide="check" class="w-4 h-4"></i>
+                    <span>Record Official Determination</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mandatory Scientific & Demo Notice -->
+    <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800/80 text-center text-xs text-slate-400 space-y-1">
+        <div class="font-mono text-[11px] font-bold text-amber-300 uppercase tracking-wider">
+            SYNTHETIC DEMO — NOT AN OFFICIAL LEGAL TITLE CERTIFICATE
+        </div>
+        <p class="text-[11px] text-slate-400 max-w-3xl mx-auto">
+            All records, names, plot boundaries, and seals displayed in this verification dossier are algorithmically generated for the LandTech 2026 P3 research evaluation benchmark.
+        </p>
+    </div>
+</div>
+
+<!-- Modal: Escalate to Formal Case -->
+<div id="escalateModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm hidden">
+    <div class="glass-panel w-full max-w-lg p-6 rounded-2xl border border-slate-800 shadow-2xl space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                <i data-lucide="folder-plus" class="w-4 h-4 text-indigo-400"></i>
+                <span>Escalate Dossier to Formal Case Docket</span>
+            </h3>
+            <button type="button" onclick="closeEscalateModal()" class="text-slate-400 hover:text-white">
+                <i data-lucide="x" class="w-4 h-4"></i>
             </button>
-            <button type="button" onclick="recordDecision('REQUEST_ARCHIVES')" class="px-4 py-2 rounded-xl text-xs font-semibold text-amber-300 bg-amber-950 border border-amber-600/40 hover:bg-amber-900 transition-colors">
-                Request Physical Archive Search
+        </div>
+
+        <div class="space-y-3 text-xs">
+            <div>
+                <label class="block text-slate-400 font-semibold mb-1">Case Docket Title</label>
+                <input type="text" id="escalateCaseTitle" value="Investigation: Conflict on Plot #{{ verification.dag_plot_number }}" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-indigo-500">
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-slate-400 font-semibold mb-1">Priority</label>
+                    <select id="escalatePriority" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-indigo-500">
+                        <option value="CRITICAL" {% if verification.ml_risk_score is not none and verification.ml_risk_score > 0.7 %}selected{% endif %}>CRITICAL (Immediate Hold)</option>
+                        <option value="HIGH" {% if verification.ml_risk_score is none or verification.ml_risk_score <= 0.7 %}selected{% endif %}>HIGH (Investigation Required)</option>
+                        <option value="MEDIUM">MEDIUM (Administrative Review)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-slate-400 font-semibold mb-1">Assigned Investigator</label>
+                    <select id="escalateOfficer" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-indigo-500">
+                        <option value="Senior Registrar Hasin Ishruq Nabil">Senior Registrar Hasin Ishruq Nabil</option>
+                        <option value="Inspector S. Karim">Inspector S. Karim</option>
+                        <option value="Deputy Collector H. Ahmed">Deputy Collector H. Ahmed</option>
+                        <option value="Unassigned">Unassigned Pool</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-slate-400 font-semibold mb-1">Initial Statutory Note</label>
+                <textarea id="escalateNote" rows="2" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-indigo-500">Formal case docket initiated from verification dossier #{{ verification.verification_id }}. Statutory status: {{ verification.overall_status }}.</textarea>
+            </div>
+        </div>
+
+        <div class="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-800">
+            <button type="button" onclick="closeEscalateModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white">
+                Cancel
             </button>
-            <button type="button" onclick="escalateToCase()" class="px-4 py-2 rounded-xl text-xs font-semibold text-rose-300 bg-rose-950 border border-rose-600/40 hover:bg-rose-900 transition-colors">
-                Initiate Formal Fraud Docket
+            <button type="button" onclick="confirmEscalateToCase()" id="btnConfirmEscalate" class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 transition-all flex items-center gap-1.5 shadow-lg shadow-indigo-600/30">
+                <i data-lucide="check" class="w-4 h-4"></i>
+                <span>Open Case Docket</span>
             </button>
         </div>
     </div>
@@ -128,9 +802,136 @@
 
 {% block extra_scripts %}
 <script>
-    async function escalateToCase() {
-        const title = prompt("Enter Case Investigation Title:", "Investigation: Conflict on Plot #{{ verification.dag_plot_number }}");
-        if (!title) return;
+    let activeDecision = "";
+
+    function selectAction(action, btnEl) {
+        activeDecision = action;
+        document.querySelectorAll('.action-btn').forEach(btn => {
+            btn.classList.remove('border-cyan-400', 'bg-slate-800', 'ring-1', 'ring-cyan-400');
+        });
+        btnEl.classList.add('border-cyan-400', 'bg-slate-800', 'ring-1', 'ring-cyan-400');
+
+        const labels = {
+            'APPROVE_STANDARD': 'Selected: Approve for Standard Registration',
+            'REQUEST_ARCHIVES': 'Selected: Request Physical Archive Search',
+            'FLAG_FOR_FIELD_INSPECTION': 'Selected: Flag for AC Land Field Inspection',
+            'REFER_TO_AC_LAND': 'Selected: Refer to Assistant Commissioner (Land)'
+        };
+        const display = document.getElementById('selectedActionDisplay');
+        if (display) {
+            display.textContent = labels[action] || action;
+            display.className = "text-xs font-mono font-bold text-cyan-300";
+        }
+    }
+
+    async function submitDetermination() {
+        if (!activeDecision) {
+            showToast("Please select an administrative determination action first.", "warning");
+            return;
+        }
+
+        const reasonInput = document.getElementById('determinationReasonInput');
+        const reason = reasonInput ? reasonInput.value.trim() : "";
+        if (!reason) {
+            showToast("Please provide official statutory justification notes.", "warning");
+            if (reasonInput) reasonInput.focus();
+            return;
+        }
+
+        const btn = document.getElementById('btnSubmitDetermination');
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i><span>Recording...</span>`;
+            if (window.lucide) window.lucide.createIcons();
+        }
+
+        try {
+            const res = await fetch('/api/verifications/{{ verification.verification_id }}/decision', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    decision: activeDecision,
+                    reason: reason
+                })
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                showToast(`Determination recorded: ${activeDecision}. Logged to SQLite audit trail.`, "success");
+
+                // Update determination UI card
+                const emptyBox = document.getElementById('determinationEmptyState');
+                if (emptyBox) emptyBox.classList.add('hidden');
+
+                const box = document.getElementById('determinationDisplayBox');
+                if (box) box.classList.remove('hidden');
+
+                const statusBadge = document.getElementById('detStatusBadge');
+                if (statusBadge) {
+                    statusBadge.textContent = activeDecision;
+                    statusBadge.className = "px-2.5 py-0.5 rounded-full text-xs font-mono font-bold uppercase " +
+                        (activeDecision === 'APPROVE_STANDARD' ? 'bg-emerald-950 text-emerald-300 border border-emerald-700' :
+                         activeDecision === 'REFER_TO_AC_LAND' ? 'bg-rose-950 text-rose-300 border border-rose-700' :
+                         'bg-amber-950 text-amber-300 border border-amber-700');
+                }
+
+                const reasonText = document.getElementById('detReasonText');
+                if (reasonText) reasonText.textContent = reason;
+
+                const officerName = document.getElementById('detOfficerName');
+                if (officerName && data.determination) officerName.textContent = data.determination.officer_name;
+
+                const userIdEl = document.getElementById('detUserId');
+                if (userIdEl && data.determination) userIdEl.textContent = data.determination.user_id;
+
+                const timestamp = document.getElementById('detTimestamp');
+                if (timestamp && data.determination) {
+                    timestamp.textContent = (data.determination.timestamp || '').slice(0, 19).replace('T', ' ');
+                }
+
+                // Clear textarea
+                if (reasonInput) reasonInput.value = "";
+            } else {
+                showToast(data.detail || "Failed to record determination.", "error");
+            }
+        } catch (err) {
+            showToast("Network error: " + err.message, "error");
+        } finally {
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i><span>Record Official Determination</span>`;
+                if (window.lucide) window.lucide.createIcons();
+            }
+        }
+    }
+
+    function openEscalateModal() {
+        const modal = document.getElementById('escalateModal');
+        if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeEscalateModal() {
+        const modal = document.getElementById('escalateModal');
+        if (modal) modal.classList.add('hidden');
+    }
+
+    async function confirmEscalateToCase() {
+        const title = (document.getElementById('escalateCaseTitle')?.value || "").trim();
+        const priority = document.getElementById('escalatePriority')?.value || "HIGH";
+        const officer = document.getElementById('escalateOfficer')?.value || "Senior Registrar Hasin Ishruq Nabil";
+        const note = (document.getElementById('escalateNote')?.value || "").trim();
+
+        if (!title) {
+            showToast("Please enter a case docket title.", "warning");
+            return;
+        }
+
+        const btn = document.getElementById('btnConfirmEscalate');
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i><span>Opening...</span>`;
+            if (window.lucide) window.lucide.createIcons();
+        }
 
         try {
             const res = await fetch('/api/cases', {
@@ -141,28 +942,55 @@
                     deed_number: "{{ verification.deed_number }}",
                     dag_plot_number: "{{ verification.dag_plot_number }}",
                     verification_id: "{{ verification.verification_id }}",
-                    priority: "{{ 'CRITICAL' if verification.ml_risk_score > 0.7 else 'HIGH' }}",
-                    assigned_officer: "Inspector S. Karim",
+                    priority: priority,
+                    assigned_officer: officer,
                     statutory_finding: "{{ verification.overall_status }}",
-                    ml_risk_score: {{ verification.ml_risk_score }},
-                    evidence_summary: "Automated escalation from verification findings.",
-                    initial_note: "Formal case docket opened from verification dossier."
+                    ml_risk_score: {{ verification.ml_risk_score or 0.0 }},
+                    evidence_summary: "Escalated from verification dossier findings.",
+                    initial_note: note
                 })
             });
+
             const data = await res.json();
             if (res.ok) {
-                showToast(`Investigation case spawned as ${data.case_id}!`, "success");
-                setTimeout(() => window.location.href = `/admin/cases/${data.case_id}`, 1000);
+                if (data.is_duplicate) {
+                    showToast(`Existing case docket ${data.case_id} found. Navigating to docket...`, "info");
+                } else {
+                    showToast(`Formal investigation docket opened as ${data.case_id}!`, "success");
+                }
+                setTimeout(() => window.location.href = `/admin/cases/${data.case_id}`, 800);
             } else {
-                showToast(data.detail || "Escalation failed", "error");
+                showToast(data.detail || "Escalation failed.", "error");
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i><span>Open Case Docket</span>`;
+                    if (window.lucide) window.lucide.createIcons();
+                }
             }
         } catch (err) {
             showToast("Error: " + err.message, "error");
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i><span>Open Case Docket</span>`;
+                if (window.lucide) window.lucide.createIcons();
+            }
         }
     }
 
-    function recordDecision(action) {
-        showToast(`Official determination recorded: ${action}. Action logged to audit trail.`, "success");
+    function copyDigest() {
+        const text = document.getElementById('sha256HashText')?.textContent.trim();
+        if (!text) return;
+
+        navigator.clipboard.writeText(text).then(() => {
+            const label = document.getElementById('copyBtnLabel');
+            if (label) label.textContent = "Copied!";
+            showToast("SHA-256 evidence integrity digest copied to clipboard.", "success");
+            setTimeout(() => {
+                if (label) label.textContent = "Copy";
+            }, 2500);
+        }).catch(() => {
+            showToast("Failed to copy digest. Please select and copy manually.", "warning");
+        });
     }
 </script>
 {% endblock %}

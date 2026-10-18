@@ -3,140 +3,243 @@
 {% block title %}Sign In — LandGuard AI Portal{% endblock %}
 
 {% block content %}
-<div class="relative min-h-[calc(100vh-2rem)] flex flex-col justify-center items-center px-4 py-8 overflow-hidden">
-    <!-- Ambient Backdrop Effects -->
-    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-cyan-600/10 blur-[140px] pointer-events-none -z-10"></div>
-    <div class="absolute bottom-10 -right-20 w-[450px] h-[450px] bg-indigo-600/10 blur-[130px] pointer-events-none -z-10"></div>
+<div class="relative min-h-screen flex flex-col justify-center items-center px-4 py-8 overflow-hidden lg-login-backdrop">
+    <div class="w-full max-w-[500px] mx-auto relative z-10">
+        <!-- Brand Header with Landing Page Animated Cyber Shield Logo -->
+        <div class="text-center mb-5">
+            <div class="inline-block mb-2">
+                <a href="/" class="lg-center-brand" title="LAND GUARD - Home">
+                  <!-- 1. Main Row: LAND [ ICON ] GUARD -->
+                  <div class="lg-brand-row">
+                    <!-- Left: Liquid Green Loading LAND -->
+                    <div class="lg-kinetic-word lg-word-land" data-text="LAND">
+                      LAND
+                      <span class="lg-word-fill-land">LAND</span>
+                    </div>
 
-    <div class="w-full max-w-md mx-auto">
-        <!-- Brand Header -->
-        <div class="text-center mb-6">
-            <a href="/" class="inline-flex items-center gap-2.5 mb-3 group">
-                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-cyan-500/25 border border-cyan-400/40 group-hover:scale-105 transition-transform">
-                    <i data-lucide="shield-check" class="w-6 h-6 text-white"></i>
-                </div>
-                <span class="text-2xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-100 to-cyan-400">LandGuard AI</span>
-            </a>
-            <h1 class="text-xl font-bold text-white tracking-tight">Access Verification Portal</h1>
-            <p class="text-xs text-slate-400 mt-1">Sign in with authorized credentials or select a demonstration role</p>
+                    <!-- Middle: Animated Cyber Shield Icon -->
+                    <div class="lg-middle-shield">
+                      <svg class="lg-shield-svg" viewBox="0 0 100 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                          <linearGradient id="shieldCenterBgLogin" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#0F172A"/>
+                            <stop offset="50%" stop-color="#0A221C"/>
+                            <stop offset="100%" stop-color="#02150F"/>
+                          </linearGradient>
+
+                          <linearGradient id="neonCyanCenterLogin" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#22D3EE"/>
+                            <stop offset="100%" stop-color="#06B6D4"/>
+                          </linearGradient>
+
+                          <linearGradient id="greenParcelGradLogin" x1="0%" y1="100%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#065F46"/>
+                            <stop offset="60%" stop-color="#34D399"/>
+                            <stop offset="100%" stop-color="#6EE7B7"/>
+                          </linearGradient>
+
+                          <filter id="centerGlowLogin" x="-30%" y="-30%" width="160%" height="160%">
+                            <feGaussianBlur stdDeviation="3" result="blur"/>
+                            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                          </filter>
+                        </defs>
+
+                        <!-- Outer Spinning Orbit -->
+                        <g class="lg-spin-orbit">
+                          <ellipse cx="50" cy="55" rx="46" ry="17" transform="rotate(-15 50 55)" stroke="#22D3EE" stroke-width="1.4" stroke-dasharray="14 90" fill="none"/>
+                          <circle cx="89" cy="38" r="2.2" fill="#22D3EE" filter="url(#centerGlowLogin)"/>
+                        </g>
+
+                        <!-- Main Shield Frame -->
+                        <path class="lg-shield-body" d="M50 7 C73 16 87 19 89 28 C89 67 55 93 50 101 C45 93 11 67 11 28 C13 19 27 16 50 7 Z" 
+                              fill="url(#shieldCenterBgLogin)" stroke="url(#neonCyanCenterLogin)" stroke-width="2.6" stroke-linejoin="round"/>
+                        
+                        <!-- Interior Cyber Grid -->
+                        <g stroke="#1E293B" stroke-width="1" opacity="0.8">
+                          <line x1="22" y1="28" x2="78" y2="28" />
+                          <line x1="18" y1="42" x2="82" y2="42" />
+                          <line x1="18" y1="56" x2="82" y2="56" />
+                          <line x1="50" y1="10" x2="50" y2="60" stroke="#22D3EE" stroke-width="1.2" opacity="0.6"/>
+                        </g>
+
+                        <!-- Vertical Scanning Laser -->
+                        <line class="lg-laser-sweep" x1="16" y1="20" x2="84" y2="20" stroke="#34D399" stroke-width="2" filter="url(#centerGlowLogin)"/>
+
+                        <!-- Circuit Traces & Nodes -->
+                        <g stroke="#22D3EE" stroke-width="1.8" stroke-linecap="round">
+                          <path d="M20 38 H32 L38 46" fill="none" opacity="0.85"/>
+                          <circle cx="20" cy="38" r="2" fill="#22D3EE" class="lg-blink-node"/>
+                          <circle cx="38" cy="46" r="2" fill="#34D399"/>
+                        </g>
+
+                        <!-- Smart Title Deed & Verified Badge -->
+                        <g transform="translate(43, 22)">
+                          <rect x="0" y="0" width="26" height="32" rx="3" fill="#061A14" stroke="#34D399" stroke-width="1.8"/>
+                          <line x1="5" y1="8" x2="21" y2="8" stroke="#34D399" stroke-width="1.8" stroke-linecap="round"/>
+                          <line x1="5" y1="14" x2="17" y2="14" stroke="#6EE7B7" stroke-width="1.8" stroke-linecap="round"/>
+                          <circle class="lg-verified-badge" cx="22" cy="24" r="5.5" fill="#34D399" filter="url(#centerGlowLogin)"/>
+                          <path d="M19.5 24 L21.5 26 L24.5 22.5" stroke="#022C22" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                        </g>
+
+                        <!-- Perspective Cadastre Ground Plots -->
+                        <g>
+                          <path d="M18 64 L48 58 L47 79 L16 77 Z" fill="#064E3B" opacity="0.95"/>
+                          <path d="M52 58 L82 64 L84 77 L53 79 Z" fill="#047857" opacity="0.95"/>
+                          <path d="M16 77 L47 79 L45 93 L22 86 Z" fill="url(#greenParcelGradLogin)"/>
+                          <path d="M53 79 L84 77 L78 86 L55 93 Z" fill="#10B981"/>
+                          <path d="M50 58 L50 95 M15 74 L85 74" stroke="#0F172A" stroke-width="1.5"/>
+                        </g>
+                      </svg>
+                    </div>
+
+                    <!-- Right: Liquid Cyan Loading GUARD -->
+                    <div class="lg-kinetic-word lg-word-guard" data-text="GUARD">
+                      GUARD
+                      <span class="lg-word-fill-guard">GUARD</span>
+                    </div>
+                  </div>
+
+                  <!-- 2. Cyber Base Plate -->
+                  <div class="lg-cyber-platform">
+                    <div class="lg-plate-wing lg-wing-left"></div>
+                    <div class="lg-plate-keyhole">
+                      <svg width="20" height="15" viewBox="0 0 24 20" fill="none">
+                        <path d="M12 2 L20 6 V12 C20 16 12 19 12 19 C12 19 4 16 4 12 V6 L12 2 Z" stroke="#22D3EE" stroke-width="1.8" fill="#0A111E"/>
+                        <circle cx="12" cy="9" r="2" fill="#22D3EE"/>
+                        <path d="M11 10.5 H13 L13.5 14 H10.5 L11 10.5 Z" fill="#22D3EE"/>
+                      </svg>
+                    </div>
+                    <div class="lg-plate-wing lg-wing-right"></div>
+                  </div>
+
+                  <!-- 3. Subtitle Tagline -->
+                  <div class="lg-subtext">SECURE DIGITAL CADASTRE</div>
+                </a>
+            </div>
+            <h1 class="text-xl sm:text-2xl font-bold text-white tracking-tight mt-1">{{ _('Access Verification Portal') }}</h1>
+            <p class="text-xs sm:text-sm text-slate-300 mt-1">{{ _('Sign in with authorized credentials or select a demonstration role') }}</p>
         </div>
 
         <!-- Error Notification Banner -->
-        <div id="login-error-banner" class="hidden mb-4 p-3.5 rounded-xl bg-rose-950/80 border border-rose-500/40 text-rose-200 text-xs flex items-center gap-3 shadow-lg">
+        <div id="login-error-banner" role="alert" class="hidden mb-4 p-3.5 rounded-xl bg-rose-950/85 border border-rose-500/50 text-rose-200 text-xs flex items-center gap-3 shadow-lg">
             <i data-lucide="alert-octagon" class="w-4 h-4 text-rose-400 shrink-0"></i>
-            <span id="login-error-text">Invalid credentials. Please verify your email and password.</span>
+            <span id="login-error-text">{{ _('Invalid credentials. Please verify your email and password.') }}</span>
         </div>
 
-        <!-- Main Card Container -->
-        <div class="glass-panel-glow p-6 sm:p-7 rounded-2xl border border-cyan-500/30 shadow-2xl relative">
+        <!-- Main Glass Card Container (Slightly enlarged and comfortable) -->
+        <div class="lg-glass-login-card p-6 sm:p-8 rounded-2xl relative shadow-2xl">
             <!-- Standard Authentication Form -->
             <form id="login-form" class="space-y-4" onsubmit="handleFormLogin(event)">
                 <div>
-                    <label for="email" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Email Address</label>
+                    <div class="flex items-center justify-between mb-1.5">
+                        <label for="email" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider">{{ _('Email Address') }}</label>
+                        <!-- Language Switcher Pill -->
+                        <div class="inline-flex items-center bg-slate-900/90 rounded-lg p-0.5 border border-slate-700/80 font-mono text-[10.5px] shadow-inner">
+                            <button type="button" onclick="setLanguagePreference('en')" class="px-2 py-0.5 rounded transition-all {% if (current_lang or 'bn') == 'en' %}bg-cyan-500 text-slate-950 font-bold shadow-sm{% else %}text-slate-400 hover:text-white{% endif %}">EN</button>
+                            <button type="button" onclick="setLanguagePreference('bn')" class="px-2 py-0.5 rounded transition-all {% if (current_lang or 'bn') == 'bn' %}bg-cyan-500 text-slate-950 font-bold shadow-sm{% else %}text-slate-400 hover:text-white{% endif %}">বাংলা</button>
+                        </div>
+                    </div>
                     <div class="relative">
                         <i data-lucide="mail" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
                         <input type="email" id="email" name="email" required autocomplete="email" placeholder="name@landguard.gov.bd"
-                               class="glass-input w-full pl-10 pr-4 py-2.5 rounded-xl text-sm placeholder:text-slate-500 focus:ring-1 focus:ring-cyan-500">
+                               class="lg-glass-input w-full pl-10 pr-4 py-3 rounded-xl text-sm placeholder:text-slate-500">
                     </div>
                 </div>
 
                 <div>
-                    <label for="password" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Password</label>
+                    <label for="password" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">{{ _('Password') }}</label>
                     <div class="relative">
                         <i data-lucide="lock" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
                         <input type="password" id="password" name="password" required autocomplete="current-password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
-                               class="glass-input w-full pl-10 pr-10 py-2.5 rounded-xl text-sm placeholder:text-slate-500 focus:ring-1 focus:ring-cyan-500">
-                        <button type="button" id="toggle-password-btn" onclick="togglePasswordVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 focus:outline-none p-1">
+                               class="lg-glass-input w-full pl-10 pr-10 py-3 rounded-xl text-sm placeholder:text-slate-500">
+                        <button type="button" id="toggle-password-btn" onclick="togglePasswordVisibility()" aria-label="Toggle password visibility" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 focus:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400 rounded p-1">
                             <i id="password-eye-icon" data-lucide="eye" class="w-4 h-4"></i>
                         </button>
                     </div>
                 </div>
 
-                <div class="flex items-center justify-between text-xs text-slate-400 pt-1">
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" id="remember_me" class="rounded bg-navy-900 border-slate-700 text-cyan-500 focus:ring-cyan-500">
-                        <span>Remember session</span>
+                <div class="flex items-center justify-between text-xs text-slate-300 pt-1">
+                    <label class="flex items-center gap-2 cursor-pointer select-none">
+                        <input type="checkbox" id="remember_me" class="rounded bg-slate-900 border-slate-700 text-cyan-400 focus:ring-cyan-400">
+                        <span>{{ _('Remember session') }}</span>
                     </label>
-                    <span class="text-slate-500 font-mono">24h TTL</span>
+                    <span class="text-slate-400 font-mono text-[11px] bg-slate-900/60 px-2 py-0.5 rounded border border-slate-800">24h TTL</span>
                 </div>
 
-                <button type="submit" id="submit-btn" class="w-full py-2.5 px-4 rounded-xl text-sm font-semibold text-navy-950 bg-gradient-to-r from-cyan-400 to-cyan-500 hover:from-cyan-300 hover:to-cyan-400 shadow-lg shadow-cyan-500/25 transition-all flex items-center justify-center gap-2 mt-2">
-                    <span id="submit-btn-text">Sign In to Account</span>
+                <!-- Submit Button with Motion -->
+                <button type="submit" id="submit-btn" class="lg-btn-primary w-full py-3 px-4 rounded-xl text-sm sm:text-base font-bold flex items-center justify-center gap-2 mt-2 shadow-lg shadow-cyan-500/25">
+                    <span id="submit-btn-text">{{ _('Sign In to Account') }}</span>
                     <i id="submit-btn-icon" data-lucide="arrow-right" class="w-4 h-4"></i>
-                    <div id="submit-btn-spinner" class="hidden w-4 h-4 border-2 border-navy-950 border-t-transparent rounded-full animate-spin"></div>
+                    <div id="submit-btn-spinner" class="hidden w-4 h-4 border-2 border-slate-950 border-t-transparent rounded-full animate-spin"></div>
                 </button>
             </form>
 
             <!-- Divider -->
             <div class="relative my-6">
-                <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-800"></div></div>
-                <div class="relative flex justify-center text-xs uppercase"><span class="bg-navy-900 px-3 text-slate-400 font-mono">Or Quick Demo Entry</span></div>
+                <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-800/80"></div></div>
+                <div class="relative flex justify-center text-xs uppercase"><span class="bg-[#0b1329] px-3.5 text-slate-400 font-mono tracking-wider">{{ _('Or Quick Demo Entry') }}</span></div>
             </div>
 
-            <!-- One-Click Demo Role Cards -->
-            <div class="space-y-2.5">
-                <!-- Demo Citizen -->
-                <button type="button" onclick="handleDemoLogin('citizen')"
-                        class="w-full text-left p-3 rounded-xl bg-slate-900/60 hover:bg-slate-800/80 border border-slate-800 hover:border-cyan-500/50 transition-all flex items-center justify-between group">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-lg bg-cyan-950 border border-cyan-500/30 flex items-center justify-center text-cyan-400 group-hover:bg-cyan-500 group-hover:text-navy-950 transition-colors">
+            <!-- One-Click Demo Role Cards with Role-Specific Accents & Hover Motion -->
+            <div class="space-y-3">
+                <!-- Demo Citizen (Cyan Accent) -->
+                <button type="button" id="demo-btn-citizen" onclick="handleDemoLogin('citizen')"
+                        class="lg-demo-card lg-demo-card-citizen w-full text-left p-3.5 rounded-xl flex items-center justify-between group">
+                    <div class="flex items-center gap-3.5 min-w-0">
+                        <div class="w-9 h-9 rounded-lg bg-cyan-950 border border-cyan-500/40 flex items-center justify-center text-cyan-400 group-hover:bg-cyan-400 group-hover:text-slate-950 transition-colors shrink-0">
                             <i data-lucide="user" class="w-4 h-4"></i>
                         </div>
-                        <div>
-                            <div class="text-xs font-bold text-white group-hover:text-cyan-300 flex items-center gap-1.5">
-                                <span>Continue as Demo Citizen</span>
-                                <span class="text-[10px] px-1.5 py-0.2 rounded bg-cyan-950 text-cyan-400 border border-cyan-800/50">Rafiqul Islam</span>
+                        <div class="truncate">
+                            <div class="text-xs sm:text-sm font-bold text-white group-hover:text-cyan-300 flex items-center gap-2 truncate">
+                                <span>{{ _('Continue as Demo Citizen') }}</span>
+                                <span class="text-[10px] px-1.5 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800/60 font-mono font-medium">Nakib Md Ashik</span>
                             </div>
-                            <div class="text-[11px] text-slate-400">Digital ID: CIT-BD-884920 &bull; Citizen Portal</div>
+                            <div class="text-xs text-slate-400 truncate mt-0.5">Digital ID: CIT-BD-884920 &bull; {{ _('Citizen Portal') }}</div>
                         </div>
                     </div>
-                    <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-cyan-400 group-hover:translate-x-0.5 transition-all"></i>
-                </button>
-
-                <!-- Demo Investigator -->
-                <button type="button" onclick="handleDemoLogin('investigator')"
-                        class="w-full text-left p-3 rounded-xl bg-slate-900/60 hover:bg-slate-800/80 border border-slate-800 hover:border-indigo-500/50 transition-all flex items-center justify-between group">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-lg bg-indigo-950 border border-indigo-500/30 flex items-center justify-center text-indigo-400 group-hover:bg-indigo-500 group-hover:text-navy-950 transition-colors">
-                            <i data-lucide="search" class="w-4 h-4"></i>
-                        </div>
-                        <div>
-                            <div class="text-xs font-bold text-white group-hover:text-indigo-300 flex items-center gap-1.5">
-                                <span>Continue as Demo Investigator</span>
-                                <span class="text-[10px] px-1.5 py-0.2 rounded bg-indigo-950 text-indigo-400 border border-indigo-800/50">Insp. S. Karim</span>
-                            </div>
-                            <div class="text-[11px] text-slate-400">Staff ID: OFF-INV-2041 &bull; Case Docket &amp; Review</div>
-                        </div>
+                    <div class="flex items-center gap-1.5 shrink-0 ml-2">
+                        <div id="demo-spinner-citizen" class="hidden w-3.5 h-3.5 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+                        <i data-lucide="chevron-right" class="lg-chevron-icon w-4 h-4 text-slate-400 group-hover:text-cyan-400 transition-transform"></i>
                     </div>
-                    <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-indigo-400 group-hover:translate-x-0.5 transition-all"></i>
                 </button>
 
-                <!-- Demo Admin -->
-                <button type="button" onclick="handleDemoLogin('admin')"
-                        class="w-full text-left p-3 rounded-xl bg-slate-900/60 hover:bg-slate-800/80 border border-slate-800 hover:border-emerald-500/50 transition-all flex items-center justify-between group">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-lg bg-emerald-950 border border-emerald-500/30 flex items-center justify-center text-emerald-400 group-hover:bg-emerald-500 group-hover:text-navy-950 transition-colors">
+                <!-- Demo Admin (Green Accent #34D399) -->
+                <button type="button" id="demo-btn-admin" onclick="handleDemoLogin('admin')"
+                        class="lg-demo-card lg-demo-card-admin w-full text-left p-3.5 rounded-xl flex items-center justify-between group">
+                    <div class="flex items-center gap-3.5 min-w-0">
+                        <div class="w-9 h-9 rounded-lg bg-emerald-950 border border-emerald-500/40 flex items-center justify-center text-[#34D399] group-hover:bg-[#34D399] group-hover:text-slate-950 transition-colors shrink-0">
                             <i data-lucide="shield-check" class="w-4 h-4"></i>
                         </div>
-                        <div>
-                            <div class="text-xs font-bold text-white group-hover:text-emerald-300 flex items-center gap-1.5">
-                                <span>Continue as Demo Admin</span>
-                                <span class="text-[10px] px-1.5 py-0.2 rounded bg-emerald-950 text-emerald-400 border border-emerald-800/50">Senior Registrar</span>
+                        <div class="truncate">
+                            <div class="text-xs sm:text-sm font-bold text-white group-hover:text-[#34D399] flex items-center gap-2 truncate">
+                                <span>{{ _('Continue as Demo Admin') }}</span>
+                                <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-950 text-[#34D399] border border-emerald-800/60 font-mono font-medium">{{ _('Senior Registrar') }}</span>
                             </div>
-                            <div class="text-[11px] text-slate-400">Staff ID: ADM-REG-1001 &bull; Full Ops &amp; Governance</div>
+                            <div class="text-xs text-slate-400 truncate mt-0.5">Staff ID: ADM-REG-1001 &bull; {{ _('Full Ops & Governance') }}</div>
                         </div>
                     </div>
-                    <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-emerald-400 group-hover:translate-x-0.5 transition-all"></i>
+                    <div class="flex items-center gap-1.5 shrink-0 ml-2">
+                        <div id="demo-spinner-admin" class="hidden w-3.5 h-3.5 border-2 border-[#34D399] border-t-transparent rounded-full animate-spin"></div>
+                        <i data-lucide="chevron-right" class="lg-chevron-icon w-4 h-4 text-slate-400 group-hover:text-[#34D399] transition-transform"></i>
+                    </div>
                 </button>
             </div>
         </div>
 
-        <!-- Back to Home Link -->
+        <!-- Back to Home Link (High-Contrast Cyber Glass Pill for Immediate Eye-Catching Visibility) -->
         <div class="text-center mt-6">
-            <a href="/" class="text-xs text-slate-400 hover:text-cyan-400 inline-flex items-center gap-1.5 transition-colors">
-                <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
-                <span>Return to Public Welcome Page</span>
+            <a href="/" class="inline-flex items-center gap-2.5 px-6 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-cyan-300 hover:text-white bg-slate-900/95 hover:bg-slate-800/95 border border-cyan-500/50 hover:border-cyan-300 shadow-xl shadow-cyan-950/40 backdrop-blur-md transition-all group hover:scale-[1.02]">
+                <i data-lucide="arrow-left" class="w-4 h-4 text-cyan-400 group-hover:-translate-x-1 transition-transform"></i>
+                <span class="tracking-wide">{{ _('Return to Public Welcome Page') }}</span>
             </a>
+        </div>
+
+        <!-- Synthetic Demo Disclaimer Notice -->
+        <div class="mt-4 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900/85 border border-amber-500/30 text-amber-300/90 text-[11px] sm:text-xs font-mono shadow-md backdrop-blur-md">
+                <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-amber-400 shrink-0"></i>
+                <span><strong>{{ _('SYNTHETIC DEMO:') }}</strong> {{ _('Research Benchmark • Not an Official Document') }}</span>
+            </div>
         </div>
     </div>
 </div>
@@ -144,6 +247,11 @@
 
 {% block extra_scripts %}
 <script>
+    // Safety & Privacy: Ensure hands-free voice control is strictly OFF on login screen
+    try {
+        sessionStorage.removeItem('landguard_voice_hands_free');
+    } catch (e) {}
+
     function togglePasswordVisibility() {
         const input = document.getElementById('password');
         const icon = document.getElementById('password-eye-icon');
@@ -164,16 +272,23 @@
         banner.classList.remove('hidden');
     }
 
+    function hideError() {
+        const banner = document.getElementById('login-error-banner');
+        if (banner) banner.classList.add('hidden');
+    }
+
     async function handleFormLogin(event) {
         event.preventDefault();
-        const email = document.getElementById('email').value;
+        hideError();
+
+        const email = document.getElementById('email').value.trim();
         const password = document.getElementById('password').value;
         const submitBtn = document.getElementById('submit-btn');
         const btnText = document.getElementById('submit-btn-text');
         const btnIcon = document.getElementById('submit-btn-icon');
         const spinner = document.getElementById('submit-btn-spinner');
 
-        // Loading state
+        // Loading state and duplicate-click guard
         submitBtn.disabled = true;
         btnText.innerText = "Authenticating...";
         btnIcon.classList.add('hidden');
@@ -210,8 +325,22 @@
     }
 
     async function handleDemoLogin(role) {
+        hideError();
+        const roleKey = role.toLowerCase();
+        const demoBtns = ['citizen', 'admin'];
+
+        // Disable all demo buttons to prevent duplicate submission
+        demoBtns.forEach(r => {
+            const b = document.getElementById(`demo-btn-${r}`);
+            if (b) b.disabled = true;
+        });
+
+        // Show spinner on selected demo card
+        const spinner = document.getElementById(`demo-spinner-${roleKey}`);
+        if (spinner) spinner.classList.remove('hidden');
+
         try {
-            const res = await fetch('/api/auth/demo-login?role=' + role, {
+            const res = await fetch('/api/auth/demo-login?role=' + roleKey, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' }
             });
@@ -221,17 +350,27 @@
                 window.location.href = data.redirect_url;
             } else {
                 showError(data.detail || "Demo sign-in failed.");
+                demoBtns.forEach(r => {
+                    const b = document.getElementById(`demo-btn-${r}`);
+                    if (b) b.disabled = false;
+                });
+                if (spinner) spinner.classList.add('hidden');
             }
         } catch (err) {
             showError("Error connecting to demo auth service: " + err.message);
+            demoBtns.forEach(r => {
+                const b = document.getElementById(`demo-btn-${r}`);
+                if (b) b.disabled = false;
+            });
+            if (spinner) spinner.classList.add('hidden');
         }
     }
 
-    // Auto-select demo if query param ?demo=citizen/investigator/admin is passed
+    // Auto-select demo if query param ?demo=citizen/admin is passed
     document.addEventListener("DOMContentLoaded", () => {
         const params = new URLSearchParams(window.location.search);
         const demo = params.get('demo');
-        if (demo && ['citizen', 'investigator', 'admin'].includes(demo.toLowerCase())) {
+        if (demo && ['citizen', 'admin'].includes(demo.toLowerCase())) {
             handleDemoLogin(demo.toLowerCase());
         }
     });

@@ -1,0 +1,259 @@
+<!-- ==============================================================================
+     6TH PAGE COMPONENT: 24/7 Citizen Support & Contact Us (Demo Helpline)
+     ============================================================================== -->
+<section id="support" class="relative w-full py-16 sm:py-24 border-t border-slate-800/70 scroll-mt-12 overflow-hidden" style="isolation: isolate;">
+    <!-- Sovereign National Support & Hotline Architecture Background -->
+    <div class="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
+        <img src="/static/images/parliament-night-bg.jpg" alt="National Citizen Support Architecture" class="w-full h-full object-cover object-center opacity-80 filter brightness-110 contrast-120 saturate-125">
+        <!-- Smooth Edge Blend -->
+        <div class="absolute inset-0 bg-gradient-to-b from-[#070b16] via-transparent to-[#070b16] opacity-75 pointer-events-none"></div>
+        <div class="absolute inset-0 bg-[#070b16]/35 pointer-events-none"></div>
+    </div>
+
+    <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+        <!-- Section Header -->
+    <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
+            {{ _('24/7 Dedicated Land Helpdesk & Dispute Desk') if current_lang != 'bn' else '২৪/৭ সার্বক্ষণিক নাগরিক সহায়তা ও অভিযোগ প্রতিকার বাতায়ন' }}
+        </h2>
+        <p class="text-sm sm:text-base text-slate-300 mt-3 leading-relaxed">
+            {{ _('Like all official Bangladesh government digital services, LandGuard AI provides round-the-clock helpline hotlines and rapid dispute intake.') if current_lang != 'bn' else 'বাংলাদেশ সরকারের অন্যান্য ডিজিটাল সেবার ন্যায় যেকোনো ভূমিসেবা, দলিলের সত্যতা যাচাই ও জমি সংক্রান্ত বিরোধের জরুরি সমাধানে ২৪ ঘণ্টা হটলাইন ও অভিযোগ সেল।' }}
+        </p>
+    </div>
+
+    <!-- 4 Emergency Demo Helpline Cards Row -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
+        
+        <!-- Helpline 1: 16122 (Land Hotline - Demo) -->
+        <div class="glass-panel p-6 rounded-2xl border border-cyan-500/40 bg-gradient-to-b from-slate-900 to-slate-950 flex flex-col justify-between shadow-xl hover:shadow-cyan-500/15 transition-all">
+            <div>
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-10 h-10 rounded-xl bg-cyan-950 border border-cyan-500/40 flex items-center justify-center text-cyan-400">
+                        <i data-lucide="phone-call" class="w-5 h-5"></i>
+                    </div>
+                    <span class="px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 font-mono text-[10px] font-bold border border-cyan-500/30">
+                        {{ _('DEMO HELPLINE') if current_lang != 'bn' else 'ডেমো হটলাইন' }}
+                    </span>
+                </div>
+                <div class="text-3xl font-extrabold font-mono text-cyan-400 mb-1">
+                    ১৬১২২ <span class="text-xs text-slate-400 font-sans">(ডেমো)</span>
+                </div>
+                <h4 class="text-sm font-bold text-white mb-2">
+                    {{ _('Land Service Hotline (24/7)') if current_lang != 'bn' else 'ভূমিসেবা হটলাইন (২৪ ঘণ্টা)' }}
+                </h4>
+                <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                    {{ _('Statutory land queries, mutation tracking, khatian status, and registry dispute escalation.') if current_lang != 'bn' else 'ভূমি সংক্রান্ত যেকোনো আইনি প্রশ্ন, নামজারি ট্র্যাকিং ও দলিলের সঠিকতা অনুসন্ধান।' }}
+                </p>
+            </div>
+            <a href="tel:16122" class="w-full py-2.5 px-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-bold flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 transition-colors">
+                <i data-lucide="phone" class="w-4 h-4"></i>
+                <span>{{ _('Call 16122 (Demo)') if current_lang != 'bn' else 'সরাসরি কল করুন (১৬১২২)' }}</span>
+            </a>
+        </div>
+
+        <!-- Helpline 2: 333 (National Citizen Services - Demo) -->
+        <div class="glass-panel p-6 rounded-2xl border border-slate-800 hover:border-indigo-500/50 bg-gradient-to-b from-slate-900 to-slate-950 flex flex-col justify-between shadow-xl hover:shadow-indigo-500/15 transition-all">
+            <div>
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-950 border border-indigo-500/40 flex items-center justify-center text-indigo-400">
+                        <i data-lucide="info" class="w-5 h-5"></i>
+                    </div>
+                    <span class="px-2 py-0.5 rounded bg-indigo-950 text-indigo-300 font-mono text-[10px] font-bold border border-indigo-500/30">
+                        {{ _('DEMO HELPLINE') if current_lang != 'bn' else 'ডেমো হটলাইন' }}
+                    </span>
+                </div>
+                <div class="text-3xl font-extrabold font-mono text-indigo-400 mb-1">
+                    ৩৩৩ <span class="text-xs text-slate-400 font-sans">(ডেমো)</span>
+                </div>
+                <h4 class="text-sm font-bold text-white mb-2">
+                    {{ _('National Citizen Portal (333)') if current_lang != 'bn' else 'জাতীয় তথ্য ও সেবা (৩৩৩)' }}
+                </h4>
+                <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                    {{ _('Government agency information, district administrative coordination, and citizen grievance intake.') if current_lang != 'bn' else 'সরকারি সকল সেবার সাধারণ তথ্য, জেলা প্রশাসন সংযোগ ও নাগরিক সহায়তা কেন্দ্র।' }}
+                </p>
+            </div>
+            <a href="tel:333" class="w-full py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-indigo-600 text-white text-xs font-bold flex items-center justify-center gap-2 transition-colors">
+                <i data-lucide="phone" class="w-4 h-4 text-indigo-400"></i>
+                <span>{{ _('Call 333 (Demo)') if current_lang != 'bn' else 'সরাসরি কল করুন (৩৩৩)' }}</span>
+            </a>
+        </div>
+
+        <!-- Helpline 3: 106 (Anti-Corruption Hotline - Demo) -->
+        <div class="glass-panel p-6 rounded-2xl border border-slate-800 hover:border-rose-500/50 bg-gradient-to-b from-slate-900 to-slate-950 flex flex-col justify-between shadow-xl hover:shadow-rose-500/15 transition-all">
+            <div>
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-10 h-10 rounded-xl bg-rose-950 border border-rose-500/40 flex items-center justify-center text-rose-400">
+                        <i data-lucide="shield-alert" class="w-5 h-5"></i>
+                    </div>
+                    <span class="px-2 py-0.5 rounded bg-rose-950 text-rose-300 font-mono text-[10px] font-bold border border-rose-500/30">
+                        {{ _('DEMO HELPLINE') if current_lang != 'bn' else 'ডেমো হটলাইন' }}
+                    </span>
+                </div>
+                <div class="text-3xl font-extrabold font-mono text-rose-400 mb-1">
+                    ১০৬ <span class="text-xs text-slate-400 font-sans">(ডেমো)</span>
+                </div>
+                <h4 class="text-sm font-bold text-white mb-2">
+                    {{ _('Anti-Corruption Hotline (106)') if current_lang != 'bn' else 'দুদক সততা ও অভিযোগ হটলাইন' }}
+                </h4>
+                <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                    {{ _('Direct reporting of fraudulent registration, illicit land brokerage, and forged mutation syndicates.') if current_lang != 'bn' else 'ভূমি অফিসে দুর্নীতি, দালাল চক্র ও জাল দলিল চক্রের বিরুদ্ধে তাৎক্ষণিক গোপন অভিযোগ।' }}
+                </p>
+            </div>
+            <a href="tel:106" class="w-full py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-rose-600 text-white text-xs font-bold flex items-center justify-center gap-2 transition-colors">
+                <i data-lucide="phone" class="w-4 h-4 text-rose-400"></i>
+                <span>{{ _('Call 106 (Demo)') if current_lang != 'bn' else 'সরাসরি কল করুন (১০৬)' }}</span>
+            </a>
+        </div>
+
+        <!-- Helpline 4: AI Technical Desk (Demo) -->
+        <div class="glass-panel p-6 rounded-2xl border border-slate-800 hover:border-teal-500/50 bg-gradient-to-b from-slate-900 to-slate-950 flex flex-col justify-between shadow-xl hover:shadow-teal-500/15 transition-all">
+            <div>
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-10 h-10 rounded-xl bg-teal-950 border border-teal-500/40 flex items-center justify-center text-teal-400">
+                        <i data-lucide="sparkles" class="w-5 h-5"></i>
+                    </div>
+                    <span class="px-2 py-0.5 rounded bg-teal-950 text-teal-300 font-mono text-[10px] font-bold border border-teal-500/30">
+                        {{ _('AI CONTROL ROOM') if current_lang != 'bn' else 'এআই কন্ট্রোল রুম' }}
+                    </span>
+                </div>
+                <div class="text-2xl font-extrabold font-mono text-teal-400 mb-1">
+                    ০৯৬১২-ল্যান্ডগার্ড <span class="text-xs text-slate-400 font-sans">(ডেমো)</span>
+                </div>
+                <h4 class="text-sm font-bold text-white mb-2">
+                    {{ _('LandGuard AI Command Desk') if current_lang != 'bn' else 'বিশেষায়িত এআই ল্যাব হেল্পডেস্ক' }}
+                </h4>
+                <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                    {{ _('Technical assistance on document OCR ingestion, API integrations, and model inference calibration.') if current_lang != 'bn' else 'ডিজিটাল দলিলের ওসিআর ফলাফল, এপিআই সংযোগ ও সিস্টেম অডিট সংক্রান্ত সহায়তা।' }}
+                </p>
+            </div>
+            <a href="mailto:support@landguard.gov.bd" class="w-full py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-teal-600 text-white text-xs font-bold flex items-center justify-center gap-2 transition-colors">
+                <i data-lucide="mail" class="w-4 h-4 text-teal-400"></i>
+                <span>{{ _('Email Desk (Demo)') if current_lang != 'bn' else 'ইমেইল সহায়তা (ডেমো)' }}</span>
+            </a>
+        </div>
+
+    </div>
+
+    <!-- Contact & AI Instant Land Dispute Intake Form -->
+    <div class="glass-panel p-6 sm:p-10 rounded-3xl border border-slate-800 relative overflow-hidden bg-slate-900/80 shadow-2xl">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- Left Info Panel -->
+            <div class="lg:col-span-5 flex flex-col justify-between h-full">
+                <div>
+                    <span class="text-xs font-mono text-cyan-400 uppercase tracking-widest block mb-1">
+                        {{ _('Instant Escalation Desk') if current_lang != 'bn' else 'তাৎক্ষণিক এআই অভিযোগ প্রতিকার' }}
+                    </span>
+                    <h3 class="text-2xl font-extrabold text-white mb-3">
+                        {{ _('Submit a Land Dispute or Inconsistency') if current_lang != 'bn' else 'ভূমি বিরোধ বা জাল দলিলের অভিযোগ দাখিল করুন' }}
+                    </h3>
+                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed mb-6">
+                        {{ _('Flagged an inconsistency on your property or suspect double selling? Submit the deed or plot details for automated AI cross-registry examination and officer review.') if current_lang != 'bn' else 'আপনার জমিতে দ্বৈত বিক্রি, অবৈধ নামজারি বা জাল দলিলের আশঙ্কা থাকলে এখানে বিবরণ দাখিল করুন। আমাদের এআই সিস্টেম তাৎক্ষণিকভাবে মূল রেজিস্ট্রি আর্কাইভ যাচাই করে প্রতিকার পদক্ষেপ গ্রহণ করবে।' }}
+                    </p>
+
+                    <div class="space-y-4 text-xs text-slate-300">
+                        <div class="flex items-start gap-3">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-cyan-400 mt-0.5 shrink-0"></i>
+                            <div>
+                                <span class="font-bold text-white block">{{ _('Central Pilot Command Center (Demo):') if current_lang != 'bn' else 'কেন্দ্রীয় পাইলট কমান্ড সেন্টার (ডেমো):' }}</span>
+                                <span class="text-slate-400">{{ _('Bhumi Bhaban, Shaheed Tajuddin Ahmad Sarani, Tejgaon, Dhaka-1208') if current_lang != 'bn' else 'ভূমি ভবন, শহীদ তাজউদ্দীন আহমদ সরণি, তেজগাঁও, ঢাকা-১২০৮' }}</span>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <i data-lucide="clock" class="w-4 h-4 text-emerald-400 mt-0.5 shrink-0"></i>
+                            <div>
+                                <span class="font-bold text-white block">{{ _('Operating Hours:') if current_lang != 'bn' else 'সেবা প্রদানের সময়সূচি:' }}</span>
+                                <span class="text-slate-400">{{ _('24 Hours Hotline • Online Submissions 24/7/365') if current_lang != 'bn' else 'হটলাইন সার্বক্ষণিক ২৪ ঘণ্টা • অনলাইন আবেদন প্রতিদিন যেকোনো সময়ে' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 pt-6 border-t border-slate-800">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-full bg-cyan-950 border border-cyan-500/40 flex items-center justify-center text-cyan-400 font-mono text-xs font-bold">
+                            AI
+                        </div>
+                        <div class="text-[11px] text-slate-400">
+                            <span class="text-white font-semibold block">{{ _('Hello Daffodil Voice Support') if current_lang != 'bn' else 'হ্যালো ড্যাফোডিল ভয়েস কন্ট্রোল' }}</span>
+                            <span>{{ _('Say "Hello Daffodil" to navigate hands-free') if current_lang != 'bn' else 'ভয়েস নির্দেশনার মাধ্যমেও সাহায্য চাইতে পারেন' }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Interactive Form Panel -->
+            <div class="lg:col-span-7 bg-slate-950/80 p-6 sm:p-7 rounded-2xl border border-slate-800">
+                <form id="landing-contact-form" onsubmit="handleLandingContactSubmit(event)" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                                {{ _('Citizen Full Name') if current_lang != 'bn' else 'নাগরিকের নাম' }} *
+                            </label>
+                            <input type="text" required placeholder="মোঃ আশিকুর রহমান (ডেমো)" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-xs placeholder:text-slate-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                                {{ _('Mobile Number (Demo)') if current_lang != 'bn' else 'মোবাইল নম্বর (ডেমো)' }} *
+                            </label>
+                            <input type="tel" required placeholder="017XXXXXXXX" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-xs placeholder:text-slate-500">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                                {{ _('Disputed Deed / Dag Number') if current_lang != 'bn' else 'বিরোধপূর্ণ দলিল / দাগ নম্বর' }} *
+                            </label>
+                            <input type="text" required placeholder="DEED-2005-23539 / দাগ নং ৬৭৯২" class="glass-input w-full px-3.5 py-2.5 rounded-xl text-xs placeholder:text-slate-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                                {{ _('Dispute Category') if current_lang != 'bn' else 'বিরোধের ধরন' }}
+                            </label>
+                            <select class="glass-input w-full px-3.5 py-2.5 rounded-xl text-xs text-slate-200">
+                                <option>{{ _('Conflicting Double Selling (দ্বৈত দলিল বিক্রি)') if current_lang != 'bn' else 'দ্বৈত দলিল বিক্রি (Double Selling)' }}</option>
+                                <option>{{ _('Unregistered / Altered Mutation (জাল নামজারি ও জমাভাগ)') if current_lang != 'bn' else 'জাল নামজারি ও জমাভাগ (Forged Mutation)' }}</option>
+                                <option>{{ _('Physical Seam / Paper Tampering (কাগজ ঘষামাজা ও সিল জালিয়াতি)') if current_lang != 'bn' else 'কাগজ ঘষামাজা ও সিল জালিয়াতি' }}</option>
+                                <option>{{ _('Boundary / Dag Dispossession (দাগ জবরদখল ও সীমানা বিরোধ)') if current_lang != 'bn' else 'দাগ জবরদখল ও সীমানা বিরোধ' }}</option>
+                                <option>{{ _('Other Statutory Inconsistency (অন্যান্য অভিযোগ)') if current_lang != 'bn' else 'অন্যান্য অভিযোগ' }}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                            {{ _('Narrative Details of Incident') if current_lang != 'bn' else 'অভিযোগের বিস্তারিত বিবরণ' }} *
+                        </label>
+                        <textarea rows="3" required placeholder="আমার ক্রয়কৃত জমির দাগ নম্বরে অন্য ব্যক্তি জাল দলিল তৈরি করে দখলের চেষ্টা করছে..." class="glass-input w-full px-3.5 py-2.5 rounded-xl text-xs placeholder:text-slate-500"></textarea>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-2">
+                        <span class="text-[11px] font-mono text-slate-500">
+                            {{ _('Demo Intake • Not a formal FIR submission') if current_lang != 'bn' else 'ডেমো আবেদন বাতায়ন • সরাসরি পরীক্ষা নিরীক্ষা সেল' }}
+                        </span>
+                        <button type="submit" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 to-cyan-500 hover:from-cyan-300 hover:to-cyan-400 text-slate-950 font-bold text-xs flex items-center gap-2 shadow-lg shadow-cyan-500/25 transition-all">
+                            <i data-lucide="send" class="w-3.5 h-3.5"></i>
+                            <span>{{ _('Submit Dispute Form (Demo)') if current_lang != 'bn' else 'অভিযোগ দাখিল করুন (ডেমো)' }}</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    </div>
+</section>
+
+<script>
+    function handleLandingContactSubmit(e) {
+        e.preventDefault();
+        const trackingId = 'LG-DISP-' + Math.floor(100000 + Math.random() * 900000);
+        showToast(
+            '{{ _('Your dispute inquiry has been submitted! Tracking ID:') if current_lang != 'bn' else 'আপনার অভিযোগটি গৃহীত হয়েছে! ট্র্যাকিং আইডি:' }} ' + trackingId + ' (ডেমো)',
+            'success',
+            6000
+        );
+        e.target.reset();
+    }
+</script>

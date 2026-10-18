@@ -3,59 +3,161 @@
 {% block title %}Operations Settings & SLA — LandGuard AI{% endblock %}
 
 {% block portal_content %}
-<div class="max-w-4xl mx-auto space-y-6">
+<div class="w-full max-w-6xl mx-auto space-y-6">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Operations Settings &amp; Rulesets</h1>
-            <p class="text-xs sm:text-sm text-slate-400 mt-1">Configure statutory decision thresholds, SLA deadlines, and audit policies.</p>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">{{ _("Operations Settings & Rulesets") }}</h1>
+            <p class="text-xs sm:text-sm text-slate-400 mt-1">{{ _("Configure statutory decision thresholds, SLA deadlines, and audit policies.") }}</p>
         </div>
     </div>
 
     <div class="glass-panel p-6 rounded-2xl border border-slate-800 space-y-6">
         <div>
-            <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Statutory Risk Thresholds</h3>
+            <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">{{ _("Statutory Risk Thresholds") }}</h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
                 <div>
                     <label class="block text-slate-300 mb-1">XGBoost Flagging Threshold (tau)</label>
-                    <input type="number" step="0.01" value="0.35" class="glass-input w-full px-3 py-2 rounded-xl text-xs">
+                    <input type="number" id="input-tau" step="0.01" value="0.35" class="glass-input w-full px-3 py-2 rounded-xl text-xs text-white">
                     <span class="text-[10px] text-slate-500 mt-1 block">Calibrated operating point yielding 1.000 recall and 0.0013 Brier.</span>
                 </div>
                 <div>
                     <label class="block text-slate-300 mb-1">Critical Escalation Risk Threshold</label>
-                    <input type="number" step="0.01" value="0.70" class="glass-input w-full px-3 py-2 rounded-xl text-xs">
+                    <input type="number" id="input-critical" step="0.01" value="0.70" class="glass-input w-full px-3 py-2 rounded-xl text-xs text-white">
                     <span class="text-[10px] text-slate-500 mt-1 block">Scores exceeding 0.70 automatically trigger formal docket priority.</span>
                 </div>
             </div>
         </div>
 
         <div class="pt-4 border-t border-slate-800">
-            <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Investigation SLA Turnaround Targets</h3>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
+            <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">{{ _("Investigation SLA Turnaround Targets") }}</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-mono">
                 <div>
-                    <label class="block text-slate-300 mb-1">Expedited Grievance Target (Hours)</label>
-                    <input type="number" value="24" class="glass-input w-full px-3 py-2 rounded-xl text-xs">
+                    <label class="block text-slate-300 mb-1">{{ _("Critical / Expedited (Hours)") }}</label>
+                    <input type="number" id="input-sla-crit" value="24" class="glass-input w-full px-3 py-2 rounded-xl text-xs text-white">
                 </div>
                 <div>
-                    <label class="block text-slate-300 mb-1">Standard Statutory Review Target (Hours)</label>
-                    <input type="number" value="72" class="glass-input w-full px-3 py-2 rounded-xl text-xs">
+                    <label class="block text-slate-300 mb-1">{{ _("High Urgency (Hours)") }}</label>
+                    <input type="number" id="input-sla-high" value="48" class="glass-input w-full px-3 py-2 rounded-xl text-xs text-white">
+                </div>
+                <div>
+                    <label class="block text-slate-300 mb-1">{{ _("Standard Statutory Review (Hours)") }}</label>
+                    <input type="number" id="input-sla-norm" value="120" class="glass-input w-full px-3 py-2 rounded-xl text-xs text-white">
                 </div>
             </div>
         </div>
 
         <div class="pt-4 border-t border-slate-800">
-            <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Statutory Rulebook Governance</h3>
-            <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800 text-xs font-mono text-slate-300 space-y-1">
-                <div>Active Rulebook: <strong class="text-white">LandGuard Statutory P3 v2.4.0</strong></div>
-                <div>Precedence: <strong class="text-cyan-400">Deterministic Rules &gt; Human Review &gt; Supplementary ML</strong></div>
-                <div>Statutory Codification: <strong class="text-slate-400">Registration Act 1908 s.47, SAT Act 1950 s.143, Transfer of Property Act 1882 s.54</strong></div>
+            <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">{{ _("Statutory Rulebook Governance") }}</h3>
+            <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800 text-xs font-mono text-slate-300 space-y-2">
+                <div class="flex items-center justify-between">
+                    <div>Active Version: <strong id="active-ruleset-ver" class="text-cyan-400">v2.4.0</strong></div>
+                    <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-500/30">ENFORCED</span>
+                </div>
+                <div>Precedence: <strong class="text-white">Deterministic Rules &gt; Human Review &gt; Supplementary ML</strong></div>
+                <div class="text-slate-400 text-[11px]">Codifications: Registration Act 1908 s.47, SAT Act 1950 s.143, Transfer of Property Act 1882 s.54</div>
             </div>
         </div>
 
-        <div class="pt-4 border-t border-slate-800 flex justify-end">
-            <button type="button" onclick="showToast('Operations settings updated successfully', 'success')" class="px-5 py-2.5 rounded-xl text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 transition-colors">
-                Save Administrative Settings
+        <!-- Statutory Justification Input for Administrative Rule Changes -->
+        <div class="pt-4 border-t border-slate-800 space-y-2">
+            <label class="block text-xs font-semibold text-slate-300">{{ _("Administrative Amendment Justification") }} <span class="text-rose-400">*</span></label>
+            <p class="text-[11px] text-slate-500">Under SRS v5 Section 10, rule modifications require an explicit statutory rationale and create an immutable version entry.</p>
+            <textarea id="ruleset-justification" rows="2" placeholder="State official gazette reference or regulatory committee justification..."
+                      class="glass-input w-full p-2.5 rounded-xl text-xs text-white"></textarea>
+        </div>
+
+        <div class="pt-2 flex justify-end">
+            <button type="button" onclick="submitRulebookUpdate()" class="px-5 py-2.5 rounded-xl text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 transition-colors flex items-center gap-1.5 shadow-lg shadow-indigo-500/20">
+                <i data-lucide="shield-check" class="w-4 h-4"></i>
+                <span>{{ _("Publish Approved Ruleset Version") }}</span>
             </button>
         </div>
     </div>
+
+    <!-- Immutable Ruleset Version History -->
+    <div class="glass-panel p-6 rounded-2xl border border-slate-800 space-y-4">
+        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+            <i data-lucide="history" class="w-4 h-4 text-cyan-400"></i>
+            <span>{{ _("Ruleset Version Audit History") }}</span>
+        </h3>
+        <div id="ruleset-history-list" class="space-y-2 text-xs font-mono">
+            <div class="text-slate-500">Loading version history...</div>
+        </div>
+    </div>
 </div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    async function loadRulesetData() {
+        try {
+            const res = await fetch('/api/admin/rules');
+            if (!res.ok) return;
+            const data = await res.json();
+            const active = data.active_ruleset;
+            if (active) {
+                document.getElementById('active-ruleset-ver').innerText = `v${active.ruleset_version}`;
+                if (active.ml_thresholds) {
+                    document.getElementById('input-tau').value = active.ml_thresholds.tau_flagging_threshold;
+                    document.getElementById('input-critical').value = active.ml_thresholds.critical_escalation_threshold;
+                    document.getElementById('input-sla-crit').value = active.ml_thresholds.sla_critical_hours || 24;
+                    document.getElementById('input-sla-high').value = active.ml_thresholds.sla_high_hours || 48;
+                    document.getElementById('input-sla-norm').value = active.ml_thresholds.sla_normal_hours || 120;
+                }
+            }
+
+            const histList = document.getElementById('ruleset-history-list');
+            if (data.version_history && histList) {
+                histList.innerHTML = data.version_history.slice().reverse().map(v => `
+                    <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800 space-y-1">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-cyan-400">Version ${v.ruleset_version}</span>
+                            <span class="text-[10px] text-slate-500">${v.effective_date ? v.effective_date.slice(0, 19).replace('T', ' ') : 'N/A'}</span>
+                        </div>
+                        <div class="text-slate-300 text-[11px] font-sans">${v.justification}</div>
+                        <div class="text-[10px] text-slate-500 font-mono">Approved by: ${v.modified_by}</div>
+                    </div>
+                `).join('');
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async function submitRulebookUpdate() {
+        const justification = document.getElementById('ruleset-justification').value;
+        if (!justification || justification.trim().length < 10) {
+            showToast("A statutory justification of at least 10 characters is required.", "warning");
+            return;
+        }
+
+        const thresholds = {
+            tau_flagging_threshold: parseFloat(document.getElementById('input-tau').value),
+            critical_escalation_threshold: parseFloat(document.getElementById('input-critical').value),
+            sla_critical_hours: parseInt(document.getElementById('input-sla-crit').value),
+            sla_high_hours: parseInt(document.getElementById('input-sla-high').value),
+            sla_normal_hours: parseInt(document.getElementById('input-sla-norm').value),
+        };
+
+        try {
+            const res = await fetch('/api/admin/rules/update', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ thresholds, justification: justification.trim() })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                showToast(`New ruleset version ${data.ruleset_version} successfully codified!`, "success");
+                document.getElementById('ruleset-justification').value = '';
+                loadRulesetData();
+            } else {
+                showToast(data.detail || "Update failed", "error");
+            }
+        } catch (e) {
+            showToast("Error updating ruleset: " + e.message, "error");
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", loadRulesetData);
+</script>
 {% endblock %}

@@ -1,0 +1,441 @@
+<!-- ==============================================================================
+     2ND PAGE COMPONENT: Statutory Land Services & Supported Document Types
+     ============================================================================== -->
+<section id="services" class="relative w-full py-16 sm:py-24 border-t border-slate-800/70 scroll-mt-12 overflow-hidden" style="isolation: isolate;">
+    <!-- Real Cadastral Farmland Grid Background with Balanced Contrast & Dimmed Ambience -->
+    <div class="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
+        <img src="/static/images/cadastre-farmland-bg.jpg" alt="Bangladesh Cadastral Farmland Grid" class="w-full h-full object-cover object-center opacity-55 filter brightness-90 contrast-115 saturate-120">
+        <!-- Smooth Edge Blend & Subtle Darkening Tint -->
+        <div class="absolute inset-0 bg-gradient-to-b from-[#070b16] via-[#070b16]/30 to-[#070b16] opacity-85 pointer-events-none"></div>
+        <div class="absolute inset-0 bg-[#070b16]/40 pointer-events-none"></div>
+    </div>
+
+    <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+        <!-- Section Header -->
+    <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
+            {{ _('Supported Document Types for Verification') if current_lang != 'bn' else 'যাচাইযোগ্য দলিলের ধরন ও ডিজিটাল সেবা' }}
+        </h2>
+        <p class="text-sm sm:text-base text-slate-300 mt-3 leading-relaxed">
+            {{ _('LandGuard AI analyzes real & synthetic deeds across 6 core Bangladesh land registry categories and citizen credentials, checking statutory validity, OCR concordance, and physical tampering.') if current_lang != 'bn' else 'ল্যান্ডগার্ড এআই বাংলাদেশের ভূমি প্রশাসন ও আইন অনুযায়ী ৬টি প্রধান সংবিধিবদ্ধ দলিল ও জাতীয় পরিচয়পত্র নিখুঁতভাবে বিশ্লেষণ করে আইনি বৈধতা, ওসিআর মিল ও ফিজিক্যাল টেম্পারিং শনাক্ত করে।' }}
+        </p>
+    </div>
+
+    <!-- 7 Document Type Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
+        
+        <!-- 1. Deed of Sale (সাফ-কবলা দলিল) -->
+        <div class="glass-panel rounded-2xl border border-slate-800 hover:border-cyan-500/50 transition-all duration-300 flex flex-col overflow-hidden group shadow-lg hover:shadow-cyan-500/10">
+            <!-- Sample Image Thumbnail Container -->
+            <div class="relative h-56 bg-slate-950 overflow-hidden cursor-pointer" onclick="openDocLightbox('/static/images/samples/sample_sale_deed.png', '{{ _('Deed of Sale (সাফ-কবলা দলিল)') }}', '{{ _('Sub-Registry Title Deed • Registration Act 1908') }}')">
+                <img src="/static/images/samples/sample_sale_deed.png" alt="Deed of Sale Sample" class="w-full h-full object-cover object-top filter brightness-95 group-hover:scale-105 transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+                <div class="absolute top-3 left-3 bg-cyan-950/85 backdrop-blur-md border border-cyan-500/40 px-2.5 py-1 rounded-md text-[11px] font-mono text-cyan-300 flex items-center gap-1.5">
+                    <i data-lucide="file-text" class="w-3 h-3 text-cyan-400"></i>
+                    <span>{{ _('Deed of Sale') if current_lang != 'bn' else 'সাফ-কবলা দলিল' }}</span>
+                </div>
+                <div class="absolute bottom-3 right-3 bg-slate-900/90 hover:bg-cyan-500 hover:text-slate-950 text-cyan-300 text-[10px] font-bold px-2 py-1 rounded border border-cyan-500/30 flex items-center gap-1 transition-all">
+                    <i data-lucide="maximize-2" class="w-3 h-3"></i>
+                    <span>{{ _('View Sample') if current_lang != 'bn' else 'নমুনা দেখুন' }}</span>
+                </div>
+            </div>
+            <!-- Card Body -->
+            <div class="p-5 flex-1 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-base font-bold text-white mb-2 flex items-center justify-between">
+                        <span>{{ _('Deed of Sale (সাফ-কবলা দলিল)') if current_lang != 'bn' else 'সাফ-কবলা দলিল (Kabala Deed)' }}</span>
+                    </h3>
+                    <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                        {{ _('Primary conveyance instrument transferring registered title, dag plot ownership, and consideration under Sub-Registry seal.') if current_lang != 'bn' else 'মালিকানা হস্তান্তর ও দখল অর্পণের মূল দলিল। সাব-রেজিস্ট্রার অফিসের ভলিউম ও সিলযুক্ত নিবন্ধন রেকর্ড।' }}
+                    </p>
+                    <ul class="text-xs text-slate-300 space-y-1.5 font-mono">
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400 shrink-0"></i>
+                            <span>{{ _('Deed No, Execution Date & Sub-Registry Office') if current_lang != 'bn' else 'দলিল নম্বর, সম্পাদনের তারিখ ও সাব-রেজিস্ট্রি' }}</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400 shrink-0"></i>
+                            <span>{{ _('Seller & Buyer NIDs, Names & Thumbprints') if current_lang != 'bn' else 'দাতা-গ্রহীতার এনআইডি, নাম ও টিপসহি' }}</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400 shrink-0"></i>
+                            <span>{{ _('Dag Plot, Transferred Decimal & Consideration BDT') if current_lang != 'bn' else 'দাগ নম্বর, হস্তান্তরিত শতক ও পণমূল্য (টাকা)' }}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
+                    <span class="font-mono text-cyan-400">{{ _('Registration Act 1908 §17') if current_lang != 'bn' else 'রেজিস্ট্রেশন আইন ১৯০৮ (ধারা ১৭)' }}</span>
+                    <span class="px-2 py-0.5 rounded bg-emerald-950/60 border border-emerald-500/30 text-emerald-300 text-[10px] font-bold">{{ _('OCR & Seam AI') }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Khatian / Porcha (খতিয়ান ও পর্চা) -->
+        <div class="glass-panel rounded-2xl border border-slate-800 hover:border-indigo-500/50 transition-all duration-300 flex flex-col overflow-hidden group shadow-lg hover:shadow-indigo-500/10">
+            <!-- Sample Image Thumbnail Container -->
+            <div class="relative h-56 bg-slate-950 overflow-hidden cursor-pointer" onclick="openDocLightbox('/static/images/samples/sample_khatian.png', '{{ _('Khatian / Record of Rights (খতিয়ান ও পর্চা)') }}', '{{ _('CS • SA • RS • BS Survey Ledgers') }}')">
+                <img src="/static/images/samples/sample_khatian.png" alt="Khatian Sample" class="w-full h-full object-cover object-top filter brightness-95 group-hover:scale-105 transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+                <div class="absolute top-3 left-3 bg-indigo-950/85 backdrop-blur-md border border-indigo-500/40 px-2.5 py-1 rounded-md text-[11px] font-mono text-indigo-300 flex items-center gap-1.5">
+                    <i data-lucide="book-open" class="w-3 h-3 text-indigo-400"></i>
+                    <span>{{ _('Khatian / Porcha') if current_lang != 'bn' else 'খতিয়ান ও পর্চা' }}</span>
+                </div>
+                <div class="absolute bottom-3 right-3 bg-slate-900/90 hover:bg-indigo-500 hover:text-slate-950 text-indigo-300 text-[10px] font-bold px-2 py-1 rounded border border-indigo-500/30 flex items-center gap-1 transition-all">
+                    <i data-lucide="maximize-2" class="w-3 h-3"></i>
+                    <span>{{ _('View Sample') if current_lang != 'bn' else 'নমুনা দেখুন' }}</span>
+                </div>
+            </div>
+            <!-- Card Body -->
+            <div class="p-5 flex-1 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-base font-bold text-white mb-2 flex items-center justify-between">
+                        <span>{{ _('Record of Rights (খতিয়ান ও পর্চা)') if current_lang != 'bn' else 'খতিয়ান ও পর্চা (ROR / Porcha)' }}</span>
+                    </h3>
+                    <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                        {{ _('Statutory land survey records tracking historical tenancy, ancestral chain-of-title, and proprietary share fractions.') if current_lang != 'bn' else 'ভূমি জরিপ ও রেকর্ড অফ রাইটস। মালিকদের ধারাবাহিক অংশীদারিত্ব, খতিয়ান ও দাগসূচি নির্ধারণ।' }}
+                    </p>
+                    <ul class="text-xs text-slate-300 space-y-1.5 font-mono">
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check" class="w-3.5 h-3.5 text-indigo-400 shrink-0"></i>
+                            <span>{{ _('Survey Stage: CS, SA, RS, BS / City Survey') if current_lang != 'bn' else 'জরিপ স্তর: সিএস, এসএ, আরএস, বিএস খতিয়ান' }}</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check" class="w-3.5 h-3.5 text-indigo-400 shrink-0"></i>
+                            <span>{{ _('District, Upazila, Mouza & JL Number') if current_lang != 'bn' else 'জেলা, উপজেলা, মৌজা ও জেএল নম্বর' }}</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check" class="w-3.5 h-3.5 text-indigo-400 shrink-0"></i>
+                            <span>{{ _('Owner Share Fraction (16 Anna / Decimal Breakdown)') if current_lang != 'bn' else 'মালিকদের হিস্যা (১৬ আনা / অংশ হিসাব)' }}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
+                    <span class="font-mono text-indigo-400">{{ _('SAT Act 1950 §143') if current_lang != 'bn' else 'এসএটি আইন ১৯৫০ (ধারা ১৪৩)' }}</span>
+                    <span class="px-2 py-0.5 rounded bg-indigo-950/60 border border-indigo-500/30 text-indigo-300 text-[10px] font-bold">{{ _('Lineage Graph') }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Mutation Record (নামজারি ও জমাভাগ আদেশ) -->
+        <div class="glass-panel rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition-all duration-300 flex flex-col overflow-hidden group shadow-lg hover:shadow-emerald-500/10">
+            <!-- Sample Image Thumbnail Container -->
+            <div class="relative h-56 bg-slate-950 overflow-hidden cursor-pointer" onclick="openDocLightbox('/static/images/samples/sample_mutation.png', '{{ _('Mutation Order & DCR (নামজারি ও জমাভাগ আদেশ)') }}', '{{ _('AC Land Office Sanction & Disconnection Ledger') }}')">
+                <img src="/static/images/samples/sample_mutation.png" alt="Mutation Sample" class="w-full h-full object-cover object-top filter brightness-95 group-hover:scale-105 transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+                <div class="absolute top-3 left-3 bg-emerald-950/85 backdrop-blur-md border border-emerald-500/40 px-2.5 py-1 rounded-md text-[11px] font-mono text-emerald-300 flex items-center gap-1.5">
+                    <i data-lucide="stamp" class="w-3 h-3 text-emerald-400"></i>
+                    <span>{{ _('Mutation Order') if current_lang != 'bn' else 'নামজারি আদেশ' }}</span>
+                </div>
+                <div class="absolute bottom-3 right-3 bg-slate-900/90 hover:bg-emerald-500 hover:text-slate-950 text-emerald-300 text-[10px] font-bold px-2 py-1 rounded border border-emerald-500/30 flex items-center gap-1 transition-all">
+                    <i data-lucide="maximize-2" class="w-3 h-3"></i>
+                    <span>{{ _('View Sample') if current_lang != 'bn' else 'নমুনা দেখুন' }}</span>
+                </div>
+            </div>
+            <!-- Card Body -->
+            <div class="p-5 flex-1 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-base font-bold text-white mb-2 flex items-center justify-between">
+                        <span>{{ _('Mutation Order (নামজারি ও জমাভাগ)') if current_lang != 'bn' else 'নামজারি ও জমাভাগ আদেশ (Mutation)' }}</span>
+                    </h3>
+                    <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                        {{ _('Upazila AC Land sanction creating the newly mutated holding, DCR fee receipt, and disjoining joint ancestral shares.') if current_lang != 'bn' else 'সহকারী কমিশনার (ভূমি) এর অনুমোদন সাপেক্ষে পৃথক নতুন জমাভাগ খতিয়ান সৃষ্টি ও নামজারি কেস নিষ্পত্তি।' }}
+                    </p>
+                    <ul class="text-xs text-slate-300 space-y-1.5 font-mono">
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i>
+                            <span>{{ _('Mutation Case Number & Financial Year') if current_lang != 'bn' else 'নামজারি মিস কেস নম্বর ও অর্থবছর' }}</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i>
+                            <span>{{ _('DCR Number, Mutation Fee & AC Land Seal') if current_lang != 'bn' else 'ডিসিআর নম্বর, নামজারি ফি ও এসি ল্যান্ডের সিল' }}</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i>
+                            <span>{{ _('Original vs Mutated Holding Reference') if current_lang != 'bn' else 'মূল সাবেক জোত বনাম প্রস্তাবিত খারিজ জোত' }}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
+                    <span class="font-mono text-emerald-400">{{ _('Land Reform Ord. 1984') if current_lang != 'bn' else 'ভূমি সংস্কার অধ্যাদেশ ১৯৮৪' }}</span>
+                    <span class="px-2 py-0.5 rounded bg-emerald-950/60 border border-emerald-500/30 text-emerald-300 text-[10px] font-bold">{{ _('Cross-Registry Match') }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Land Development Tax Receipt (ভূমি উন্নয়ন কর দাখিলা) -->
+        <div class="glass-panel rounded-2xl border border-slate-800 hover:border-amber-500/50 transition-all duration-300 flex flex-col overflow-hidden group shadow-lg hover:shadow-amber-500/10">
+            <!-- Sample Image Thumbnail Container -->
+            <div class="relative h-56 bg-slate-950 overflow-hidden cursor-pointer" onclick="openDocLightbox('/static/images/samples/sample_tax_receipt.png', '{{ _('Land Tax Receipt (ভূমি উন্নয়ন কর দাখিলা)') }}', '{{ _('Official Fiscal Year Land Revenue Dakhila') }}')">
+                <img src="/static/images/samples/sample_tax_receipt.png" alt="Tax Receipt Sample" class="w-full h-full object-cover object-top filter brightness-95 group-hover:scale-105 transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+                <div class="absolute top-3 left-3 bg-amber-950/85 backdrop-blur-md border border-amber-500/40 px-2.5 py-1 rounded-md text-[11px] font-mono text-amber-300 flex items-center gap-1.5">
+                    <i data-lucide="receipt" class="w-3 h-3 text-amber-400"></i>
+                    <span>{{ _('Tax Receipt') if current_lang != 'bn' else 'কর দাখিলা' }}</span>
+                </div>
+                <div class="absolute bottom-3 right-3 bg-slate-900/90 hover:bg-amber-500 hover:text-slate-950 text-amber-300 text-[10px] font-bold px-2 py-1 rounded border border-amber-500/30 flex items-center gap-1 transition-all">
+                    <i data-lucide="maximize-2" class="w-3 h-3"></i>
+                    <span>{{ _('View Sample') if current_lang != 'bn' else 'নমুনা দেখুন' }}</span>
+                </div>
+            </div>
+            <!-- Card Body -->
+            <div class="p-5 flex-1 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-base font-bold text-white mb-2 flex items-center justify-between">
+                        <span>{{ _('Land Tax Receipt (ভূমি উন্নয়ন কর দাখিলা)') if current_lang != 'bn' else 'ভূমি উন্নয়ন কর দাখিলা (Tax Dakhila)' }}</span>
+                    </h3>
+                    <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                        {{ _('Official government revenue dakhila confirming timely land tax liquidation, uninterrupted state recognition, and active possession.') if current_lang != 'bn' else 'সরকারকে নির্ধারিত হারে বাৎসরিক খাজনা পরিশোধের সরকারি দাখিলা। দখল ও মালিকানা স্বীকৃতির অন্যতম সাক্ষ্য।' }}
+                    </p>
+                    <ul class="text-xs text-slate-300 space-y-1.5 font-mono">
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check" class="w-3.5 h-3.5 text-amber-400 shrink-0"></i>
+                            <span>{{ _('Dakhila Number & Bengali Fiscal Year') if current_lang != 'bn' else 'দাখিলা নম্বর ও বাংলা কর সন (১৪৩০-৩১)' }}</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check" class="w-3.5 h-3.5 text-amber-400 shrink-0"></i>
+                            <span>{{ _('Holding Number, Land Class & Area Decimal') if current_lang != 'bn' else 'হোল্ডিং নম্বর, জমির শ্রেণি ও মোট শতক' }}</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check" class="w-3.5 h-3.5 text-amber-400 shrink-0"></i>
+                            <span>{{ _('Revenue Paid BDT & Union Tahsildar Seal') if current_lang != 'bn' else 'আদায়কৃত রাজস্ব (টাকা) ও ইউনিয়ন ভূমি কর্মকর্তার সিল' }}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
+                    <span class="font-mono text-amber-400">{{ _('LD Tax Act 2023') if current_lang != 'bn' else 'ভূমি উন্নয়ন কর আইন ২০২৩' }}</span>
+                    <span class="px-2 py-0.5 rounded bg-amber-950/60 border border-amber-500/30 text-amber-300 text-[10px] font-bold">{{ _('Possession Audit') }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. Cadastral Parcel Map (মৌজা নকশা) -->
+        <div class="glass-panel rounded-2xl border border-slate-800 hover:border-sky-500/50 transition-all duration-300 flex flex-col overflow-hidden group shadow-lg hover:shadow-sky-500/10">
+            <!-- Sample Image Thumbnail Container -->
+            <div class="relative h-56 bg-slate-950 overflow-hidden cursor-pointer" onclick="openDocLightbox('/static/images/samples/sample_mouza_map.png', '{{ _('Cadastral Parcel Map (মৌজা নকশা ও সিট)') }}', '{{ _('Geospatial Parcel Boundaries • DLRS Survey Sheet') }}')">
+                <img src="/static/images/samples/sample_mouza_map.png" alt="Mouza Map Sample" class="w-full h-full object-cover object-top filter brightness-95 group-hover:scale-105 transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+                <div class="absolute top-3 left-3 bg-sky-950/85 backdrop-blur-md border border-sky-500/40 px-2.5 py-1 rounded-md text-[11px] font-mono text-sky-300 flex items-center gap-1.5">
+                    <i data-lucide="map" class="w-3 h-3 text-sky-400"></i>
+                    <span>{{ _('Cadastral Map') if current_lang != 'bn' else 'মৌজা নকশা' }}</span>
+                </div>
+                <div class="absolute bottom-3 right-3 bg-slate-900/90 hover:bg-sky-500 hover:text-slate-950 text-sky-300 text-[10px] font-bold px-2 py-1 rounded border border-sky-500/30 flex items-center gap-1 transition-all">
+                    <i data-lucide="maximize-2" class="w-3 h-3"></i>
+                    <span>{{ _('View Sample') if current_lang != 'bn' else 'নমুনা দেখুন' }}</span>
+                </div>
+            </div>
+            <!-- Card Body -->
+            <div class="p-5 flex-1 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-base font-bold text-white mb-2 flex items-center justify-between">
+                        <span>{{ _('Cadastral Parcel Map (মৌজা নকশা)') if current_lang != 'bn' else 'মৌজা নকশা ও ক্যাডাস্ট্রাল ম্যাপ (Map)' }}</span>
+                    </h3>
+                    <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                        {{ _('Official geospatial survey sheet illustrating dag plot boundaries, adjacent road/river easements, and subdivision geometries.') if current_lang != 'bn' else 'ভূমি রেকর্ড ও জরিপ অধিদপ্তরের জরিপকৃত মৌজা নকশা। দাগ প্লট সীমানা, রাস্তা, খাল ও জ্যামিতিক নকশা।' }}
+                    </p>
+                    <ul class="text-xs text-slate-300 space-y-1.5 font-mono">
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check" class="w-3.5 h-3.5 text-sky-400 shrink-0"></i>
+                            <span>{{ _('Sheet Number, Scale 16 Inch = 1 Mile') if current_lang != 'bn' else 'সিট নম্বর ও স্কেল (১৬ ইঞ্চি = ১ মাইল)' }}</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check" class="w-3.5 h-3.5 text-sky-400 shrink-0"></i>
+                            <span>{{ _('Geometric Dag Plot Polygonal Coordinates') if current_lang != 'bn' else 'দাগের জ্যামিতিক বহুভুজ ও স্থানাঙ্ক' }}</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check" class="w-3.5 h-3.5 text-sky-400 shrink-0"></i>
+                            <span>{{ _('North/South/East/West Abutting Boundaries') if current_lang != 'bn' else 'উত্তর/দক্ষিণ/পূর্ব/পশ্চিম সীমানা ও দাগ সংযোগ' }}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
+                    <span class="font-mono text-sky-400">{{ _('Survey Act 1875') if current_lang != 'bn' else 'জরিপ আইন ১৮৭৫' }}</span>
+                    <span class="px-2 py-0.5 rounded bg-sky-950/60 border border-sky-500/30 text-sky-300 text-[10px] font-bold">{{ _('Spatial Cadastre') }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. Land Dispute Complaint (ভূমি বিরোধ অভিযোগ ও আবেদন) -->
+        <div class="glass-panel rounded-2xl border border-slate-800 hover:border-rose-500/50 transition-all duration-300 flex flex-col overflow-hidden group shadow-lg hover:shadow-rose-500/10">
+            <!-- Sample Image Thumbnail Container -->
+            <div class="relative h-56 bg-slate-950 overflow-hidden cursor-pointer" onclick="openDocLightbox('/static/images/samples/sample_complaint.png', '{{ _('Dispute Petition & Complaint (ভূমি বিরোধ অভিযোগ ও আবেদন)') }}', '{{ _('Statutory Dispute Petition • Land Crime Prevention Act 2023') }}')">
+                <img src="/static/images/samples/sample_complaint.png" alt="Complaint Sample" class="w-full h-full object-cover object-top filter brightness-95 group-hover:scale-105 transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+                <div class="absolute top-3 left-3 bg-rose-950/85 backdrop-blur-md border border-rose-500/40 px-2.5 py-1 rounded-md text-[11px] font-mono text-rose-300 flex items-center gap-1.5">
+                    <i data-lucide="alert-circle" class="w-3 h-3 text-rose-400"></i>
+                    <span>{{ _('Dispute Petition') if current_lang != 'bn' else 'অভিযোগ আবেদন' }}</span>
+                </div>
+                <div class="absolute bottom-3 right-3 bg-slate-900/90 hover:bg-rose-500 hover:text-slate-950 text-rose-300 text-[10px] font-bold px-2 py-1 rounded border border-rose-500/30 flex items-center gap-1 transition-all">
+                    <i data-lucide="maximize-2" class="w-3 h-3"></i>
+                    <span>{{ _('View Sample') if current_lang != 'bn' else 'নমুনা দেখুন' }}</span>
+                </div>
+            </div>
+            <!-- Card Body -->
+            <div class="p-5 flex-1 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-base font-bold text-white mb-2 flex items-center justify-between">
+                        <span>{{ _('Dispute Petition (ভূমি বিরোধ অভিযোগ)') if current_lang != 'bn' else 'ভূমি বিরোধ অভিযোগ ও আবেদন (Petition)' }}</span>
+                    </h3>
+                    <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                        {{ _('Formal administrative & statutory complaint filed against double selling, forged mutations, or illicit dispossession.') if current_lang != 'bn' else 'জাল দলিল, দ্বৈত বিক্রি ও বেআইনি দখলের বিরুদ্ধে সহকারী কমিশনার (ভূমি) বা আদালতে দাখিলকৃত অভিযোগ।' }}
+                    </p>
+                    <ul class="text-xs text-slate-300 space-y-1.5 font-mono">
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check" class="w-3.5 h-3.5 text-rose-400 shrink-0"></i>
+                            <span>{{ _('Petition Case ID & Disputed Dag Plot') if current_lang != 'bn' else 'অভিযোগ মিস কেস নম্বর ও বিরোধপূর্ণ দাগ' }}</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check" class="w-3.5 h-3.5 text-rose-400 shrink-0"></i>
+                            <span>{{ _('Grounds: Fraud, Double Selling, Impersonation') if current_lang != 'bn' else 'আইনি কারণ: দ্বৈত দলিল, জালিয়াতি, ওয়ারিশ ফাঁকি' }}</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check" class="w-3.5 h-3.5 text-rose-400 shrink-0"></i>
+                            <span>{{ _('Petitioner Signature, NID & Evidentiary Proof') if current_lang != 'bn' else 'অভিযোগকারীর স্বাক্ষর, এনআইডি ও সংযুক্ত প্রমাণাদি' }}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
+                    <span class="font-mono text-rose-400">{{ _('Land Crime Prev. Act 2023') if current_lang != 'bn' else 'ভূমি অপরাধ প্রতিরোধ আইন ২০২৩' }}</span>
+                    <span class="px-2 py-0.5 rounded bg-rose-950/60 border border-rose-500/30 text-rose-300 text-[10px] font-bold">{{ _('AI Escalation') }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. Smart Digital NID (স্মার্ট জাতীয় পরিচয়পত্র) -->
+        <div class="glass-panel rounded-2xl border border-slate-800 hover:border-teal-500/50 transition-all duration-300 flex flex-col overflow-hidden group shadow-lg hover:shadow-teal-500/10 md:col-span-2 lg:col-span-3">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-0">
+                <!-- Sample Image Thumbnail Container -->
+                <div class="lg:col-span-5 relative min-h-[260px] sm:min-h-[300px] lg:h-auto bg-slate-950 overflow-hidden cursor-pointer flex items-center justify-center p-3 group/thumb" onclick="openDocLightbox('/static/images/samples/sample_demo_nid.png', '{{ _('Demo Citizen Smart NID (ডেমো জাতীয় পরিচয়পত্র)') }}', '{{ _('Biometric e-KYC Identity Benchmark • LandGuard Synthetic Demo') }}')">
+                    <img src="/static/images/samples/sample_demo_nid.png" alt="Demo Smart NID Sample" class="w-full h-full max-h-[320px] object-contain object-center filter brightness-100 group-hover/thumb:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent pointer-events-none"></div>
+                    <!-- Top Demo Tag -->
+                    <div class="absolute top-3 left-3 bg-amber-950/90 backdrop-blur-md border border-amber-500/50 px-2.5 py-1 rounded-md text-[11px] font-mono text-amber-300 flex items-center gap-1.5 shadow-lg">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
+                        <i data-lucide="credit-card" class="w-3.5 h-3.5 text-amber-400"></i>
+                        <span>{{ _('DEMO Front Side') if current_lang != 'bn' else '★ ডেমো পরিচয়পত্র (সম্মুখ)' }}</span>
+                    </div>
+                    <div class="absolute bottom-3 right-3 bg-slate-900/90 hover:bg-amber-500 hover:text-slate-950 text-amber-300 text-[10px] font-bold px-2.5 py-1 rounded border border-amber-500/40 flex items-center gap-1 transition-all shadow-md">
+                        <i data-lucide="maximize-2" class="w-3 h-3"></i>
+                        <span>{{ _('View Demo Sample') if current_lang != 'bn' else 'নমুনা কার্ড দেখুন' }}</span>
+                    </div>
+                </div>
+                <!-- Card Body -->
+                <div class="lg:col-span-7 p-6 sm:p-7 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="px-2.5 py-0.5 rounded bg-amber-950/70 border border-amber-500/40 text-amber-300 text-xs font-mono font-bold">{{ _('SYNTHETIC DEMO BENCHMARK') if current_lang != 'bn' else 'ডেমো জাতীয় পরিচয়পত্র • সম্মুখ অংশ' }}</span>
+                            <span class="px-2 py-0.5 rounded bg-teal-950 border border-teal-500/40 text-teal-300 text-[10px] font-mono font-bold">{{ _('e-KYC Cross-Match') if current_lang != 'bn' else 'বায়োমেট্রিক ক্রস-ম্যাচ' }}</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">
+                            {{ _('Smart National ID Verification (ডেমো জাতীয় পরিচয়পত্র ও মালিকানা যাচাই)') if current_lang != 'bn' else 'ডেমো স্মার্ট জাতীয় পরিচয়পত্র ও মালিকানা যাচাই (Digital NID)' }}
+                        </h3>
+                        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed mb-4">
+                            {{ _('Eliminates impersonation fraud by cross-matching deed vendor signatures, photographs, and citizen registry credentials.') if current_lang != 'bn' else 'জাল বিক্রেতা ও পরিচয় প্রতারণা রোধে দলিলের দাতার সাথে এনআইডি নম্বর, নাম, বায়োমেট্রিক ছবি ও স্মার্ট চিপ ডিজিটাল মিল যাচাই করা হয়।' }}
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-slate-300 font-mono">
+                            <div class="flex items-center gap-2 bg-slate-900/60 p-2.5 rounded-lg border border-slate-800">
+                                <i data-lucide="check" class="w-4 h-4 text-teal-400 shrink-0"></i>
+                                <span>{{ _('Biometric Photo & Verified Badge') if current_lang != 'bn' else 'বায়োমেট্রিক ছবি ও ভেরিফাইড ব্যাজ' }}</span>
+                            </div>
+                            <div class="flex items-center gap-2 bg-slate-900/60 p-2.5 rounded-lg border border-slate-800">
+                                <i data-lucide="check" class="w-4 h-4 text-teal-400 shrink-0"></i>
+                                <span>{{ _('Smart Microchip & Security Hologram') if current_lang != 'bn' else 'স্মার্ট মাইক্রোচিপ ও নিরাপত্তা হলোগ্রাম' }}</span>
+                            </div>
+                            <div class="flex items-center gap-2 bg-slate-900/60 p-2.5 rounded-lg border border-slate-800">
+                                <i data-lucide="check" class="w-4 h-4 text-teal-400 shrink-0"></i>
+                                <span>{{ _('Cardholder Legal Name & Parents Info') if current_lang != 'bn' else 'নাগরিক মালিক ও পিতা-মাতার নাম মিল' }}</span>
+                            </div>
+                            <div class="flex items-center gap-2 bg-slate-900/60 p-2.5 rounded-lg border border-slate-800">
+                                <i data-lucide="check" class="w-4 h-4 text-teal-400 shrink-0"></i>
+                                <span>{{ _('Direct Chain-of-Title Ownership Link') if current_lang != 'bn' else 'দলিল স্বত্বাধিকারীর সাথে প্রত্যক্ষ লিঙ্ক' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                        <span class="font-mono text-teal-400">{{ _('National Identity Registration Act 2010') if current_lang != 'bn' else 'জাতীয় পরিচয় নিবন্ধন আইন ২০১০' }}</span>
+                        <a href="/login" class="text-xs font-semibold text-cyan-400 hover:text-cyan-300 flex items-center gap-1 group/link">
+                            <span>{{ _('Verify Your Property Now') if current_lang != 'bn' else 'আপনার দলিল যাচাই শুরু করুন' }}</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover/link:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    </div>
+</section>
+
+<!-- ==============================================================================
+     INTERACTIVE DOCUMENT LIGHTBOX MODAL
+     ============================================================================== -->
+<div id="doc-lightbox-modal" class="fixed inset-0 z-50 hidden bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-6" onclick="closeDocLightbox(event)">
+    <div class="relative w-full max-w-4xl max-h-[90vh] bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl flex flex-col overflow-hidden" onclick="event.stopPropagation()">
+        <!-- Lightbox Header -->
+        <div class="px-5 py-3.5 border-b border-slate-800 bg-slate-950/80 flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+                <i data-lucide="file-check" class="w-5 h-5 text-cyan-400"></i>
+                <div>
+                    <h4 id="lightbox-title" class="text-sm sm:text-base font-bold text-white leading-tight">Document Sample</h4>
+                    <p id="lightbox-subtitle" class="text-[11px] text-slate-400 font-mono">LandGuard AI Canonical Record</p>
+                </div>
+            </div>
+            <button type="button" onclick="closeDocLightbox()" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors" aria-label="Close modal">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+        <!-- Lightbox Image Viewport -->
+        <div class="flex-1 overflow-auto p-4 flex items-center justify-center bg-slate-950/60 min-h-[320px]">
+            <img id="lightbox-img" src="" alt="Full resolution document" class="max-w-full max-h-[70vh] object-contain rounded-lg shadow-2xl border border-slate-800">
+        </div>
+        <!-- Lightbox Footer -->
+        <div class="px-5 py-3 border-t border-slate-800 bg-slate-950/80 flex flex-wrap items-center justify-between text-xs text-slate-400 gap-2">
+            <span class="font-mono text-cyan-400 flex items-center gap-1.5">
+                <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
+                {{ _('Synthetically Verified Benchmark Asset • LandTech 2026') if current_lang != 'bn' else 'সিন্থেটিকালি ভেরিফাইড বেঞ্চমার্ক রেকর্ড • ল্যান্ডটেক ২০২৬' }}
+            </span>
+            <div class="flex items-center gap-2">
+                <a id="lightbox-download-link" href="" target="_blank" download class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-cyan-600 hover:text-slate-950 text-slate-200 text-xs font-semibold flex items-center gap-1.5 transition-all">
+                    <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                    <span>{{ _('Full Image') if current_lang != 'bn' else 'সম্পূর্ণ ছবি' }}</span>
+                </a>
+                <button type="button" onclick="closeDocLightbox()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold transition-all">
+                    {{ _('Close') if current_lang != 'bn' else 'বন্ধ করুন' }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openDocLightbox(imgSrc, title, subtitle) {
+        const modal = document.getElementById('doc-lightbox-modal');
+        const img = document.getElementById('lightbox-img');
+        const t = document.getElementById('lightbox-title');
+        const st = document.getElementById('lightbox-subtitle');
+        const dl = document.getElementById('lightbox-download-link');
+
+        if (img) img.src = imgSrc;
+        if (t) t.innerText = title || 'Document Sample';
+        if (st) st.innerText = subtitle || 'Canonical Land Record';
+        if (dl) dl.href = imgSrc;
+
+        if (modal) {
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            if (window.lucide) window.lucide.createIcons();
+        }
+    }
+
+    function closeDocLightbox(e) {
+        const modal = document.getElementById('doc-lightbox-modal');
+        if (modal) {
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+    }
+
+    // Keyboard ESC to close lightbox
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeDocLightbox();
+    });
+</script>

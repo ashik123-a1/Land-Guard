@@ -1,126 +1,476 @@
 {% extends "base.html" %}
 
 {% block extra_head %}
-<style>
-    .nav-item-active {
-        background: rgba(6, 182, 212, 0.12);
-        color: #38bdf8;
-        border-right: 3px solid #06b6d4;
-    }
-</style>
+<!-- Optional layout overrides -->
 {% endblock %}
 
 {% block content %}
-<div class="flex-1 flex overflow-hidden">
-    <!-- Sidebar Navigation -->
-    <aside class="w-64 bg-navy-900/90 border-r border-slate-800/80 flex flex-col justify-between shrink-0 hidden md:flex">
-        <!-- Logo & Branding -->
-        <div>
-            <div class="p-5 border-b border-slate-800/80 flex items-center gap-3">
-                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-cyan-500/20 border border-cyan-400/40">
-                    <i data-lucide="shield-check" class="w-5 h-5 text-white"></i>
+<div class="flex-1 flex overflow-hidden relative lg-portal-ambient-bg">
+    <!-- Desktop Authenticated React-Inspired Glass Sidebar -->
+    <aside id="desktop-sidebar" class="lg-sidebar w-64 flex flex-col justify-between shrink-0 hidden md:flex select-none p-3 m-2 rounded-[28px] border border-white/10 shadow-2xl relative z-10 backdrop-blur-2xl">
+        <div class="flex flex-col flex-1 min-h-0">
+            <!-- 1. Top Window Controls & Collapse Pill Button -->
+            <div class="flex items-center justify-between px-2 pt-1 pb-3 lg-sidebar-header-wrapper">
+                <div class="lg-window-dots">
+                    <span class="lg-dot-red"></span>
+                    <span class="lg-dot-yellow"></span>
+                    <span class="lg-dot-green"></span>
                 </div>
-                <div>
-                    <span class="text-base font-bold text-white tracking-tight">LandGuard</span>
-                    <span class="text-[10px] font-mono tracking-wider text-cyan-400 block uppercase font-medium">Citizen Portal</span>
-                </div>
+
+                <button type="button" id="sidebar-collapse-btn" onclick="toggleDesktopSidebar()"
+                        class="lg-collapse-pill focus:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400"
+                        title="Toggle Sidebar (Expand/Collapse)" aria-label="Toggle Sidebar">
+                    <span class="lg-sidebar-text text-[11px] font-medium">{{ _('Collapse') }}</span>
+                    <i id="sidebar-toggle-icon" data-lucide="panel-left-close" class="w-3.5 h-3.5"></i>
+                </button>
             </div>
 
-            <!-- Navigation Links -->
-            <nav class="py-4 px-2 space-y-1">
-                <a href="/user/dashboard" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all {% if active_page == 'dashboard' %}nav-item-active{% endif %}">
-                    <i data-lucide="layout-dashboard" class="w-4 h-4 text-cyan-400"></i>
-                    <span>Dashboard</span>
+            <!-- 2. Top Profile Card with Online Status Dot (Navigates to Digital Identity) -->
+            <a href="/user/profile" class="lg-sidebar-top-profile mt-1 mb-3 flex items-center gap-2.5 p-1.5 rounded-xl hover:bg-slate-800/60 transition-all cursor-pointer group focus:outline-none focus:ring-1 focus:ring-cyan-400" title="{{ _('Digital Identity') }}">
+                <div class="relative flex-shrink-0">
+                    <img src="/static/images/profile-ashik.png" alt="{{ current_user.full_name if current_user else 'Nakib Md Ashik' }}" class="w-9 h-9 rounded-lg object-cover border border-cyan-500/40 ring-1 ring-white/10 shrink-0 group-hover:border-cyan-400 transition-colors shadow-sm">
+                    <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-slate-900 rounded-full" title="Online"></span>
+                </div>
+                <div class="lg-sidebar-user-details truncate flex-1 min-w-0">
+                    <div class="flex items-center justify-between">
+                        <span class="font-semibold text-xs text-white truncate group-hover:text-cyan-300 transition-colors">{{ current_user.full_name if current_user else 'Nakib Md Ashik' }}</span>
+                        <i data-lucide="chevron-right" class="w-3 h-3 text-slate-500 group-hover:text-cyan-400 transition-colors"></i>
+                    </div>
+                    <span class="text-[10px] text-cyan-400 font-mono block truncate">{{ current_user.digital_identity_id if current_user else 'CIT-BD-884920' }}</span>
+                </div>
+            </a>
+
+            <!-- 3. Quick Search Filter (Visible when expanded) -->
+            <div class="lg-sidebar-text lg-sidebar-search-box">
+                <i data-lucide="search" class="w-3.5 h-3.5 shrink-0 text-slate-400"></i>
+                <input type="text" id="citizen-sidebar-search" oninput="filterSidebarNav('citizen-nav', this.value)" placeholder="{{ _('Search...') }}" aria-label="Search navigation">
+            </div>
+
+            <!-- 4. Navigation Links (React-style rounded-2xl with Cyan active highlight) -->
+            <nav id="citizen-nav" class="flex-1 space-y-1 overflow-y-auto pr-0.5">
+                <div class="lg-sidebar-text lg-nav-section-title">
+                    {{ _('MENU') }}
+                </div>
+                <a href="/user/dashboard" data-nav-label="dashboard" title="{{ _('Dashboard') }}" class="lg-sidebar-item {% if active_page == 'dashboard' %}lg-sidebar-item-active-citizen{% endif %}">
+                    <i data-lucide="home" class="w-4 h-4 shrink-0"></i>
+                    <span class="lg-sidebar-text truncate">{{ _('Dashboard') }}</span>
                 </a>
-                <a href="/user/verify" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all {% if active_page == 'verify' %}nav-item-active{% endif %}">
-                    <i data-lucide="scan-line" class="w-4 h-4 text-cyan-400"></i>
-                    <span>Verify Deed</span>
+                <a href="/user/verify" data-nav-label="verify deed" title="{{ _('Verify Deed') }}" class="lg-sidebar-item {% if active_page == 'verify' %}lg-sidebar-item-active-citizen{% endif %}">
+                    <i data-lucide="scan-line" class="w-4 h-4 shrink-0"></i>
+                    <span class="lg-sidebar-text truncate">{{ _('Verify Deed') }}</span>
                 </a>
-                <a href="/user/parcels" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all {% if active_page == 'parcels' %}nav-item-active{% endif %}">
-                    <i data-lucide="map" class="w-4 h-4 text-cyan-400"></i>
-                    <span>Cadastral Registry</span>
+                <a href="/user/parcels" data-nav-label="cadastral registry" title="{{ _('Cadastral Registry') }}" class="lg-sidebar-item {% if active_page == 'parcels' %}lg-sidebar-item-active-citizen{% endif %}">
+                    <i data-lucide="map" class="w-4 h-4 shrink-0"></i>
+                    <span class="lg-sidebar-text truncate">{{ _('Cadastral Registry') }}</span>
                 </a>
-                <a href="/user/history" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all {% if active_page == 'history' %}nav-item-active{% endif %}">
-                    <i data-lucide="history" class="w-4 h-4 text-cyan-400"></i>
-                    <span>My Verifications</span>
+                <a href="/user/history" data-nav-label="my verifications" title="{{ _('My Verifications') }}" class="lg-sidebar-item {% if active_page == 'history' %}lg-sidebar-item-active-citizen{% endif %}">
+                    <i data-lucide="history" class="w-4 h-4 shrink-0"></i>
+                    <span class="lg-sidebar-text truncate">{{ _('My Verifications') }}</span>
                 </a>
-                <a href="/user/complaints" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all {% if active_page == 'complaints' %}nav-item-active{% endif %}">
-                    <i data-lucide="alert-circle" class="w-4 h-4 text-cyan-400"></i>
-                    <span>Complaints &amp; Cases</span>
+                <a href="/user/complaints" data-nav-label="complaints cases" title="{{ _('Complaints & Cases') }}" class="lg-sidebar-item {% if active_page == 'complaints' %}lg-sidebar-item-active-citizen{% endif %}">
+                    <i data-lucide="alert-circle" class="w-4 h-4 shrink-0"></i>
+                    <span class="lg-sidebar-text truncate">{{ _('Complaints & Cases') }}</span>
                 </a>
-                <a href="/user/notifications" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all {% if active_page == 'notifications' %}nav-item-active{% endif %}">
-                    <i data-lucide="bell" class="w-4 h-4 text-cyan-400"></i>
-                    <span>Notifications</span>
+                <a href="/user/voice" data-nav-label="voice assistant" title="{{ _('Voice Assistant / ভয়েস') }}" class="lg-sidebar-item {% if active_page == 'voice' %}lg-sidebar-item-active-citizen{% endif %}">
+                    <i data-lucide="mic" class="w-4 h-4 shrink-0"></i>
+                    <span class="lg-sidebar-text truncate">{{ _('Voice Assistant / ভয়েস') }}</span>
                 </a>
-                <a href="/user/profile" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all {% if active_page == 'profile' %}nav-item-active{% endif %}">
-                    <i data-lucide="id-card" class="w-4 h-4 text-cyan-400"></i>
-                    <span>Digital Identity</span>
+
+                <div class="lg-sidebar-text lg-nav-section-title pt-2">
+                    {{ _('GENERAL') }}
+                </div>
+                <a href="/user/notifications" data-nav-label="notifications" title="{{ _('Notifications') }}" class="lg-sidebar-item {% if active_page == 'notifications' %}lg-sidebar-item-active-citizen{% endif %}">
+                    <i data-lucide="bell" class="w-4 h-4 shrink-0"></i>
+                    <span class="lg-sidebar-text truncate flex-1">{{ _('Notifications') }}</span>
+                    <span id="sidebar-notif-badge" class="lg-sidebar-badge px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 hidden">0</span>
                 </a>
-                <a href="/user/settings" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all {% if active_page == 'settings' %}nav-item-active{% endif %}">
-                    <i data-lucide="settings" class="w-4 h-4 text-cyan-400"></i>
-                    <span>Settings</span>
+                <a href="/user/profile" data-nav-label="digital identity" title="{{ _('Digital Identity') }}" class="lg-sidebar-item {% if active_page == 'profile' %}lg-sidebar-item-active-citizen{% endif %}">
+                    <i data-lucide="id-card" class="w-4 h-4 shrink-0"></i>
+                    <span class="lg-sidebar-text truncate">{{ _('Digital Identity') }}</span>
+                </a>
+                <a href="/user/settings" data-nav-label="settings" title="{{ _('Settings') }}" class="lg-sidebar-item {% if active_page == 'settings' %}lg-sidebar-item-active-citizen{% endif %}">
+                    <i data-lucide="settings" class="w-4 h-4 shrink-0"></i>
+                    <span class="lg-sidebar-text truncate">{{ _('Settings') }}</span>
                 </a>
             </nav>
         </div>
 
-        <!-- User Profile Pill & Logout -->
-        <div class="p-3 border-t border-slate-800/80">
-            <div class="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center justify-between">
-                <div class="flex items-center gap-2.5 min-w-0">
-                    <div class="w-8 h-8 rounded-lg bg-cyan-950 border border-cyan-500/40 flex items-center justify-center text-cyan-300 font-bold text-xs shrink-0">
-                        {{ (current_user.full_name[:2] if current_user else 'RI')|upper }}
+        <!-- 5. Bottom Dedicated Logout Button -->
+        <div class="pt-2.5 mt-auto border-t border-slate-800/80 shrink-0">
+            <a href="/logout" data-nav-label="logout" title="{{ _('Sign Out') }}"
+               class="lg-sidebar-item group flex items-center gap-2.5 px-3 py-2.5 rounded-2xl text-xs font-semibold text-rose-300 hover:text-white bg-rose-950/40 hover:bg-rose-900/60 border border-rose-500/30 hover:border-rose-400/70 transition-all shadow-md shadow-rose-950/30">
+                <i data-lucide="log-out" class="w-4 h-4 text-rose-400 group-hover:text-rose-200 shrink-0 transition-transform group-hover:-translate-x-0.5"></i>
+                <span class="lg-sidebar-text truncate font-bold tracking-wide">{{ _('Sign Out') }}</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Mobile Off-Canvas Drawer Backdrop -->
+    <div id="mobile-drawer-backdrop" class="lg-mobile-backdrop md:hidden" onclick="closeMobileDrawer()"></div>
+
+    <!-- Mobile Off-Canvas Glass Drawer -->
+    <aside id="mobile-drawer" class="lg-mobile-drawer lg-sidebar md:hidden flex flex-col justify-between p-4" aria-label="Mobile Navigation">
+        <div class="flex flex-col flex-1 min-h-0">
+            <!-- Mobile Drawer Header -->
+            <div class="pb-4 border-b border-slate-800 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <div class="lg-window-dots">
+                        <span class="lg-dot-red"></span>
+                        <span class="lg-dot-yellow"></span>
+                        <span class="lg-dot-green"></span>
                     </div>
-                    <div class="truncate">
-                        <div class="text-xs font-bold text-white truncate">{{ current_user.full_name if current_user else 'Rafiqul Islam' }}</div>
-                        <div class="text-[10px] text-cyan-400 font-mono">{{ current_user.digital_identity_id if current_user else 'CIT-BD-884920' }}</div>
-                    </div>
+                    <span class="text-sm font-bold text-white ml-2">{{ _('LandGuard') }}</span>
                 </div>
-                <a href="/logout" title="Sign Out" class="text-slate-400 hover:text-rose-400 p-1.5 rounded-lg hover:bg-slate-800 transition-colors">
-                    <i data-lucide="log-out" class="w-4 h-4"></i>
-                </a>
+                <button type="button" onclick="closeMobileDrawer()" class="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800" aria-label="Close menu">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
             </div>
+
+            <!-- Mobile Nav Links -->
+            <nav class="py-4 space-y-1 flex-1 overflow-y-auto">
+                <a href="/user/dashboard" class="lg-sidebar-item {% if active_page == 'dashboard' %}lg-sidebar-item-active-citizen{% endif %}">
+                    <i data-lucide="home" class="w-4 h-4"></i>
+                    <span>{{ _('Dashboard') }}</span>
+                </a>
+                <a href="/user/verify" class="lg-sidebar-item {% if active_page == 'verify' %}lg-sidebar-item-active-citizen{% endif %}">
+                    <i data-lucide="scan-line" class="w-4 h-4"></i>
+                    <span>{{ _('Verify Deed') }}</span>
+                </a>
+                <a href="/user/parcels" class="lg-sidebar-item {% if active_page == 'parcels' %}lg-sidebar-item-active-citizen{% endif %}">
+                    <i data-lucide="map" class="w-4 h-4"></i>
+                    <span>{{ _('Cadastral Registry') }}</span>
+                </a>
+                <a href="/user/history" class="lg-sidebar-item {% if active_page == 'history' %}lg-sidebar-item-active-citizen{% endif %}">
+                    <i data-lucide="history" class="w-4 h-4"></i>
+                    <span>{{ _('My Verifications') }}</span>
+                </a>
+                <a href="/user/complaints" class="lg-sidebar-item {% if active_page == 'complaints' %}lg-sidebar-item-active-citizen{% endif %}">
+                    <i data-lucide="alert-circle" class="w-4 h-4"></i>
+                    <span>{{ _('Complaints & Cases') }}</span>
+                </a>
+                <a href="/user/voice" class="lg-sidebar-item {% if active_page == 'voice' %}lg-sidebar-item-active-citizen{% endif %}">
+                    <i data-lucide="mic" class="w-4 h-4"></i>
+                    <span>{{ _('Voice Assistant / ভয়েস') }}</span>
+                </a>
+                <a href="/user/notifications" class="lg-sidebar-item {% if active_page == 'notifications' %}lg-sidebar-item-active-citizen{% endif %}">
+                    <i data-lucide="bell" class="w-4 h-4"></i>
+                    <span>{{ _('Notifications') }}</span>
+                </a>
+                <a href="/user/profile" class="lg-sidebar-item {% if active_page == 'profile' %}lg-sidebar-item-active-citizen{% endif %}">
+                    <i data-lucide="id-card" class="w-4 h-4"></i>
+                    <span>{{ _('Digital Identity') }}</span>
+                </a>
+                <a href="/user/settings" class="lg-sidebar-item {% if active_page == 'settings' %}lg-sidebar-item-active-citizen{% endif %}">
+                    <i data-lucide="settings" class="w-4 h-4"></i>
+                    <span>{{ _('Settings') }}</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- Mobile Drawer Bottom Sign Out -->
+        <div class="pt-3 border-t border-slate-800 shrink-0">
+            <a href="/logout" class="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl text-xs font-semibold text-rose-300 hover:text-white bg-rose-950/40 hover:bg-rose-900/60 border border-rose-500/30 transition-all shadow-sm">
+                <i data-lucide="log-out" class="w-4 h-4 text-rose-400"></i>
+                <span>{{ _('Sign Out') }}</span>
+            </a>
         </div>
     </aside>
 
     <!-- Main Content Area -->
-    <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+    <div class="flex-1 flex flex-col min-w-0 overflow-y-auto relative z-10">
         <!-- Topbar -->
-        <header class="h-16 bg-navy-900/60 border-b border-slate-800/80 px-6 flex items-center justify-between shrink-0">
+        <header class="h-16 bg-navy-900/60 backdrop-blur-md border-b border-slate-800/80 px-6 flex items-center justify-between shrink-0">
             <div class="flex items-center gap-4">
                 <!-- Mobile Menu Trigger -->
-                <button class="md:hidden text-slate-400 hover:text-white">
+                <button type="button" id="mobile-menu-trigger" onclick="openMobileDrawer()" class="md:hidden text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800" aria-label="Open navigation menu">
                     <i data-lucide="menu" class="w-5 h-5"></i>
                 </button>
                 <div class="flex items-center gap-2 text-xs font-medium text-slate-400">
-                    <span>Citizen Portal</span>
+                    <span>{{ _('Citizen Portal') }}</span>
                     <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-600"></i>
-                    <span class="text-cyan-400 capitalize">{{ active_page|replace('_', ' ') }}</span>
+                    <span class="text-cyan-400 capitalize">{{ _(active_page|replace('_', ' ')|title) }}</span>
                 </div>
             </div>
 
             <!-- Topbar Actions -->
             <div class="flex items-center gap-3">
-                <div class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-cyan-950/60 border border-cyan-500/30 text-[11px] font-mono text-cyan-300">
-                    <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
-                    <span>ONLINE &bull; CITIZEN CLEARANCE</span>
+                <!-- Language Switcher Pill -->
+                <div class="inline-flex items-center rounded-xl p-0.5 bg-slate-900/90 border border-slate-700/80 text-[11px] font-mono shadow-inner">
+                    <button type="button" onclick="setLanguagePreference('en')" title="Switch to English" class="px-2.5 py-1 rounded-lg transition-all {% if (current_lang or 'bn') == 'en' %}bg-cyan-500 text-slate-950 font-bold shadow-sm{% else %}text-slate-400 hover:text-white{% endif %}">
+                        EN
+                    </button>
+                    <button type="button" onclick="setLanguagePreference('bn')" title="বাংলায় পরিবর্তন করুন" class="px-2.5 py-1 rounded-lg transition-all {% if (current_lang or 'bn') == 'bn' %}bg-cyan-500 text-slate-950 font-bold shadow-sm{% else %}text-slate-400 hover:text-white{% endif %}">
+                        বাংলা
+                    </button>
                 </div>
 
-                <a href="/user/notifications" class="relative p-2 rounded-xl text-slate-400 hover:text-white glass-panel hover:bg-slate-800 transition-colors">
+                <div class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-cyan-950/60 border border-cyan-500/30 text-[11px] font-mono text-cyan-300">
+                    <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+                    <span>{{ _('Online Citizen Clearance') }}</span>
+                </div>
+
+                {% if active_page != 'voice' %}
+                <!-- Persistent Hands-Free Voice Assistant Topbar Pill -->
+                <div id="topbar-voice-pill" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-900/90 border border-slate-700/80 text-xs font-mono text-slate-300 shadow-md">
+                    <button type="button" id="handsFreeToggleBtn" onclick="window.toggleHandsFreeMode()" class="flex items-center gap-2 focus:outline-none" title="Toggle Hands-Free Voice Assistant ('Hello Daffodil')">
+                        <span id="handsFreeDot" class="w-2.5 h-2.5 rounded-full bg-slate-500"></span>
+                        <span id="handsFreeLabel" class="text-[11px] font-semibold text-slate-300">Hands-Free: OFF</span>
+                    </button>
+                    <button type="button" id="stopSpeechBtn" onclick="window.handleStopDaffodil()" class="text-slate-500 hover:text-rose-400 p-0.5 ml-1 transition-colors" title="Deactivate Hands-Free ('Stop Daffodil')">
+                        <i data-lucide="square" class="w-3 h-3"></i>
+                    </button>
+                </div>
+                <!-- Hidden DOM hooks for test assertions and voice routing compatibility -->
+                <div id="voice-layout-hidden-hooks" class="hidden">
+                    <span id="spoken-en"></span>
+                    <span id="spoken-bn"></span>
+                    <div id="response-card" class="hidden"></div>
+                    <div id="action-container"></div>
+                    <input type="text" id="voice-text-input">
+                </div>
+                {% endif %}
+
+                <!-- Sound Alert Toggle Button -->
+                <button type="button" id="sound-alert-toggle" onclick="toggleSoundAlerts()" title="Toggle Sound Alerts" class="p-2 rounded-xl text-slate-400 hover:text-cyan-300 glass-panel hover:bg-slate-800 transition-colors flex items-center gap-1.5 text-xs font-mono" aria-label="Toggle Sound Alert">
+                    <i id="sound-alert-icon" data-lucide="volume-2" class="w-4 h-4"></i>
+                    <span id="sound-alert-label" class="hidden md:inline text-[10px]">Audio ON</span>
+                </button>
+
+                <a href="/user/notifications" aria-label="{{ _('Notifications') }}" class="relative p-2 rounded-xl text-slate-400 hover:text-white glass-panel hover:bg-slate-800 transition-colors">
                     <i data-lucide="bell" class="w-4 h-4"></i>
-                    <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-cyan-400"></span>
+                    <span id="topbar-notif-dot" class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-cyan-400 hidden"></span>
                 </a>
 
                 <a href="/logout" class="px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-rose-300 glass-panel hover:bg-slate-800 transition-colors flex items-center gap-1.5">
                     <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
-                    <span class="hidden sm:inline">Logout</span>
+                    <span class="hidden sm:inline">{{ _('Logout') }}</span>
                 </a>
             </div>
         </header>
 
         <!-- Page Inner View -->
-        <main class="flex-1 p-6 lg:p-8 max-w-7xl w-full mx-auto">
+        <main class="flex-1 w-full max-w-[1440px] mx-auto p-4 sm:p-6 lg:p-8">
             {% block portal_content %}{% endblock %}
         </main>
     </div>
 </div>
+
+<script>
+    // Live Search Filter for Sidebar
+    function filterSidebarNav(containerId, query) {
+        const q = (query || '').toLowerCase().trim();
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        const items = container.querySelectorAll('.lg-sidebar-item');
+        items.forEach(el => {
+            const text = (el.getAttribute('data-nav-label') || '') + ' ' + (el.innerText || '');
+            if (!q || text.toLowerCase().includes(q)) {
+                el.style.display = 'flex';
+            } else {
+                el.style.display = 'none';
+            }
+        });
+    }
+
+    // Desktop Sidebar Collapsible State Controller
+    function applySidebarState(collapsed) {
+        const sidebar = document.getElementById('desktop-sidebar');
+        const icon = document.getElementById('sidebar-toggle-icon');
+        if (!sidebar) return;
+
+        if (collapsed) {
+            sidebar.classList.add('collapsed');
+            if (icon) icon.setAttribute('data-lucide', 'panel-left-open');
+        } else {
+            sidebar.classList.remove('collapsed');
+            if (icon) icon.setAttribute('data-lucide', 'panel-left-close');
+        }
+        if (window.lucide) window.lucide.createIcons();
+    }
+
+    function toggleDesktopSidebar() {
+        const isCurrentlyCollapsed = localStorage.getItem('landguard_sidebar_collapsed') === 'true';
+        const newState = !isCurrentlyCollapsed;
+        localStorage.setItem('landguard_sidebar_collapsed', newState ? 'true' : 'false');
+        applySidebarState(newState);
+    }
+
+    // Mobile Drawer Controller
+    function openMobileDrawer() {
+        const drawer = document.getElementById('mobile-drawer');
+        const backdrop = document.getElementById('mobile-drawer-backdrop');
+        if (drawer) drawer.classList.add('open');
+        if (backdrop) backdrop.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeMobileDrawer() {
+        const drawer = document.getElementById('mobile-drawer');
+        const backdrop = document.getElementById('mobile-drawer-backdrop');
+        if (drawer) drawer.classList.remove('open');
+        if (backdrop) backdrop.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    // Keyboard Accessibility: Escape key closes mobile drawer
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeMobileDrawer();
+        }
+    });
+
+    // Initialize state on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        const isCollapsed = localStorage.getItem('landguard_sidebar_collapsed') === 'true';
+        applySidebarState(isCollapsed);
+        updateSoundAlertUI();
+        pollNotifications();
+        setInterval(pollNotifications, 15000);
+    });
+
+    // -------------------------------------------------------------
+    // Web Audio API Notification Sound Alert & Live Polling
+    // -------------------------------------------------------------
+    let _audioCtx = null;
+    let _lastUnreadNotificationIds = new Set();
+    let _initialNotifLoadDone = false;
+
+    function getAudioContext() {
+        if (!_audioCtx) {
+            const AudioCtxClass = window.AudioContext || window.webkitAudioContext;
+            if (AudioCtxClass) {
+                _audioCtx = new AudioCtxClass();
+            }
+        }
+        if (_audioCtx && _audioCtx.state === 'suspended') {
+            _audioCtx.resume();
+        }
+        return _audioCtx;
+    }
+
+    function isSoundAlertsEnabled() {
+        const stored = localStorage.getItem('landguard_sound_alerts');
+        return stored === null ? true : stored === 'true';
+    }
+
+    function updateSoundAlertUI() {
+        const enabled = isSoundAlertsEnabled();
+        const icon = document.getElementById('sound-alert-icon');
+        const label = document.getElementById('sound-alert-label');
+        if (icon) {
+            icon.setAttribute('data-lucide', enabled ? 'volume-2' : 'volume-x');
+        }
+        if (label) {
+            label.textContent = enabled ? 'Audio ON' : 'Audio OFF';
+        }
+        if (window.lucide) window.lucide.createIcons();
+    }
+
+    function toggleSoundAlerts() {
+        // Explicit user gesture unlocks Web Audio
+        const ctx = getAudioContext();
+        const currentlyEnabled = isSoundAlertsEnabled();
+        const newState = !currentlyEnabled;
+        localStorage.setItem('landguard_sound_alerts', newState ? 'true' : 'false');
+        updateSoundAlertUI();
+
+        if (newState) {
+            playNotificationChime();
+        }
+    }
+
+    function playNotificationChime() {
+        if (!isSoundAlertsEnabled()) return;
+        try {
+            const ctx = getAudioContext();
+            if (!ctx) return;
+            const now = ctx.currentTime;
+
+            // Harmonious two-tone chime (587.33 Hz [D5] -> 880 Hz [A5])
+            const osc1 = ctx.createOscillator();
+            const gain1 = ctx.createGain();
+            osc1.type = 'sine';
+            osc1.frequency.setValueAtTime(587.33, now);
+            gain1.gain.setValueAtTime(0.12, now);
+            gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+            osc1.connect(gain1);
+            gain1.connect(ctx.destination);
+            osc1.start(now);
+            osc1.stop(now + 0.35);
+
+            const osc2 = ctx.createOscillator();
+            const gain2 = ctx.createGain();
+            osc2.type = 'sine';
+            osc2.frequency.setValueAtTime(880.0, now + 0.12);
+            gain2.gain.setValueAtTime(0.15, now + 0.12);
+            gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+            osc2.connect(gain2);
+            gain2.connect(ctx.destination);
+            osc2.start(now + 0.12);
+            osc2.stop(now + 0.6);
+        } catch (e) {
+            console.warn('[LandGuard Audio] Could not play notification chime:', e);
+        }
+    }
+
+    // Unlock Web Audio on first user interaction
+    document.addEventListener('click', function unlockAudioOnce() {
+        getAudioContext();
+        document.removeEventListener('click', unlockAudioOnce);
+    }, { once: true });
+
+    async function pollNotifications() {
+        try {
+            const res = await fetch('/api/notifications');
+            if (!res.ok) return;
+            const notifs = await res.json();
+            if (!Array.isArray(notifs)) return;
+
+            const unread = notifs.filter(n => !n.is_read);
+            const unreadCount = unread.length;
+            const currentUnreadIds = new Set(unread.map(n => n.notification_id));
+
+            // Update badge in topbar and sidebar
+            const dot = document.getElementById('topbar-notif-dot');
+            const badge = document.getElementById('sidebar-notif-badge');
+            if (dot) {
+                if (unreadCount > 0) dot.classList.remove('hidden');
+                else dot.classList.add('hidden');
+            }
+            if (badge) {
+                if (unreadCount > 0) {
+                    badge.textContent = unreadCount;
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
+            }
+
+            // Check if there are brand-new unread notifications
+            if (_initialNotifLoadDone) {
+                let hasNewNotification = false;
+                for (const id of currentUnreadIds) {
+                    if (!_lastUnreadNotificationIds.has(id)) {
+                        hasNewNotification = true;
+                        break;
+                    }
+                }
+                if (hasNewNotification) {
+                    playNotificationChime();
+                    const newest = unread[0];
+                    if (newest && typeof showToast === 'function') {
+                        showToast(`New Notification: ${newest.title}`, 'info');
+                    }
+                }
+            } else {
+                _initialNotifLoadDone = true;
+            }
+
+            _lastUnreadNotificationIds = currentUnreadIds;
+        } catch (err) {
+            console.warn('[LandGuard Notifications] Poll error:', err);
+        }
+    }
+</script>
+<script src="/static/js/voice_controller.js?v=20261018-01"></script>
 {% endblock %}

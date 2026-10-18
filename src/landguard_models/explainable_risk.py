@@ -36,7 +36,8 @@ def build_explainable_risk_assessment(
     document_evidence: Optional[Dict[str, Any]] = None,
     ml_risk_probability: Optional[float] = None,
     ml_threshold: float = 0.50,
-    include_document_evidence: bool = True
+    include_document_evidence: bool = True,
+    cadastral_found: bool = True,
 ) -> Dict[str, Any]:
     """
     Constructs a structured, auditable risk assessment distinguishing:
@@ -62,10 +63,16 @@ def build_explainable_risk_assessment(
         mutations=mutations,
         document_evidence=document_evidence,
         include_document_evidence=include_document_evidence,
+        cadastral_found=cadastral_found,
     )
 
     # Check if ML score independently elevates risk when no hard contradiction was confirmed
-    if ml_risk_probability is not None and ml_risk_probability >= ml_threshold:
+    # ONLY when cadastral parcel is indexed and essential transaction evidence is present
+    seller_present = bool(txn.get("seller_ids"))
+    area_present = txn.get("has_transferred_area_specified", True) and float(txn.get("transferred_area_decimal", 0.0)) > 0.0
+    can_elevate_ml = cadastral_found and seller_present and area_present
+
+    if can_elevate_ml and ml_risk_probability is not None and ml_risk_probability >= ml_threshold:
         has_confirmed = any(f["category"] == "CONFIRMED_INCONSISTENCY" for f in findings)
         if not has_confirmed:
             findings.append({
@@ -133,7 +140,7 @@ def build_explainable_risk_assessment(
         "risk_categories_present": categories_present,
         "rule_engine_flagged": is_rule_flagged,
         "rule_engine_score": rule_score,
-        "ml_model_score": round(float(ml_risk_probability), 4) if ml_risk_probability is not None else None,
+        "ml_model_score": round(float(ml_risk_probability), 4) if (ml_risk_probability is not None and can_elevate_ml) else None,
         "ml_threshold_used": round(float(ml_threshold), 4),
         "rules_triggered": findings,
         "observed_evidence": observed_evidence_with_sources,

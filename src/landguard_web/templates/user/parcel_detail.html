@@ -3,17 +3,17 @@
 {% block title %}Parcel #{{ parcel.dag_plot_number }} — Statutory Title Chain{% endblock %}
 
 {% block portal_content %}
-<div class="max-w-5xl mx-auto space-y-6">
+<div class="w-full space-y-6">
     <!-- Breadcrumb & Actions -->
     <div class="flex items-center justify-between">
         <a href="/user/parcels" class="text-xs text-slate-400 hover:text-cyan-400 inline-flex items-center gap-1.5">
             <i data-lucide="arrow-left" class="w-4 h-4"></i>
-            <span>Back to Cadastral Registry</span>
+            <span>{{ _('Back to Cadastral Registry') }}</span>
         </a>
         <div class="flex items-center gap-2">
             <a href="/user/verify" class="px-4 py-2 rounded-xl text-xs font-semibold text-navy-950 bg-gradient-to-r from-cyan-400 to-cyan-500 hover:from-cyan-300 hover:to-cyan-400 transition-all flex items-center gap-1.5 shadow-lg shadow-cyan-500/20">
                 <i data-lucide="scan-line" class="w-4 h-4"></i>
-                <span>Verify Deed for Plot #{{ parcel.dag_plot_number }}</span>
+                <span>{{ _('Verify Deed for Plot') }} #{{ parcel.dag_plot_number }}</span>
             </a>
         </div>
     </div>
@@ -23,26 +23,26 @@
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
                 <div class="flex items-center gap-3">
-                    <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Dag Plot #{{ parcel.dag_plot_number }}</h1>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">{{ _('Dag Plot #') }}{{ parcel.dag_plot_number }}</h1>
                     <span class="px-2.5 py-1 rounded-lg bg-cyan-950 border border-cyan-500/30 text-cyan-300 font-mono text-xs font-bold">
                         {{ parcel.parcel_id }}
                     </span>
                 </div>
                 <p class="text-xs text-slate-400 mt-1">
-                    Mouza: <strong class="text-slate-200">{{ parcel.mouza }}</strong> (JL #{{ parcel.jl_number }}) &bull; Upazila: <strong class="text-slate-200">{{ parcel.upazila }}</strong>, District: <strong class="text-slate-200">{{ parcel.district }}</strong>
+                    {{ _('Mouza:') }} <strong class="text-slate-200">{{ parcel.mouza }}</strong> ({{ _('JL #') }}{{ parcel.jl_number }}) &bull; {{ _('Upazila:') }} <strong class="text-slate-200">{{ parcel.upazila }}</strong>, {{ _('District:') }} <strong class="text-slate-200">{{ parcel.district }}</strong>
                 </p>
             </div>
 
             <!-- Area & Tax Status Pills -->
             <div class="flex items-center gap-3">
                 <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 text-right">
-                    <div class="text-[10px] text-slate-400 uppercase font-mono">Total Holding Area</div>
-                    <div class="text-lg font-extrabold text-cyan-400 font-mono">{{ parcel.total_area_decimal }} Dec</div>
+                    <div class="text-[10px] text-slate-400 uppercase font-mono">{{ _('Total Holding Area') }}</div>
+                    <div class="text-lg font-extrabold text-cyan-400 font-mono">{{ parcel.total_area_decimal }} {{ _('Dec') }}</div>
                 </div>
                 <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 text-right">
-                    <div class="text-[10px] text-slate-400 uppercase font-mono">Tax Clearance</div>
+                    <div class="text-[10px] text-slate-400 uppercase font-mono">{{ _('Tax Clearance') }}</div>
                     <div class="text-sm font-extrabold {% if tax_status.status == 'PAID' %}text-emerald-400{% else %}text-amber-400{% endif %} font-mono">
-                        {{ tax_status.status }} ({{ tax_status.clearance_year }})
+                        {{ _(tax_status.status) }} ({{ tax_status.clearance_year }})
                     </div>
                 </div>
             </div>
@@ -53,9 +53,9 @@
     <div class="glass-panel p-6 rounded-2xl border border-slate-800">
         <h2 class="text-base font-bold text-white mb-2 flex items-center gap-2">
             <i data-lucide="git-merge" class="w-4 h-4 text-cyan-400"></i>
-            <span>Statutory Survey Chain of Title</span>
+            <span>{{ _('Statutory Survey Chain of Title') }}</span>
         </h2>
-        <p class="text-xs text-slate-400 mb-6">Historical settlement reconstruction under the Cadastral Survey Act 1888 and Tenancy Act 1950.</p>
+        <p class="text-xs text-slate-400 mb-6">{{ _('Historical settlement reconstruction under the Cadastral Survey Act 1888 and Tenancy Act 1950.') }}</p>
 
         <div class="relative pl-6 sm:pl-8 border-l-2 border-cyan-500/30 space-y-6 my-4">
             {% for survey in chain_of_title %}
@@ -68,13 +68,13 @@
                 <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800 group-hover:border-slate-700 transition-all">
                     <div class="flex items-center justify-between mb-1">
                         <span class="text-xs font-bold text-cyan-300 font-mono uppercase">{{ survey.survey_type }}</span>
-                        <span class="text-[11px] font-mono text-slate-400">Plot #{{ survey.recorded_plot }} &bull; Khatian: {{ survey.khatian_no }}</span>
+                        <span class="text-[11px] font-mono text-slate-400">{{ _('Plot') }} #{{ survey.recorded_plot }} &bull; {{ _('Khatian:') }} {{ survey.khatian_no }}</span>
                     </div>
                     <div class="text-xs text-slate-300 font-medium">{{ survey.description }}</div>
                     <div class="text-[11px] text-slate-400 mt-2 flex items-center gap-4">
-                        <span>Recorded Area: <strong class="text-white">{{ survey.recorded_area_decimal }} Dec</strong></span>
+                        <span>{{ _('Recorded Area:') }} <strong class="text-white">{{ survey.recorded_area_decimal }} {{ _('Dec') }}</strong></span>
                         {% if survey.active_mutation_case %}
-                        <span>Mutation Case: <strong class="text-cyan-400 font-mono">{{ survey.active_mutation_case }}</strong></span>
+                        <span>{{ _('Mutation Case:') }} <strong class="text-cyan-400 font-mono">{{ survey.active_mutation_case }}</strong></span>
                         {% endif %}
                     </div>
                 </div>
@@ -87,19 +87,19 @@
     <div class="glass-panel p-6 rounded-2xl border border-slate-800">
         <h2 class="text-base font-bold text-white mb-4 flex items-center gap-2">
             <i data-lucide="file-text" class="w-4 h-4 text-cyan-400"></i>
-            <span>Sub-Registry Conveyance Transactions</span>
+            <span>{{ _('Sub-Registry Conveyance Transactions') }}</span>
         </h2>
 
         <div class="overflow-x-auto">
             <table class="w-full text-left text-xs font-mono">
                 <thead class="bg-slate-900/80 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
                     <tr>
-                        <th class="p-3">Deed Number</th>
-                        <th class="p-3">Execution Date</th>
-                        <th class="p-3">Transferred Area</th>
-                        <th class="p-3">Consideration</th>
-                        <th class="p-3">Buyer ID</th>
-                        <th class="p-3">Previous Ref</th>
+                        <th class="p-3">{{ _('Deed Number') }}</th>
+                        <th class="p-3">{{ _('Execution Date') }}</th>
+                        <th class="p-3">{{ _('Transferred Area') }}</th>
+                        <th class="p-3">{{ _('Consideration') }}</th>
+                        <th class="p-3">{{ _('Buyer ID') }}</th>
+                        <th class="p-3">{{ _('Previous Ref') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-800/60 text-slate-300">
@@ -107,15 +107,15 @@
                     <tr class="hover:bg-slate-900/40">
                         <td class="p-3 font-bold text-white">{{ t.deed_number }}</td>
                         <td class="p-3 text-slate-400">{{ t.execution_date }}</td>
-                        <td class="p-3 text-cyan-400">{{ t.transferred_area_decimal }} Dec</td>
+                        <td class="p-3 text-cyan-400">{{ t.transferred_area_decimal }} {{ _('Dec') }}</td>
                         <td class="p-3">BDT {{ "{:,.2f}".format(t.consideration_bdt|float) }}</td>
                         <td class="p-3 text-slate-400">{{ t.buyer_ids[0] if t.buyer_ids else 'N/A' }}</td>
-                        <td class="p-3 text-slate-500">{{ t.previous_deed_ref or 'None' }}</td>
+                        <td class="p-3 text-slate-500">{{ t.previous_deed_ref or _('None') }}</td>
                     </tr>
                     {% else %}
                     <tr>
                         <td colspan="6" class="p-4 text-center text-slate-500 font-sans">
-                            No prior deeds on record for this parcel.
+                            {{ _('No prior deeds on record for this parcel.') }}
                         </td>
                     </tr>
                     {% endfor %}
@@ -128,37 +128,44 @@
     <div class="glass-panel p-6 rounded-2xl border border-slate-800">
         <h2 class="text-base font-bold text-white mb-4 flex items-center gap-2">
             <i data-lucide="book-open" class="w-4 h-4 text-cyan-400"></i>
-            <span>AC Land Mutation Records (Section 143)</span>
+            <span>{{ _('AC Land Mutation Records (Section 143)') }}</span>
         </h2>
 
         <div class="overflow-x-auto">
             <table class="w-full text-left text-xs font-mono">
                 <thead class="bg-slate-900/80 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
                     <tr>
-                        <th class="p-3">Mutation Case No</th>
-                        <th class="p-3">Approval Date</th>
-                        <th class="p-3">New Owner ID</th>
-                        <th class="p-3">Mutated Area</th>
-                        <th class="p-3">Status</th>
+                        <th class="p-3">{{ _('Mutation Case No') }}</th>
+                        <th class="p-3">{{ _('Approval Date') }}</th>
+                        <th class="p-3">{{ _('New Owner ID') }}</th>
+                        <th class="p-3">{{ _('Mutated Area') }}</th>
+                        <th class="p-3">{{ _('Status') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-800/60 text-slate-300">
                     {% for m in mutations %}
                     <tr class="hover:bg-slate-900/40">
                         <td class="p-3 font-bold text-white">{{ m.mutation_case_no }}</td>
-                        <td class="p-3 text-slate-400">{{ m.approval_date }}</td>
+                        <td class="p-3 text-slate-400">{{ m.effective_date or m.approval_date or _('Not recorded') }}</td>
                         <td class="p-3 text-cyan-400">{{ m.new_owner_id }}</td>
-                        <td class="p-3">{{ m.transferred_area_decimal }} Dec</td>
+                        <td class="p-3">
+                            {% set m_area = m.get('transferred_area_decimal') or m.get('mutated_area_decimal') or m.get('area_decimal') or m.get('area') %}
+                            {% if m_area and (m_area|string).strip() != "" and (m_area|float(0)) > 0 %}
+                                {{ "%.2f"|format(m_area|float) }} {{ _('Dec') }}
+                            {% else %}
+                                <span class="text-slate-500 italic">{{ _('Not recorded') }}</span>
+                            {% endif %}
+                        </td>
                         <td class="p-3">
                             <span class="px-2 py-0.5 rounded text-[10px] bg-emerald-950 text-emerald-300 border border-emerald-800/40">
-                                {{ m.status or 'APPROVED' }}
+                                {{ _(m.status or 'APPROVED') }}
                             </span>
                         </td>
                     </tr>
                     {% else %}
                     <tr>
                         <td colspan="5" class="p-4 text-center text-slate-500 font-sans">
-                            No mutation entries on record.
+                            {{ _('No mutation entries on record.') }}
                         </td>
                     </tr>
                     {% endfor %}
@@ -166,5 +173,353 @@
             </table>
         </div>
     </div>
+
+    <!-- Cadastral Topology & Succession Graph -->
+    <div class="glass-panel p-6 rounded-2xl border border-slate-800 space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+            <h2 class="text-base font-bold text-white flex items-center gap-2">
+                <i data-lucide="share-2" class="w-4 h-4 text-cyan-400"></i>
+                <span>{{ _('Cadastral Topology & Succession Graph') }}</span>
+            </h2>
+            <button type="button" onclick="loadCadastralGraph()" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-cyan-300 bg-cyan-950 border border-cyan-500/30 hover:bg-cyan-900 transition-colors flex items-center gap-1.5">
+                <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+                <span>{{ _('Load Topology Graph') }}</span>
+            </button>
+        </div>
+
+        <div id="graph-loading" class="hidden text-center py-8 text-xs text-slate-400">
+            <i data-lucide="loader" class="w-6 h-6 text-cyan-400 animate-spin mx-auto mb-2"></i>
+            {{ _('Loading cadastral graph nodes and edges...') }}
+        </div>
+
+        <div id="graph-container" class="space-y-4">
+            <p class="text-xs text-slate-400">
+                {{ _('Visual representation of colonial base surveys, revisional maps, registered deeds, and AC Land mutation ledgers.') }}
+            </p>
+            <div id="graph-nodes-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3"></div>
+            <div id="graph-edges-list" class="space-y-2 pt-2"></div>
+        </div>
+    </div>
+
+    <!-- Cross-Parcel & Holding Pattern Analysis -->
+    <div class="glass-panel p-6 rounded-2xl border border-slate-800 space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+            <div>
+                <h2 class="text-base font-bold text-white flex items-center gap-2">
+                    <i data-lucide="network" class="w-4 h-4 text-cyan-400"></i>
+                    <span>{{ _('Cross-Parcel & Network Holding Analysis') }}</span>
+                </h2>
+                <p class="text-xs text-slate-400 mt-1">
+                    {{ _('Multi-plot conveyance and holding correlation across registry records.') }}
+                </p>
+            </div>
+            <button type="button" onclick="loadCrossParcelPatterns()" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-cyan-300 bg-cyan-950 border border-cyan-500/30 hover:bg-cyan-900 transition-colors flex items-center gap-1.5">
+                <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+                <span>{{ _('Refresh Holding Network') }}</span>
+            </button>
+        </div>
+
+        <div id="patterns-loading" class="hidden text-center py-6 text-xs text-slate-400">
+            <i data-lucide="loader" class="w-5 h-5 text-cyan-400 animate-spin mx-auto mb-2"></i>
+            {{ _('Analyzing cross-parcel registry connections...') }}
+        </div>
+
+        <div id="patterns-container" class="space-y-4">
+            <div id="patterns-summary" class="flex flex-wrap items-center gap-3"></div>
+            <div id="patterns-explanation" class="text-xs text-slate-300"></div>
+            <div id="patterns-records" class="overflow-x-auto hidden"></div>
+            <div class="p-3 rounded-lg bg-navy-950 border border-slate-800 text-[11px] text-slate-400 font-mono flex items-center gap-2">
+                <i data-lucide="info" class="w-4 h-4 text-cyan-400 flex-shrink-0"></i>
+                <span id="patterns-disclaimer">{{ _('Cross-parcel analysis reflects recorded synthetic registry linkages. Coincidental name or entity matching does not constitute proof of fraudulent intent.') }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- What-If Prospective Transaction Simulator -->
+    <div class="glass-panel p-6 rounded-2xl border border-cyan-500/40 space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+            <div>
+                <h2 class="text-base font-bold text-white flex items-center gap-2">
+                    <i data-lucide="cpu" class="w-4 h-4 text-cyan-400"></i>
+                    <span>{{ _('What-If Transaction Simulator') }}</span>
+                </h2>
+                <p class="text-xs text-slate-400 mt-1">
+                    {{ _('Simulate prospective purchase or transfer. Runs non-mutating statutory rules and holding capacity checks. Zero records are modified.') }}
+                </p>
+            </div>
+            <span class="px-2.5 py-1 rounded-lg bg-indigo-950 text-indigo-300 border border-indigo-500/30 font-mono text-[10px] font-bold">
+                {{ _('PROSPECTIVE SANDBOX') }}
+            </span>
+        </div>
+
+        <!-- Simulation Form -->
+        <form id="whatif-form" onsubmit="runWhatIfSimulation(event)" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
+                <div>
+                    <label class="block text-slate-400 mb-1">{{ _('Seller NID / Party Identifier') }}</label>
+                    <input type="text" id="sim-seller-nid" required
+                           value="{{ mutations[-1].new_owner_id if mutations else (history_transactions[-1].buyer_ids[0] if history_transactions and history_transactions[-1].buyer_ids else 'OWN-CE177B4E') }}"
+                           class="glass-input w-full p-2.5 rounded-xl text-white" />
+                </div>
+                <div>
+                    <label class="block text-slate-400 mb-1">{{ _('Prospective Buyer NID') }}</label>
+                    <input type="text" id="sim-buyer-nid" required
+                           value="{{ current_user.national_id if current_user else 'OWN-BUYER-2026' }}"
+                           class="glass-input w-full p-2.5 rounded-xl text-white" />
+                </div>
+                <div>
+                    <label class="block text-slate-400 mb-1">{{ _('Proposed Transfer Area (Decimal)') }}</label>
+                    <input type="number" step="0.01" min="0.01" max="{{ parcel.total_area_decimal }}" id="sim-area" required
+                           value="{{ (parcel.total_area_decimal / 2)|round(2) if parcel.total_area_decimal else 5.0 }}"
+                           class="glass-input w-full p-2.5 rounded-xl text-white" />
+                    <span class="text-[10px] text-slate-500 font-sans">{{ _('Max parcel holding:') }} {{ parcel.total_area_decimal }} {{ _('Dec') }}</span>
+                </div>
+                <div>
+                    <label class="block text-slate-400 mb-1">{{ _('Declared Consideration (BDT)') }}</label>
+                    <input type="number" step="1000" min="0" id="sim-consideration" required
+                           value="1500000"
+                           class="glass-input w-full p-2.5 rounded-xl text-white" />
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between pt-2">
+                <span class="text-[11px] text-slate-500 font-sans">{{ _('Non-mutating read-only simulation. Guarantees 0 database writes.') }}</span>
+                <button type="submit" id="sim-run-btn"
+                        class="px-5 py-2 rounded-xl text-xs font-semibold text-navy-950 bg-gradient-to-r from-cyan-400 to-cyan-500 hover:from-cyan-300 hover:to-cyan-400 transition-all flex items-center gap-1.5 shadow-lg shadow-cyan-500/20">
+                    <i data-lucide="play" class="w-3.5 h-3.5"></i>
+                    <span>{{ _('Execute Prospective Simulation') }}</span>
+                </button>
+            </div>
+        </form>
+
+        <!-- Simulation Results Panel (Hidden until run) -->
+        <div id="sim-results" class="hidden p-5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-800 gap-3">
+                <div class="flex flex-wrap items-center gap-2">
+                    <span id="sim-verdict-badge" class="px-3 py-1 rounded-lg text-xs font-mono font-bold"></span>
+                    <span id="sim-capacity-badge" class="px-2.5 py-1 rounded-lg text-xs font-mono font-bold"></span>
+                    <span id="sim-legal-badge" class="px-2.5 py-1 rounded-lg text-xs font-mono font-bold"></span>
+                    <span id="sim-ml-badge" class="text-xs font-mono text-slate-400"></span>
+                </div>
+                <div class="text-right text-xs font-mono text-slate-400">
+                    {{ _('Remaining Capacity:') }} <strong id="sim-rem-capacity" class="text-white"></strong> {{ _('Dec') }}
+                </div>
+            </div>
+
+            <div id="sim-warnings-container" class="space-y-2"></div>
+
+            <div class="p-3 rounded-lg bg-navy-950 border border-slate-800 text-[11px] text-amber-300/80 font-mono">
+                {{ _('SYNTHETIC DEMO — WHAT-IF SIMULATION ONLY. NO ACTUAL RECORD WAS MODIFIED OR REGISTERED.') }}
+            </div>
+        </div>
+    </div>
 </div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    async function loadCadastralGraph() {
+        document.getElementById('graph-loading').classList.remove('hidden');
+        try {
+            const res = await fetch('/api/parcels/{{ parcel.dag_plot_number }}/graph');
+            const data = await res.json();
+            document.getElementById('graph-loading').classList.add('hidden');
+
+            const nodesGrid = document.getElementById('graph-nodes-grid');
+            nodesGrid.innerHTML = '';
+            (data.nodes || []).forEach(n => {
+                const nodeCard = document.createElement('div');
+                let colorClass = 'border-slate-800 bg-slate-900/60 text-slate-300';
+                if (n.type === 'PARCEL') colorClass = 'border-cyan-500/50 bg-cyan-950/40 text-cyan-300';
+                if (n.type === 'SURVEY') colorClass = 'border-indigo-500/50 bg-indigo-950/40 text-indigo-300';
+                if (n.type === 'TRANSACTION') colorClass = 'border-emerald-500/50 bg-emerald-950/40 text-emerald-300';
+                if (n.type === 'MUTATION') colorClass = 'border-amber-500/50 bg-amber-950/40 text-amber-300';
+
+                nodeCard.className = `p-3 rounded-xl border text-xs font-mono ${colorClass}`;
+                nodeCard.innerHTML = `
+                    <div class="text-[10px] uppercase font-bold text-slate-400">${n.type}</div>
+                    <div class="font-bold text-white truncate mt-0.5">${n.label}</div>
+                    <div class="text-[10px] text-slate-500 truncate mt-1">ID: ${n.id}</div>
+                `;
+                nodesGrid.appendChild(nodeCard);
+            });
+
+            const edgesList = document.getElementById('graph-edges-list');
+            edgesList.innerHTML = '<h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Succession &amp; Conveyance Edges:</h4>';
+            (data.edges || []).forEach(e => {
+                const edgeItem = document.createElement('div');
+                edgeItem.className = 'p-2 rounded-lg bg-slate-900 border border-slate-800 text-[11px] font-mono text-slate-300 flex items-center justify-between';
+                edgeItem.innerHTML = `
+                    <span class="text-cyan-400">${e.source}</span>
+                    <span class="text-slate-500 font-sans">&rarr; [${e.label}] &rarr;</span>
+                    <span class="text-indigo-400">${e.target}</span>
+                `;
+                edgesList.appendChild(edgeItem);
+            });
+            lucide.createIcons();
+        } catch (err) {
+            document.getElementById('graph-loading').classList.add('hidden');
+            showToast("Failed to load cadastral graph: " + err.message, "error");
+        }
+    }
+
+    async function runWhatIfSimulation(e) {
+        e.preventDefault();
+        const payload = {
+            dag_plot_number: "{{ parcel.dag_plot_number }}",
+            seller_nid: document.getElementById('sim-seller-nid').value.trim(),
+            buyer_nid: document.getElementById('sim-buyer-nid').value.trim(),
+            transferred_area_decimal: parseFloat(document.getElementById('sim-area').value),
+            consideration_bdt: parseFloat(document.getElementById('sim-consideration').value)
+        };
+
+        try {
+            const res = await fetch('/api/simulator/what-if', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+
+            const resDiv = document.getElementById('sim-results');
+            resDiv.classList.remove('hidden');
+
+            const capBadge = document.getElementById('sim-capacity-badge');
+            if (data.capacity_feasible) {
+                capBadge.className = "px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-emerald-950/80 text-emerald-300 border border-emerald-500/40";
+                capBadge.innerText = `CAPACITY: FEASIBLE (${data.transferred_area_decimal} / ${data.capacity_before_decimal} Dec)`;
+            } else {
+                capBadge.className = "px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-rose-950/80 text-rose-300 border border-rose-500/40";
+                capBadge.innerText = `CAPACITY: EXCEEDED (${data.transferred_area_decimal} / ${data.capacity_before_decimal} Dec)`;
+            }
+
+            const legBadge = document.getElementById('sim-legal-badge');
+            if (data.title_clear || data.legal_clearance === 'TITLE_CLEAR') {
+                legBadge.className = "px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-emerald-950/80 text-emerald-300 border border-emerald-500/40";
+                legBadge.innerText = "TITLE: CLEAR";
+            } else {
+                legBadge.className = "px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-rose-950/80 text-rose-300 border border-rose-500/40";
+                legBadge.innerText = `TITLE: ${data.legal_clearance || 'DEFECTS DETECTED'}`;
+            }
+
+            const badge = document.getElementById('sim-verdict-badge');
+            if (data.can_proceed) {
+                badge.className = "px-3 py-1 rounded-lg text-xs font-mono font-bold bg-emerald-950 text-emerald-300 border border-emerald-500/40";
+                badge.innerText = "OVERALL: FEASIBLE";
+            } else if (data.capacity_feasible && !data.title_clear) {
+                badge.className = "px-3 py-1 rounded-lg text-xs font-mono font-bold bg-amber-950 text-amber-300 border border-amber-500/40";
+                badge.innerText = "OVERALL: CAPACITY FEASIBLE BUT LEGAL DEFECTS";
+            } else {
+                badge.className = "px-3 py-1 rounded-lg text-xs font-mono font-bold bg-rose-950 text-rose-300 border border-rose-500/40";
+                badge.innerText = `OVERALL: ${data.overall_verdict || 'CRITICAL_DEFECT'}`;
+            }
+
+            document.getElementById('sim-ml-badge').innerText = `PROSPECTIVE ML RISK: ${(data.prospective_ml_risk * 100).toFixed(1)}%`;
+            document.getElementById('sim-rem-capacity').innerText = data.remaining_capacity_decimal;
+
+            const wContainer = document.getElementById('sim-warnings-container');
+            wContainer.innerHTML = '';
+            if (data.statutory_warnings && data.statutory_warnings.length > 0) {
+                data.statutory_warnings.forEach(w => {
+                    const wCard = document.createElement('div');
+                    const isCrit = w.severity === 'CRITICAL' || w.severity === 'HIGH';
+                    wCard.className = `p-3 rounded-lg border text-xs ${isCrit ? 'bg-rose-950/40 border-rose-800/60 text-rose-300' : 'bg-amber-950/40 border-amber-800/60 text-amber-300'}`;
+                    wCard.innerHTML = `
+                        <div class="font-bold flex items-center justify-between">
+                            <span>${w.rule_code} &bull; ${w.severity}</span>
+                            <span class="text-[10px] font-mono text-slate-400">${w.statutory_reference || ''}</span>
+                        </div>
+                        <div class="mt-1 font-sans text-slate-200">${w.message}</div>
+                    `;
+                    wContainer.appendChild(wCard);
+                });
+            } else {
+                wContainer.innerHTML = '<div class="p-3 rounded-lg bg-emerald-950/40 border border-emerald-800/40 text-emerald-300 text-xs">No statutory defects identified. Transfer area is within verified parcel capacity and vendor is certified on record.</div>';
+            }
+            lucide.createIcons();
+            showToast("Simulation evaluated successfully!", "success");
+        } catch (err) {
+            showToast("Simulation error: " + err.message, "error");
+        }
+    }
+
+    async function loadCrossParcelPatterns() {
+        const loading = document.getElementById('patterns-loading');
+        if (loading) loading.classList.remove('hidden');
+        try {
+            const res = await fetch('/api/parcels/{{ parcel.dag_plot_number }}/cross-parcel-patterns');
+            const data = await res.json();
+            if (loading) loading.classList.add('hidden');
+
+            const summary = document.getElementById('patterns-summary');
+            if (summary) {
+                let badgeClass = "bg-emerald-950 text-emerald-300 border-emerald-500/40";
+                if (data.risk_indicator === "EVIDENCE_LINKED_REVIEW_RECOMMENDED") {
+                    badgeClass = "bg-amber-950 text-amber-300 border-amber-500/40";
+                }
+                const linkedPills = (data.linked_plots || []).map(p =>
+                    `<a href="/user/parcels/${p}" class="px-2 py-0.5 rounded text-[11px] font-mono bg-slate-800 hover:bg-slate-700 text-cyan-400 border border-slate-700">Plot #${p}</a>`
+                ).join(' ');
+
+                summary.innerHTML = `
+                    <span class="px-2.5 py-1 rounded-lg text-xs font-mono font-bold border ${badgeClass}">
+                        ${data.pattern_type || 'STANDARD'}
+                    </span>
+                    <span class="text-xs font-mono text-slate-400">
+                        ${data.unique_plots_count || 1} Linked Plots (${data.total_cross_conveyances || 0} Transactions)
+                    </span>
+                    <div class="flex items-center gap-1.5 flex-wrap">${linkedPills}</div>
+                `;
+            }
+
+            const explanation = document.getElementById('patterns-explanation');
+            if (explanation) {
+                explanation.innerText = data.explanation || '';
+            }
+
+            const recordsDiv = document.getElementById('patterns-records');
+            if (recordsDiv && data.conveyance_records && data.conveyance_records.length > 0) {
+                recordsDiv.classList.remove('hidden');
+                const rows = data.conveyance_records.map(r => `
+                    <tr class="hover:bg-slate-900/40">
+                        <td class="p-2 font-bold text-cyan-400">#${r.dag_plot_number}</td>
+                        <td class="p-2 text-white">${r.deed_number || 'N/A'}</td>
+                        <td class="p-2 text-slate-400">${r.execution_date || 'N/A'}</td>
+                        <td class="p-2">${r.transferred_area_decimal || 0} Dec</td>
+                        <td class="p-2 text-slate-300"><span class="px-1.5 py-0.5 rounded text-[10px] bg-slate-800">${r.role}</span></td>
+                        <td class="p-2 text-slate-400 text-[10px]">${(r.matching_entities || []).join(', ')}</td>
+                    </tr>
+                `).join('');
+
+                recordsDiv.innerHTML = `
+                    <table class="w-full text-left text-xs font-mono">
+                        <thead class="bg-slate-900/80 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
+                            <tr>
+                                <th class="p-2">Plot #</th>
+                                <th class="p-2">Deed Number</th>
+                                <th class="p-2">Execution Date</th>
+                                <th class="p-2">Area</th>
+                                <th class="p-2">Role</th>
+                                <th class="p-2">Associated Entities</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800/60 text-slate-300">
+                            ${rows}
+                        </tbody>
+                    </table>
+                `;
+            }
+            if (window.lucide) lucide.createIcons();
+        } catch (err) {
+            if (loading) loading.classList.add('hidden');
+            console.warn("Could not load cross-parcel patterns:", err);
+        }
+    }
+
+    // Auto-load cadastral graph and holding network patterns on view
+    document.addEventListener("DOMContentLoaded", () => {
+        loadCadastralGraph();
+        loadCrossParcelPatterns();
+    });
+</script>
 {% endblock %}

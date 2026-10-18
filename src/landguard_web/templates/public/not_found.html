@@ -9,18 +9,18 @@
     </div>
 
     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-700 text-slate-400 text-xs font-mono mb-4">
-        <span>ERROR 404 &bull; RECORD NOT LOCATED</span>
+        <span>{{ _('ERROR 404 • RECORD NOT LOCATED') }}</span>
     </div>
 
-    <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-3">Cadastral Coordinate Not Found</h1>
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-3">{{ _('Cadastral Coordinate Not Found') }}</h1>
     <p class="text-sm text-slate-400 max-w-md mx-auto mb-8 leading-relaxed">
-        The requested URL path, verification dossier, or case record does not exist in the configured LandGuard registry.
+        {{ _('The requested URL path, verification dossier, or case record does not exist in the configured LandGuard registry.') }}
     </p>
 
     <div class="flex items-center gap-3">
         <a href="/" class="px-6 py-2.5 rounded-xl text-sm font-semibold text-navy-950 bg-gradient-to-r from-cyan-400 to-cyan-500 hover:from-cyan-300 hover:to-cyan-400 transition-all flex items-center gap-2 shadow-lg shadow-cyan-500/20">
             <i data-lucide="home" class="w-4 h-4"></i>
-            <span>Return to Main Portal</span>
+            <span>{{ _('Return to Main Portal') }}</span>
         </a>
     </div>
 </div>

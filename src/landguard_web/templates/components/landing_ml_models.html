@@ -1,0 +1,148 @@
+<!-- ==============================================================================
+     3RD PAGE COMPONENT: Machine Learning & AI Verification Models
+     ============================================================================== -->
+<section id="ai-models" class="relative w-full py-16 sm:py-24 border-t border-slate-800/70 scroll-mt-12 overflow-hidden" style="isolation: isolate;">
+    <!-- National Parliament Cyber Night Architecture Background with Enhanced Clarity -->
+    <div class="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
+        <img src="/static/images/parliament-cyber-bg.jpg" alt="National Cyber Architecture" class="w-full h-full object-cover object-center opacity-80 filter brightness-110 contrast-120 saturate-130">
+        <!-- Smooth Edge Blend (Transitions seamlessly into adjacent sections without drowning out the center) -->
+        <div class="absolute inset-0 bg-gradient-to-b from-[#070b16] via-transparent to-[#070b16] opacity-75 pointer-events-none"></div>
+        <div class="absolute inset-0 bg-[#070b16]/35 pointer-events-none"></div>
+    </div>
+
+    <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+        <!-- Section Header -->
+    <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
+            {{ _('Intelligent ML & Statutory Verification Architecture') if current_lang != 'bn' else 'মেশিন লার্নিং ও বিধিবদ্ধ নিয়মের সমন্বিত যাচাই ব্যবস্থা' }}
+        </h2>
+        <p class="text-sm sm:text-base text-slate-300 mt-3 leading-relaxed">
+            {{ _('LandGuard AI unites deterministic Bangladesh land statutes, frozen gradient-boosted decision trees, optical character recognition, and computer vision forensics.') if current_lang != 'bn' else 'ল্যান্ডগার্ড এআই সংবিধিবদ্ধ আইনি বিধান, ক্যালিব্রেটেড এক্সজিবুস্ট মডেল, দ্বিভাষিক ওসিআর এবং কম্পিউটার ভিশন ফরেনসিকের মাধ্যমে জমির দলিল যাচাই করে।' }}
+        </p>
+    </div>
+
+    <!-- 4 Main Model Pillars -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        
+        <!-- Pillar 1: XGBoost ML Risk Model -->
+        <div class="glass-panel p-6 rounded-2xl border border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col justify-between group shadow-lg hover:shadow-cyan-500/10">
+            <div>
+                <div class="w-12 h-12 rounded-xl bg-cyan-950/80 border border-cyan-500/40 flex items-center justify-center text-cyan-400 mb-5 group-hover:scale-110 transition-transform">
+                    <i data-lucide="activity" class="w-6 h-6"></i>
+                </div>
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 font-mono text-[10px] font-bold border border-cyan-500/30">ML CLASSIFIER</span>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">
+                    {{ _('Frozen XGBoost Risk Engine') if current_lang != 'bn' else 'ক্যালিব্রেটেড এক্সজিবুস্ট রিস্ক মডেল' }}
+                </h3>
+                <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                    {{ _('Predicts fraud probability using 28 engineered tabular features trained on 100,000 canonical land records and 2,500 scenarios.') if current_lang != 'bn' else '১০০,০০০ ক্যানোনিকাল দলিল এবং ২,৫০০ বাস্তব পরিস্থিতির ওপর প্রশিক্ষিত ২৮টি বিশেষায়িত বৈশিষ্ট্যের নিখুঁত ঝুঁকি স্কোর।' }}
+                </p>
+            </div>
+            <div class="pt-4 border-t border-slate-800 text-[11px] font-mono text-cyan-300 flex items-center justify-between">
+                <span>{{ _('Brier Score: 0.0013') if current_lang != 'bn' else 'ব্রায়ার স্কোর: ০.০০১৩' }}</span>
+                <span class="text-emerald-400 font-bold">{{ _('Recall: 1.000') if current_lang != 'bn' else 'রিকল: ১.০০০' }}</span>
+            </div>
+        </div>
+
+        <!-- Pillar 2: Deterministic Statutory Rules -->
+        <div class="glass-panel p-6 rounded-2xl border border-slate-800 hover:border-indigo-500/50 transition-all flex flex-col justify-between group shadow-lg hover:shadow-indigo-500/10">
+            <div>
+                <div class="w-12 h-12 rounded-xl bg-indigo-950/80 border border-indigo-500/40 flex items-center justify-center text-indigo-400 mb-5 group-hover:scale-110 transition-transform">
+                    <i data-lucide="scale" class="w-6 h-6"></i>
+                </div>
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="px-2 py-0.5 rounded bg-indigo-950 text-indigo-300 font-mono text-[10px] font-bold border border-indigo-500/30">STATUTORY LAW</span>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">
+                    {{ _('Deterministic Statutory Rules') if current_lang != 'bn' else 'সংবিধিবদ্ধ আইনি বিধিমালার ইঞ্জিন' }}
+                </h3>
+                <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                    {{ _('Hard checks for Registration Act 1908 §47 priority, SAT Act 1950 mutation compliance, and Evidence Act 1872 archival presumption.') if current_lang != 'bn' else 'রেজিস্ট্রেশন আইন ১৯০৮ (ধারা ৪৭), এসএটি আইন ১৯৫০ (নামজারি বাধ্যবাধকতা) এবং সাক্ষ্য আইন ১৮৭২ এর আইনি যাচাই।' }}
+                </p>
+            </div>
+            <div class="pt-4 border-t border-slate-800 text-[11px] font-mono text-indigo-300 flex items-center justify-between">
+                <span>{{ _('Zero False Positives') if current_lang != 'bn' else 'শূন্য আইনি ত্রুটি' }}</span>
+                <span class="text-indigo-400 font-bold">{{ _('100% Deterministic') if current_lang != 'bn' else 'নিশ্চিত সিদ্ধান্ত' }}</span>
+            </div>
+        </div>
+
+        <!-- Pillar 3: Computer Vision Seam Tampering -->
+        <div class="glass-panel p-6 rounded-2xl border border-slate-800 hover:border-rose-500/50 transition-all flex flex-col justify-between group shadow-lg hover:shadow-rose-500/10">
+            <div>
+                <div class="w-12 h-12 rounded-xl bg-rose-950/80 border border-rose-500/40 flex items-center justify-center text-rose-400 mb-5 group-hover:scale-110 transition-transform">
+                    <i data-lucide="scan" class="w-6 h-6"></i>
+                </div>
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="px-2 py-0.5 rounded bg-rose-950 text-rose-300 font-mono text-[10px] font-bold border border-rose-500/30">CV FORENSICS</span>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">
+                    {{ _('Physical Seam & Tampering CV') if current_lang != 'bn' else 'কম্পিউটার ভিশন ও ফরেনসিক টেম্পারিং' }}
+                </h3>
+                <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                    {{ _('Sub-pixel optical gradient scanning detects physical paper seams, whiteout patches, erased plot numbers, and rubber seal forgery.') if current_lang != 'bn' else 'কাগজে জোড়াতালি (Seams), ফ্লুইড/হোয়াইট-আউট প্যাচ, ঘষামাজা দাগ নম্বর ও সিল জালিয়াতি স্বয়ংক্রিয়ভাবে শনাক্তকরণ।' }}
+                </p>
+            </div>
+            <div class="pt-4 border-t border-slate-800 text-[11px] font-mono text-rose-300 flex items-center justify-between">
+                <span>{{ _('Sub-pixel Gradients') if current_lang != 'bn' else 'সাব-পিক্সেল স্ক্যানিং' }}</span>
+                <span class="text-rose-400 font-bold">{{ _('Seal/Signature QA') if current_lang != 'bn' else 'সিল/স্বাক্ষর পরীক্ষা' }}</span>
+            </div>
+        </div>
+
+        <!-- Pillar 4: RapidOCR & Cadastral Graph -->
+        <div class="glass-panel p-6 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition-all flex flex-col justify-between group shadow-lg hover:shadow-emerald-500/10">
+            <div>
+                <div class="w-12 h-12 rounded-xl bg-emerald-950/80 border border-emerald-500/40 flex items-center justify-center text-emerald-400 mb-5 group-hover:scale-110 transition-transform">
+                    <i data-lucide="network" class="w-6 h-6"></i>
+                </div>
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 font-mono text-[10px] font-bold border border-emerald-500/30">TOPOLOGY GRAPH</span>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">
+                    {{ _('RapidOCR & Cadastral Graph') if current_lang != 'bn' else 'দ্বিভাষিক ওসিআর ও ক্যাডাস্ট্রাল গ্রাফ' }}
+                </h3>
+                <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                    {{ _('Bilingual Bengali-English OCR with human-in-the-loop diffing and topological parcel graphs stopping concurrent double sales.') if current_lang != 'bn' else 'বাংলা ও ইংরেজি দলিলের ওসিআর এক্সট্রাকশন এবং ক্যাডাস্ট্রাল গ্রাফের মাধ্যমে একই দাগের দ্বৈত বিক্রি তাৎক্ষণিক প্রতিহত।' }}
+                </p>
+            </div>
+            <div class="pt-4 border-t border-slate-800 text-[11px] font-mono text-emerald-300 flex items-center justify-between">
+                <span>{{ _('Bangla + English OCR') if current_lang != 'bn' else 'বাংলা + ইংরেজি ওসিআর' }}</span>
+                <span class="text-emerald-400 font-bold">{{ _('Double-Sale Defense') if current_lang != 'bn' else 'দ্বৈত বিক্রয় সুরক্ষা' }}</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Live Model Verification Flow Pipeline Banner -->
+    <div class="glass-panel p-6 sm:p-8 rounded-2xl border border-slate-800 bg-gradient-to-r from-slate-950 via-slate-900/90 to-slate-950 relative overflow-hidden">
+        <div class="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-6">
+            <div class="max-w-xl">
+                <span class="text-xs font-mono text-cyan-400 uppercase tracking-widest block mb-1">
+                    {{ _('Automated 5-Stage Verification Pipeline') if current_lang != 'bn' else '৫-ধাপের স্বয়ংক্রিয় ভেরিফিকেশন পাইপলাইন' }}
+                </span>
+                <h4 class="text-xl font-bold text-white mb-2">
+                    {{ _('How LandGuard Evaluates Every Document') if current_lang != 'bn' else 'যেভাবে প্রতিটি দলিলের সত্যতা নিরূপণ করা হয়' }}
+                </h4>
+                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                    {{ _('From raw scan upload to statutory clearance: Ingestion → OCR Extraction → Human Review → Rule & ML Evaluation → Immutable Dossier Generation.') if current_lang != 'bn' else 'স্ক্যান আপলোড থেকে চূড়ান্ত আইনি প্রত্যয়ন: ডকুমেন্ট গ্রহণ → ওসিআর এক্সট্রাকশন → রিভিউ ডিফস → সংবিধিবদ্ধ ও এমএল মূল্যায়ন → ডিজিটাল প্রত্যয়নপত্র প্রদান।' }}
+                </p>
+            </div>
+            <div class="flex flex-wrap items-center gap-3">
+                <div class="flex items-center gap-2 bg-slate-950/80 px-3.5 py-2 rounded-xl border border-cyan-500/30 text-xs font-mono text-cyan-300">
+                    <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                    <span>{{ _('Step 1: Document Ingestion') }}</span>
+                </div>
+                <i data-lucide="arrow-right" class="w-4 h-4 text-slate-600 hidden sm:block"></i>
+                <div class="flex items-center gap-2 bg-slate-950/80 px-3.5 py-2 rounded-xl border border-indigo-500/30 text-xs font-mono text-indigo-300">
+                    <span>{{ _('Step 2: Human-in-the-Loop Confirmation') }}</span>
+                </div>
+                <i data-lucide="arrow-right" class="w-4 h-4 text-slate-600 hidden sm:block"></i>
+                <div class="flex items-center gap-2 bg-slate-950/80 px-3.5 py-2 rounded-xl border border-emerald-500/30 text-xs font-mono text-emerald-300">
+                    <span>{{ _('Step 3 & 4: Statutory Verification')|safe }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>

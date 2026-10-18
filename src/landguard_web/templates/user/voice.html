@@ -1,0 +1,1861 @@
+{% extends "user/layout.html" %}
+
+{% block title %}Bilingual Voice Assistant / ভয়েস সহকারী — LandGuard AI{% endblock %}
+
+{% block extra_head %}
+<!-- Google Fonts: Chakra Petch for Cyber HUD -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        --neon-cyan: #00f2fe;
+        --neon-purple: #9d4edd;
+        --neon-magenta: #ff007f;
+        --neon-blue: #3a86ff;
+        --dark-core: #040711;
+        --glass-panel: rgba(10, 16, 30, 0.76);
+        --glass-border: rgba(0, 242, 254, 0.18);
+    }
+
+    .font-cyber {
+        font-family: 'Chakra Petch', 'Orbitron', 'Inter', sans-serif;
+    }
+
+    /* Ambient cyber grid background */
+    .bg-cyber-matrix {
+        background-image: 
+            radial-gradient(circle at 50% 30%, rgba(58, 134, 255, 0.08) 0%, transparent 60%),
+            radial-gradient(circle at 80% 80%, rgba(157, 78, 221, 0.06) 0%, transparent 50%),
+            linear-gradient(rgba(0, 242, 254, 0.025) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 242, 254, 0.025) 1px, transparent 1px);
+        background-size: 100% 100%, 100% 100%, 36px 36px, 36px 36px;
+    }
+
+    /* Glassmorphic Cyber HUD panels */
+    .glass-hud {
+        background: var(--glass-panel);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border: 1px solid var(--glass-border);
+        box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.7), inset 0 0 20px rgba(0, 242, 254, 0.03);
+    }
+
+    /* Hologram borders & corner notches */
+    .hud-bracket {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        border-color: var(--neon-cyan);
+        pointer-events: none;
+        opacity: 0.75;
+    }
+    .hud-tl { top: -1px; left: -1px; border-top: 2px solid; border-left: 2px solid; }
+    .hud-tr { top: -1px; right: -1px; border-top: 2px solid; border-right: 2px solid; }
+    .hud-bl { bottom: -1px; left: -1px; border-bottom: 2px solid; border-left: 2px solid; }
+    .hud-br { bottom: -1px; right: -1px; border-bottom: 2px solid; border-right: 2px solid; }
+
+    /* Keyframe Animations */
+    @keyframes spinClockwise {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    @keyframes spinCounter {
+        from { transform: rotate(360deg); }
+        to { transform: rotate(0deg); }
+    }
+    @keyframes ringPulse {
+        0%, 100% { transform: scale(1); opacity: 0.35; }
+        50% { transform: scale(1.08); opacity: 0.85; filter: drop-shadow(0 0 16px rgba(0, 242, 254, 0.8)); }
+    }
+    @keyframes pulse-ring {
+        0% { transform: scale(0.95); opacity: 0.8; }
+        50% { transform: scale(1.15); opacity: 0.3; }
+        100% { transform: scale(0.95); opacity: 0.8; }
+    }
+    .mic-active-ring {
+        animation: pulse-ring 1.8s infinite ease-in-out;
+    }
+    .wave-bar {
+        animation: wave 1.2s ease-in-out infinite alternate;
+    }
+    @keyframes wave {
+        0% { height: 6px; }
+        100% { height: 28px; }
+    }
+
+    .animate-spin-slow { animation: spinClockwise 22s linear infinite; }
+    .animate-spin-reverse { animation: spinCounter 15s linear infinite; }
+    .animate-ring-pulse { animation: ringPulse 3.5s ease-in-out infinite; }
+
+    /* Custom Equalizer Bar */
+    .eq-bar {
+        transition: height 0.08s ease-out;
+    }
+</style>
+{% endblock %}
+
+{% block portal_content %}
+<div class="w-full max-w-6xl mx-auto space-y-6">
+    <!-- Header -->
+    <div class="glass-hud p-6 rounded-2xl relative overflow-hidden flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div class="hud-bracket hud-tl"></div>
+        <div class="hud-bracket hud-tr"></div>
+        <div class="hud-bracket hud-bl"></div>
+        <div class="hud-bracket hud-br"></div>
+
+        <div>
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-cyan-950 border border-cyan-500/40 flex items-center justify-center text-cyan-400 shadow-[0_0_15px_rgba(0,242,254,0.3)]">
+                    <i data-lucide="mic" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-cyber font-extrabold text-white tracking-wide">LandGuard Voice Assistant</h1>
+                    <p class="text-xs text-cyan-400 font-medium">দ্বিভাষিক ভূমি সেবা ভয়েস সহকারী (Bangla &amp; English)</p>
+                </div>
+            </div>
+            <p class="text-xs text-slate-400 mt-2 max-w-xl">
+                {{ _('Click microphone to speak in Bengali or English') }} — {{ _('Search Parcels') }}, verification status, or draft dispute complaints.
+            </p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3">
+            <!-- Hands-Free Wake-Word Toggle Button ("Hello Daffodil" / "হ্যালো ড্যাফোডিল") -->
+            <button type="button" id="handsFreeToggleBtn" onclick="toggleHandsFreeMode()"
+                    class="px-3.5 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700 hover:border-cyan-400 text-xs font-mono text-slate-300 hover:text-white flex items-center gap-2 transition-all shadow-md group"
+                    title="Toggle Hands-Free Wake-Word Mode ('Hello Daffodil' / 'হ্যালো ড্যাফোডিল')">
+                <span id="handsFreeDot" class="w-2.5 h-2.5 rounded-full bg-slate-500 transition-colors"></span>
+                <span id="handsFreeLabel" class="font-semibold tracking-wider">Hands-Free: OFF</span>
+                <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-cyan-400 font-mono border border-slate-700 hidden sm:inline">"Hello Daffodil"</span>
+            </button>
+
+            <!-- Language Preference Selector -->
+            <div class="flex items-center gap-2 bg-slate-900/80 p-1.5 rounded-xl border border-slate-800 text-xs font-mono">
+                <button type="button" onclick="setLanguage('auto')" id="lang-btn-auto" class="px-3 py-1 rounded-lg text-white bg-cyan-600 transition-colors">Auto</button>
+                <button type="button" onclick="setLanguage('bn')" id="lang-btn-bn" class="px-3 py-1 rounded-lg text-slate-400 hover:text-white transition-colors">বাংলা</button>
+                <button type="button" onclick="setLanguage('en')" id="lang-btn-en" class="px-3 py-1 rounded-lg text-slate-400 hover:text-white transition-colors">English</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Voice Interactive Console (AETHERIS Futuristic Cyber HUD) -->
+    <div class="glass-hud p-6 sm:p-7 rounded-2xl relative overflow-hidden space-y-4">
+        <!-- Tech HUD Corners -->
+        <div class="hud-bracket hud-tl"></div>
+        <div class="hud-bracket hud-tr"></div>
+        <div class="hud-bracket hud-bl"></div>
+        <div class="hud-bracket hud-br"></div>
+
+        <!-- Top Telemetry & Status Bar -->
+        <div class="flex items-center justify-between pb-3 border-b border-slate-800/80 font-mono text-xs">
+            <div class="flex items-center gap-3">
+                <div class="flex items-center gap-2 px-2.5 py-1 rounded bg-slate-950/80 border border-slate-800">
+                    <span id="statusIndicatorDot" class="w-2 h-2 rounded-full bg-cyan-400"></span>
+                    <span id="statusText" class="font-cyber font-bold tracking-wider text-cyan-300 uppercase">SYSTEM IDLE</span>
+                </div>
+                <span class="text-slate-500 hidden sm:inline">LATENCY: <span id="telemetryLatency" class="text-slate-400 font-mono">18ms</span></span>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="text-slate-500 hidden sm:inline">GAIN: <span class="text-cyan-400 font-bold font-mono">+6.2dB</span></span>
+                <span class="px-2 py-0.5 rounded bg-cyan-950/40 border border-cyan-800/60 text-[10px] font-mono text-cyan-400">AUDIO ENGINE READY</span>
+            </div>
+        </div>
+
+        <!-- Hidden legacy hooks for automated tests & fallback bindings -->
+        <div id="mic-ring" class="hidden absolute w-36 h-36 rounded-full bg-cyan-500/20 mic-active-ring pointer-events-none"></div>
+        <span id="listening-status" class="hidden">Click microphone to speak</span>
+        <div id="waveform" class="hidden flex items-center justify-center gap-1.5 h-8">
+            <span class="w-1 bg-cyan-400 rounded-full wave-bar" style="animation-delay: 0.1s;"></span>
+            <span class="w-1 bg-cyan-400 rounded-full wave-bar" style="animation-delay: 0.3s;"></span>
+            <span class="w-1 bg-cyan-400 rounded-full wave-bar" style="animation-delay: 0.2s;"></span>
+            <span class="w-1 bg-cyan-400 rounded-full wave-bar" style="animation-delay: 0.4s;"></span>
+            <span class="w-1 bg-cyan-400 rounded-full wave-bar" style="animation-delay: 0.15s;"></span>
+        </div>
+
+        <!-- Center Kinetic Neural Orb & Rotating Gyro Rings -->
+        <div class="relative w-full flex-1 min-h-[320px] sm:min-h-[400px] flex items-center justify-center my-2 overflow-hidden">
+            <!-- Rotating Holographic Compass & Gyro Rings -->
+            <div class="absolute w-[300px] sm:w-[390px] h-[300px] sm:h-[390px] rounded-full border border-cyan-500/15 pointer-events-none animate-spin-slow"></div>
+            <div class="absolute w-[250px] sm:w-[330px] h-[250px] sm:h-[330px] rounded-full border border-dashed border-indigo-500/25 pointer-events-none animate-spin-reverse"></div>
+            <div class="absolute w-[200px] sm:w-[270px] h-[200px] sm:h-[270px] rounded-full border border-fuchsia-500/15 pointer-events-none animate-ring-pulse"></div>
+
+            <!-- Ambient Ripple Waves when active -->
+            <div id="orbRippleRing" class="absolute w-[180px] h-[180px] rounded-full border-2 border-cyan-400/60 pointer-events-none opacity-0 scale-90 transition-all duration-300"></div>
+
+            <!-- 3D Kinetic Neural Orb Canvas (Clickable to Speak) -->
+            <canvas id="orbCanvas" width="450" height="450" class="relative z-10 w-[280px] h-[280px] sm:w-[380px] sm:h-[380px] max-w-full cursor-pointer select-none filter drop-shadow-[0_0_40px_rgba(0,242,254,0.35)]" title="Click to trigger Listening Mode"></canvas>
+
+            <!-- Center Wake Word / HUD Prompt Badge -->
+            <div class="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 pointer-events-none text-center">
+                <div id="orbInstructionBadge" class="px-4 py-1.5 rounded-full bg-slate-950/85 border border-cyan-500/30 text-xs font-mono text-cyan-300 backdrop-blur-md shadow-lg flex items-center gap-2">
+                    <span id="instructionDot" class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping"></span>
+                    <span id="instructionText">Click Mic or Orb to Speak</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Waveform Frequency Spectrum (32-Band) -->
+        <div class="pt-3 border-t border-slate-800/80">
+            <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 mb-2">
+                <span class="flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                    <span>NEURAL FREQUENCY SPECTRUM (32-BAND)</span>
+                </span>
+                <span id="micEnergyLabel" class="text-cyan-400 font-bold">15% LEVEL</span>
+            </div>
+
+            <div id="equalizerStrip" class="w-full h-8 flex items-end justify-between gap-[3px] px-1 py-1 bg-slate-950/60 border border-slate-800 rounded-lg overflow-hidden">
+                <!-- 32 bars injected dynamically by JS -->
+            </div>
+        </div>
+
+        <!-- Primary Action Bar: Big Futuristic Mic Button & Stop Controls -->
+        <div class="mt-4 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <button id="mic-toggle-btn" onclick="toggleListening()" type="button"
+                        class="group relative flex items-center gap-2.5 px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 via-indigo-600 to-fuchsia-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-cyber font-bold tracking-wider text-xs shadow-[0_0_25px_rgba(0,242,254,0.3)] hover:shadow-[0_0_35px_rgba(0,242,254,0.5)] active:scale-95 transition-all duration-200">
+                    <span id="micPulseGlow" class="absolute inset-0 rounded-xl bg-cyan-400/30 blur-md opacity-0 transition-opacity duration-300"></span>
+                    <i id="mic-icon" data-lucide="mic" class="w-4 h-4 relative z-10 transition-transform group-hover:scale-110"></i>
+                    <span id="micBtnLabel" class="relative z-10 uppercase">Initialize Voice</span>
+                </button>
+
+                <button id="stopSpeechBtn" onclick="stopAllAudio()" type="button"
+                        class="p-3 rounded-xl border border-slate-700 hover:border-fuchsia-500/70 text-slate-400 hover:text-fuchsia-300 transition duration-200 bg-slate-900/60" title="Mute Assistant">
+                    <i data-lucide="square" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <div class="hidden sm:flex items-center gap-2 text-[11px] font-mono text-slate-500">
+                <span>HOTKEY:</span>
+                <kbd class="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300">Space</kbd>
+                <span>(Tap to Speak)</span>
+            </div>
+        </div>
+
+        <!-- Live / Text Input Fallback -->
+        <div class="max-w-xl mx-auto space-y-3 pt-3">
+            <div class="relative">
+                <input type="text" id="voice-text-input" placeholder="Type query here or speak (যেমন: 'দাগ ৯০৪৪ এর তথ্য দিন' / 'Search plot 9044')..."
+                       class="glass-input w-full pl-4 pr-24 py-3 rounded-xl text-xs text-white placeholder-slate-500 border border-slate-700/80 focus:border-cyan-500 font-mono"
+                       onkeydown="if(event.key === 'Enter') submitQuery(this.value);" />
+                <button type="button" onclick="submitQuery(document.getElementById('voice-text-input').value)"
+                        class="absolute right-2 top-2 px-3 py-1.5 rounded-lg text-xs font-semibold text-navy-950 bg-cyan-400 hover:bg-cyan-300 transition-colors font-cyber">
+                    Search
+                </button>
+            </div>
+
+            <!-- Quick Voice Prompts Chips -->
+            <div class="flex flex-wrap items-center justify-center gap-2 pt-1 text-[11px]">
+                <span class="text-slate-500 font-mono">Try asking:</span>
+                <button type="button" onclick="useSampleQuery('দাগ ৯০৪৪ এর মালিকানা কি?')"
+                        class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-cyan-300 hover:bg-slate-800 transition-colors">
+                    "দাগ ৯০৪৪ এর মালিকানা কি?"
+                </button>
+                <button type="button" onclick="useSampleQuery('Check ownership chain for Dag 9044')"
+                        class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:bg-slate-800 transition-colors">
+                    "Check Dag 9044"
+                </button>
+                <button type="button" onclick="useSampleQuery('আমার অভিযোগ CMP-2026-001 এর অবস্থা কি?')"
+                        class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-cyan-300 hover:bg-slate-800 transition-colors">
+                    "অভিযোগ CMP-2026-001 এর অবস্থা"
+                </button>
+                <button type="button" onclick="useSampleQuery('I want to file a land dispute complaint')"
+                        class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:bg-slate-800 transition-colors">
+                    "File dispute complaint"
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assistant Response Card (Hidden by default, shown upon result) -->
+    <div id="response-card" class="hidden glass-hud p-6 rounded-2xl relative overflow-hidden border border-cyan-500/40 space-y-4">
+        <div class="hud-bracket hud-tl"></div>
+        <div class="hud-bracket hud-tr"></div>
+        <div class="hud-bracket hud-bl"></div>
+        <div class="hud-bracket hud-br"></div>
+
+        <div class="flex flex-wrap items-center justify-between pb-3 border-b border-slate-800 gap-3">
+            <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span>
+                <span id="response-intent-badge" class="font-mono text-xs font-bold text-cyan-300 uppercase">INTENT</span>
+                <span id="response-confidence-badge" class="text-[10px] font-mono text-slate-400">CONFIDENCE: 95%</span>
+                <span id="audio-status-pill" class="hidden text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-cyan-950 border border-cyan-500/50 text-cyan-300 animate-pulse flex items-center gap-1.5">
+                    <i data-lucide="volume-2" class="w-3 h-3 text-cyan-400"></i>
+                    <span id="audio-status-text">Speaking...</span>
+                </span>
+            </div>
+            <div class="flex items-center gap-2">
+                <button type="button" id="btn-listen-bn" onclick="playSpokenAudio('bn')" class="px-2.5 py-1 rounded-lg text-[11px] font-medium text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 transition-colors flex items-center gap-1.5" title="Listen in Bangla (Female Neural: Nabanita)">
+                    <i data-lucide="volume-2" class="w-3.5 h-3.5 text-cyan-400"></i>
+                    <span>বাংলা শুনুন (নবানিতা)</span>
+                </button>
+                <button type="button" id="btn-listen-en" onclick="playSpokenAudio('en')" class="px-2.5 py-1 rounded-lg text-[11px] font-medium text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 transition-colors flex items-center gap-1.5" title="Listen in English (Female Neural: Aria)">
+                    <i data-lucide="volume-1" class="w-3.5 h-3.5 text-indigo-400"></i>
+                    <span>English (Aria)</span>
+                </button>
+                <button type="button" id="btn-replay" onclick="playSpokenAudio()" class="p-1.5 rounded-lg text-slate-400 hover:text-cyan-400 hover:bg-slate-800 transition-colors" title="Replay voice audio">
+                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Voice Synthesis Fallback Notice (Only shown if both Neural backend and Web Speech fail) -->
+        <div id="voice-fallback-notice" class="hidden p-3 rounded-xl bg-amber-950/40 border border-amber-500/30 text-xs text-amber-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+                <i data-lucide="volume-x" class="w-4 h-4 text-amber-400 shrink-0"></i>
+                <span>Audio stream unavailable. Displaying written response below.</span>
+            </div>
+            <button type="button" onclick="playSpokenAudio('en')" class="px-2.5 py-1 rounded-lg bg-amber-900/60 hover:bg-amber-800 text-amber-100 font-semibold text-[11px] shrink-0 transition-colors flex items-center gap-1">
+                <i data-lucide="volume-2" class="w-3 h-3"></i>
+                <span>Listen in English</span>
+            </button>
+        </div>
+
+        <!-- Spoken Response Messages (Dynamic Hierarchy) -->
+        <div class="space-y-3" id="spoken-messages-container">
+            <div id="primary-response-box" class="p-4 rounded-xl bg-slate-900/80 border border-slate-800/80">
+                <div id="primary-lang-label" class="text-[10px] font-mono text-cyan-400 uppercase tracking-wider mb-1">Primary Response</div>
+                <div class="text-sm font-semibold text-white leading-relaxed font-sans" id="primary-spoken-text"></div>
+            </div>
+            <div id="secondary-response-box" class="p-3 rounded-xl bg-slate-950/50 border border-slate-900">
+                <div id="secondary-lang-label" class="text-[10px] font-mono text-slate-500 uppercase tracking-wider mb-0.5">Translation</div>
+                <div class="text-xs text-slate-300 leading-relaxed font-sans" id="secondary-spoken-text"></div>
+            </div>
+            <span id="spoken-bn" class="hidden"></span>
+            <span id="spoken-en" class="hidden"></span>
+        </div>
+
+        <!-- Extracted Legal Entities -->
+        <div id="entities-container" class="flex flex-wrap gap-2 pt-2"></div>
+
+        <!-- Explicit Confirmation Notice (for Complaint Drafting / Mutating Actions) -->
+        <div id="confirmation-container" class="hidden"></div>
+
+        <!-- Action Execution Deep Link -->
+        <div id="action-container" class="pt-3 border-t border-slate-800/80 flex items-center justify-end"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    /* =========================================================
+       1. GLOBAL STATE & SYSTEM FLAGS
+       ========================================================= */
+    const STATE = {
+        HANDS_FREE_DISABLED: 'HANDS_FREE_DISABLED',
+        IDLE: 'IDLE',
+        WAKE_WORD_STANDBY: 'WAKE_WORD_STANDBY',
+        WAKE_WORD_DETECTED: 'WAKE_WORD_DETECTED',
+        LISTENING: 'LISTENING',
+        LISTENING_COMMAND: 'LISTENING_COMMAND',
+        ANALYZING: 'ANALYZING',
+        PROCESSING: 'PROCESSING',
+        SPEAKING: 'SPEAKING',
+        ERROR: 'ERROR',
+        PERMISSION_REQUIRED: 'PERMISSION_REQUIRED'
+    };
+
+    function getSiteLanguage() {
+        try {
+            if (typeof document !== 'undefined' && document.documentElement) {
+                const htmlLang = document.documentElement.lang;
+                if (htmlLang === 'bn' || htmlLang === 'en') return htmlLang;
+            }
+            if (typeof document !== 'undefined' && document.cookie) {
+                const match = document.cookie.match(/(?:^|;\s*)landguard_lang=(bn|en)(?:;|$)/);
+                if (match && match[1]) return match[1];
+            }
+        } catch (e) {}
+        return 'bn'; // Primary default is Bangla
+    }
+
+    let currentState = STATE.IDLE;
+    let currentLanguage = 'auto';
+    let autoSpeechLang = (getSiteLanguage() === 'en') ? 'en-US' : 'bn-BD';
+    let recognition = null;
+    let wakeRecognition = null;
+    let handsFreeActive = false;
+    let isListening = false;
+    let lastSpokenText = '';
+    let currentResponseData = null;
+    let availableVoices = [];
+    let audioCtx = null;
+    let autoNavTimerInterval = null;
+
+    // Orb Visualizer Parameters
+    let orbIntensity = 0.35;
+    let orbSpeed = 0.015;
+
+    function populateVoices() {
+        if ('speechSynthesis' in window) {
+            availableVoices = window.speechSynthesis.getVoices();
+        }
+    }
+
+    if ('speechSynthesis' in window) {
+        populateVoices();
+        if (window.speechSynthesis.onvoiceschanged !== undefined) {
+            window.speechSynthesis.onvoiceschanged = populateVoices;
+        }
+    }
+
+    function getActiveSpeechLang() {
+        if (currentLanguage === 'bn') return 'bn-BD';
+        if (currentLanguage === 'en') return 'en-US';
+        const siteLang = getSiteLanguage();
+        if (autoSpeechLang) return autoSpeechLang;
+        return (siteLang === 'en') ? 'en-US' : 'bn-BD';
+    }
+
+    /* =========================================================
+       2. WEB AUDIO SFX GENERATOR (Futuristic Cyber Feedback)
+       ========================================================= */
+    function initAudioContext() {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx && audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+    }
+
+    function playChime(type) {
+        try {
+            initAudioContext();
+            if (!audioCtx) return;
+            const now = audioCtx.currentTime;
+
+            if (type === 'activate') {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, now);
+                osc.frequency.setValueAtTime(659.25, now + 0.06);
+                osc.frequency.setValueAtTime(1046.50, now + 0.12);
+                gain.gain.setValueAtTime(0.08, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.24);
+            } else if (type === 'listen') {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(440, now);
+                osc.frequency.exponentialRampToValueAtTime(880, now + 0.14);
+                gain.gain.setValueAtTime(0.08, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.16);
+            } else if (type === 'reply') {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(659.25, now);
+                osc.frequency.setValueAtTime(880, now + 0.07);
+                gain.gain.setValueAtTime(0.07, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.2);
+            } else if (type === 'stop') {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(700, now);
+                osc.frequency.exponentialRampToValueAtTime(200, now + 0.16);
+                gain.gain.setValueAtTime(0.08, now);
+                gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.17);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.18);
+            }
+        } catch (e) {}
+    }
+
+    /* =========================================================
+       3. 3D KINETIC PARTICLE ORB (HTML5 Canvas)
+       ========================================================= */
+    const canvas = document.getElementById('orbCanvas');
+    const ctx = canvas ? canvas.getContext('2d') : null;
+    let orbAngle = 0;
+    const NUM_PARTICLES = 160;
+    const particles = [];
+
+    for (let i = 0; i < NUM_PARTICLES; i++) {
+        const phi = Math.acos(-1 + (2 * i) / NUM_PARTICLES);
+        const theta = Math.sqrt(NUM_PARTICLES * Math.PI) * phi;
+        particles.push({
+            x: Math.cos(theta) * Math.sin(phi),
+            y: Math.sin(theta) * Math.sin(phi),
+            z: Math.cos(phi),
+            baseRadius: 110,
+            pulseSpeed: 0.02 + Math.random() * 0.03,
+            size: 1.5 + Math.random() * 2
+        });
+    }
+
+    function renderOrb() {
+        if (!canvas || !ctx) return;
+        if (document.hidden) {
+            requestAnimationFrame(renderOrb);
+            return;
+        }
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+
+        let targetRadius = 115;
+        if (currentState === STATE.LISTENING || currentState === STATE.LISTENING_COMMAND) {
+            orbIntensity = 0.85;
+            orbSpeed = 0.04;
+        } else if (currentState === STATE.WAKE_WORD_DETECTED) {
+            orbIntensity = 0.95;
+            orbSpeed = 0.06;
+        } else if (currentState === STATE.WAKE_WORD_STANDBY) {
+            orbIntensity = 0.45;
+            orbSpeed = 0.02;
+        } else if (currentState === STATE.ANALYZING || currentState === STATE.PROCESSING) {
+            orbIntensity = 1.0;
+            orbSpeed = 0.07;
+        } else if (currentState === STATE.SPEAKING) {
+            orbIntensity = 0.7 + Math.sin(Date.now() * 0.015) * 0.25;
+            orbSpeed = 0.035;
+        } else {
+            orbIntensity = 0.35 + Math.sin(Date.now() * 0.002) * 0.08;
+            orbSpeed = 0.015;
+        }
+
+        orbAngle += orbSpeed;
+
+        // 1. Core Glowing Aura
+        const coreGradient = ctx.createRadialGradient(cx, cy, 20, cx, cy, targetRadius * 1.3 * orbIntensity);
+        if (currentState === STATE.WAKE_WORD_DETECTED) {
+            coreGradient.addColorStop(0, "rgba(251, 191, 36, 0.95)");
+            coreGradient.addColorStop(0.4, "rgba(0, 242, 254, 0.7)");
+            coreGradient.addColorStop(1, "rgba(251, 191, 36, 0)");
+        } else if (currentState === STATE.WAKE_WORD_STANDBY) {
+            coreGradient.addColorStop(0, "rgba(52, 211, 153, 0.85)");
+            coreGradient.addColorStop(0.4, "rgba(0, 242, 254, 0.3)");
+            coreGradient.addColorStop(1, "rgba(52, 211, 153, 0)");
+        } else if (currentState === STATE.LISTENING || currentState === STATE.LISTENING_COMMAND) {
+            coreGradient.addColorStop(0, "rgba(0, 242, 254, 0.9)");
+            coreGradient.addColorStop(0.4, "rgba(58, 134, 255, 0.5)");
+            coreGradient.addColorStop(1, "rgba(0, 242, 254, 0)");
+        } else if (currentState === STATE.ANALYZING || currentState === STATE.PROCESSING) {
+            coreGradient.addColorStop(0, "rgba(157, 78, 221, 0.95)");
+            coreGradient.addColorStop(0.5, "rgba(99, 102, 241, 0.5)");
+            coreGradient.addColorStop(1, "rgba(157, 78, 221, 0)");
+        } else if (currentState === STATE.SPEAKING) {
+            coreGradient.addColorStop(0, "rgba(255, 0, 127, 0.95)");
+            coreGradient.addColorStop(0.45, "rgba(0, 242, 254, 0.6)");
+            coreGradient.addColorStop(1, "rgba(255, 0, 127, 0)");
+        } else {
+            coreGradient.addColorStop(0, "rgba(0, 242, 254, 0.6)");
+            coreGradient.addColorStop(0.5, "rgba(58, 134, 255, 0.2)");
+            coreGradient.addColorStop(1, "rgba(0, 242, 254, 0)");
+        }
+
+        ctx.beginPath();
+        ctx.arc(cx, cy, targetRadius * 1.35 * orbIntensity, 0, Math.PI * 2);
+        ctx.fillStyle = coreGradient;
+        ctx.fill();
+
+        // 2. Rotating Quantum 3D Nodes
+        const cosA = Math.cos(orbAngle);
+        const sinA = Math.sin(orbAngle);
+        const cosB = Math.cos(orbAngle * 0.6);
+        const sinB = Math.sin(orbAngle * 0.6);
+
+        const projectedPoints = [];
+
+        particles.forEach((p, idx) => {
+            let x1 = p.x * cosA - p.z * sinA;
+            let z1 = p.z * cosA + p.x * sinA;
+            let y2 = p.y * cosB - z1 * sinB;
+            let z2 = z1 * cosB + p.y * sinB;
+
+            const distortion = Math.sin(Date.now() * p.pulseSpeed + idx) * (18 * orbIntensity);
+            const radius = p.baseRadius + distortion;
+            const distance = 300;
+            const scale = distance / (distance + z2 * radius * 0.007);
+            const px = cx + x1 * radius * scale;
+            const py = cy + y2 * radius * scale;
+
+            projectedPoints.push({ x: px, y: py, z: z2, scale: scale, size: p.size });
+        });
+
+        projectedPoints.sort((a, b) => b.z - a.z);
+
+        // Connect neighbor nodes with subtle energy threads
+        ctx.lineWidth = 0.75;
+        for (let i = 0; i < projectedPoints.length; i += 3) {
+            const ptA = projectedPoints[i];
+            const ptB = projectedPoints[(i + 1) % projectedPoints.length];
+            const dist = Math.hypot(ptA.x - ptB.x, ptA.y - ptB.y);
+            if (dist < 48) {
+                ctx.beginPath();
+                ctx.moveTo(ptA.x, ptA.y);
+                ctx.lineTo(ptB.x, ptB.y);
+                ctx.strokeStyle = `rgba(0, 242, 254, ${0.2 * (ptA.z + 1.2)})`;
+                ctx.stroke();
+            }
+        }
+
+        // Draw particle nodes
+        projectedPoints.forEach(pt => {
+            const alpha = Math.max(0.15, Math.min(1, (pt.z + 1.2) * 0.5));
+            ctx.beginPath();
+            ctx.arc(pt.x, pt.y, Math.max(0.5, pt.size * pt.scale * (orbIntensity * 1.3)), 0, Math.PI * 2);
+
+            if (currentState === STATE.SPEAKING) {
+                ctx.fillStyle = `rgba(255, 0, 127, ${alpha})`;
+            } else if (currentState === STATE.ANALYZING || currentState === STATE.PROCESSING) {
+                ctx.fillStyle = `rgba(157, 78, 221, ${alpha})`;
+            } else if (currentState === STATE.WAKE_WORD_DETECTED) {
+                ctx.fillStyle = `rgba(251, 191, 36, ${alpha})`;
+            } else if (currentState === STATE.WAKE_WORD_STANDBY) {
+                ctx.fillStyle = `rgba(52, 211, 153, ${alpha})`;
+            } else if (currentState === STATE.ERROR || currentState === STATE.PERMISSION_REQUIRED) {
+                ctx.fillStyle = `rgba(244, 63, 94, ${alpha})`;
+            } else {
+                ctx.fillStyle = `rgba(0, 242, 254, ${alpha})`;
+            }
+            ctx.fill();
+        });
+
+        requestAnimationFrame(renderOrb);
+    }
+
+    if (canvas) {
+        canvas.addEventListener('click', () => {
+            toggleListening();
+        });
+    }
+
+    /* =========================================================
+       4. EQUALIZER SPECTRUM VISUALIZER (32-Band)
+       ========================================================= */
+    const eqContainer = document.getElementById('equalizerStrip');
+    const NUM_EQ_BARS = 32;
+    const eqBars = [];
+
+    if (eqContainer) {
+        for (let i = 0; i < NUM_EQ_BARS; i++) {
+            const bar = document.createElement('div');
+            bar.className = 'eq-bar flex-1 bg-gradient-to-t from-cyan-500 via-indigo-500 to-fuchsia-500 rounded-t-[2px] opacity-75';
+            bar.style.height = '15%';
+            eqContainer.appendChild(bar);
+            eqBars.push(bar);
+        }
+    }
+
+    function updateEqualizer() {
+        if (eqBars.length > 0 && !document.hidden) {
+            let multiplier = 0.15;
+            if (currentState === STATE.LISTENING || currentState === STATE.LISTENING_COMMAND) multiplier = 0.75;
+            else if (currentState === STATE.WAKE_WORD_DETECTED) multiplier = 0.9;
+            else if (currentState === STATE.WAKE_WORD_STANDBY) multiplier = 0.3;
+            else if (currentState === STATE.ANALYZING || currentState === STATE.PROCESSING) multiplier = 0.95;
+            else if (currentState === STATE.SPEAKING) multiplier = 0.85;
+
+            eqBars.forEach((bar, i) => {
+                const wave = Math.sin(Date.now() * 0.012 + i * 0.4) * 0.5 + 0.5;
+                const randomSpike = Math.random() * 0.35;
+                const finalPercent = Math.min(100, Math.max(10, (wave + randomSpike) * multiplier * 100));
+                bar.style.height = `${finalPercent}%`;
+            });
+
+            const energyEl = document.getElementById('micEnergyLabel');
+            if (energyEl) energyEl.textContent = Math.round(multiplier * 100) + "% LEVEL";
+        }
+        requestAnimationFrame(updateEqualizer);
+    }
+
+    /* =========================================================
+       5. STATE MANAGEMENT & VISUAL HUD SYNC
+       ========================================================= */
+    function setVisualState(newState) {
+        currentState = newState;
+        const statusText = document.getElementById('statusText');
+        const statusDot = document.getElementById('statusIndicatorDot');
+        const micBtnLabel = document.getElementById('micBtnLabel');
+        const micPulseGlow = document.getElementById('micPulseGlow');
+        const orbInstructionBadge = document.getElementById('orbInstructionBadge');
+        const instructionText = document.getElementById('instructionText');
+        const orbRippleRing = document.getElementById('orbRippleRing');
+        const micRing = document.getElementById('mic-ring');
+        const waveform = document.getElementById('waveform');
+        const listeningStatus = document.getElementById('listening-status');
+
+        if (statusDot) statusDot.className = 'w-2 h-2 rounded-full';
+
+        if (newState === STATE.WAKE_WORD_STANDBY) {
+            if (statusText) {
+                statusText.textContent = 'STANDBY: SAY "HELLO DAFFODIL"';
+                statusText.className = 'font-cyber font-bold tracking-wider text-emerald-400 uppercase';
+            }
+            if (statusDot) statusDot.classList.add('bg-emerald-400', 'animate-pulse');
+            if (micBtnLabel) micBtnLabel.textContent = 'HANDS-FREE STANDBY';
+            if (micPulseGlow) micPulseGlow.classList.remove('opacity-0');
+            if (orbInstructionBadge) {
+                orbInstructionBadge.className = 'px-4 py-1.5 rounded-full bg-emerald-950/90 border border-emerald-500/50 text-xs font-mono text-emerald-300 backdrop-blur-md shadow-lg flex items-center gap-2';
+            }
+            if (instructionText) {
+                instructionText.textContent = (currentLanguage === 'bn')
+                    ? "বলুন 'হ্যালো ড্যাফোডিল' (Hello Daffodil)..."
+                    : "Say 'Hello Daffodil' to activate...";
+            }
+            if (orbRippleRing) {
+                orbRippleRing.style.opacity = '0.4';
+                orbRippleRing.style.transform = 'scale(1.1)';
+            }
+            if (micRing) micRing.classList.remove('hidden');
+            if (waveform) waveform.classList.remove('hidden');
+            if (listeningStatus) {
+                listeningStatus.innerText = "Hands-Free Wake Standby: 'Hello Daffodil'";
+                listeningStatus.className = "text-xs font-semibold uppercase tracking-wider text-emerald-400 animate-pulse";
+            }
+        } else if (newState === STATE.WAKE_WORD_DETECTED) {
+            if (statusText) {
+                statusText.textContent = 'WAKE WORD DETECTED!';
+                statusText.className = 'font-cyber font-bold tracking-wider text-amber-300 uppercase';
+            }
+            if (statusDot) statusDot.classList.add('bg-amber-400', 'animate-ping');
+            if (micBtnLabel) micBtnLabel.textContent = 'DAFFODIL ACTIVE';
+            if (micPulseGlow) micPulseGlow.classList.remove('opacity-0');
+            if (orbInstructionBadge) {
+                orbInstructionBadge.className = 'px-4 py-1.5 rounded-full bg-amber-950/90 border border-amber-400 text-xs font-mono text-amber-200 backdrop-blur-md shadow-[0_0_25px_rgba(251,191,36,0.6)] flex items-center gap-2';
+            }
+            if (instructionText) {
+                instructionText.textContent = (currentLanguage === 'bn')
+                    ? "ড্যাফোডিল সক্রিয়! আপনার কমান্ড বলুন..."
+                    : "Daffodil active! State your command...";
+            }
+            if (orbRippleRing) {
+                orbRippleRing.style.opacity = '1';
+                orbRippleRing.style.transform = 'scale(1.6)';
+            }
+            if (micRing) micRing.classList.remove('hidden');
+            if (waveform) waveform.classList.remove('hidden');
+            if (listeningStatus) {
+                listeningStatus.innerText = "Wake Word Detected — Listening for Command";
+                listeningStatus.className = "text-xs font-semibold uppercase tracking-wider text-amber-300 animate-bounce";
+            }
+        } else if (newState === STATE.LISTENING || newState === STATE.LISTENING_COMMAND) {
+            if (statusText) {
+                statusText.textContent = 'LISTENING FOR COMMAND...';
+                statusText.className = 'font-cyber font-bold tracking-wider text-cyan-300 uppercase';
+            }
+            if (statusDot) statusDot.classList.add('bg-cyan-400', 'animate-ping');
+            if (micBtnLabel) micBtnLabel.textContent = 'DISENGAGE MIC';
+            if (micPulseGlow) micPulseGlow.classList.remove('opacity-0');
+            if (orbInstructionBadge) {
+                orbInstructionBadge.className = 'px-4 py-1.5 rounded-full bg-cyan-950/90 border border-cyan-400 text-xs font-mono text-cyan-200 backdrop-blur-md shadow-[0_0_20px_rgba(0,242,254,0.5)] flex items-center gap-2';
+            }
+            if (instructionText) {
+                instructionText.textContent = (currentLanguage === 'bn') ? "শুনছি... আপনার কমান্ড বলুন" : "Listening... Speak clearly into your mic";
+            }
+            if (orbRippleRing) {
+                orbRippleRing.style.opacity = '1';
+                orbRippleRing.style.transform = 'scale(1.5)';
+            }
+            if (micRing) micRing.classList.remove('hidden');
+            if (waveform) waveform.classList.remove('hidden');
+            if (listeningStatus) {
+                listeningStatus.innerText = "Listening...";
+                listeningStatus.className = "text-xs font-semibold uppercase tracking-wider text-cyan-400 animate-pulse";
+            }
+        } else if (newState === STATE.ANALYZING || newState === STATE.PROCESSING) {
+            if (statusText) {
+                statusText.textContent = 'ANALYZING INTENT...';
+                statusText.className = 'font-cyber font-bold tracking-wider text-purple-400 uppercase';
+            }
+            if (statusDot) statusDot.classList.add('bg-purple-400', 'animate-pulse');
+            if (micBtnLabel) micBtnLabel.textContent = 'PROCESSING...';
+            if (orbInstructionBadge) {
+                orbInstructionBadge.className = 'px-4 py-1.5 rounded-full bg-purple-950/90 border border-purple-400 text-xs font-mono text-purple-200 backdrop-blur-md shadow-[0_0_20px_rgba(157,78,221,0.5)] flex items-center gap-2';
+            }
+            if (instructionText) instructionText.textContent = "Processing audio vector and intent...";
+            if (orbRippleRing) orbRippleRing.style.opacity = '0.5';
+        } else if (newState === STATE.SPEAKING) {
+            if (statusText) {
+                statusText.textContent = 'SPEAKING OUTPUT';
+                statusText.className = 'font-cyber font-bold tracking-wider text-fuchsia-400 uppercase';
+            }
+            if (statusDot) statusDot.classList.add('bg-fuchsia-400', 'animate-pulse');
+            if (micBtnLabel) micBtnLabel.textContent = 'MUTE SPEECH';
+            if (orbInstructionBadge) {
+                orbInstructionBadge.className = 'px-4 py-1.5 rounded-full bg-fuchsia-950/90 border border-fuchsia-400 text-xs font-mono text-fuchsia-200 backdrop-blur-md shadow-[0_0_20px_rgba(255,0,127,0.5)] flex items-center gap-2';
+            }
+            if (instructionText) instructionText.textContent = "Assistant is speaking response";
+            if (orbRippleRing) {
+                orbRippleRing.style.opacity = '0';
+                orbRippleRing.style.transform = 'scale(0.9)';
+            }
+        } else if (newState === STATE.ERROR || newState === STATE.PERMISSION_REQUIRED) {
+            if (statusText) {
+                statusText.textContent = 'MIC PERMISSION REQUIRED';
+                statusText.className = 'font-cyber font-bold tracking-wider text-rose-400 uppercase';
+            }
+            if (statusDot) statusDot.classList.add('bg-rose-500', 'animate-ping');
+            if (micBtnLabel) micBtnLabel.textContent = 'ENABLE MIC';
+            if (orbInstructionBadge) {
+                orbInstructionBadge.className = 'px-4 py-1.5 rounded-full bg-rose-950/90 border border-rose-500 text-xs font-mono text-rose-200 backdrop-blur-md shadow-[0_0_20px_rgba(244,63,94,0.5)] flex items-center gap-2';
+            }
+            if (instructionText) instructionText.textContent = "Microphone access required. Please grant permission.";
+            if (orbRippleRing) orbRippleRing.style.opacity = '0';
+        } else {
+            // HANDS_FREE_DISABLED / IDLE
+            if (statusText) {
+                statusText.textContent = 'SYSTEM IDLE';
+                statusText.className = 'font-cyber font-bold tracking-wider text-slate-400 uppercase';
+            }
+            if (statusDot) statusDot.classList.add('bg-cyan-400');
+            if (micBtnLabel) micBtnLabel.textContent = 'INITIALIZE VOICE';
+            if (micPulseGlow) micPulseGlow.classList.add('opacity-0');
+            if (orbInstructionBadge) {
+                orbInstructionBadge.className = 'px-4 py-1.5 rounded-full bg-slate-950/85 border border-cyan-500/30 text-xs font-mono text-cyan-300 backdrop-blur-md shadow-lg flex items-center gap-2';
+            }
+            if (instructionText) {
+                instructionText.textContent = (currentLanguage === 'bn') ? "মাইক্রোফোন বা অরবে ক্লিক করে বলুন" : "Click Mic or Orb to Speak";
+            }
+            if (orbRippleRing) {
+                orbRippleRing.style.opacity = '0';
+                orbRippleRing.style.transform = 'scale(0.9)';
+            }
+            if (micRing) micRing.classList.add('hidden');
+            if (waveform) waveform.classList.add('hidden');
+            if (listeningStatus) {
+                listeningStatus.innerText = "Click microphone to speak";
+                listeningStatus.className = "text-xs font-semibold uppercase tracking-wider text-slate-400";
+            }
+        }
+    }
+
+    /* =========================================================
+       6. PHONETIC NORMALIZATION & BILINGUAL GRAMMAR
+       ========================================================= */
+    const bnGrammarWords = new Set([
+        "এর", "কি", "কী", "কে", "কার", "তথ্য", "দিন", "করুন", "চাই", "আছে",
+        "কোথায়", "কোথায়", "সম্পর্কে", "বলুন", "অভিযোগ", "মামলা", "জালিয়াতি",
+        "খতিয়ান", "খতিয়ান", "মালিক", "জমি", "নিরাপদ", "বর্তমান", "অবস্থা", "যাচাই", "নথি",
+        "আমার", "আমাদের", "আপনার", "দাগ"
+    ]);
+
+    const bnToEnWordMap = {
+        // Conversational, Pronouns & Auxiliaries
+        "মাই": "My", "নেম": "name", "ইজ": "is", "ইস": "is", "আশিক": "Aashiq",
+        "হোয়াট": "What", "হোয়াট": "What", "হোট": "What", "দ্য": "the", "দি": "the", "দা": "the",
+        "অফ": "of", "অব": "of", "হু": "Who", "ওনার": "owner", "হাউ": "How", "আর": "are", "ইউ": "you",
+        "দিস": "this", "দ্যাট": "that", "আই": "I", "ওয়ান্ট": "want", "ওয়ান্ট": "want", "টু": "to",
+        "সি": "see", "শো": "Show", "মি": "me", "গিভ": "Give", "টেল": "Tell", "প্লিজ": "Please",
+        "হেল্প": "Help", "হ্যালো": "Hello", "হেলো": "Hello", "হাই": "Hi", "গুড": "Good", "মর্নিং": "Morning",
+        "থ্যাংকস": "Thanks", "থ্যাংক": "Thank", "ইয়েস": "Yes", "নো": "No", "ওকে": "Okay", "ক্যান": "Can",
+        "এবাউট": "about",
+
+        // Commands & LandGuard domain
+        "ফাইন্ড": "Find", "সার্চ": "Search", "চেক": "Check", "লুকআপ": "Lookup", "ভেরিফাই": "Verify",
+        "ভেরিফিকেশন": "Verification", "কমপ্লেইন্ট": "Complaint", "কমপ্লেন": "Complaint", "কমপ্লেইন": "Complaint",
+        "স্ট্যাটাস": "Status", "স্টেটাস": "Status", "ষ্ট্যাটাস": "Status", "স্টাটাস": "Status",
+        "প্লট": "Plot", "পার্সেল": "Parcel", "হোল্ডিং": "Holding", "ডিড": "Deed", "ডীড": "Deed",
+        "ডকুমেন্ট": "Document", "রেকর্ড": "Record", "সেফ": "Safe", "ফাইল": "File", "ডিটেইলস": "Details",
+        "ডিটেলস": "Details", "ইনফরমেশন": "Information", "ইনফো": "Info", "নাম্বার": "Number",
+        "নাম্বর": "Number", "কেস": "Case", "রিপোর্ট": "Report", "লিগ্যাল": "Legal", "লিগাল": "Legal",
+        "ক্লিয়ার": "Clear", "ক্লিয়ার": "Clear", "ভিউ": "View", "ওপেন": "Open",
+        "ড্যাশবোর্ড": "Dashboard", "ড্যাসবোর্ড": "Dashboard", "হিস্ট্রি": "History",
+        "নোটিফিকেশন": "Notifications", "সেটিংস": "Settings", "প্রোফাইল": "Profile",
+        "ড্যাফোডিল": "Daffodil", "ডেফোডিল": "Daffodil", "ডাফোডিল": "Daffodil", "ডেফডিল": "Daffodil",
+        "স্টপ": "Stop", "ব্যাক": "Back"
+    };
+
+    const romanizedBnStrongWords = {
+        // Pronouns & Greetings
+        "hellow": "hello", "deffodil": "daffodil", "defodil": "daffodil", "dafodil": "daffodil",
+        "amar": "আমার", "amr": "আমার", "aman": "আমার", "amaar": "আমার",
+        "amader": "আমাদের", "amaderke": "আমাদের",
+        "apnar": "আপনার", "apnr": "আপনার", "apnader": "আপনার",
+        "tumi": "তুমি", "apni": "আপনি", "ami": "আমি", "aami": "আমি",
+        "ashik": "আশিক", "aashiq": "আশিক", "asik": "আশিক", "ashique": "আশিক",
+        "kemon": "কেমন", "achen": "আছেন", "asen": "আছেন", "aso": "আছো", "acho": "আছো",
+        "valo": "ভালো", "bhalo": "ভালো",
+        "shunchen": "শুনছেন", "shunun": "শুনুন", "bolun": "বলুন", "bolen": "বলুন",
+        
+        // Land & Government / Legal Terms
+        "dag": "দাগ", "dak": "দাগ", "daag": "দাগ",
+        "khotian": "খতিয়ান", "khatian": "খতিয়ান", "khotiyan": "খতিয়ান", "porcha": "পর্চা",
+        "jomi": "জমি", "zomi": "জমি", "jomir": "জমির", "zomir": "জমির",
+        "tottho": "তথ্য", "totho": "তথ্য", "totto": "তথ্য", "tathya": "তথ্য",
+        "din": "দিন", "den": "দিন", "diben": "দিন", "dekhan": "দেখান", "dekhte": "দেখতে", "dekhaw": "দেখাও",
+        "obostha": "অবস্থা", "obosta": "অবস্থা",
+        "malik": "মালিক", "malikana": "মালিক",
+        "dolil": "দলিল", "doleel": "দলিল",
+        "ovijog": "অভিযোগ", "obhijog": "অভিযোগ", "ovijug": "অভিযোগ", "obhijug": "অভিযোগ",
+        "mamla": "মামলা", "jhamela": "ঝামেলা",
+        "jachai": "যাচাই", "bachai": "যাচাই", "jachay": "যাচাই",
+        "kothay": "কোথায়", "kothai": "কোথায়", "koi": "কোথায়",
+        "chai": "চাই", "cai": "চাই", "lagbe": "লাগবে",
+        "mouza": "মৌজা", "mouja": "মৌজা",
+        "khujo": "খুঁজুন", "khujun": "খুঁজুন",
+        "shob": "সব", "shobai": "সবাই", "ekhon": "এখন",
+        "bujhte": "বুঝতে", "bujhi": "বুঝি"
+    };
+
+    const romanizedBnContextWords = {
+        "nam": "নাম", "naam": "নাম", "name": "নাম",
+        "ki": "কী", "kee": "কী", "kio": "কী",
+        "ache": "আছে", "ase": "আছে", "nai": "নেই", "nei": "নেই",
+        "korun": "করুন", "koren": "করুন", "koro": "করো",
+        "er": "এর",
+        "plot": "প্লট",
+        "number": "নম্বর", "nombor": "নম্বর", "nombar": "নম্বর", "no": "নং",
+        "status": "স্ট্যাটাস",
+        "info": "তথ্য",
+        "details": "বিবরণ",
+        "bam": "", "bahut": ""
+    };
+
+    const englishCommands = new Set([
+        "search", "find", "check", "what", "where", "how", "who", "when", "why",
+        "verify", "lookup", "give", "tell", "show", "is", "are", "do", "does",
+        "can", "could", "would", "please", "open", "view", "file"
+    ]);
+
+    function normalizeRomanizedBengali(text) {
+        if (!text || !text.trim()) return text;
+        const tokens = text.trim().split(/\s+/);
+        const lowerTokens = tokens.map(t => t.replace(/[^\w]/g, '').toLowerCase());
+
+        let strongCount = 0;
+        lowerTokens.forEach(t => {
+            if (romanizedBnStrongWords[t]) strongCount++;
+        });
+        if (strongCount === 0) return text;
+
+        const hasEnCommand = lowerTokens.some(t => englishCommands.has(t));
+        if (hasEnCommand && strongCount < 2) return text;
+
+        const newTokens = tokens.map((tok, idx) => {
+            const clean = lowerTokens[idx];
+            if (romanizedBnStrongWords[clean]) {
+                return romanizedBnStrongWords[clean];
+            } else if (romanizedBnContextWords[clean] !== undefined) {
+                return romanizedBnContextWords[clean];
+            } else if (/^\d+$/.test(clean)) {
+                return clean.replace(/[0-9]/g, d => "০১২৩৪৫৬৭৮৯"[d]);
+            }
+            return tok;
+        });
+
+        let res = newTokens.filter(t => t.length > 0).join(' ').trim();
+        res = res.replace(/[0-9]/g, d => "০১২৩৪৫৬৭৮৯"[d]);
+        return res;
+    }
+
+    function normalizePhoneticInput(text) {
+        if (!text || !text.trim()) return text;
+
+        // 1. Check Romanized Bengali phonetics
+        const normRomanBn = normalizeRomanizedBengali(text);
+        if (normRomanBn !== text) {
+            return normRomanBn;
+        }
+
+        // 2. Check Romanized Bengali dag/dak speech artifacts fallback
+        const romanizedMatch = text.match(/\b(?:dak|dag)\s*(?:bam\s*bahut|bam|bahut|number|no\.?|#)?\s*(\d+)\b/i);
+        if (romanizedMatch) {
+            const bnDigits = romanizedMatch[1].replace(/[0-9]/g, d => "০১২৩৪৫৬৭৮৯"[d]);
+            return text.replace(/\b(?:dak|dag)\s*(?:bam\s*bahut|bam|bahut|number|no\.?|#)?\s*\d+\b/i, `দাগ নম্বর ${bnDigits}`);
+        }
+
+        // 3. Check if text is genuine Bengali containing grammar words
+        const tokens = text.trim().split(/\s+/);
+        const hasGrammar = tokens.some(tok => bnGrammarWords.has(tok.replace(/[.,:;?!-]/g, '')));
+        if (hasGrammar) return text;
+
+        // 4. Check Bengali-script transliterated English commands
+        let convertedCount = 0;
+        const newTokens = tokens.map((tok, idx) => {
+            const clean = tok.replace(/[.,:;?!-]/g, '');
+            if (bnToEnWordMap[clean]) {
+                convertedCount++;
+                let mapped = bnToEnWordMap[clean];
+                if (idx === 0) mapped = mapped.charAt(0).toUpperCase() + mapped.slice(1);
+                return tok.replace(clean, mapped);
+            }
+            return tok;
+        });
+
+        if (convertedCount > 0) {
+            let res = newTokens.join(' ');
+            res = res.replace(/[০-৯]/g, d => "০১২৩৪৫৬৭৮৯".indexOf(d));
+            return res;
+        }
+
+        return text;
+    }
+
+    // Expose on window for tests and console
+    window.normalizePhoneticInput = normalizePhoneticInput;
+    window.normalizeRomanizedBengali = normalizeRomanizedBengali;
+
+    /* =========================================================
+       7. LANGUAGE CONTROLS & BROWSER SPEECH RECOGNITION
+       ========================================================= */
+    function setLanguage(lang) {
+        currentLanguage = lang;
+        const siteLang = getSiteLanguage();
+        if (lang === 'auto') {
+            autoSpeechLang = (siteLang === 'en') ? 'en-US' : 'bn-BD';
+        } else if (lang === 'bn') {
+            autoSpeechLang = 'bn-BD';
+        } else if (lang === 'en') {
+            autoSpeechLang = 'en-US';
+        }
+        ['auto', 'bn', 'en'].forEach(l => {
+            const btn = document.getElementById(`lang-btn-${l}`);
+            if (btn) {
+                if (l === lang) {
+                    btn.className = "px-3 py-1 rounded-lg text-white bg-cyan-600 transition-colors";
+                } else {
+                    btn.className = "px-3 py-1 rounded-lg text-slate-400 hover:text-white transition-colors";
+                }
+            }
+        });
+
+        const inputElem = document.getElementById('voice-text-input');
+        if (inputElem) {
+            if (lang === 'en') {
+                inputElem.placeholder = "Type query here or speak (e.g. 'Search plot 9044' / 'Check complaint status')...";
+            } else if (lang === 'bn') {
+                inputElem.placeholder = "এখানে প্রশ্ন লিখুন বা মুখে বলুন (যেমন: 'দাগ ৯০৪৪ এর তথ্য দিন')...";
+            } else {
+                inputElem.placeholder = "Type query here or speak (যেমন: 'দাগ ৯০৪৪ এর তথ্য দিন' / 'Search plot 9044')...";
+            }
+        }
+
+        if (recognition) {
+            recognition.lang = getActiveSpeechLang();
+        }
+        playChime('reply');
+    }
+
+    function initSpeech() {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            console.warn("Speech recognition not supported in this browser environment. Fallback to text input active.");
+            return null;
+        }
+        const rec = new SpeechRecognition();
+        rec.continuous = false;
+        rec.interimResults = false;
+        rec.lang = getActiveSpeechLang();
+
+        rec.onstart = () => {
+            isListening = true;
+            setVisualState(STATE.LISTENING);
+            playChime('listen');
+        };
+
+        rec.onresult = (e) => {
+            let transcript = e.results[0][0].transcript;
+            if (currentLanguage === 'auto') {
+                transcript = normalizePhoneticInput(transcript);
+                const enChars = (transcript.match(/[a-zA-Z]/g) || []).length;
+                const bnChars = (transcript.match(/[\u0980-\u09FF]/g) || []).length;
+                if (enChars > bnChars) {
+                    autoSpeechLang = 'en-US';
+                    if (recognition) recognition.lang = 'en-US';
+                } else if (bnChars > enChars) {
+                    autoSpeechLang = 'bn-BD';
+                    if (recognition) recognition.lang = 'bn-BD';
+                }
+            }
+            document.getElementById('voice-text-input').value = transcript;
+            submitQuery(transcript);
+        };
+
+        rec.onerror = (e) => {
+            console.error("Speech error:", e);
+            stopListening();
+            playChime('stop');
+            if (e.error === "not-allowed") {
+                showToast("Microphone permission was denied. Please allow microphone access or use text input.", "warning");
+                return;
+            }
+            if (e.error === "no-speech") {
+                const instructionText = document.getElementById('instructionText');
+                if (instructionText) {
+                    instructionText.textContent = (currentLanguage === 'bn')
+                        ? "কোনো শব্দ শনাক্ত হয়নি। পুনরায় বলতে ক্লিক করুন।"
+                        : "No speech detected. Click to speak again.";
+                }
+                return;
+            }
+            showToast("Microphone input error: " + (e.error || "unavailable"), "warning");
+        };
+
+        rec.onend = () => {
+            stopListening();
+        };
+
+        return rec;
+    }
+
+    function toggleListening() {
+        initAudioContext();
+        if (!recognition) {
+            recognition = initSpeech();
+        }
+        if (!recognition) {
+            showToast("Web Speech API not available in this browser. Please use the text input below.", "warning");
+            document.getElementById('voice-text-input').focus();
+            return;
+        }
+
+        if (isListening) {
+            recognition.stop();
+            stopListening();
+            playChime('stop');
+        } else {
+            recognition.lang = getActiveSpeechLang();
+            try {
+                recognition.start();
+            } catch (err) {
+                console.warn(err);
+            }
+        }
+    }
+
+    function stopListening() {
+        isListening = false;
+        setVisualState(handsFreeActive ? (isSessionActivated ? STATE.LISTENING_COMMAND : STATE.WAKE_WORD_STANDBY) : STATE.IDLE);
+    }
+
+    /* =========================================================
+       7B. PERSISTENT HANDS-FREE WAKE-WORD SYSTEM ("Hello Daffodil")
+       ========================================================= */
+    const WAKE_WORD_REGEX = /(?:^|[^\p{L}\p{N}])(?:(?:hell?o+w?|hallo|hey|hi|hai|হ্যালো|হেলো|হাই|হে)[\s,.:;!?-]+)?(?:daff?od[ia]ll?|deff?od[ia]ll?|deafod[ia]ll?|defa[u]?lt?|ড্যাফোডিল|ডেফোডিল|ডাফোডিল|ডেফডিল|ড্যাফডিল|দেফোডিল|দ্যাফোডিল|ড্যাফোডেল|ডেফোডেল|ড্যাপোডিল|ডেপোডিল|ড্যাফুডিল|ডিফোডিল|ডিফডিল)(?:$|[^\p{L}\p{N}])/iu;
+    const STOP_DAFFODIL_REGEX = /(?:^|[^\p{L}\p{N}])(?:(?:stop|shut\s+down|deactivate|exit|bye|goodbye|স্টপ|বন্ধ\s*করো?|থামো)[\s,.:;!?-]+(?:daff?od[ia]ll?|deff?od[ia]ll?|deafod[ia]ll?|defa[u]?lt?|ড্যাফোডিল|ডেফোডিল|ডাফোডিল|ডেফডিল|ড্যাফডিল|দেফোডিল|দ্যাফোডিল|ড্যাফোডেল|ডেফোডেল|ড্যাপোডিল|ডেপোডিল|ড্যাফুডিল|ডিফোডিল|ডিফডিল)|(?:daff?od[ia]ll?|deff?od[ia]ll?|deafod[ia]ll?|defa[u]?lt?|ড্যাফোডিল|ডেফোডিল|ডাফোডিল|ডেফডিল|ড্যাফডিল|দেফোডিল|দ্যাফোডিল|ড্যাফোডেল|ডেফোডেল|ড্যাপোডিল|ডেপোডিল|ড্যাফুডিল|ডিফোডিল|ডিফডিল)[\s,.:;!?-]+(?:stop|বন্ধ|থামো|বন্ধ\s*করো?)|turn\s+off\s+hands\s*free|disable\s+hands\s*free|হ্যান্ডস\s*ফ্রি\s*বন্ধ)(?:$|[^\p{L}\p{N}])/iu;
+
+    let isSessionActivated = false;
+    let isStartingSpotter = false;
+    let lastSpotterStartTime = 0;
+    let spotterRestartTimer = null;
+    let consecutiveRestartCount = 0;
+    let isSpotterPausedForTTS = false;
+
+    function toggleHandsFreeMode() {
+        initAudioContext();
+        handsFreeActive = !handsFreeActive;
+        updateHandsFreeBtnUI();
+
+        if (handsFreeActive) {
+            isSessionActivated = false;
+            try {
+                sessionStorage.setItem('landguard_voice_hands_free', JSON.stringify({
+                    enabled: true,
+                    mode: 'WAKE_WORD_STANDBY',
+                    activated: false,
+                    language: currentLanguage
+                }));
+            } catch(e) {}
+            if (isListening && recognition) {
+                try { recognition.stop(); } catch(e) {}
+                isListening = false;
+            }
+            startHandsFreeSpotter();
+            playChime('activate');
+            showToast("Hands-Free Mode Enabled. Say 'Hello Daffodil' to activate.", "success");
+        } else {
+            handleStopDaffodil();
+        }
+    }
+
+    function handleStopDaffodil() {
+        cancelAutoNav();
+        if (currentAudio) {
+            try {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            } catch (e) {}
+            currentAudio = null;
+        }
+        if ('speechSynthesis' in window) {
+            try { window.speechSynthesis.cancel(); } catch (e) {}
+        }
+        setAudioIndicator(false);
+        stopHandsFreeSpotter();
+        handsFreeActive = false;
+        isSessionActivated = false;
+        isSpotterPausedForTTS = false;
+        try {
+            sessionStorage.removeItem('landguard_voice_hands_free');
+        } catch(e) {}
+        updateHandsFreeBtnUI();
+        setVisualState(STATE.IDLE);
+        playChime('stop');
+        showToast("Hands-Free Mode Deactivated ('Stop Daffodil' recognized).", "info");
+        const inputElem = document.getElementById('voice-text-input');
+        if (inputElem) inputElem.value = "Stop Daffodil";
+        const statusText = document.getElementById('statusText');
+        if (statusText) statusText.textContent = "HANDS-FREE OFF";
+    }
+
+    function updateHandsFreeBtnUI() {
+        const dot = document.getElementById('handsFreeDot');
+        const label = document.getElementById('handsFreeLabel');
+        const btn = document.getElementById('handsFreeToggleBtn');
+
+        if (handsFreeActive) {
+            if (dot) dot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse";
+            if (label) label.textContent = 'Hands-Free: ON';
+            if (btn) btn.className = "px-3.5 py-1.5 rounded-xl bg-emerald-950/80 border border-emerald-500/70 text-xs font-mono text-emerald-300 flex items-center gap-2 transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)]";
+        } else {
+            if (dot) dot.className = "w-2.5 h-2.5 rounded-full bg-slate-500";
+            if (label) label.textContent = 'Hands-Free: OFF';
+            if (btn) btn.className = "px-3.5 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700 hover:border-cyan-400 text-xs font-mono text-slate-300 hover:text-white flex items-center gap-2 transition-all shadow-md group";
+        }
+    }
+
+    function processSpotterTranscript(rawTranscript, altTranscripts = []) {
+        if (!rawTranscript) return;
+        let transcript = rawTranscript.trim();
+        if (currentLanguage === 'auto') {
+            transcript = normalizePhoneticInput(transcript);
+        }
+
+        const candidates = [transcript];
+        if (Array.isArray(altTranscripts)) {
+            altTranscripts.forEach(alt => {
+                if (alt && typeof alt === 'string') {
+                    let cleanedAlt = alt.trim();
+                    if (currentLanguage === 'auto') cleanedAlt = normalizePhoneticInput(cleanedAlt);
+                    if (!candidates.includes(cleanedAlt)) candidates.push(cleanedAlt);
+                }
+            });
+        }
+
+        // 1. Critical Check: Stop phrase MUST be intercepted before ordinary intent dispatch!
+        const stopCandidate = candidates.find(c => STOP_DAFFODIL_REGEX.test(c));
+        if (stopCandidate) {
+            console.log("Stop Daffodil phrase intercepted. Disabling hands-free.");
+            handleStopDaffodil();
+            return;
+        }
+
+        // 2. Check for Wake Word ("Hello Daffodil" or "হ্যালো ড্যাফোডিল")
+        const wakeCandidate = candidates.find(c => WAKE_WORD_REGEX.test(c));
+        if (wakeCandidate) {
+            isSessionActivated = true;
+            try {
+                sessionStorage.setItem('landguard_voice_hands_free', JSON.stringify({
+                    enabled: true,
+                    mode: 'COMMAND_LISTENING',
+                    activated: true,
+                    language: currentLanguage
+                }));
+            } catch(e) {}
+            playChime('activate');
+            setVisualState(STATE.WAKE_WORD_DETECTED);
+
+            let cleaned = wakeCandidate.replace(WAKE_WORD_REGEX, '').trim();
+            cleaned = cleaned.replace(/^[,\s:;!?-]+|[,\s:;!?-]+$/g, '').trim();
+
+            const inputElem = document.getElementById('voice-text-input');
+            if (inputElem) inputElem.value = wakeCandidate;
+
+            if (cleaned.length > 0) {
+                // Compound command: "Hello Daffodil open verification history"
+                setTimeout(() => {
+                    submitQuery(wakeCandidate);
+                }, 300);
+            } else {
+                // Standalone wake word: "Hello Daffodil"
+                setTimeout(() => {
+                    submitQuery(wakeCandidate);
+                }, 250);
+            }
+            return;
+        }
+
+        // 3. Consecutive Commands: Once activated, accept subsequent commands seamlessly
+        if (isSessionActivated || currentState === STATE.WAKE_WORD_DETECTED || currentState === STATE.LISTENING || currentState === STATE.LISTENING_COMMAND) {
+            const inputElem = document.getElementById('voice-text-input');
+            if (inputElem) inputElem.value = transcript;
+            submitQuery(transcript);
+            return;
+        }
+    }
+
+    function startHandsFreeSpotter() {
+        if (!handsFreeActive) return;
+        if (isSpotterPausedForTTS) return;
+        if (isStartingSpotter) return;
+
+        if (spotterRestartTimer) {
+            clearTimeout(spotterRestartTimer);
+            spotterRestartTimer = null;
+        }
+
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            setVisualState(STATE.ERROR);
+            showToast("Web Speech API not supported in this browser for hands-free wake word.", "warning");
+            handsFreeActive = false;
+            isSessionActivated = false;
+            updateHandsFreeBtnUI();
+            return;
+        }
+
+        stopHandsFreeSpotter();
+
+        const now = Date.now();
+        if (now - lastSpotterStartTime < 500) {
+            consecutiveRestartCount++;
+            if (consecutiveRestartCount > 6) {
+                spotterRestartTimer = setTimeout(() => {
+                    consecutiveRestartCount = 0;
+                    if (handsFreeActive && !wakeRecognition && !isSpotterPausedForTTS) {
+                        startHandsFreeSpotter();
+                    }
+                }, 1200);
+                return;
+            }
+        } else {
+            consecutiveRestartCount = 0;
+        }
+        lastSpotterStartTime = now;
+        isStartingSpotter = true;
+
+        try {
+            const rec = new SpeechRecognition();
+            rec.continuous = true;
+            rec.interimResults = false;
+            rec.maxAlternatives = 3;
+            rec.lang = getActiveSpeechLang();
+
+            rec.onstart = () => {
+                isStartingSpotter = false;
+                if (handsFreeActive && currentState !== STATE.ANALYZING && currentState !== STATE.PROCESSING && currentState !== STATE.SPEAKING) {
+                    setVisualState(isSessionActivated ? STATE.LISTENING_COMMAND : STATE.WAKE_WORD_STANDBY);
+                }
+            };
+
+            rec.onresult = (e) => {
+                if (!handsFreeActive) return;
+                const lastIdx = e.results.length - 1;
+                const res = e.results[lastIdx];
+                if (!res || !res[0]) return;
+                const rawTranscript = res[0].transcript;
+                const altTranscripts = [];
+                for (let i = 0; i < res.length; i++) {
+                    if (res[i] && res[i].transcript) {
+                        altTranscripts.push(res[i].transcript);
+                    }
+                }
+                processSpotterTranscript(rawTranscript, altTranscripts);
+            };
+
+            rec.onerror = (e) => {
+                isStartingSpotter = false;
+                console.warn("Hands-free spotter error:", e.error);
+                if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
+                    handsFreeActive = false;
+                    isSessionActivated = false;
+                    stopHandsFreeSpotter();
+                    setVisualState(STATE.PERMISSION_REQUIRED);
+                    updateHandsFreeBtnUI();
+                    showToast("Microphone permission denied. Hands-Free mode disabled.", "error");
+                    return;
+                }
+            };
+
+            rec.onend = () => {
+                wakeRecognition = null;
+                isStartingSpotter = false;
+                if (handsFreeActive && !document.hidden && !isSpotterPausedForTTS) {
+                    const restartDelay = (consecutiveRestartCount > 2) ? 600 : 200;
+                    spotterRestartTimer = setTimeout(() => {
+                        if (handsFreeActive && !wakeRecognition && !isSpotterPausedForTTS) {
+                            startHandsFreeSpotter();
+                        }
+                    }, restartDelay);
+                }
+            };
+
+            rec.start();
+            wakeRecognition = rec;
+        } catch (err) {
+            isStartingSpotter = false;
+            console.error("Could not start hands-free recognition:", err);
+        }
+    }
+
+    function stopHandsFreeSpotter() {
+        if (spotterRestartTimer) {
+            clearTimeout(spotterRestartTimer);
+            spotterRestartTimer = null;
+        }
+        if (wakeRecognition) {
+            try {
+                wakeRecognition.onstart = null;
+                wakeRecognition.onresult = null;
+                wakeRecognition.onerror = null;
+                wakeRecognition.onend = null;
+                wakeRecognition.abort();
+            } catch(e) {}
+            wakeRecognition = null;
+        }
+        isStartingSpotter = false;
+    }
+
+    function cancelAutoNav() {
+        const el = document.getElementById('auto-nav-countdown');
+        if (el) el.remove();
+    }
+
+    function useSampleQuery(text) {
+        document.getElementById('voice-text-input').value = text;
+        submitQuery(text);
+    }
+
+    /* =========================================================
+       8. BACKEND VOICE INTENT PARSING & TELEMETRY
+       ========================================================= */
+    async function submitQuery(queryText) {
+        if (!queryText || !queryText.trim()) return;
+
+        let cleanQuery = queryText.trim();
+        if (currentLanguage === 'auto') {
+            cleanQuery = normalizePhoneticInput(cleanQuery);
+        }
+        const inputElem = document.getElementById('voice-text-input');
+        if (inputElem) inputElem.value = cleanQuery;
+
+        setVisualState(STATE.ANALYZING);
+        const startTime = performance.now();
+
+        try {
+            const res = await fetch('/api/voice/parse-intent', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    text: cleanQuery,
+                    language: currentLanguage
+                })
+            });
+
+            const elapsed = Math.round(performance.now() - startTime);
+            const latencyEl = document.getElementById('telemetryLatency');
+            if (latencyEl) latencyEl.innerText = `${elapsed}ms`;
+
+            if (!res.ok) {
+                setVisualState(STATE.IDLE);
+                showToast("Voice parsing failed", "error");
+                return;
+            }
+
+            const data = await res.json();
+            currentResponseData = data;
+
+            // In Auto mode: adapt subsequent speech recognition to detected conversation language
+            if (currentLanguage === 'auto' && data.language) {
+                autoSpeechLang = (data.language === 'bn') ? 'bn-BD' : 'en-US';
+                if (recognition) recognition.lang = autoSpeechLang;
+            }
+
+            renderAssistantResponse(data);
+        } catch (err) {
+            setVisualState(STATE.IDLE);
+            showToast("Error contacting voice server: " + err.message, "error");
+        }
+    }
+
+    function renderAssistantResponse(data) {
+        const card = document.getElementById('response-card');
+        card.classList.remove('hidden');
+
+        document.getElementById('response-intent-badge').innerText = data.intent || 'UNKNOWN_INTENT';
+        document.getElementById('response-confidence-badge').innerText = `CONFIDENCE: ${(data.confidence * 100).toFixed(0)}%`;
+
+        // Update hidden hooks for tests and accessibility
+        const hookBn = document.getElementById('spoken-bn');
+        const hookEn = document.getElementById('spoken-en');
+        if (hookBn) hookBn.innerText = data.spoken_response_bn || '';
+        if (hookEn) hookEn.innerText = data.spoken_response_en || '';
+
+        // Determine active response language
+        const respLang = (currentLanguage === 'auto') ? getSiteLanguage() : currentLanguage;
+
+        const primaryLabel = document.getElementById('primary-lang-label');
+        const primaryText = document.getElementById('primary-spoken-text');
+        const secondaryLabel = document.getElementById('secondary-lang-label');
+        const secondaryText = document.getElementById('secondary-spoken-text');
+
+        const btnListenBn = document.getElementById('btn-listen-bn');
+        const btnListenEn = document.getElementById('btn-listen-en');
+
+        if (respLang === 'en') {
+            if (primaryLabel) primaryLabel.innerText = "RESPONSE (ENGLISH / ARIA):";
+            if (primaryText) primaryText.innerText = data.spoken_response_en || '';
+            if (secondaryLabel) secondaryLabel.innerText = "অনুবাদ (বাংলা / নবানিতা):";
+            if (secondaryText) secondaryText.innerText = data.spoken_response_bn || '';
+
+            if (btnListenEn) btnListenEn.className = "px-2.5 py-1 rounded-lg text-[11px] font-semibold text-white bg-indigo-950 border border-indigo-500/60 transition-colors flex items-center gap-1.5 shadow-md shadow-indigo-500/20";
+            if (btnListenBn) btnListenBn.className = "px-2.5 py-1 rounded-lg text-[11px] font-medium text-slate-400 hover:text-white bg-slate-900 hover:bg-slate-800 border border-slate-800 transition-colors flex items-center gap-1.5";
+        } else {
+            if (primaryLabel) primaryLabel.innerText = "উত্তর (বাংলা / নবানিতা):";
+            if (primaryText) primaryText.innerText = data.spoken_response_bn || '';
+            if (secondaryLabel) secondaryLabel.innerText = "TRANSLATION (ENGLISH / ARIA):";
+            if (secondaryText) secondaryText.innerText = data.spoken_response_en || '';
+
+            if (btnListenBn) btnListenBn.className = "px-2.5 py-1 rounded-lg text-[11px] font-semibold text-white bg-cyan-950 border border-cyan-500/60 transition-colors flex items-center gap-1.5 shadow-md shadow-cyan-500/20";
+            if (btnListenEn) btnListenEn.className = "px-2.5 py-1 rounded-lg text-[11px] font-medium text-slate-400 hover:text-white bg-slate-900 hover:bg-slate-800 border border-slate-800 transition-colors flex items-center gap-1.5";
+        }
+
+        // If ambiguous or low confidence, gently focus the text box
+        if (data.intent === 'AMBIGUOUS_QUERY' || data.intent === 'LOW_CONFIDENCE_RETRY' || data.confidence < 0.5) {
+            const inputElem = document.getElementById('voice-text-input');
+            if (inputElem) inputElem.focus();
+        }
+
+        lastSpokenText = (respLang === 'bn') ? data.spoken_response_bn : data.spoken_response_en;
+        playSpokenAudio(respLang);
+
+        // Render entities
+        const entDiv = document.getElementById('entities-container');
+        entDiv.innerHTML = '';
+        if (data.entities && Object.keys(data.entities).length > 0) {
+            for (const [k, v] of Object.entries(data.entities)) {
+                const pill = document.createElement('span');
+                pill.className = "px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-xs font-mono text-cyan-300";
+                pill.innerText = `${k.toUpperCase()}: ${v}`;
+                entDiv.appendChild(pill);
+            }
+        }
+
+        // Render explicit confirmation prompt if required
+        const confDiv = document.getElementById('confirmation-container');
+        if (confDiv) {
+            if (data.confirmation_required) {
+                confDiv.className = "p-4 rounded-xl bg-amber-950/40 border border-amber-500/40 space-y-1.5 text-left";
+                confDiv.innerHTML = `
+                    <div class="flex items-center gap-2 text-amber-400 font-bold text-xs font-mono">
+                        <i data-lucide="shield-alert" class="w-4 h-4"></i>
+                        <span>EXPLICIT CITIZEN CONFIRMATION REQUIRED / দাখিল নিশ্চিতকরণ আবশ্যক</span>
+                    </div>
+                    <p class="text-xs text-amber-200/90 leading-relaxed font-sans">
+                        Please review the drafted grievance parameters above. This action will initiate an official investigation docket on the Cadastral Registry. Click the button below to confirm and review the formal submission form.
+                    </p>
+                `;
+                confDiv.classList.remove('hidden');
+            } else {
+                confDiv.classList.add('hidden');
+            }
+        }
+
+        // Render action button & status badge (portal deep link without disrupting consecutive voice session)
+        const actDiv = document.getElementById('action-container');
+        actDiv.innerHTML = '';
+        cancelAutoNav();
+
+        if (data.suggested_action && (data.suggested_action.url || data.suggested_action.action === "BACK")) {
+            const isBack = data.suggested_action.action === "BACK";
+            const targetUrl = data.suggested_action.url;
+
+            const btn = document.createElement('a');
+            btn.href = targetUrl || "javascript:window.history.back()";
+            btn.className = "px-4 py-2 rounded-xl text-xs font-semibold text-navy-950 bg-gradient-to-r from-cyan-400 to-cyan-500 hover:from-cyan-300 hover:to-cyan-400 transition-all flex items-center gap-1.5 shadow-lg shadow-cyan-500/20";
+            btn.innerHTML = `<i data-lucide="${isBack ? 'arrow-left' : 'external-link'}" class="w-3.5 h-3.5"></i><span>${data.suggested_action.label || 'Proceed to Portal'}</span>`;
+            actDiv.appendChild(btn);
+
+            // Action status badge preserving existing test IDs
+            const navBadge = document.createElement('div');
+            navBadge.id = "auto-nav-countdown";
+            navBadge.className = "mr-auto px-3 py-1.5 rounded-lg bg-cyan-950/80 border border-cyan-500/40 text-xs font-mono text-cyan-300 flex items-center gap-2";
+
+            // Real authorized cross-page navigation ONLY when Hands-Free is active
+            if (handsFreeActive) {
+                navBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span><span>Navigating: <strong>${data.suggested_action.label || 'Portal Page'}</strong> (Hands-Free Active)</span>`;
+                actDiv.prepend(navBadge);
+
+                if (!data.confirmation_required) {
+                    const spokenMsg = (respLang === 'bn') ? data.spoken_response_bn : data.spoken_response_en;
+                    try {
+                        sessionStorage.setItem('landguard_voice_hands_free', JSON.stringify({
+                            enabled: true,
+                            mode: 'COMMAND_LISTENING',
+                            activated: true,
+                            language: currentLanguage,
+                            speechToAnnounce: spokenMsg || '',
+                            targetUrl: targetUrl
+                        }));
+                    } catch(e) {}
+
+                    if (isBack) {
+                        setTimeout(() => { window.history.back(); }, 350);
+                    } else if (targetUrl && targetUrl !== window.location.pathname) {
+                        setTimeout(() => { window.location.href = targetUrl; }, 350);
+                    }
+                }
+            } else {
+                navBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-cyan-400"></span><span>Suggested Action: <strong>${data.suggested_action.label || 'Portal Page'}</strong></span>`;
+                actDiv.prepend(navBadge);
+            }
+        }
+        if (window.lucide) window.lucide.createIcons();
+    }
+
+    /* =========================================================
+       9. SPEECH SYNTHESIS & AUDIO PLAYBACK
+       ========================================================= */
+    let currentAudio = null;
+
+    function stopAllAudio() {
+        cancelAutoNav();
+        isSpotterPausedForTTS = false;
+        if (currentAudio) {
+            try {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            } catch (e) {}
+            currentAudio = null;
+        }
+        if ('speechSynthesis' in window) {
+            try {
+                window.speechSynthesis.cancel();
+            } catch (e) {}
+        }
+        setAudioIndicator(false);
+        setVisualState(handsFreeActive ? (isSessionActivated ? STATE.LISTENING_COMMAND : STATE.WAKE_WORD_STANDBY) : STATE.IDLE);
+        playChime('stop');
+    }
+
+    function onSpeechOutputEnded() {
+        isSpotterPausedForTTS = false;
+        setAudioIndicator(false);
+        currentAudio = null;
+        if (handsFreeActive) {
+            setVisualState(isSessionActivated ? STATE.LISTENING_COMMAND : STATE.WAKE_WORD_STANDBY);
+            setTimeout(() => {
+                if (handsFreeActive && !wakeRecognition && !isSpotterPausedForTTS) {
+                    startHandsFreeSpotter();
+                }
+            }, 180);
+        } else {
+            setVisualState(STATE.IDLE);
+        }
+    }
+
+    function setAudioIndicator(isPlaying, label = "Speaking...") {
+        const pill = document.getElementById('audio-status-pill');
+        const textSpan = document.getElementById('audio-status-text');
+        if (pill && textSpan) {
+            if (isPlaying) {
+                textSpan.innerText = label;
+                pill.classList.remove('hidden');
+            } else {
+                pill.classList.add('hidden');
+            }
+        }
+    }
+
+    function findBengaliVoice() {
+        populateVoices();
+        return availableVoices.find(v => 
+            (v.lang && (v.lang.toLowerCase() === 'bn-bd' || v.lang.toLowerCase() === 'bn-in' || v.lang.toLowerCase().startsWith('bn'))) ||
+            (v.name && (v.name.toLowerCase().includes('bangla') || v.name.toLowerCase().includes('bengali')))
+        );
+    }
+
+    function findEnglishVoice() {
+        populateVoices();
+        return availableVoices.find(v => 
+            v.lang && (v.lang.toLowerCase().startsWith('en-us') || v.lang.toLowerCase().startsWith('en-gb'))
+        ) || availableVoices.find(v => v.lang && v.lang.toLowerCase().startsWith('en'));
+    }
+
+    function playSpokenAudio(specificLang = null) {
+        stopAllAudio();
+
+        isSpotterPausedForTTS = true;
+        if (wakeRecognition) {
+            try {
+                wakeRecognition.onend = null;
+                wakeRecognition.abort();
+            } catch(e) {}
+            wakeRecognition = null;
+        }
+
+        const fallbackNotice = document.getElementById('voice-fallback-notice');
+        if (fallbackNotice) fallbackNotice.classList.add('hidden');
+
+        // Determine target language
+        let lang = specificLang;
+        if (!lang) {
+            if (currentLanguage === 'bn') {
+                lang = 'bn';
+            } else if (currentLanguage === 'en') {
+                lang = 'en';
+            } else {
+                lang = getSiteLanguage();
+            }
+        }
+
+        // Determine text to speak
+        let textToSpeak = '';
+        if (lang === 'bn') {
+            textToSpeak = currentResponseData ? currentResponseData.spoken_response_bn : lastSpokenText;
+        } else {
+            textToSpeak = currentResponseData ? currentResponseData.spoken_response_en : lastSpokenText;
+        }
+
+        if (!textToSpeak || !textToSpeak.trim()) {
+            onSpeechOutputEnded();
+            return;
+        }
+
+        // 1. Primary: High-fidelity Neural TTS via backend (Authentic Bangladeshi NabanitaNeural / US AriaNeural)
+        try {
+            const ttsUrl = `/api/voice/tts?text=${encodeURIComponent(textToSpeak.trim())}&lang=${lang}`;
+            const audio = new Audio(ttsUrl);
+            currentAudio = audio;
+
+            setAudioIndicator(true, lang === 'bn' ? "নবানিতা (বাংলা)..." : "Aria (English)...");
+            setVisualState(STATE.SPEAKING);
+            playChime('reply');
+
+            audio.addEventListener('ended', onSpeechOutputEnded);
+            audio.addEventListener('error', (err) => {
+                console.warn("Backend neural TTS stream error, attempting Web Speech fallback:", err);
+                fallbackBrowserSpeak(textToSpeak, lang);
+            });
+
+            audio.play().catch(playErr => {
+                console.warn("Audio autoplay blocked or playback failed, trying local fallback:", playErr);
+                fallbackBrowserSpeak(textToSpeak, lang);
+            });
+        } catch (err) {
+            console.warn("Exception during audio creation:", err);
+            fallbackBrowserSpeak(textToSpeak, lang);
+        }
+    }
+
+    function fallbackBrowserSpeak(text, lang) {
+        setAudioIndicator(false);
+        if (!('speechSynthesis' in window)) {
+            onSpeechOutputEnded();
+            return;
+        }
+        window.speechSynthesis.cancel();
+
+        const fallbackNotice = document.getElementById('voice-fallback-notice');
+
+        if (lang === 'bn') {
+            const bnVoice = findBengaliVoice();
+            if (bnVoice) {
+                if (fallbackNotice) fallbackNotice.classList.add('hidden');
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.voice = bnVoice;
+                utterance.lang = bnVoice.lang || 'bn-BD';
+                utterance.rate = 0.95;
+                utterance.onstart = () => { setVisualState(STATE.SPEAKING); };
+                utterance.onend = onSpeechOutputEnded;
+                utterance.onerror = onSpeechOutputEnded;
+                window.speechSynthesis.speak(utterance);
+            } else {
+                onSpeechOutputEnded();
+                if (fallbackNotice) fallbackNotice.classList.remove('hidden');
+                if (window.lucide) window.lucide.createIcons();
+            }
+        } else {
+            if (fallbackNotice) fallbackNotice.classList.add('hidden');
+            const utterance = new SpeechSynthesisUtterance(text);
+            const enVoice = findEnglishVoice();
+            if (enVoice) utterance.voice = enVoice;
+            utterance.lang = 'en-US';
+            utterance.rate = 1.0;
+            utterance.onstart = () => { setVisualState(STATE.SPEAKING); };
+            utterance.onend = onSpeechOutputEnded;
+            utterance.onerror = onSpeechOutputEnded;
+            window.speechSynthesis.speak(utterance);
+        }
+    }
+
+    /* =========================================================
+       10. KEYBOARD SHORTCUT, LIFECYCLE & INITIAL BOOT
+       ========================================================= */
+    window.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+            e.preventDefault();
+            toggleListening();
+        }
+    });
+
+    // Privacy & Lifecycle Management: auto-pause on background tab & teardown on unload
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            if (wakeRecognition) {
+                try { wakeRecognition.abort(); } catch(e) {}
+            }
+            stopAllAudio();
+        } else {
+            if (handsFreeActive && !wakeRecognition && !isSpotterPausedForTTS) {
+                startHandsFreeSpotter();
+            }
+        }
+    });
+
+    window.addEventListener('beforeunload', () => {
+        // Preserve handsFree session in sessionStorage across page navigation!
+        stopHandsFreeSpotter();
+        stopAllAudio();
+    });
+
+    function restoreSessionFromStorage() {
+        try {
+            const raw = sessionStorage.getItem('landguard_voice_hands_free');
+            if (raw) {
+                const saved = JSON.parse(raw);
+                if (saved && saved.enabled) {
+                    handsFreeActive = true;
+                    isSessionActivated = !!saved.activated;
+                    if (saved.language) currentLanguage = saved.language;
+                    updateHandsFreeBtnUI();
+                    setVisualState(isSessionActivated ? STATE.LISTENING_COMMAND : STATE.WAKE_WORD_STANDBY);
+                    startHandsFreeSpotter();
+                }
+            }
+        } catch(e) {}
+    }
+
+    // Expose for inspection and automated UI verification
+    window.toggleHandsFreeMode = toggleHandsFreeMode;
+    window.handleStopDaffodil = handleStopDaffodil;
+    window.processSpotterTranscript = processSpotterTranscript;
+    window.simulateSpeechInput = function(transcript) {
+        processSpotterTranscript(transcript);
+    };
+    window.cancelAutoNav = cancelAutoNav;
+    window.setVisualState = setVisualState;
+    window.STATE = STATE;
+    window.isHandsFreeActive = () => handsFreeActive;
+    window.isSessionActive = () => isSessionActivated;
+    window.getCurrentState = () => currentState;
+
+    window.addEventListener('load', () => {
+        renderOrb();
+        updateEqualizer();
+        restoreSessionFromStorage();
+    });
+</script>
+{% endblock %}

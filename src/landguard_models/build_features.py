@@ -153,6 +153,11 @@ def extract_record_features(
     else:
         seller_was_buyer = 1.0 if is_ancestral else 0.0
 
+    # When previous_deed_ref was omitted/optional on deed, but seller's prior acquisition is verified in chain of title:
+    if not prev_ref and seller_was_buyer and history_txns:
+        has_prev = 1.0
+        is_prev_verified = 1.0
+
     # Namzari mutation check: distinguish APPROVED vs PENDING vs unverified/REJECTED
     mut_case = str(txn.get("mutation_case_no", "") or "")
     mutation_present = 0.0
@@ -166,6 +171,16 @@ def extract_record_features(
                 mutation_pending = 1.0
         else:
             mutation_present = 1.0
+    elif mutations is not None and seller_id:
+        # If mutation case was omitted/optional on deed, check if seller holds approved mutation in revenue register
+        matching_seller_muts = [
+            m for m in mutations
+            if (m.get("new_owner_id") == seller_id or m.get("applicant_id") == seller_id or m.get("applicant_name") == seller_id)
+        ]
+        if any(m.get("status", "APPROVED") == "APPROVED" for m in matching_seller_muts):
+            mutation_present = 1.0
+        elif any(m.get("status") == "PENDING" for m in matching_seller_muts):
+            mutation_pending = 1.0
 
     # Tax fiscal gap
     exec_yr = int(str(txn.get("execution_date", "2020"))[:4])
@@ -212,7 +227,8 @@ def extract_record_features(
         doc_dag = doc_ev.get("doc_dag_plot_number", parcel_dag)
         doc_plot_disc = 1.0 if (doc_dag is not None and parcel_dag is not None and str(doc_dag) != str(parcel_dag)) else 0.0
 
-        doc_area = float(doc_ev.get("doc_transferred_area_decimal", t_area))
+        raw_doc_area = doc_ev.get("doc_transferred_area_decimal")
+        doc_area = float(raw_doc_area) if raw_doc_area is not None else float(t_area)
         doc_area_disc = 1.0 if abs(doc_area - t_area) > 0.5 else 0.0
 
         cv_seal_absent = 1.0 if not doc_ev.get("cv_seal_present", True) else 0.0

@@ -1,106 +1,183 @@
 {% extends "user/layout.html" %}
 
-{% block title %}Citizen Profile & Identity — LandGuard AI{% endblock %}
+{% block title %}{{ _('Citizen Profile & Identity') }} — {{ _('LandGuard') }}{% endblock %}
 
 {% block portal_content %}
-<div class="max-w-4xl mx-auto space-y-8">
+<div class="w-full max-w-7xl mx-auto space-y-8">
     <div>
-        <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Digital Citizen Profile</h1>
-        <p class="text-xs sm:text-sm text-slate-400 mt-1">Verified citizen landholding identity and clearance credential.</p>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">{{ _('Digital Citizen Profile') }}</h1>
+        <p class="text-xs sm:text-sm text-slate-400 mt-1">{{ _('Verified citizen landholding identity and clearance credential.') }}</p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-        <!-- Identity Card (5 cols) -->
+        <!-- Identity Card (5 cols) with 3D Flip System -->
         <div class="md:col-span-5 flex flex-col items-center">
-            <div class="identity-card w-full">
-                <div class="flex items-start justify-between">
-                    <div>
-                        <div class="flex items-center gap-2">
-                            <i data-lucide="shield-check" class="w-5 h-5 text-cyan-300"></i>
-                            <span class="text-xs font-mono font-bold tracking-widest text-cyan-200 uppercase">LandGuard Identity</span>
+            <div id="profile-identity-card-box" class="id-card-3d-wrapper mx-auto" onclick="toggleCard3DFlip(event)" tabindex="0" role="button" aria-label="{{ _('LandGuard Identity Card, click to flip front and back') }}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCard3DFlip(event);}">
+                <div id="id-card-3d-inner" class="id-card-3d-inner">
+                    <!-- FRONT FACE: Digital LandGuard Citizen Smart Card -->
+                    <div class="id-card-face id-card-front">
+                        <div class="identity-card w-full">
+                            <div class="flex items-start justify-between">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <i data-lucide="shield-check" class="w-5 h-5 text-cyan-300"></i>
+                                        <span class="text-xs font-mono font-bold tracking-widest text-cyan-200 uppercase">{{ _('LandGuard Identity') }}</span>
+                                    </div>
+                                    <div class="text-[9px] font-mono text-cyan-400/80 uppercase tracking-widest">{{ _("People's Republic of Bangladesh") }}</div>
+                                </div>
+                                <div class="chip-icon"></div>
+                            </div>
+
+                            <div class="my-3 flex items-center gap-3">
+                                <div class="relative shrink-0">
+                                    <img src="/static/images/profile-ashik.png" alt="{{ user.full_name }}" class="w-14 h-16 sm:w-16 sm:h-20 rounded-xl object-cover border-2 border-cyan-400/70 shadow-lg ring-1 ring-cyan-500/40">
+                                    <span class="absolute -bottom-1 -right-1 w-3 h-3 bg-emerald-500 border-2 border-slate-900 rounded-full" title="Verified Biometric Match"></span>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="text-[10px] font-mono text-slate-400 uppercase tracking-wider">{{ _('Citizen Cardholder') }}</div>
+                                    <div class="text-base font-extrabold tracking-wider text-white font-mono uppercase truncate">{{ user.full_name }}</div>
+                                    <div class="text-xs font-mono tracking-widest text-cyan-300 font-semibold mt-0.5">{{ user.digital_identity_id }}</div>
+                                </div>
+                                <div class="w-10 h-10 rounded-full border border-cyan-400/40 bg-cyan-950/40 flex items-center justify-center text-cyan-300 shrink-0">
+                                    <i data-lucide="fingerprint" class="w-6 h-6"></i>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex items-center justify-between text-[10px] font-mono text-slate-300 border-t border-cyan-500/25 pt-2">
+                                    <div>{{ _('UPAZILA:') }} <span class="text-white font-semibold">{{ user.upazila }}, {{ user.division }}</span></div>
+                                    <div>{{ _('VALID THRU:') }} <span class="text-white font-semibold">{{ user.card_valid_thru or '12/28' }}</span></div>
+                                </div>
+                                <div class="text-[8px] text-cyan-400/80 font-mono tracking-tighter text-center mt-1">
+                                    {{ _('SYNTHETIC DEMO • NOT A PAYMENT CARD • P3 BENCHMARK') }}
+                                </div>
+                            </div>
                         </div>
-                        <div class="text-[9px] font-mono text-cyan-400/80 uppercase tracking-widest">People's Republic of Bangladesh</div>
                     </div>
-                    <div class="chip-icon"></div>
-                </div>
 
-                <div class="my-4 flex items-center justify-between">
-                    <div>
-                        <div class="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Citizen Cardholder</div>
-                        <div class="text-base font-extrabold tracking-wider text-white font-mono uppercase">{{ user.full_name }}</div>
-                    </div>
-                    <div class="w-10 h-10 rounded-full border border-cyan-400/40 bg-cyan-950/40 flex items-center justify-center text-cyan-300">
-                        <i data-lucide="fingerprint" class="w-6 h-6"></i>
-                    </div>
-                </div>
+                    <!-- BACK FACE: Matching Dark Cyber Theme with Smart NID Information -->
+                    <div class="id-card-face id-card-back">
+                        <div class="identity-card-back">
+                            <!-- Top: Barcode Strip in Cyber Frame -->
+                            <div class="w-full bg-slate-950/70 border border-cyan-500/40 rounded-lg px-2 py-0.5 flex items-center justify-center shadow-inner">
+                                <img src="/static/images/nid-barcode.png" alt="PDF417 2D Barcode" class="w-full h-6 sm:h-7 object-fill filter invert contrast-125 opacity-90">
+                            </div>
 
-                <div>
-                    <div class="text-xs font-mono tracking-widest text-cyan-300 mb-2 font-semibold">{{ user.digital_identity_id }}</div>
-                    <div class="flex items-center justify-between text-[10px] font-mono text-slate-400 border-t border-cyan-500/20 pt-2">
-                        <div>UPAZILA: <span class="text-white">{{ user.upazila }}, {{ user.division }}</span></div>
-                        <div>VALID THRU: <span class="text-white">{{ user.card_valid_thru or '12/28' }}</span></div>
-                    </div>
-                    <div class="text-[8px] text-cyan-400/70 font-mono tracking-tighter text-center mt-1">
-                        SYNTHETIC DEMO &bull; NOT A PAYMENT CARD &bull; P3 BENCHMARK
+                            <!-- Middle Section: Bengali Address & Security Metadata -->
+                            <div class="my-1.5 flex items-start justify-between gap-2.5">
+                                <div class="flex-1 min-w-0 pr-1">
+                                    <div class="text-[9.5px] sm:text-[10px] leading-snug text-slate-200 font-sans">
+                                        <span class="text-cyan-400 font-mono text-[9px] font-bold block mb-0.5 uppercase tracking-wider">{{ _('Permanent Address / ঠিকানা') }}</span>
+                                        <span class="text-slate-100">বাসা/হোল্ডিং: ৩৬, গ্রাম/রাস্তা: রোড নং-২, ধানমন্ডি আবাসিক এলাকা, ডাকঘর: জিগাতলা - ১২০৯, ধানমন্ডি, ঢাকা দক্ষিণ সিটি কর্পোরেশন, ঢাকা</span>
+                                    </div>
+                                    <div class="mt-1.5 flex flex-wrap items-center gap-x-2.5 text-[8.5px] sm:text-[9.5px] font-mono text-slate-300 border-t border-cyan-500/25 pt-1">
+                                        <div>BLOOD: <span class="text-rose-400 font-bold">AB+</span></div>
+                                        <div>POB: <span class="text-cyan-300 font-bold">JHENAIDAH</span></div>
+                                        <div>ISSUE: <span class="text-slate-200">30 NOV 2015</span></div>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-2 shrink-0 pt-0.5">
+                                    <!-- Shapla in glowing cyber badge -->
+                                    <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-cyan-400/40 bg-cyan-950/50 flex items-center justify-center shadow-inner">
+                                        <img src="/static/images/nid-shapla.png" alt="National Flower Shapla" class="w-6 h-4.5 sm:w-7 sm:h-5 object-contain filter brightness-125">
+                                    </div>
+                                    <!-- Micro Ghost Portrait of Ashik with cyan ring -->
+                                    <div class="relative shrink-0">
+                                        <img src="/static/images/profile-ashik-micro.png" alt="Ghost Security Photo" class="w-7 h-9 sm:w-8 sm:h-10 rounded-lg object-cover border border-cyan-400/60 shadow-md ring-1 ring-cyan-500/40 opacity-90">
+                                        <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border border-slate-900 rounded-full"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bottom: 3-Line MRZ Zone in Cyber Monospace & Disclaimer -->
+                            <div>
+                                <div class="bg-navy-950/80 border border-cyan-500/35 rounded-lg px-2.5 py-1 font-mono text-[8.5px] sm:text-[9.5px] text-cyan-300 tracking-wider leading-relaxed select-none shadow-inner">
+                                    <div class="tracking-widest text-cyan-200/90 font-bold">I&lt;BGD326848374&lt;43&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</div>
+                                    <div class="tracking-widest text-cyan-200/90 font-bold">8501215M3011294BGD&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;8</div>
+                                    <div class="tracking-widest text-cyan-300 font-extrabold">ASHIK&lt;&lt;NAKIB&lt;MD&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</div>
+                                </div>
+                                <div class="text-[8px] text-cyan-400/80 font-mono tracking-tighter text-center mt-1">
+                                    {{ _('SYNTHETIC DEMO • NOT A PAYMENT CARD • P3 BENCHMARK') }}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
+            <!-- Helpful caption under card -->
+            <div class="mt-3 text-center text-[10px] text-slate-400 font-mono flex items-center justify-center gap-1.5">
+                <i data-lucide="touchpad" class="w-3.5 h-3.5 text-cyan-400"></i>
+                <span>{{ _('Click card anytime to flip between Front (Digital ID) and Back (Smart NID)') }}</span>
+            </div>
+
             <div class="mt-4 text-[11px] text-slate-500 text-center font-mono">
-                Cryptographically bound to National ID hash. Fictional demo identity.
+                {{ _('Cryptographically bound to National ID hash. Fictional demo identity.') }}
             </div>
         </div>
 
         <!-- Account Data (7 cols) -->
         <div class="md:col-span-7 space-y-5">
             <div class="glass-panel p-6 rounded-2xl border border-slate-800">
-                <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4">Official Registry Information</h3>
+                <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4">{{ _('Official Registry Information') }}</h3>
                 <div class="space-y-3 text-xs font-mono">
                     <div class="flex justify-between py-2 border-b border-slate-800/80">
-                        <span class="text-slate-400">Full Legal Name</span>
+                        <span class="text-slate-400">{{ _('Full Legal Name') }}</span>
                         <span class="text-white font-bold">{{ user.full_name }}</span>
                     </div>
                     <div class="flex justify-between py-2 border-b border-slate-800/80">
-                        <span class="text-slate-400">Account Role</span>
-                        <span class="text-cyan-400 font-bold">{{ user.role }}</span>
+                        <span class="text-slate-400">{{ _('Account Role') }}</span>
+                        <span class="text-cyan-400 font-bold">{{ _(user.role) }}</span>
                     </div>
                     <div class="flex justify-between py-2 border-b border-slate-800/80">
-                        <span class="text-slate-400">National ID Reference</span>
+                        <span class="text-slate-400">{{ _('National ID Reference') }}</span>
                         <span class="text-white">1988-XXXX-XXXX-7890</span>
                     </div>
                     <div class="flex justify-between py-2 border-b border-slate-800/80">
-                        <span class="text-slate-400">Email Address</span>
+                        <span class="text-slate-400">{{ _('Email Address') }}</span>
                         <span class="text-white">{{ user.email }}</span>
                     </div>
                     <div class="flex justify-between py-2 border-b border-slate-800/80">
-                        <span class="text-slate-400">Registered Phone</span>
+                        <span class="text-slate-400">{{ _('Registered Phone') }}</span>
                         <span class="text-white">{{ user.phone or '+880 1712-345678' }}</span>
                     </div>
                     <div class="flex justify-between py-2">
-                        <span class="text-slate-400">Jurisdiction Upazila</span>
+                        <span class="text-slate-400">{{ _('Jurisdiction Upazila') }}</span>
                         <span class="text-white">{{ user.upazila }}, {{ user.district }}</span>
                     </div>
                 </div>
             </div>
 
             <div class="glass-panel p-6 rounded-2xl border border-slate-800">
-                <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Linked Synthetic Land Holdings</h3>
+                <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">{{ _('Linked Synthetic Land Holdings') }}</h3>
                 <div class="space-y-2">
                     <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center justify-between text-xs font-mono">
                         <div>
                             <span class="text-white font-bold">Dag Plot #9044</span> &bull; <span class="text-slate-400">Savar, Dhaka</span>
                         </div>
-                        <a href="/user/parcels/9044" class="text-cyan-400 hover:underline">Inspect Cadastral Title &rarr;</a>
+                        <a href="/user/parcels/9044" class="text-cyan-400 hover:underline">{{ _('Inspect Cadastral Title →') }}</a>
                     </div>
                     <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center justify-between text-xs font-mono">
                         <div>
                             <span class="text-white font-bold">Dag Plot #7025</span> &bull; <span class="text-slate-400">Paba, Rajshahi</span>
                         </div>
-                        <a href="/user/parcels/7025" class="text-cyan-400 hover:underline">Inspect Cadastral Title &rarr;</a>
+                        <a href="/user/parcels/7025" class="text-cyan-400 hover:underline">{{ _('Inspect Cadastral Title →') }}</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    function toggleCard3DFlip(e) {
+        const wrapper = (e && e.currentTarget) || document.getElementById('profile-identity-card-box');
+        const inner = wrapper ? wrapper.querySelector('.id-card-3d-inner') : document.getElementById('id-card-3d-inner');
+        if (inner) {
+            inner.classList.toggle('flipped');
+            if (window.lucide) window.lucide.createIcons();
+        }
+    }
+</script>
 {% endblock %}

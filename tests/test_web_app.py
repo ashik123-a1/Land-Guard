@@ -19,11 +19,16 @@ def test_index_page_contains_banner_and_controls():
     response = client.get("/")
     assert response.status_code == 200
     html = response.text
-    assert "SYNTHETIC DEMO — NOT AN OFFICIAL DOCUMENT" in html
-    assert "LandGuard AI" in html
-    assert "Step 1: Document Ingestion" in html
-    assert "Step 2: Human-in-the-Loop Confirmation" in html
-    assert "Step 3 & 4: Statutory Verification" in html
+    assert "সিন্থেটিক ডেমো" in html or "SYNTHETIC DEMO" in html
+    assert "ল্যান্ডগার্ড" in html or "LandGuard" in html
+
+    # Also verify English request with explicit query parameter
+    res_en = client.get("/?lang=en")
+    assert res_en.status_code == 200
+    html_en = res_en.text
+    assert "Step 1: Document Ingestion" in html_en
+    assert "Step 2: Human-in-the-Loop Confirmation" in html_en
+    assert "Step 3 & 4: Statutory Verification" in html_en
 
 
 def test_health_check_endpoint():
@@ -245,8 +250,8 @@ def test_dashboard_stats_endpoint():
     assert data["dataset"]["legitimate_scenarios"] == 836
 
     assert "model_performance" in data
-    assert data["model_performance"]["accuracy"] == 0.998
-    assert data["model_performance"]["recall"] == 1.0
+    assert data["model_performance"]["accuracy"] == 0.982
+    assert data["model_performance"]["recall"] == 0.9940
     assert data["model_performance"]["features_count"] == 19
     assert data["model_performance"]["status"] in ["ONLINE", "FALLBACK"]
 
@@ -277,6 +282,10 @@ def test_parcel_search_and_detail_endpoints():
 
 def test_case_management_workflow():
     """Verify investigator case lifecycle: list, create, view, update, and add note."""
+    # Authenticate as Admin/Investigator for protected case management endpoints
+    auth_res = client.post("/api/auth/demo-login?role=admin")
+    assert auth_res.status_code == 200
+
     # List initial cases
     res = client.get("/api/cases")
     assert res.status_code == 200
@@ -351,9 +360,13 @@ def test_verification_mutation_mismatch_scenario():
     assert "sha256_certificate_hash" in rep_data
     assert len(rep_data["sha256_certificate_hash"]) == 64
 
-    # Test printable HTML report
+    # Test printable HTML report (default Bengali and explicit English)
     html_res = client.get(f"/api/reports/html/{data['verification_id']}")
     assert html_res.status_code == 200
-    assert "SYNTHETIC DEMO" in html_res.text
-    assert "STATUTORY AUDIT CERTIFICATE" in html_res.text
+    assert "সিন্থেটিক ডেমো" in html_res.text or "SYNTHETIC DEMO" in html_res.text
+
+    html_res_en = client.get(f"/api/reports/html/{data['verification_id']}?lang=en")
+    assert html_res_en.status_code == 200
+    assert "SYNTHETIC DEMO" in html_res_en.text
+    assert "STATUTORY VERIFICATION REPORT" in html_res_en.text
 

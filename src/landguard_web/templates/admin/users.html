@@ -1,18 +1,15 @@
 {% extends "admin/layout.html" %}
+{% import "components/ui_components.html" as ui %}
 
 {% block title %}User Directory & RBAC — LandGuard Operations{% endblock %}
 
 {% block portal_content %}
 <div class="space-y-6">
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">User Directory &amp; RBAC Clearance</h1>
-            <p class="text-xs sm:text-sm text-slate-400 mt-1">Role-based access control directory for Citizens, Investigators, and Chief Registrars.</p>
-        </div>
-        <div class="text-xs font-mono text-indigo-400 px-3 py-1.5 rounded-xl bg-indigo-950/60 border border-indigo-500/30">
-            {{ users|length }} Active Accounts
-        </div>
-    </div>
+    {{ ui.page_header(
+        title=_("User Directory & RBAC Clearance"),
+        subtitle=_("Role-based access control directory for Citizens, Investigators, and Chief Registrars."),
+        badge=(users|length|string ~ " " ~ _("Active Accounts"))
+    ) }}
 
     <!-- Users Table -->
     <div class="glass-panel rounded-2xl border border-slate-800 overflow-hidden shadow-xl">
@@ -20,31 +17,62 @@
             <table class="w-full text-left text-xs font-mono">
                 <thead class="bg-slate-900/80 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
                     <tr>
-                        <th class="p-4">User Identifier</th>
-                        <th class="p-4">Full Legal Name</th>
-                        <th class="p-4">Email Address</th>
-                        <th class="p-4">Clearance Role</th>
-                        <th class="p-4">Staff / Digital ID</th>
-                        <th class="p-4">Jurisdiction / Unit</th>
-                        <th class="p-4">Status</th>
+                        <th class="p-4">{{ _("User Identifier") }}</th>
+                        <th class="p-4">{{ _("Full Legal Name") }}</th>
+                        <th class="p-4">{{ _("Email Address") }}</th>
+                        <th class="p-4">{{ _("Clearance Role") }}</th>
+                        <th class="p-4">{{ _("Staff / Digital ID") }}</th>
+                        <th class="p-4">{{ _("Jurisdiction / Unit") }}</th>
+                        <th class="p-4">{{ _("Status") }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-800/60 text-slate-300">
                     {% for u in users %}
                     <tr class="hover:bg-slate-900/40 transition-colors">
                         <td class="p-4 font-bold text-white">{{ u.user_id }}</td>
-                        <td class="p-4 font-sans font-bold text-white">{{ u.full_name }}</td>
+                        <td class="p-4 font-sans">
+                            <div class="flex items-center gap-3">
+                                {% if u.user_id == 'USR-ADMIN-001' %}
+                                <div class="relative shrink-0">
+                                    <img src="/static/images/profile-nabil.jpg" alt="Hasin Ishruq Nabil" class="w-10 h-10 rounded-xl object-cover border border-emerald-500/40 ring-2 ring-white/10 shadow-sm shrink-0">
+                                    <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-slate-900 rounded-full" title="Online"></span>
+                                </div>
+                                {% elif u.user_id == 'USR-CITIZEN-001' %}
+                                <div class="relative shrink-0">
+                                    <img src="/static/images/profile-ashik.png" alt="Nakib Md Ashik" class="w-10 h-10 rounded-xl object-cover border border-cyan-500/40 ring-2 ring-white/10 shadow-sm shrink-0">
+                                    <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-slate-900 rounded-full" title="Online"></span>
+                                </div>
+                                {% else %}
+                                <div class="relative shrink-0">
+                                    <div class="w-10 h-10 rounded-xl bg-indigo-950 border border-indigo-500/40 text-indigo-300 flex items-center justify-center font-bold text-xs ring-2 ring-white/10 shrink-0">
+                                        {{ (u.full_name[:2] if u.full_name else 'US')|upper }}
+                                    </div>
+                                    <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-slate-900 rounded-full" title="Online"></span>
+                                </div>
+                                {% endif %}
+                                <div class="flex flex-col min-w-0">
+                                    <span class="font-bold text-white text-xs">{{ u.full_name }}</span>
+                                    {% if u.user_id == 'USR-ADMIN-001' %}
+                                    <span class="text-[10px] text-emerald-400 font-mono">{{ _("Senior Registrar") }}</span>
+                                    {% elif u.role == 'INVESTIGATOR' %}
+                                    <span class="text-[10px] text-indigo-400 font-mono">{{ _("Special Investigator") }}</span>
+                                    {% else %}
+                                    <span class="text-[10px] text-cyan-400 font-mono">{{ _("Registered Citizen") }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </td>
                         <td class="p-4 text-slate-400">{{ u.email }}</td>
                         <td class="p-4">
                             <span class="inline-flex px-2 py-0.5 rounded text-[10px] font-bold {% if u.role == 'ADMIN' %}bg-rose-950 text-rose-300 border border-rose-800/40{% elif u.role == 'INVESTIGATOR' %}bg-indigo-950 text-indigo-300 border border-indigo-800/40{% else %}bg-cyan-950 text-cyan-300 border border-cyan-800/40{% endif %}">
-                                {{ u.role }}
+                                {{ _(u.role) }}
                             </span>
                         </td>
                         <td class="p-4 text-cyan-400 font-bold">{{ u.staff_id or u.digital_identity_id }}</td>
                         <td class="p-4 font-sans text-slate-400">{{ u.department or u.upazila ~ ', ' ~ u.division }}</td>
                         <td class="p-4">
                             <span class="px-2 py-0.5 rounded text-[10px] bg-emerald-950 text-emerald-300 border border-emerald-800/40 font-semibold">
-                                ACTIVE
+                                {{ _("ACTIVE") }}
                             </span>
                         </td>
                     </tr>

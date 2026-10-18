@@ -1,19 +1,17 @@
 {% extends "user/layout.html" %}
+{% import "components/ui_components.html" as ui %}
 
-{% block title %}My Verifications — LandGuard AI{% endblock %}
+{% block title %}{{ _('Verification History') }} — LandGuard AI{% endblock %}
 
 {% block portal_content %}
 <div class="space-y-6">
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Verification Submission History</h1>
-            <p class="text-xs sm:text-sm text-slate-400 mt-1">Audit trail of all statutory deeds processed through the LandGuard engine.</p>
-        </div>
-        <a href="/user/verify" class="px-4 py-2 rounded-xl text-xs font-semibold text-navy-950 bg-cyan-400 hover:bg-cyan-300 transition-colors inline-flex items-center gap-1.5 self-start">
-            <i data-lucide="plus" class="w-4 h-4"></i>
-            <span>New Verification</span>
-        </a>
-    </div>
+    {{ ui.page_header(
+        title=_('Verification History'),
+        subtitle=_('Audit trail of all statutory deeds processed through the LandGuard engine.'),
+        action_url="/user/verify",
+        action_text=_('Start New Verification'),
+        action_icon="plus"
+    ) }}
 
     <!-- History Table -->
     <div class="glass-panel rounded-2xl border border-slate-800 overflow-hidden shadow-xl">
@@ -21,13 +19,13 @@
             <table class="w-full text-left text-xs font-mono">
                 <thead class="bg-slate-900/80 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
                     <tr>
-                        <th class="p-4">Dossier ID</th>
-                        <th class="p-4">Deed Reference</th>
-                        <th class="p-4">Dag Plot #</th>
-                        <th class="p-4">Holding Area</th>
-                        <th class="p-4">Statutory Finding</th>
-                        <th class="p-4">Risk Metric</th>
-                        <th class="p-4 text-right">Actions</th>
+                        <th class="p-4">{{ _('Dossier ID') }}</th>
+                        <th class="p-4">{{ _('Deed Number') }}</th>
+                        <th class="p-4">{{ _('Dag / Plot Number') }}</th>
+                        <th class="p-4">{{ _('Holding Area') }}</th>
+                        <th class="p-4">{{ _('Status') }}</th>
+                        <th class="p-4">{{ _('Risk Metric') }}</th>
+                        <th class="p-4 text-right">{{ _('Action') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-800/60 text-slate-300">
@@ -38,28 +36,40 @@
                         <td class="p-4 text-cyan-400">#{{ item.dag_plot_number }}</td>
                         <td class="p-4">{{ item.transferred_area_decimal }} Dec</td>
                         <td class="p-4">
-                            <span class="inline-flex px-2 py-0.5 rounded text-[10px] font-semibold {% if item.overall_status == 'CLEAR_FOR_STANDARD_PROCESSING' %}bg-emerald-950 text-emerald-300 border border-emerald-800/40{% elif item.overall_status == 'CONFIRMED_INCONSISTENCY' %}bg-rose-950 text-rose-300 border border-rose-800/40{% elif item.overall_status == 'MISSING_EVIDENCE' %}bg-amber-950 text-amber-300 border border-amber-800/40{% else %}bg-indigo-950 text-indigo-300 border border-indigo-800/40{% endif %}">
-                                {{ item.overall_status|replace('_', ' ') }}
-                            </span>
+                            {{ ui.status_badge(item.overall_status) }}
                         </td>
-                        <td class="p-4 font-bold {% if item.ml_risk_score > 0.35 %}text-rose-400{% else %}text-emerald-400{% endif %}">
-                            {{ (item.ml_risk_score * 100)|round(1) }}%
+                        <td class="p-4 font-bold {% if (item.ml_risk_score or 0.0) > 0.35 %}text-rose-400{% else %}text-emerald-400{% endif %}">
+                            {{ ((item.ml_risk_score or 0.0) * 100)|round(1) }}%
                         </td>
                         <td class="p-4 text-right font-sans">
-                            <div class="inline-flex items-center gap-2">
-                                <a href="/user/verify/{{ item.verification_id }}" class="px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-300 hover:text-white glass-panel hover:bg-slate-800 transition-colors">
-                                    View Dossier
+                            <div class="inline-flex items-center gap-1.5">
+                                <a href="/user/verify/{{ item.verification_id }}" class="px-2 py-1 rounded-lg text-xs font-semibold text-slate-300 hover:text-white glass-panel hover:bg-slate-800 transition-colors" title="{{ _('View Dossier') }}">
+                                    {{ _('View Dossier') }}
                                 </a>
-                                <a href="/api/reports/{{ item.verification_id }}" target="_blank" class="p-1 rounded-lg text-slate-400 hover:text-cyan-400 hover:bg-slate-800 transition-colors" title="Export Certificate">
-                                    <i data-lucide="download" class="w-4 h-4"></i>
+                                <a href="/reports/{{ item.verification_id }}?lang={{ current_lang or 'bn' }}" target="_blank" class="p-1 rounded-lg text-slate-400 hover:text-cyan-400 hover:bg-slate-800 transition-colors" title="{{ _('View Details') }}">
+                                    <i data-lucide="file-text" class="w-4 h-4"></i>
+                                </a>
+                                <a href="/api/reports/pdf/{{ item.verification_id }}?lang={{ current_lang or 'bn' }}" target="_blank" class="p-1 rounded-lg text-slate-400 hover:text-emerald-400 hover:bg-slate-800 transition-colors" title="{{ _('Download PDF') }}">
+                                    <i data-lucide="file-down" class="w-4 h-4"></i>
+                                </a>
+                                <a href="/api/reports/{{ item.verification_id }}" target="_blank" class="p-1 rounded-lg text-slate-400 hover:text-indigo-400 hover:bg-slate-800 transition-colors" title="Export Raw JSON">
+                                    <i data-lucide="code" class="w-4 h-4"></i>
                                 </a>
                             </div>
                         </td>
                     </tr>
                     {% else %}
                     <tr>
-                        <td colspan="7" class="p-8 text-center text-slate-500 font-sans">
-                            No verification history found. Start a new verification to inspect deed records.
+                        <td colspan="7" class="p-10 text-center text-slate-500 font-sans">
+                            <div class="flex flex-col items-center justify-center space-y-2">
+                                <i data-lucide="file-question" class="w-8 h-8 text-slate-600"></i>
+                                <span class="text-sm font-medium text-slate-400">{{ _('No recent verification records found.') }}</span>
+                                <span class="text-xs text-slate-500">{{ _('Run a statutory verification to start building your permanent property audit ledger.') }}</span>
+                                <a href="/user/verify" class="mt-3 px-4 py-2 rounded-xl text-xs font-semibold text-slate-950 bg-cyan-400 hover:bg-cyan-300 transition-colors inline-flex items-center gap-1.5 shadow-lg shadow-cyan-500/20">
+                                    <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                                    <span>{{ _('Verify Your First Deed') }}</span>
+                                </a>
+                            </div>
                         </td>
                     </tr>
                     {% endfor %}

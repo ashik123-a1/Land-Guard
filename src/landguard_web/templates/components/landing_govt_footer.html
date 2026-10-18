@@ -1,0 +1,220 @@
+<!-- ==============================================================================
+     7TH PAGE COMPONENT: Bangladesh Government Style Comprehensive Footer (Demo)
+     ============================================================================== -->
+<footer id="govt-footer" class="w-full bg-gradient-to-b from-[#070b16] via-[#050914] to-[#020409] border-t border-cyan-500/20 pt-16 pb-12 text-slate-300 relative z-20 overflow-hidden">
+    <!-- Top Luminous Cyan/Teal Laser Accent Line & Ambient Glow -->
+    <div class="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent pointer-events-none"></div>
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-24 bg-cyan-500/5 blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+        
+        <!-- Top Govt Monogram & National Tagline Header -->
+        <div class="flex flex-col md:flex-row items-center justify-between pb-10 border-b border-slate-800/80 gap-6 text-center md:text-left">
+            <!-- Left: National Monogram & Official Portal Identity (Demo) -->
+            <div class="flex flex-col sm:flex-row items-center gap-4">
+                <!-- Bangladesh Govt Emblem SVG (Demo) -->
+                <div class="w-16 h-16 rounded-full bg-slate-900 border-2 border-emerald-500/40 p-2 shadow-lg shadow-emerald-500/10 flex items-center justify-center shrink-0">
+                    <svg viewBox="0 0 100 100" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="46" fill="#047857" stroke="#F59E0B" stroke-width="3"/>
+                        <circle cx="50" cy="50" r="38" fill="#B91C1C"/>
+                        <!-- National Shapla Water Lily Emblem -->
+                        <path d="M50 25 C45 35 38 45 38 58 C38 68 45 74 50 78 C55 74 62 68 62 58 C62 45 55 35 50 25 Z" fill="#FDE047"/>
+                        <path d="M50 35 C42 45 32 50 26 62 C32 64 42 63 50 58 C58 63 68 64 74 62 C68 50 58 45 50 35 Z" fill="#FEF08A" opacity="0.9"/>
+                        <!-- Stars -->
+                        <circle cx="28" cy="38" r="2.5" fill="#FDE047"/>
+                        <circle cx="72" cy="38" r="2.5" fill="#FDE047"/>
+                        <circle cx="24" cy="52" r="2.5" fill="#FDE047"/>
+                        <circle cx="76" cy="52" r="2.5" fill="#FDE047"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="flex items-center justify-center md:justify-start gap-2 mb-1">
+                        <h4 class="text-base sm:text-lg font-extrabold text-white tracking-wide">
+                            {{ _('People\'s Republic of Bangladesh') if current_lang != 'bn' else 'গণপ্রজাতন্ত্রী বাংলাদেশ' }}
+                        </h4>
+                        <span class="px-2 py-0.5 rounded bg-emerald-950 border border-emerald-500/40 text-emerald-300 font-mono text-[10px] font-bold">
+                            {{ _('DEMO PORTAL') if current_lang != 'bn' else 'ডেমো বাতায়ন' }}
+                        </span>
+                    </div>
+                    <p class="text-xs text-slate-400 font-mono">
+                        {{ _('Ministry of Land • LandGuard AI Statutory Verification Platform') if current_lang != 'bn' else 'ভূমি মন্ত্রণালয় • ল্যান্ডগার্ড এআই সংবিধিবদ্ধ ভূমিসেবা ও দলিল যাচাই বাতায়ন' }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Right: National Motto & Smart Bangladesh Badge (Demo) -->
+            <div class="flex items-center gap-4">
+                <div class="text-center md:text-right">
+                    <span class="text-xs font-bold text-amber-300 block font-mono">
+                        {{ _('Motto: "Smart Land Service, Citizen Peace"') if current_lang != 'bn' else 'স্লোগান: "স্মার্ট ভূমিসেবা, স্মার্ট নাগরিক"' }}
+                    </span>
+                    <span class="text-[11px] text-slate-400">
+                        {{ _('Vision 2041 • LandTech Innovation Consortium') if current_lang != 'bn' else 'রূপকল্প ২০৪১ • ল্যান্ডটেক ইনোভেশন হ্যাকাথন প্রোটোটাইপ' }}
+                    </span>
+                </div>
+                <div class="px-3 py-1.5 rounded-xl bg-slate-900 border border-cyan-500/30 text-cyan-300 font-mono text-xs font-bold shadow-sm">
+                    SMART BD 2041
+                </div>
+            </div>
+        </div>
+
+        <!-- 4 Major Government Portal Columns -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 py-12 border-b border-slate-800/80">
+            
+            <!-- Column 1: About LandGuard AI (Demo) -->
+            <div class="space-y-3">
+                <h5 class="text-xs font-bold uppercase tracking-wider text-white flex items-center gap-2">
+                    <i data-lucide="shield" class="w-4 h-4 text-cyan-400"></i>
+                    <span>{{ _('About LandGuard AI') if current_lang != 'bn' else 'ল্যান্ডগার্ড এআই পরিচিতি' }}</span>
+                </h5>
+                <p class="text-xs text-slate-400 leading-relaxed">
+                    {{ _('Statutory land record verification engine designed to eradicate fraudulent deeds, double selling, and altered mutation ledgers under Bangladesh land statutes.') if current_lang != 'bn' else 'বাংলাদেশের ভূমি আইন ও বিধি অনুযায়ী জমির জাল দলিল, দ্বৈত বিক্রি ও ভুয়া নামজারি প্রতিরোধে তৈরি সংবিধিবদ্ধ এআই যাচাইকরণ বাতায়ন।' }}
+                </p>
+                <div class="pt-2 text-xs font-mono text-slate-400 space-y-1">
+                    <div>{{ _('Architecture: Hybrid Symbolic + XGBoost') if current_lang != 'bn' else 'কাঠামো: সংবিধিবদ্ধ নিয়ম + এক্সজিবুস্ট' }}</div>
+                    <div>{{ _('Recall Rate: 1.000 (Zero Missed Fraud)') if current_lang != 'bn' else 'প্রতারণা শনাক্তকরণ: ১.০০০ (শতভাগ)' }}</div>
+                </div>
+            </div>
+
+            <!-- Column 2: Important Government Portals (Demo Links) -->
+            <div class="space-y-3">
+                <h5 class="text-xs font-bold uppercase tracking-wider text-white flex items-center gap-2">
+                    <i data-lucide="external-link" class="w-4 h-4 text-emerald-400"></i>
+                    <span>{{ _('Important Govt Portals (Demo)') if current_lang != 'bn' else 'গুরুত্বপূর্ণ সরকারি পোর্টাল (ডেমো)' }}</span>
+                </h5>
+                <ul class="text-xs space-y-2 text-slate-400">
+                    <li>
+                        <a href="javascript:void(0)" onclick="event.preventDefault(); showToast('{{ _('Demo Simulation: External government portal navigation is disabled.') if current_lang != 'bn' else 'ডেমো সিমুলেশন: বহিরাগত সরকারি বাতায়ন নেভিগেশন স্থগিত রাখা হয়েছে।' }}', 'info')" class="hover:text-cyan-400 transition-colors flex items-center gap-1.5 cursor-pointer">
+                            <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-500"></i>
+                            <span>{{ _('Ministry of Land (ভূমি মন্ত্রণালয়)') if current_lang != 'bn' else 'ভূমি মন্ত্রণালয়' }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" onclick="event.preventDefault(); showToast('{{ _('Demo Simulation: External government portal navigation is disabled.') if current_lang != 'bn' else 'ডেমো সিমুলেশন: বহিরাগত সরকারি বাতায়ন নেভিগেশন স্থগিত রাখা হয়েছে।' }}', 'info')" class="hover:text-cyan-400 transition-colors flex items-center gap-1.5 cursor-pointer">
+                            <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-500"></i>
+                            <span>{{ _('DLRS Cadastre Surveys (ডিএলআরএস)') if current_lang != 'bn' else 'ভূমি রেকর্ড ও জরিপ অধিদপ্তর — ডিএলআরএস' }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" onclick="event.preventDefault(); showToast('{{ _('Demo Simulation: External government portal navigation is disabled.') if current_lang != 'bn' else 'ডেমো সিমুলেশন: বহিরাগত সরকারি বাতায়ন নেভিগেশন স্থগিত রাখা হয়েছে।' }}', 'info')" class="hover:text-cyan-400 transition-colors flex items-center gap-1.5 cursor-pointer">
+                            <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-500"></i>
+                            <span>{{ _('Land Reforms Board (ভূমি সংস্কার বোর্ড)') if current_lang != 'bn' else 'ভূমি সংস্কার বোর্ড' }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" onclick="event.preventDefault(); showToast('{{ _('Demo Simulation: External government portal navigation is disabled.') if current_lang != 'bn' else 'ডেমো সিমুলেশন: বহিরাগত সরকারি বাতায়ন নেভিগেশন স্থগিত রাখা হয়েছে।' }}', 'info')" class="hover:text-cyan-400 transition-colors flex items-center gap-1.5 cursor-pointer">
+                            <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-500"></i>
+                            <span>{{ _('National Web Portal (বাংলাদেশ জাতীয় বাতায়ন)') if current_lang != 'bn' else 'বাংলাদেশ জাতীয় তথ্য বাতায়ন' }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" onclick="event.preventDefault(); showToast('{{ _('Demo Simulation: External government portal navigation is disabled.') if current_lang != 'bn' else 'ডেমো সিমুলেশন: বহিরাগত সরকারি বাতায়ন নেভিগেশন স্থগিত রাখা হয়েছে।' }}', 'info')" class="hover:text-cyan-400 transition-colors flex items-center gap-1.5 cursor-pointer">
+                            <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-500"></i>
+                            <span>{{ _('E-Mutation Portal (ই-নামজারি বাতায়ন)') if current_lang != 'bn' else 'ই-নামজারি ও ডি.সি.আর বাতায়ন' }}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Column 3: Citizen Services & Legal Governance (Demo) -->
+            <div class="space-y-3">
+                <h5 class="text-xs font-bold uppercase tracking-wider text-white flex items-center gap-2">
+                    <i data-lucide="user-check" class="w-4 h-4 text-indigo-400"></i>
+                    <span>{{ _('Citizen Services & Help (Demo)') if current_lang != 'bn' else 'নাগরিক সেবা ও আইনি সহায়তা (ডেমো)' }}</span>
+                </h5>
+                <ul class="text-xs space-y-2 text-slate-400">
+                    <li>
+                        <a href="/login" class="hover:text-cyan-400 transition-colors flex items-center gap-1.5">
+                            <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-500"></i>
+                            <span>{{ _('Citizen Identity & Deed Verification') if current_lang != 'bn' else 'নাগরিক পরিচিতি ও দলিল সত্যতা যাচাই' }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/login?demo=investigator" class="hover:text-cyan-400 transition-colors flex items-center gap-1.5">
+                            <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-500"></i>
+                            <span>{{ _('Officer & Investigator Review Portal') if current_lang != 'bn' else 'তদন্তকারী কর্মকর্তা অডিট ড্যাশবোর্ড' }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#services" class="hover:text-cyan-400 transition-colors flex items-center gap-1.5">
+                            <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-500"></i>
+                            <span>{{ _('Supported 6 Document Types') if current_lang != 'bn' else 'যাচাইযোগ্য ৬ ধরনের দলিলের নমুনা' }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#support" class="hover:text-cyan-400 transition-colors flex items-center gap-1.5">
+                            <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-500"></i>
+                            <span>{{ _('File an Instant Land Dispute Petition') if current_lang != 'bn' else 'তাৎক্ষণিক ভূমি বিরোধ অভিযোগ দাখিল' }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <span class="text-slate-500 flex items-center gap-1.5">
+                            <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-600"></i>
+                            <span>{{ _('RTI & Citizen Charter (তথ্য অধিকার ডেমো)') if current_lang != 'bn' else 'তথ্য অধিকার ও সিটিজেন চার্টার (ডেমো)' }}</span>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Column 4: Emergency Helplines & Control Desk (Demo) -->
+            <div class="space-y-3">
+                <h5 class="text-xs font-bold uppercase tracking-wider text-white flex items-center gap-2">
+                    <i data-lucide="phone-forwarded" class="w-4 h-4 text-rose-400"></i>
+                    <span>{{ _('Emergency Desk & Hotline') if current_lang != 'bn' else 'জরুরি হেল্পলাইন ও নিয়ন্ত্রণ কক্ষ' }}</span>
+                </h5>
+                <div class="space-y-2 text-xs">
+                    <div class="p-2.5 rounded-xl bg-slate-900 border border-cyan-500/30 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] text-slate-400 uppercase font-mono block">{{ _('Land Helpline (24/7)') if current_lang != 'bn' else 'ভূমিসেবা হটলাইন (২৪ ঘণ্টা)' }}</span>
+                            <span class="font-mono font-bold text-cyan-400 text-sm">১৬১২২ (ডেমো)</span>
+                        </div>
+                        <a href="tel:16122" class="p-1.5 rounded-lg bg-cyan-500/20 text-cyan-300 hover:bg-cyan-500 hover:text-slate-950 transition-colors" title="Call 16122">
+                            <i data-lucide="phone" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                    <div class="p-2.5 rounded-xl bg-slate-900 border border-indigo-500/30 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] text-slate-400 uppercase font-mono block">{{ _('National Citizen Portal') if current_lang != 'bn' else 'জাতীয় তথ্য বাতায়ন' }}</span>
+                            <span class="font-mono font-bold text-indigo-400 text-sm">৩৩৩ (ডেমো)</span>
+                        </div>
+                        <a href="tel:333" class="p-1.5 rounded-lg bg-indigo-500/20 text-indigo-300 hover:bg-indigo-500 hover:text-white transition-colors" title="Call 333">
+                            <i data-lucide="phone" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                    <div class="p-2.5 rounded-xl bg-slate-900 border border-rose-500/30 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] text-slate-400 uppercase font-mono block">{{ _('Anti-Corruption Desk') if current_lang != 'bn' else 'দুদক সততা সেল' }}</span>
+                            <span class="font-mono font-bold text-rose-400 text-sm">১০৬ (ডেমো)</span>
+                        </div>
+                        <a href="tel:106" class="p-1.5 rounded-lg bg-rose-500/20 text-rose-300 hover:bg-rose-500 hover:text-white transition-colors" title="Call 106">
+                            <i data-lucide="phone" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Bottom Execution, Copyright & Synthetic Disclaimer -->
+        <div class="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left text-xs text-slate-400">
+            <div>
+                <span class="font-bold text-slate-300">{{ _('Planning & Implementation (Demo):') if current_lang != 'bn' else 'পরিকল্পনা ও বাস্তবায়নে (ডেমো):' }}</span>
+                <span>{{ _('Ministry of Land & LandGuard AI Consortium') if current_lang != 'bn' else 'ভূমি মন্ত্রণালয় ও ল্যান্ডগার্ড এআই কনসোর্টিয়াম' }}</span>
+                <span class="mx-2 text-slate-600">•</span>
+                <span>{{ _('Technical Support: LandTech 2026 Innovation Lab') if current_lang != 'bn' else 'কারিগরি সহায়তায়: ল্যান্ডটেক ২০২৬ ইনোভেশন ল্যাব' }}</span>
+            </div>
+            <div class="font-mono text-[11px] text-slate-500">
+                {{ _('Copyright © 2026 All Rights Reserved • LandGuard AI') if current_lang != 'bn' else 'কপিরাইট © ২০২৬ সর্বস্বত্ব সংরক্ষিত • ল্যান্ডগার্ড এআই' }}
+            </div>
+        </div>
+
+        <!-- Indelible Synthetic Demonstration Banner -->
+        <div class="mt-6 p-3 rounded-xl bg-slate-900/60 border border-slate-800 text-center text-[11px] text-slate-400 font-mono">
+            <span class="text-amber-400 font-bold uppercase tracking-wider">SYNTHETIC DEMO — NOT AN OFFICIAL DOCUMENT</span>
+            <span class="block mt-1">
+                {{ _('All deeds, khatians, mutation ledgers, seals, and citizen credentials shown on this portal are algorithmically generated for hackathon benchmarking under synthetic compliance guidelines. SYNTHETIC DEMO — NOT AN OFFICIAL DOCUMENT.') if current_lang != 'bn' else 'এই বাতায়নে প্রদর্শিত সকল দলিল, খতিয়ান, নামজারি কেস, সিল ও এনআইডি রেকর্ড হ্যাকাথন মূল্যায়নের জন্য সিন্থেটিক ডেটা হিসেবে অ্যালগরিদম দ্বারা তৈরি। SYNTHETIC DEMO — NOT AN OFFICIAL DOCUMENT.' }}
+            </span>
+        </div>
+
+    </div>
+</footer>

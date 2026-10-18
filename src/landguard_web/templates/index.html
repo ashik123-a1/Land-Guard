@@ -3,7 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LandGuard AI — Statutory Land Deed Verification & Risk Assessment</title>
+  <title>LandGuard AI</title>
+  <!-- LandGuard Browser Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/static/images/favicon.svg">
+  <link rel="icon" type="image/png" sizes="64x64" href="/static/images/favicon.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/static/images/favicon.png">
   <style>
     :root {
       --bg: #0b1120;
@@ -1858,11 +1863,21 @@
         document.getElementById('case-status-select').value = c.status;
         document.getElementById('case-priority-select').value = c.priority;
 
+        function escapeHtml(str) {
+          if (str === null || str === undefined) return '';
+          return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+        }
+
         document.getElementById('inspector-meta-box').innerHTML = `
-          <div><strong>Deed:</strong> ${c.deed_number} | <strong>Plot:</strong> #${c.dag_plot_number}</div>
-          <div><strong>Assigned Officer:</strong> ${c.assigned_officer} | <strong>Finding:</strong> ${c.statutory_finding}</div>
+          <div><strong>Deed:</strong> ${escapeHtml(c.deed_number)} | <strong>Plot:</strong> #${escapeHtml(c.dag_plot_number)}</div>
+          <div><strong>Assigned Officer:</strong> ${escapeHtml(c.assigned_officer)} | <strong>Finding:</strong> ${escapeHtml(c.statutory_finding)}</div>
           <div><strong>ML Risk Indicator:</strong> ${c.ml_risk_score !== null ? (c.ml_risk_score * 100).toFixed(1) + '%' : 'N/A'}</div>
-          <div><strong>Evidence Summary:</strong> ${c.evidence_summary || 'N/A'}</div>
+          <div><strong>Evidence Summary:</strong> ${escapeHtml(c.evidence_summary || 'N/A')}</div>
         `;
 
         const notesBox = document.getElementById('case-notes-container');
@@ -1874,13 +1889,31 @@
           div.style.borderRadius = '4px';
           div.style.fontSize = '0.8rem';
           const time = n.timestamp ? n.timestamp.split('T')[0] : '';
-          div.innerHTML = `
-            <div style="display: flex; justify-content: space-between; color: #60a5fa; font-weight: 600; margin-bottom: 2px;">
-              <span>${n.author}</span>
-              <small style="color: var(--text-muted);">${time}</small>
-            </div>
-            <div style="color: #cbd5e1;">${n.note}</div>
-          `;
+
+          const header = document.createElement('div');
+          header.style.display = 'flex';
+          header.style.justifyContent = 'space-between';
+          header.style.color = '#60a5fa';
+          header.style.fontWeight = '600';
+          header.style.marginBottom = '2px';
+
+          const authorSpan = document.createElement('span');
+          authorSpan.textContent = n.author || 'Officer';
+
+          const timeSmall = document.createElement('small');
+          timeSmall.style.color = 'var(--text-muted)';
+          timeSmall.textContent = time;
+
+          header.appendChild(authorSpan);
+          header.appendChild(timeSmall);
+
+          const noteDiv = document.createElement('div');
+          noteDiv.style.color = '#cbd5e1';
+          noteDiv.style.whiteSpace = 'pre-wrap';
+          noteDiv.textContent = n.note || '';
+
+          div.appendChild(header);
+          div.appendChild(noteDiv);
           notesBox.appendChild(div);
         });
 

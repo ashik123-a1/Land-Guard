@@ -20,7 +20,7 @@ def test_admin_bento_dashboard_page_rendering():
     login_res = client.post("/api/auth/demo-login?role=admin")
     assert login_res.status_code == 200
     cookie = login_res.cookies.get("landguard_session")
-    admin_client = TestClient(app, cookies={"landguard_session": cookie}, follow_redirects=False)
+    admin_client = TestClient(app, cookies={"landguard_session": cookie, "landguard_lang": "en"}, follow_redirects=False)
 
     res = admin_client.get("/admin/dashboard")
     assert res.status_code == 200

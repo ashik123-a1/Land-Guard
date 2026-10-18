@@ -1,32 +1,33 @@
 {% extends "admin/layout.html" %}
+{% import "components/ui_components.html" as ui %}
 
-{% block title %}Cadastral Explorer — LandGuard Operations{% endblock %}
+{% block title %}{{ _('Cadastral Explorer') }} — {{ _('LandGuard Operations') }}{% endblock %}
 
 {% block portal_content %}
 <div class="space-y-6">
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Cadastral Registry Operations</h1>
-            <p class="text-xs sm:text-sm text-slate-400 mt-1">Investigate 100,000 canonical parcels across Savar, Paba, Sitakunda, Hathazari, and Keraniganj.</p>
-        </div>
-        <div class="text-xs font-mono text-indigo-400 px-3 py-1.5 rounded-xl bg-indigo-950/60 border border-indigo-500/30">
-            {{ total_parcels }} Indexed Parcels
-        </div>
-    </div>
+    {{ ui.page_header(
+        title=_('Cadastral Registry Operations'),
+        subtitle=_('Investigate 100,000 canonical parcels across Savar, Paba, Sitakunda, Hathazari, and Keraniganj.'),
+        badge=(total_parcels ~ " " ~ _('Indexed Parcels'))
+    ) }}
 
-    <!-- Search Form -->
-    <div class="glass-panel p-5 rounded-2xl border border-slate-800">
-        <form method="GET" action="/admin/parcels" class="flex flex-col sm:flex-row gap-3">
+    <!-- Search & Add Action Bar -->
+    <div class="glass-panel p-5 rounded-2xl border border-slate-800 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+        <form method="GET" action="/admin/parcels" class="flex flex-col sm:flex-row gap-3 flex-1">
             <div class="relative flex-1">
                 <i data-lucide="search" class="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
-                <input type="text" name="q" value="{{ query or '' }}" placeholder="Search by Dag plot # (e.g. 9044), Mouza, or Upazila..."
+                <input type="text" name="q" value="{{ query or '' }}" placeholder="{{ _('Search by Dag plot # (e.g. 9044), Mouza, or Upazila...') }}"
                        class="glass-input w-full pl-10 pr-4 py-2.5 rounded-xl text-xs placeholder:text-slate-500">
             </div>
-            <button type="submit" class="px-6 py-2.5 rounded-xl text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 transition-colors flex items-center justify-center gap-1.5">
+            <button type="submit" class="px-6 py-2.5 rounded-xl text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 transition-colors flex items-center justify-center gap-1.5 cursor-pointer">
                 <i data-lucide="filter" class="w-4 h-4"></i>
-                <span>Search Holdings</span>
+                <span>{{ _('Search Holdings') }}</span>
             </button>
         </form>
+        <button type="button" onclick="openAddParcelModal()" class="px-5 py-2.5 rounded-xl text-xs font-bold text-navy-950 bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/40 cursor-pointer shrink-0">
+            <i data-lucide="plus-circle" class="w-4 h-4"></i>
+            <span>{{ _('+ নতুন জমি যুক্ত করুন') }}</span>
+        </button>
     </div>
 
     <!-- Parcels Table -->
@@ -35,13 +36,13 @@
             <table class="w-full text-left text-xs font-mono">
                 <thead class="bg-slate-900/80 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
                     <tr>
-                        <th class="p-4">Dag Plot #</th>
-                        <th class="p-4">Location (Mouza / Upazila)</th>
-                        <th class="p-4">Holding Area</th>
-                        <th class="p-4">Class</th>
-                        <th class="p-4">Deed Events</th>
-                        <th class="p-4">Mutations</th>
-                        <th class="p-4 text-right">Cadastral Chain</th>
+                        <th class="p-4">{{ _('Dag Plot #') }}</th>
+                        <th class="p-4">{{ _('Location (Mouza / Upazila)') }}</th>
+                        <th class="p-4">{{ _('Holding Area') }}</th>
+                        <th class="p-4">{{ _('Class') }}</th>
+                        <th class="p-4">{{ _('Deed Events') }}</th>
+                        <th class="p-4">{{ _('Mutations') }}</th>
+                        <th class="p-4 text-right">{{ _('Cadastral Chain') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-800/60 text-slate-300">
@@ -54,7 +55,7 @@
                             <div class="font-semibold">{{ p.mouza }} (JL #{{ p.jl_number }})</div>
                             <div class="text-[11px] text-slate-400">{{ p.upazila }}, {{ p.district }}</div>
                         </td>
-                        <td class="p-4 text-white">{{ p.total_area_decimal }} Dec</td>
+                        <td class="p-4 text-white">{{ p.total_area_decimal }} {{ _('Dec') }}</td>
                         <td class="p-4 font-sans">
                             <span class="px-2 py-0.5 rounded text-[10px] bg-slate-800 text-slate-300">{{ p.land_classification }}</span>
                         </td>
@@ -62,7 +63,7 @@
                         <td class="p-4 text-cyan-400 font-bold">{{ p.mutation_count }}</td>
                         <td class="p-4 text-right font-sans">
                             <a href="/user/parcels/{{ p.dag_plot_number }}" target="_blank" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white glass-panel transition-colors inline-flex items-center gap-1">
-                                <span>Inspect Chain</span>
+                                <span>{{ _('Inspect Chain') }}</span>
                                 <i data-lucide="external-link" class="w-3.5 h-3.5 text-cyan-400"></i>
                             </a>
                         </td>
@@ -70,7 +71,7 @@
                     {% else %}
                     <tr>
                         <td colspan="7" class="p-8 text-center text-slate-500 font-sans">
-                            No matching parcels found for "{{ query }}".
+                            {{ _('No matching parcels found for') }} "{{ query }}".
                         </td>
                     </tr>
                     {% endfor %}
@@ -79,4 +80,269 @@
         </div>
     </div>
 </div>
+
+<!-- Add Land Area / Parcel Modal -->
+<div id="addParcelModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto">
+    <div class="glass-panel p-6 sm:p-8 rounded-2xl max-w-2xl w-full border border-emerald-500/40 shadow-2xl space-y-6 my-8 text-white relative">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-emerald-950/80 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
+                    <i data-lucide="map-pin" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h3 class="text-base sm:text-lg font-bold text-white">{{ _('নতুন ভূমি / দাগ নিবন্ধন (Add Land Area)') }}</h3>
+                    <p class="text-xs text-slate-400">{{ _('মৌজা ও উপজেলা ভিত্তিক নতুন দাগ ও খতিয়ান তথ্য সিস্টেমে যুক্ত করুন') }}</p>
+                </div>
+            </div>
+            <button type="button" onclick="closeAddParcelModal()" class="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+        <!-- Error Notification Container (Explicit for duplicates or invalid inputs) -->
+        <div id="parcelFormError" class="hidden p-4 rounded-xl bg-rose-950/90 border border-rose-500/60 text-rose-200 text-xs flex items-start gap-3">
+            <i data-lucide="alert-octagon" class="w-5 h-5 text-rose-400 flex-shrink-0 mt-0.5"></i>
+            <div id="parcelFormErrorText" class="font-sans leading-relaxed font-semibold"></div>
+        </div>
+
+        <!-- Form -->
+        <form id="addParcelForm" onsubmit="submitAddParcel(event)" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- Dag Plot Number -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1.5 font-mono">
+                        {{ _('দাগ নম্বর (Dag Plot #)') }} <span class="text-rose-400">*</span>
+                    </label>
+                    <input type="text" id="p-plot-number" name="dag_plot_number" required placeholder="e.g. 9045"
+                           class="glass-input w-full px-3.5 py-2 rounded-xl text-xs font-mono text-white placeholder:text-slate-600 focus:border-emerald-500">
+                </div>
+
+                <!-- Khatian Number -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1.5 font-mono">
+                        {{ _('খতিয়ান নম্বর (Khatian #)') }}
+                    </label>
+                    <input type="text" id="p-khatian-number" name="khatian_number" placeholder="e.g. BS-9045"
+                           class="glass-input w-full px-3.5 py-2 rounded-xl text-xs font-mono text-white placeholder:text-slate-600 focus:border-emerald-500">
+                </div>
+
+                <!-- Mouza -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1.5 font-mono">
+                        {{ _('মৌজা (Mouza)') }} <span class="text-rose-400">*</span>
+                    </label>
+                    <input type="text" id="p-mouza" name="mouza" required placeholder="e.g. Bara Baid"
+                           class="glass-input w-full px-3.5 py-2 rounded-xl text-xs font-mono text-white placeholder:text-slate-600 focus:border-emerald-500">
+                </div>
+
+                <!-- JL Number -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1.5 font-mono">
+                        {{ _('জেএল নম্বর (JL #)') }}
+                    </label>
+                    <input type="text" id="p-jl-number" name="jl_number" placeholder="e.g. 42"
+                           class="glass-input w-full px-3.5 py-2 rounded-xl text-xs font-mono text-white placeholder:text-slate-600 focus:border-emerald-500">
+                </div>
+
+                <!-- Upazila -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1.5 font-mono">
+                        {{ _('উপজেলা (Upazila)') }} <span class="text-rose-400">*</span>
+                    </label>
+                    <input type="text" id="p-upazila" name="upazila" required value="Kaliakair" placeholder="e.g. Kaliakair"
+                           class="glass-input w-full px-3.5 py-2 rounded-xl text-xs font-mono text-white placeholder:text-slate-600 focus:border-emerald-500">
+                </div>
+
+                <!-- District -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1.5 font-mono">
+                        {{ _('জেলা (District)') }} <span class="text-rose-400">*</span>
+                    </label>
+                    <input type="text" id="p-district" name="district" required value="Gazipur" placeholder="e.g. Gazipur"
+                           class="glass-input w-full px-3.5 py-2 rounded-xl text-xs font-mono text-white placeholder:text-slate-600 focus:border-emerald-500">
+                </div>
+
+                <!-- Total Area Decimal -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1.5 font-mono">
+                        {{ _('জমির পরিমাণ (শতাংশ / Decimals)') }} <span class="text-rose-400">*</span>
+                    </label>
+                    <input type="number" step="0.01" min="0.01" id="p-area-decimal" name="total_area_decimal" required placeholder="e.g. 24.50"
+                           class="glass-input w-full px-3.5 py-2 rounded-xl text-xs font-mono text-white placeholder:text-slate-600 focus:border-emerald-500">
+                </div>
+
+                <!-- Land Classification -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1.5 font-mono">
+                        {{ _('জমির শ্রেণী (Classification)') }}
+                    </label>
+                    <select id="p-land-class" name="land_classification" class="glass-input w-full px-3.5 py-2 rounded-xl text-xs font-mono text-white focus:border-emerald-500">
+                        <option value="Nal">Nal (নাল / আবাদি)</option>
+                        <option value="Viti">Viti (ভিটি / বসতবাড়ি)</option>
+                        <option value="Bari">Bari (বাড়ি)</option>
+                        <option value="Commercial">Commercial (বাণিজ্যিক)</option>
+                        <option value="Pukur">Pukur (পুকুর / জলাশয়)</option>
+                        <option value="Doba">Doba (ডোবা)</option>
+                        <option value="Chala">Chala (চালা)</option>
+                    </select>
+                </div>
+
+                <!-- Owner Name -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1.5 font-mono">
+                        {{ _('বর্তমান রেকর্ডধারী / মালিকের নাম') }}
+                    </label>
+                    <input type="text" id="p-owner-name" name="owner_name" placeholder="e.g. Nakib Md Ashik"
+                           class="glass-input w-full px-3.5 py-2 rounded-xl text-xs font-mono text-white placeholder:text-slate-600 focus:border-emerald-500">
+                </div>
+
+                <!-- Owner NID -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1.5 font-mono">
+                        {{ _('মালিকের জাতীয় পরিচয়পত্র (NID)') }}
+                    </label>
+                    <input type="text" id="p-owner-nid" name="owner_nid" placeholder="e.g. 19902692019000123"
+                           class="glass-input w-full px-3.5 py-2 rounded-xl text-xs font-mono text-white placeholder:text-slate-600 focus:border-emerald-500">
+                </div>
+            </div>
+
+            <!-- Notice on duplicate protection -->
+            <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800 text-[11px] text-slate-400 flex items-center gap-2">
+                <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+                <span>{{ _('সুরক্ষা নীতি: একই মৌজা ও উপজেলায় একই দাগ নম্বর পুনরায় যুক্ত করা যাবে না। ডাটাবেস স্বয়ংক্রিয়ভাবে ডুপ্লিকেট প্রতিহত করবে।') }}</span>
+            </div>
+
+            <!-- Footer Buttons -->
+            <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-800">
+                <button type="button" onclick="closeAddParcelModal()"
+                        class="px-5 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white glass-panel transition-colors cursor-pointer">
+                    {{ _('বাতিল (Cancel)') }}
+                </button>
+                <button type="submit" id="submit-parcel-btn"
+                        class="px-6 py-2.5 rounded-xl text-xs font-bold text-navy-950 bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 transition-all flex items-center gap-2 shadow-lg shadow-emerald-950/40 cursor-pointer">
+                    <i data-lucide="check" class="w-4 h-4"></i>
+                    <span>{{ _('জমি যুক্ত করুন (Save & Register)') }}</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}
+
+{% block extra_scripts %}
+<script>
+    function openAddParcelModal() {
+        const errorBox = document.getElementById('parcelFormError');
+        if (errorBox) errorBox.classList.add('hidden');
+        const plotInput = document.getElementById('p-plot-number');
+        if (plotInput) plotInput.classList.remove('border-rose-500', 'ring-2', 'ring-rose-500');
+        document.getElementById('addParcelModal').classList.remove('hidden');
+        if (window.lucide) window.lucide.createIcons();
+    }
+
+    function closeAddParcelModal() {
+        document.getElementById('addParcelModal').classList.add('hidden');
+    }
+
+    async function submitAddParcel(e) {
+        e.preventDefault();
+        const errorBox = document.getElementById('parcelFormError');
+        const errorText = document.getElementById('parcelFormErrorText');
+        const submitBtn = document.getElementById('submit-parcel-btn');
+        const plotInput = document.getElementById('p-plot-number');
+
+        errorBox.classList.add('hidden');
+        plotInput.classList.remove('border-rose-500', 'ring-2', 'ring-rose-500');
+
+        const payload = {
+            dag_plot_number: document.getElementById('p-plot-number').value.trim(),
+            khatian_number: document.getElementById('p-khatian-number').value.trim(),
+            mouza: document.getElementById('p-mouza').value.trim(),
+            jl_number: document.getElementById('p-jl-number').value.trim(),
+            upazila: document.getElementById('p-upazila').value.trim(),
+            district: document.getElementById('p-district').value.trim(),
+            total_area_decimal: parseFloat(document.getElementById('p-area-decimal').value),
+            land_classification: document.getElementById('p-land-class').value,
+            owner_name: document.getElementById('p-owner-name').value.trim(),
+            owner_nid: document.getElementById('p-owner-nid').value.trim()
+        };
+
+        if (!payload.dag_plot_number) {
+            errorText.innerText = "দাগ নম্বর প্রদান করা আবশ্যক।";
+            errorBox.classList.remove('hidden');
+            plotInput.focus();
+            return;
+        }
+
+        if (!payload.mouza) {
+            errorText.innerText = "মৌজার নাম প্রদান করা আবশ্যক।";
+            errorBox.classList.remove('hidden');
+            return;
+        }
+
+        if (isNaN(payload.total_area_decimal) || payload.total_area_decimal <= 0) {
+            errorText.innerText = "জমির পরিমাণ অবশ্যই শূন্যের চেয়ে বেশি হতে হবে।";
+            errorBox.classList.remove('hidden');
+            return;
+        }
+
+        const originalBtnText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<span class="inline-block animate-spin mr-1">⏳</span> সংরক্ষণ করা হচ্ছে...`;
+
+        try {
+            const res = await fetch('/admin/parcels/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await res.json();
+
+            if (res.status === 409 || data.conflict) {
+                // Duplicate plot error detected!
+                errorText.innerHTML = `<strong>ডুপ্লিকেট ত্রুটি:</strong> ${data.error || "এই দাগ নম্বরটি ইতোমধ্যে নিবন্ধিত রয়েছে!"}`;
+                errorBox.classList.remove('hidden');
+                plotInput.classList.add('border-rose-500', 'ring-2', 'ring-rose-500');
+                plotInput.focus();
+                if (window.showToast) {
+                    showToast(data.error || "ডুপ্লিকেট এন্ট্রি গ্রহণ করা হবে না!", "error");
+                }
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+                if (window.lucide) window.lucide.createIcons();
+                return;
+            }
+
+            if (!res.ok || !data.success) {
+                errorText.innerText = data.error || data.detail || "জমি সংরক্ষণে ত্রুটি দেখা দিয়েছে।";
+                errorBox.classList.remove('hidden');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+                if (window.lucide) window.lucide.createIcons();
+                return;
+            }
+
+            // Success!
+            if (window.showToast) {
+                showToast(data.message || "জমি সফলভাবে ডাটাবেসে নিবন্ধিত হয়েছে!", "success");
+            }
+            closeAddParcelModal();
+            setTimeout(() => {
+                window.location.href = `/admin/parcels?q=${encodeURIComponent(payload.dag_plot_number)}`;
+            }, 700);
+
+        } catch (err) {
+            errorText.innerText = "নেটওয়ার্ক ত্রুটি: " + err.message;
+            errorBox.classList.remove('hidden');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnText;
+            if (window.lucide) window.lucide.createIcons();
+        }
+    }
+</script>
+{% endblock %}
+

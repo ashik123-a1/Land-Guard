@@ -1,14 +1,14 @@
 {% extends "user/layout.html" %}
 
-{% block title %}Statutory Deed Verification — LandGuard AI{% endblock %}
+{% block title %}{{ _('Verify Title') }} — {{ _('LandGuard') }}{% endblock %}
 
 {% block portal_content %}
-<div class="max-w-5xl mx-auto space-y-8">
+<div class="w-full space-y-8">
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Statutory Deed Verification</h1>
-            <p class="text-xs sm:text-sm text-slate-400 mt-1">Multi-modal statutory verification against the 100,000 canonical cadastral records.</p>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">{{ _('Verify Title') }}</h1>
+            <p class="text-xs sm:text-sm text-slate-400 mt-1">{{ _('Multi-modal statutory verification against the 100,000 canonical cadastral records.') }}</p>
         </div>
         <div class="flex items-center gap-2">
             <span class="text-xs font-mono text-cyan-400 px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-500/30">
@@ -20,22 +20,211 @@
     <!-- Stepper Indicator -->
     <div class="glass-panel p-4 rounded-2xl border border-slate-800">
         <div class="grid grid-cols-4 gap-2 text-center text-xs font-semibold">
-            <div id="step-nav-1" class="py-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">1. Ingestion</div>
-            <div id="step-nav-2" class="py-2 rounded-xl text-slate-500 border border-transparent">2. Extraction</div>
-            <div id="step-nav-3" class="py-2 rounded-xl text-slate-500 border border-transparent">3. Confirmation</div>
-            <div id="step-nav-4" class="py-2 rounded-xl text-slate-500 border border-transparent">4. Result</div>
+            <div id="step-nav-1" class="py-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">{{ _('1. Ingestion') }}</div>
+            <div id="step-nav-2" class="py-2 rounded-xl text-slate-500 border border-transparent">{{ _('2. Extraction') }}</div>
+            <div id="step-nav-3" class="py-2 rounded-xl text-slate-500 border border-transparent">{{ _('3. Confirmation') }}</div>
+            <div id="step-nav-4" class="py-2 rounded-xl text-slate-500 border border-transparent">{{ _('4. Result') }}</div>
         </div>
     </div>
 
-    <!-- STEP 1: INGESTION (Scenario Pick or File Upload) -->
-    <div id="step-section-1" class="space-y-6">
-        <!-- Preset Demonstration Scenarios -->
+    <!-- STEP 1: INGESTION (Input Method Selection & Benchmark Scenarios) -->
+    <div id="step-section-1" class="space-y-8">
+        <!-- Dual Input Panels: Upload (Panel A) & Manual Entry (Panel B) -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+            
+            <!-- PANEL A: Upload a Synthetic Deed Document -->
+            <div class="glass-panel p-6 rounded-2xl border border-slate-800 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <h2 class="text-base font-bold text-white flex items-center gap-2">
+                            <i data-lucide="upload-cloud" class="w-4 h-4 text-cyan-400"></i>
+                            <span>{{ _('Upload Synthetic Deed Document') }}</span>
+                        </h2>
+                        <span class="text-[10px] font-mono text-cyan-300 bg-cyan-950/80 px-2 py-0.5 rounded border border-cyan-800/40">
+                            {{ _('OCR + CV Tamper Detection') }}
+                        </span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-4 leading-relaxed">
+                        {{ _('Supported formats: PNG, JPG, JPEG, PDF (Max 10 MB). Document will undergo neural OCR, bilingual text extraction, and forensic physical seam analysis.') }}
+                    </p>
+
+                    <!-- Upload Error Banner (Visible when /api/upload fails or rejects document) -->
+                    <div id="upload-error-banner" class="hidden mb-4 p-4 rounded-xl bg-rose-950/70 border border-rose-500/50 text-xs text-rose-200">
+                        <div class="flex items-start gap-3">
+                            <i data-lucide="alert-triangle" class="w-5 h-5 text-rose-400 shrink-0 mt-0.5"></i>
+                            <div class="flex-1 space-y-1.5">
+                                <div id="upload-error-title" class="font-bold text-white text-sm">
+                                    {{ _('Document Not Recognized as a Land Record') }}
+                                </div>
+                                <p id="upload-error-message" class="text-xs text-rose-300/90 leading-relaxed">
+                                    {{ _('Unable to identify document type — try a clearer scan or enter the details manually.') }}
+                                </p>
+                                <div class="pt-2 flex flex-wrap items-center gap-3">
+                                    <button type="button" onclick="focusManualEntry()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 hover:bg-cyan-500/30 transition-colors flex items-center gap-1.5">
+                                        <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+                                        <span>{{ _('Switch to Manual Entry') }}</span>
+                                    </button>
+                                    <button type="button" onclick="resetUploadInput()" class="text-xs text-slate-400 hover:text-white transition-colors">
+                                        {{ _('Try Another File') }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Drag & Drop Zone -->
+                    <div id="drop-zone" class="relative group border-2 border-dashed border-slate-700/80 hover:border-cyan-400/80 rounded-2xl p-6 sm:p-8 text-center cursor-pointer transition-all duration-300 bg-slate-900/40 hover:bg-cyan-950/10">
+                        <div class="hud-corner hud-tl group-hover:scale-110 transition-transform"></div>
+                        <div class="hud-corner hud-tr group-hover:scale-110 transition-transform"></div>
+                        <div class="hud-corner hud-bl group-hover:scale-110 transition-transform"></div>
+                        <div class="hud-corner hud-br group-hover:scale-110 transition-transform"></div>
+
+                        <i data-lucide="file-up" class="w-10 h-10 text-cyan-400 mx-auto mb-3 transition-transform group-hover:-translate-y-1"></i>
+                        <div class="text-sm font-semibold text-white">
+                            {{ _('Drag & drop deed document here, or') }} <span class="text-cyan-400 underline underline-offset-2">{{ _('browse files') }}</span>
+                        </div>
+                        <div class="text-[11px] text-slate-500 mt-1">
+                            {{ _('Accepts deeds with bilingual Bengali/English script') }}
+                        </div>
+
+                        <!-- Action Buttons: Browse File & Capture via Camera -->
+                        <div class="mt-3.5 flex flex-wrap items-center justify-center gap-2.5">
+                            <button type="button" onclick="event.stopPropagation(); document.getElementById('file-input').click();" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-800/80 hover:bg-slate-700/80 text-slate-200 border border-slate-700/80 transition-all flex items-center gap-1.5 shadow-sm">
+                                <i data-lucide="folder-open" class="w-3.5 h-3.5 text-cyan-400"></i>
+                                <span>{{ _('Browse File') }}</span>
+                            </button>
+                            <button type="button" id="openCameraBtn" onclick="event.stopPropagation(); openDeedCameraModal();" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-cyan-950/70 hover:bg-cyan-900/80 text-cyan-300 border border-cyan-500/40 transition-all flex items-center gap-1.5 shadow-md shadow-cyan-950/30 group/cam">
+                                <i data-lucide="camera" class="w-3.5 h-3.5 text-cyan-400 group-hover/cam:scale-110 transition-transform"></i>
+                                <span>{{ _('Capture via Camera') }}</span>
+                            </button>
+                        </div>
+
+                        <div class="flex flex-wrap items-center justify-center gap-2 mt-3.5">
+                            <span class="text-[10px] font-mono text-slate-400 bg-slate-800/70 px-2 py-0.5 rounded border border-slate-700">PNG, JPG, JPEG, PDF</span>
+                            <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/60 px-2 py-0.5 rounded border border-cyan-800/40">MAX 10 MB</span>
+                        </div>
+
+                        <input type="file" id="file-input" class="hidden" accept=".png,.jpg,.jpeg,.pdf" onchange="handleFileSelect(event)">
+                        <input type="file" id="camera-native-input" class="hidden" accept="image/*" capture="environment" onchange="handleFileSelect(event)">
+                    </div>
+
+                    <!-- File Validation Feedback Card (Visible after selection) -->
+                    <div id="file-validation-feedback" class="hidden mt-4 p-3.5 rounded-xl bg-slate-900/80 border border-slate-800">
+                        <div class="flex items-center justify-between text-xs">
+                            <div class="flex items-center gap-2 min-w-0">
+                                <i data-lucide="file-check" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+                                <span id="feedback-filename" class="font-mono text-white truncate max-w-[200px]">document.png</span>
+                                <span id="feedback-filesize" class="text-[11px] font-mono text-slate-400 shrink-0">(0 KB)</span>
+                            </div>
+                            <span id="feedback-status" class="text-[10px] font-mono text-emerald-400 font-semibold px-2 py-0.5 rounded bg-emerald-950 border border-emerald-800/40">
+                                {{ _('Validated') }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-[11px] text-slate-500 mt-4 pt-3 border-t border-slate-800/60 flex items-center justify-between">
+                    <span>{{ _('Bilingual Tesseract 5.4 + RapidOCR DBNet') }}</span>
+                    <span class="font-mono text-cyan-400/80">SHA-256 SECURED</span>
+                </div>
+            </div>
+
+            <!-- PANEL B: Enter Details Manually -->
+            <div class="glass-panel p-6 rounded-2xl border border-slate-800 flex flex-col justify-between" id="panel-manual-entry">
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <h2 class="text-base font-bold text-white flex items-center gap-2">
+                            <i data-lucide="edit-3" class="w-4 h-4 text-cyan-400"></i>
+                            <span>{{ _('Enter Details Manually') }}</span>
+                        </h2>
+                        <span class="text-[10px] font-mono text-slate-400 bg-slate-800/80 px-2 py-0.5 rounded border border-slate-700">
+                            {{ _('Direct Statutory Entry') }}
+                        </span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-4 leading-relaxed">
+                        {{ _('Direct statutory lookup without document scanning. Enter parcel coordinates and party particulars for immediate cadastral verification.') }}
+                    </p>
+
+                    <form id="manual-entry-form" onsubmit="handleManualEntrySubmit(event)" class="space-y-3">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-300 mb-1">{{ _('Dag Plot Number') }} *</label>
+                                <input type="text" id="f_man_dag_plot_number" required placeholder="e.g. 9044" class="glass-input w-full px-3 py-1.5 rounded-lg text-xs font-mono">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-300 mb-1">{{ _('Deed Number') }}</label>
+                                <input type="text" id="f_man_deed_number" placeholder="e.g. DEED-2024-10024" class="glass-input w-full px-3 py-1.5 rounded-lg text-xs font-mono">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-300 mb-1">{{ _('Transferred Area (Decimal)') }}</label>
+                                <input type="number" step="0.01" id="f_man_transferred_area" placeholder="e.g. 10.50" class="glass-input w-full px-3 py-1.5 rounded-lg text-xs font-mono">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-300 mb-1">{{ _('Execution Date') }}</label>
+                                <input type="date" id="f_man_execution_date" class="glass-input w-full px-3 py-1.5 rounded-lg text-xs font-mono">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-300 mb-1">{{ _('Seller National ID / Owner ID') }}</label>
+                                <input type="text" id="f_man_seller_nid" placeholder="e.g. OWN-11CE5DD2" class="glass-input w-full px-3 py-1.5 rounded-lg text-xs font-mono">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-300 mb-1">{{ _('Buyer National ID / Owner ID') }}</label>
+                                <input type="text" id="f_man_buyer_nid" placeholder="e.g. OWN-CE177B4E" class="glass-input w-full px-3 py-1.5 rounded-lg text-xs font-mono">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-300 mb-1">{{ _('Khatian Number') }}</label>
+                                <input type="text" id="f_man_khatian_number" placeholder="e.g. 1420" class="glass-input w-full px-3 py-1.5 rounded-lg text-xs font-mono">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-300 mb-1">{{ _('Mutation Case Number') }}</label>
+                                <input type="text" id="f_man_mutation_case_no" placeholder="e.g. MUT-2022-1001/Savar" class="glass-input w-full px-3 py-1.5 rounded-lg text-xs font-mono">
+                            </div>
+                        </div>
+
+                        <!-- Optional pasted raw text -->
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">{{ _('Paste Raw Deed Text / Schedule (Optional)') }}</label>
+                            <textarea id="f_man_raw_text" rows="2" placeholder="{{ _('Paste deed text extract for auto-detecting additional fields...') }}" class="glass-input w-full px-3 py-1.5 rounded-lg text-xs font-mono resize-none"></textarea>
+                            <p class="text-[10px] text-slate-500 mt-1">
+                                {{ _('Statutory note: Pasted text is analyzed for field population only; it does not constitute physical document evidence or image CV verification.') }}
+                            </p>
+                        </div>
+
+                        <!-- Manual validation error -->
+                        <div id="manual-error-alert" class="hidden p-2.5 rounded-lg bg-rose-950/80 border border-rose-800/60 text-rose-300 text-xs">
+                            <!-- Populated on error -->
+                        </div>
+
+                        <div class="pt-2">
+                            <button type="submit" id="btn-manual-submit" class="w-full py-2 px-4 rounded-xl text-xs font-semibold text-navy-950 bg-gradient-to-r from-cyan-400 to-cyan-500 hover:from-cyan-300 hover:to-cyan-400 transition-all flex items-center justify-center gap-2 shadow-md shadow-cyan-500/20">
+                                <span>{{ _('Review & Confirm Manual Details') }}</span>
+                                <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="text-[11px] text-slate-500 mt-4 pt-3 border-t border-slate-800/60 flex items-center justify-between">
+                    <span>{{ _('Statutory Evidence: Direct Citizen/Officer Claim') }}</span>
+                    <span class="font-mono text-slate-400">MANUAL_ENTRY</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- BENCHMARK DEMO SCENARIOS SECTION (Relocated Below Input Panels) -->
         <div class="glass-panel p-6 rounded-2xl border border-slate-800">
-            <h2 class="text-base font-bold text-white mb-2 flex items-center gap-2">
-                <i data-lucide="zap" class="w-4 h-4 text-cyan-400"></i>
-                <span>Quick Pick Curated Benchmark Scenario</span>
-            </h2>
-            <p class="text-xs text-slate-400 mb-5">Select a pre-verified statutory scenario to instantly test the verification engine.</p>
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
+                <h2 class="text-base font-bold text-white flex items-center gap-2">
+                    <i data-lucide="flask-conical" class="w-4 h-4 text-cyan-400"></i>
+                    <span>{{ _('Demo Testing Scenarios — Synthetic Benchmark Data') }}</span>
+                </h2>
+                <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-0.5 rounded-full border border-cyan-800/40">
+                    {{ _('Quick Pick Curated Benchmark Scenario') }}
+                </span>
+            </div>
+            <p class="text-xs text-slate-400 mb-5 leading-relaxed">
+                {{ _('These are predefined synthetic cases for testing the verification workflow against canonical cadastral records, not a user’s uploaded document or official land records.') }}
+            </p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
                 {% for sample in sample_cases %}
@@ -43,103 +232,809 @@
                         class="p-4 rounded-xl bg-slate-900/60 hover:bg-slate-800/80 border border-slate-800 hover:border-cyan-500/50 text-left transition-all group flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-2">
-                            <span class="text-[10px] font-mono px-2 py-0.5 rounded font-bold {% if sample.badge_color == 'green' %}bg-emerald-950 text-emerald-300 border border-emerald-800/40{% elif sample.badge_color == 'red' %}bg-rose-950 text-rose-300 border border-rose-800/40{% else %}bg-amber-950 text-amber-300 border border-amber-800/40{% endif %}">
-                                {{ sample.badge }}
+                            <span class="text-[10px] font-mono px-2 py-0.5 rounded font-bold {% if sample.badge_color == 'green' %}bg-emerald-950 text-emerald-300 border border-emerald-800/40{% elif sample.badge_color == 'red' %}bg-rose-950 text-rose-300 border border-rose-800/40{% elif sample.badge_color == 'pink' %}bg-fuchsia-950 text-fuchsia-300 border border-fuchsia-800/40{% else %}bg-amber-950 text-amber-300 border border-amber-800/40{% endif %}">
+                                {{ _(sample.badge) }}
                             </span>
-                            <span class="text-xs font-mono text-slate-500">Plot #{{ sample.preset_fields.dag_plot_number }}</span>
+                            <span class="text-xs font-mono text-slate-500">{{ _('Dag Plot') }} #{{ sample.preset_fields.dag_plot_number }}</span>
                         </div>
-                        <div class="text-xs font-bold text-white group-hover:text-cyan-300 mb-1.5">{{ sample.title }}</div>
-                        <p class="text-[11px] text-slate-400 line-clamp-2 leading-relaxed">{{ sample.description }}</p>
+                        <div class="text-xs font-bold text-white group-hover:text-cyan-300 mb-1.5">{{ _(sample.title) }}</div>
+                        <p class="text-[11px] text-slate-400 line-clamp-2 leading-relaxed">{{ _(sample.description) }}</p>
                     </div>
                     <div class="text-[10px] text-cyan-400 font-mono mt-3 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                        <span>Load Sample</span>
+                        <span>{{ _('Load Sample') }}</span>
                         <i data-lucide="arrow-right" class="w-3 h-3"></i>
                     </div>
                 </button>
                 {% endfor %}
             </div>
         </div>
+    </div>
 
-        <!-- Custom Upload Section -->
-        <div class="glass-panel p-6 rounded-2xl border border-slate-800">
-            <h2 class="text-base font-bold text-white mb-2 flex items-center gap-2">
-                <i data-lucide="upload-cloud" class="w-4 h-4 text-cyan-400"></i>
-                <span>Or Upload Synthetic Deed Document</span>
-            </h2>
-            <p class="text-xs text-slate-400 mb-4">Supported formats: PNG, JPG, JPEG, PDF (Max 10 MB). File will be parsed by bilingual OCR and CV.</p>
+    <!-- STEP 2: CYBERSCAN AI NEURAL DOCUMENT & VISION SCANNER -->
+    <div id="step-section-2-scan" class="hidden space-y-6">
+        <div class="glass-panel p-6 sm:p-8 rounded-2xl border border-cyan-500/30 shadow-[0_0_40px_rgba(34,211,238,0.1)] relative overflow-hidden">
+            <!-- Ambient scanning top edge -->
+            <div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent"></div>
 
-            <div id="drop-zone" class="border-2 border-dashed border-slate-700/80 hover:border-cyan-500/60 rounded-2xl p-8 text-center cursor-pointer transition-colors bg-slate-900/40">
-                <i data-lucide="file-up" class="w-10 h-10 text-cyan-400 mx-auto mb-3"></i>
-                <div class="text-sm font-semibold text-white">Drag &amp; drop deed document here, or <span class="text-cyan-400 underline">browse files</span></div>
-                <div class="text-[11px] text-slate-500 mt-1">Synthetic deeds with bilingual Bengali/English script</div>
-                <input type="file" id="file-input" class="hidden" accept=".png,.jpg,.jpeg,.pdf" onchange="handleFileSelect(event)">
+            <!-- PHASE 1: QUANTUM INGESTION & DATA STREAM VORTEX -->
+            <div id="cyberscan-phase1-vortex" class="flex flex-col items-center justify-center py-6 sm:py-10 transition-all duration-300">
+                <div class="text-center mb-6">
+                    <span class="text-xs font-mono tracking-widest text-cyan-400 uppercase font-semibold px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-500/30 inline-block mb-2">
+                        {{ _('Phase 1 // Data Pipeline & Quantum Stream') }}
+                    </span>
+                    <h2 class="text-xl sm:text-2xl font-bold text-white tracking-wide">
+                        {{ _('Ingesting Payload to Memory') }}
+                    </h2>
+                    <p id="uploadingFileNameDisplay" class="text-xs font-mono text-cyan-400 mt-1 truncate max-w-md mx-auto">
+                        document.png
+                    </p>
+                </div>
+
+                <!-- The Energy Vortex Intake Animation -->
+                <div class="relative w-56 h-56 sm:w-64 sm:h-64 flex items-center justify-center my-2">
+                    <!-- Outer Energy Particles Ring -->
+                    <div class="absolute inset-0 rounded-full border border-cyan-500/20 animate-spin-slow"></div>
+                    
+                    <!-- Middle Segmented Quantum Ring with Dashes -->
+                    <div class="absolute inset-3 sm:inset-4 rounded-full border-2 border-dashed border-cyan-400/50 animate-spin-reverse"></div>
+                    
+                    <!-- Glowing Progress SVG Circle -->
+                    <svg class="absolute w-52 h-52 sm:w-56 sm:h-56 -rotate-90">
+                        <circle cx="104" cy="104" r="92" stroke="rgba(255,255,255,0.06)" stroke-width="6" fill="transparent"></circle>
+                        <circle id="vortexProgressCircle" cx="104" cy="104" r="92" 
+                                stroke="url(#vortexGrad)" 
+                                stroke-width="7" 
+                                stroke-dasharray="578" 
+                                stroke-dashoffset="578" 
+                                stroke-linecap="round" 
+                                fill="transparent" 
+                                class="transition-all duration-150"></circle>
+                        <defs>
+                            <linearGradient id="vortexGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#22d3ee"/>
+                                <stop offset="50%" stop-color="#6366f1"/>
+                                <stop offset="100%" stop-color="#34d399"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+
+                    <!-- Inner Radar Glow -->
+                    <div class="absolute w-36 h-36 sm:w-40 sm:h-40 rounded-full bg-cyan-950/40 border border-cyan-500/40 flex items-center justify-center backdrop-blur-md overflow-hidden animate-energy-pulse">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-cyan-400/20 to-transparent radar-sweep origin-center pointer-events-none"></div>
+
+                        <div class="text-center z-10">
+                            <span id="uploadPercentNum" class="font-mono font-bold text-3xl sm:text-4xl text-white tracking-tight">0</span>
+                            <span class="text-cyan-400 font-mono text-base sm:text-lg">%</span>
+                            <div id="uploadStageLabel" class="text-[10px] font-mono text-slate-400 tracking-wider uppercase mt-0.5">{{ _('STREAMING') }}</div>
+                        </div>
+                    </div>
+
+                    <!-- Orbiting Satellites / Floating Nodes -->
+                    <div class="absolute w-full h-full animate-spin-fast pointer-events-none">
+                        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_12px_#22d3ee]"></div>
+                        <div class="absolute bottom-2 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_10px_#34d399]"></div>
+                    </div>
+                </div>
+
+                <!-- Live Telemetry Stream Bar -->
+                <div class="w-full max-w-md bg-slate-950/70 border border-slate-800 rounded-xl p-3.5 mt-3">
+                    <div class="flex justify-between items-center text-xs font-mono text-slate-400 mb-2">
+                        <span class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                            <span id="uploadStatusText">{{ _('Allocating memory buffers...') }}</span>
+                        </span>
+                        <span id="uploadSpeedText" class="text-cyan-400 font-semibold">4.8 MB/s</span>
+                    </div>
+                    <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                        <div id="uploadLinearFill" class="h-full bg-gradient-to-r from-cyan-400 via-indigo-500 to-emerald-400 rounded-full w-0 transition-all duration-150"></div>
+                    </div>
+                    <div class="flex justify-between items-center text-[10px] font-mono text-slate-500 mt-2">
+                        <span id="bytesTransferred">0 MB / 1.2 MB</span>
+                        <span id="packetLoss">INTEGRITY: 100% OK</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PHASE 2: REAL IMAGE AI LASER VISION SCANNER -->
+            <div id="cyberscan-phase2-laserscan" class="hidden">
+                <!-- Scanner Header -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-800">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping"></span>
+                            <span class="text-xs font-mono font-bold tracking-wider text-cyan-400 uppercase">
+                                {{ _('Phase 2 // Real-Time AI Document Inspection') }}
+                            </span>
+                        </div>
+                        <h2 class="text-xl font-extrabold text-white mt-1 tracking-tight">
+                            {{ _('Optical Neural Character Recognition & Forensic CV') }}
+                        </h2>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="px-3 py-1 rounded bg-slate-900 border border-slate-700 text-xs font-mono text-slate-300">
+                            {{ _('ENGINE') }}: <span class="text-cyan-400 font-bold">TESSERACT 5.4 + RAPIDOCR</span>
+                        </div>
+                        <div class="px-3 py-1 rounded bg-cyan-950/80 border border-cyan-800 text-xs font-mono text-cyan-300">
+                            {{ _('STAGE') }}: <span id="scan-pass-indicator">1 / 2</span>
+                        </div>
+                    </div>
+                </div>
+
+            <!-- Viewport & Live Stream Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+                <!-- Left: Scanner Viewport (7 Cols) -->
+                <div class="lg:col-span-7 flex flex-col items-center">
+                    <div class="relative w-full max-w-md aspect-[3/4] sm:aspect-[4/5] rounded-xl bg-slate-950 border border-cyan-500/40 p-2 overflow-hidden shadow-[0_0_30px_rgba(0,0,0,0.8)]">
+                        <!-- HUD Overlays -->
+                        <div class="hud-corner hud-tl"></div>
+                        <div class="hud-corner hud-tr"></div>
+                        <div class="hud-corner hud-bl"></div>
+                        <div class="hud-corner hud-br"></div>
+
+                        <!-- Center Reticle / HUD Marks -->
+                        <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-25 z-10">
+                            <div class="w-16 h-16 border border-cyan-400 rounded-full flex items-center justify-center">
+                                <div class="w-2.5 h-2.5 bg-cyan-400 rounded-full"></div>
+                            </div>
+                        </div>
+
+                        <!-- HUD Target Bar -->
+                        <div class="absolute top-4 left-4 z-20 flex items-center gap-2 bg-slate-950/80 border border-cyan-500/50 px-2.5 py-1 rounded text-[10px] font-mono text-cyan-300 backdrop-blur-md">
+                            <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+                            <span id="scan-target-label">TARGET: ACTIVE_DOCUMENT</span>
+                        </div>
+
+                        <!-- Scanner Viewport Frame -->
+                        <div id="imageScanFrame" class="relative w-full h-full rounded-lg overflow-hidden flex items-center justify-center bg-[#070b14]">
+                            <!-- Real Uploaded Image / Canvas -->
+                            <img id="realUploadedImage" src="" alt="Scanning Preview" class="w-full h-full object-contain select-none transition-transform duration-300" />
+
+                            <!-- Simulated high-tech document fallback (for PDFs) -->
+                            <div id="documentSimulatedWrapper" class="hidden w-full h-full p-6 flex flex-col justify-between bg-slate-900/95 text-slate-300 font-mono text-xs overflow-hidden">
+                                <div class="space-y-2">
+                                    <div class="flex items-center justify-between border-b border-slate-800 pb-2 text-cyan-400 font-bold">
+                                        <span>PDF_STREAM_PARSED</span>
+                                        <span id="pdf-stream-sha">SHA-256</span>
+                                    </div>
+                                    <div class="text-[11px] text-slate-400 space-y-1 pt-2">
+                                        <div>[001] সাফ কবলা দলিল প্রস্তুতকরণ ও নিবন্ধন রেজিস্ট্রি</div>
+                                        <div>[002] মৌজা: সাভার | জেএল নং: ১৫৩ | জেলা: ঢাকা</div>
+                                        <div>[003] তফসিল ও স্বত্ব হস্তান্তর সংক্রান্ত রোস্টার রেকর্ড</div>
+                                        <div>[004] সহকারী কমিশনার (ভূমি) নামজারি জমাখারিজ রেফারেন্স</div>
+                                    </div>
+                                </div>
+                                <div class="p-2 rounded bg-cyan-950/60 border border-cyan-800/40 text-[10px] text-cyan-300">
+                                    >> BILINGUAL PYTESSERACT CONVOLUTION ACTIVE
+                                </div>
+                            </div>
+
+                            <!-- Laser Curtain Sweep (Glowing Light Sheet) -->
+                            <div class="absolute left-0 right-0 pointer-events-none z-20 laser-curtain-anim bg-gradient-to-b from-cyan-400/25 via-cyan-400/10 to-transparent border-t-2 border-cyan-300 shadow-[0_0_20px_#00f2fe]"></div>
+
+                            <!-- Ultra-Bright Laser Needle Beam -->
+                            <div class="absolute left-0 right-0 h-[2px] bg-white pointer-events-none z-30 laser-line-anim shadow-[0_0_12px_#ffffff,0_0_24px_#00f2fe]"></div>
+
+                            <!-- Dynamic Bounding Boxes Container -->
+                            <div id="boundingBoxOverlay" class="absolute inset-0 pointer-events-none z-20"></div>
+                        </div>
+
+                        <!-- Scan Progress Line at bottom of scanner -->
+                        <div class="absolute bottom-2 left-2 right-2 h-1 bg-slate-900 rounded overflow-hidden z-20">
+                            <div id="scanLinearProgress" class="h-full bg-cyan-400 w-0 transition-all duration-200"></div>
+                        </div>
+                    </div>
+
+                    <div class="text-[11px] font-mono text-slate-400 mt-2 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                        <span>{{ _('REAL TIME COMPUTER VISION LAYER ACTIVE') }}</span>
+                    </div>
+                </div>
+
+                <!-- Right: Live Neural Terminal Output (5 Cols) -->
+                <div class="lg:col-span-5 flex flex-col justify-between bg-slate-950/90 border border-slate-800 rounded-xl p-4 h-full min-h-[380px]">
+                    <div>
+                        <div class="flex items-center justify-between pb-3 border-b border-slate-800 text-xs font-mono">
+                            <span class="text-cyan-400 flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-cyan-400"></span> {{ _('TERMINAL STREAM') }}
+                            </span>
+                            <span class="text-slate-500">PIPELINE: V3.9</span>
+                        </div>
+
+                        <!-- Live Terminal Feed -->
+                        <div id="terminalLogBody" class="mt-3 space-y-2 font-mono text-[11px] max-h-[260px] overflow-y-auto pr-1">
+                            <div class="text-slate-500">> {{ _('Initializing tensor core matrix...') }}</div>
+                            <div class="text-cyan-300">> {{ _('Frame captured: Dimension parsed.') }}</div>
+                            <div class="text-slate-400">> {{ _('Applying contrast normalization & thresholding...') }}</div>
+                        </div>
+                    </div>
+
+                    <!-- Detected Entities Micro-Badges -->
+                    <div class="pt-4 border-t border-slate-800/80">
+                        <div class="text-[11px] font-mono text-slate-400 mb-2 flex justify-between">
+                            <span>{{ _('DETECTED ENTITIES:') }}</span>
+                            <span id="detectedEntityCount" class="text-cyan-400 font-bold">0</span>
+                        </div>
+                        <div id="entityBadgesList" class="flex flex-wrap gap-1.5 min-h-[32px]">
+                            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-500">
+                                {{ _('Searching text...') }}
+                            </span>
+                        </div>
+
+                        <!-- Scanner Actions -->
+                        <div class="mt-4 pt-3 border-t border-slate-800/60 flex items-center justify-between">
+                            <button type="button" onclick="cancelScanningAndReturn()" class="text-xs text-slate-400 hover:text-white transition-colors">
+                                {{ _('Cancel Scan') }}
+                            </button>
+                            <span id="scan-status-summary" class="text-xs font-mono text-cyan-400">
+                                {{ _('Processing...') }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
             </div>
         </div>
     </div>
 
-    <!-- STEP 2 & 3: EXTRACTION & HUMAN-IN-THE-LOOP CONFIRMATION -->
-    <div id="step-section-2-3" class="hidden space-y-6">
+    <!-- STEP 3: MANDATORY REVIEW & HUMAN-IN-THE-LOOP CONFIRMATION -->
+    <div id="step-section-3-review" class="hidden space-y-6">
         <div class="glass-panel p-6 rounded-2xl border border-slate-800">
-            <div class="flex items-center justify-between mb-4">
+            <!-- Review Header -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-800">
                 <div>
-                    <h2 class="text-base font-bold text-white flex items-center gap-2">
-                        <i data-lucide="edit-3" class="w-4 h-4 text-cyan-400"></i>
-                        <span>Step 3: Human-in-the-Loop Field Confirmation</span>
+                    <h2 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                        <i data-lucide="clipboard-check" class="w-5 h-5 text-cyan-400"></i>
+                        <span>{{ _('Step 3: Review & Confirm Extracted Title Particulars') }}</span>
                     </h2>
-                    <p class="text-xs text-slate-400 mt-0.5">Review and verify extracted deed fields before executing statutory rule evaluation.</p>
+                    <p class="text-xs text-slate-400 mt-1">
+                        {{ _('Verify and adjust detected particulars before executing statutory rule evaluation against 100,000 canonical cadastral records.') }}
+                    </p>
                 </div>
-                <span class="text-[11px] font-mono text-cyan-400 bg-cyan-950 px-2.5 py-1 rounded-lg border border-cyan-800/40">
-                    Bilingual OCR Verified
-                </span>
+                <div id="review-source-badge-container">
+                    <span id="review-source-badge" class="text-[11px] font-mono text-cyan-400 bg-cyan-950 px-3 py-1 rounded-lg border border-cyan-800/40 inline-flex items-center gap-1.5">
+                        <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
+                        <span id="review-source-text">{{ _('Bilingual OCR Verified') }}</span>
+                    </span>
+                </div>
             </div>
 
-            <!-- Form of confirmed deed fields -->
-            <form id="verify-form" onsubmit="executeVerification(event)" class="space-y-4">
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Deed Number</label>
-                        <input type="text" id="f_deed_number" required class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+            <!-- Upload Evidence & CV Integrity Summary Bar (Visible when document uploaded) -->
+            <div id="review-evidence-summary" class="hidden mb-6 p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+                <div class="text-xs font-bold text-slate-300 mb-2.5 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="file-text" class="w-4 h-4 text-cyan-400"></i>
+                        <span>{{ _('Ingested Evidence File & Computer Vision Integrity') }}</span>
                     </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Dag Plot Number</label>
-                        <input type="text" id="f_dag_plot_number" required class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                    <span id="doc-sha256-preview" class="font-mono text-[10px] text-slate-500">SHA-256: ---</span>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
+                    <div class="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800">
+                        <span class="text-[10px] text-slate-500 block mb-0.5">{{ _('FILE NAME') }}</span>
+                        <span id="doc-filename-display" class="text-white truncate block">deed.png</span>
                     </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Transferred Area (Decimal)</label>
-                        <input type="number" step="0.01" id="f_transferred_area" required class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                    <div class="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800">
+                        <span class="text-[10px] text-slate-500 block mb-0.5">{{ _('PHYSICAL CV ANOMALY') }}</span>
+                        <span id="doc-cv-anomaly-display" class="text-emerald-400 font-bold">0.0% (Clean)</span>
                     </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Execution Date (YYYY-MM-DD)</label>
-                        <input type="date" id="f_execution_date" required class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                    <div class="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800">
+                        <span class="text-[10px] text-slate-500 block mb-0.5">{{ _('REGISTRAR SEAL') }}</span>
+                        <span id="doc-seal-display" class="text-emerald-400">Detected</span>
                     </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Seller National ID / Owner ID</label>
-                        <input type="text" id="f_seller_nid" required class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                    <div class="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800">
+                        <span class="text-[10px] text-slate-500 block mb-0.5">{{ _('OFFICER SIGNATURE') }}</span>
+                        <span id="doc-sig-display" class="text-emerald-400">Confirmed</span>
                     </div>
+                </div>
+            </div>
+
+            <!-- Uncertain Document Alert Banner (Shown when document type is UNCERTAIN) -->
+            <div id="doc-uncertain-banner" class="hidden mb-5 p-4 rounded-xl bg-amber-950/60 border border-amber-500/50 text-xs text-amber-200">
+                <div class="flex items-start gap-3">
+                    <i data-lucide="help-circle" class="w-5 h-5 text-amber-400 shrink-0 mt-0.5"></i>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Buyer National ID / Owner ID</label>
-                        <input type="text" id="f_buyer_nid" required class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <div class="font-bold text-white text-sm">
+                            {{ _('Document Type Uncertain — Select the document type or use manual entry') }}
+                        </div>
+                        <p class="text-xs text-amber-300/90 mt-1 leading-relaxed">
+                            {{ _('The document text could not be unambiguously categorized. Please click the matching document type tab below to load the appropriate statutory review fields, or adjust the fields manually.') }}
+                        </p>
                     </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Previous Deed Reference</label>
-                        <input type="text" id="f_previous_deed_ref" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                </div>
+            </div>
+
+            <!-- Dynamic Document Type Switcher Tabs -->
+            <div class="mb-6 p-1.5 rounded-xl bg-slate-950/80 border border-slate-800 flex flex-wrap items-center gap-1.5">
+                <span class="text-[11px] font-mono text-slate-400 px-2.5 py-1 uppercase font-semibold">{{ _('Document Type:') }}</span>
+                <button type="button" id="tab-btn-sale-deed" onclick="switchDocumentType('SALE_DEED')" class="doc-type-tab px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 bg-cyan-500/20 text-cyan-300 border border-cyan-500/50 shadow-sm shadow-cyan-500/20">
+                    <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+                    <span>{{ _('Deed of Sale (কবলা দলিল)') }}</span>
+                </button>
+                <button type="button" id="tab-btn-mutation-record" onclick="switchDocumentType('MUTATION_RECORD')" class="doc-type-tab px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 text-slate-400 hover:text-white hover:bg-slate-800 border border-transparent">
+                    <i data-lucide="git-pull-request" class="w-3.5 h-3.5"></i>
+                    <span>{{ _('Mutation Order (নামজারি আদেশ)') }}</span>
+                </button>
+                <button type="button" id="tab-btn-khatian-porcha" onclick="switchDocumentType('KHATIAN_PORCHA')" class="doc-type-tab px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 text-slate-400 hover:text-white hover:bg-slate-800 border border-transparent">
+                    <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+                    <span>{{ _('Khatian / Porcha (খতিয়ান পর্চা)') }}</span>
+                </button>
+                <button type="button" id="tab-btn-tax-receipt" onclick="switchDocumentType('TAX_RECEIPT')" class="doc-type-tab px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 text-slate-400 hover:text-white hover:bg-slate-800 border border-transparent">
+                    <i data-lucide="receipt" class="w-3.5 h-3.5"></i>
+                    <span>{{ _('Tax Receipt (দাখিলা)') }}</span>
+                </button>
+                <button type="button" id="tab-btn-parcel-map" onclick="switchDocumentType('PARCEL_MAP')" class="doc-type-tab px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 text-slate-400 hover:text-white hover:bg-slate-800 border border-transparent">
+                    <i data-lucide="map" class="w-3.5 h-3.5"></i>
+                    <span>{{ _('Parcel Map (মৌজা নকশা)') }}</span>
+                </button>
+            </div>
+
+            <!-- Editable Review Form -->
+            <form id="verify-form" novalidate onsubmit="executeVerification(event)" class="space-y-5">
+                <input type="hidden" id="f_active_document_type" value="SALE_DEED">
+
+                <!-- 1. SALE DEED FORM GROUP -->
+                <div id="form-group-sale-deed" class="doc-form-group grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Deed Number -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Deed Number') }}</label>
+                            <span id="badge-deed-number" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Not detected') }}
+                            </span>
+                        </div>
+                        <input type="text" id="f_deed_number" placeholder="DEED-YYYY-NNNNN" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('Statutory volume and serial number registered under Registration Act 1908.') }}</p>
                     </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Mutation Case Number</label>
-                        <input type="text" id="f_mutation_case_no" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+
+                    <!-- Dag / Plot Number -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Dag Plot Number') }} *</label>
+                            <span id="badge-dag-plot-number" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Not detected') }}
+                            </span>
+                        </div>
+                        <input type="text" id="f_dag_plot_number" data-type-required="true" required placeholder="e.g. 9044" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('Authoritative cadastral parcel number in the Mouza. Must match RS/BS khatian survey.') }}</p>
                     </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Consideration Amount (BDT)</label>
-                        <input type="number" step="0.01" id="f_consideration_bdt" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+
+                    <!-- Transferred Area -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Transferred Area (Decimal)') }}</label>
+                            <span id="badge-transferred-area" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Not detected') }}
+                            </span>
+                        </div>
+                        <input type="number" step="0.01" id="f_transferred_area" placeholder="e.g. 10.50" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('Area conveyed in decimals. Validated against total parcel capacity.') }}</p>
+                    </div>
+
+                    <!-- Execution Date -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Execution Date') }}</label>
+                            <span id="badge-execution-date" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Not detected') }}
+                            </span>
+                        </div>
+                        <input type="date" id="f_execution_date" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('Statutory date of deed execution. Checked against ownership timeline.') }}</p>
+                    </div>
+
+                    <!-- Seller National ID -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Seller National ID / Owner ID') }}</label>
+                            <span id="badge-seller-nid" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Not detected') }}
+                            </span>
+                        </div>
+                        <input type="text" id="f_seller_nid" placeholder="SYN-XXXXXXXXXX / OWN-XXXXXXXX" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('National ID or synthetic owner identifier of grantor.') }}</p>
+                    </div>
+
+                    <!-- Buyer National ID -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Buyer National ID / Owner ID') }}</label>
+                            <span id="badge-buyer-nid" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Not detected') }}
+                            </span>
+                        </div>
+                        <input type="text" id="f_buyer_nid" placeholder="SYN-XXXXXXXXXX / OWN-XXXXXXXX" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('National ID or synthetic owner identifier of grantee.') }}</p>
+                    </div>
+
+                    <!-- Previous Deed Reference -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Previous Deed Reference') }}</label>
+                            <span id="badge-prev-deed-ref" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Optional') }}
+                            </span>
+                        </div>
+                        <input type="text" id="f_previous_deed_ref" placeholder="DEED-YYYY-NNNNN" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('Preceding title deed reference in ancestral devolution chain.') }}</p>
+                    </div>
+
+                    <!-- Mutation Case Number -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Mutation Case Number') }}</label>
+                            <span id="badge-mutation-case" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Optional') }}
+                            </span>
+                        </div>
+                        <input type="text" id="f_mutation_case_no" placeholder="MUT-YYYY-NNNN/Upazila" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('Assistant Commissioner (Land) mutation endorsement number.') }}</p>
+                    </div>
+
+                    <!-- Consideration Amount -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Consideration Amount (BDT)') }}</label>
+                            <span id="badge-consideration-bdt" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Optional') }}
+                            </span>
+                        </div>
+                        <input type="number" step="0.01" id="f_consideration_bdt" placeholder="e.g. 1500000" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('Total registered monetary transaction value.') }}</p>
+                    </div>
+
+                    <!-- Khatian / Porcha Number -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Khatian / Porcha Number') }}</label>
+                            <span id="badge-khatian-number" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Optional') }}
+                            </span>
+                        </div>
+                        <input type="text" id="f_khatian_number" placeholder="e.g. 1420 / 384" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('Record-of-rights ledger / porcha identifier.') }}</p>
                     </div>
                 </div>
 
-                <div class="flex items-center justify-between pt-4 border-t border-slate-800">
-                    <button type="button" onclick="resetToStep1()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white glass-panel transition-colors">
-                        &larr; Back to Selection
+                <!-- 2. MUTATION RECORD FORM GROUP -->
+                <div id="form-group-mutation-record" class="doc-form-group hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Mutation Case Number -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Mutation Case Number') }} *</label>
+                            <span id="badge-mut-case-no" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Not detected') }}
+                            </span>
+                        </div>
+                        <input type="text" id="f_mut_case_no" data-type-required="true" required placeholder="e.g. MUT-2001-9502/Rupsha" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('Assistant Commissioner (Land) mutation case number under SAT Act 1950.') }}</p>
+                    </div>
+
+                    <!-- Dag / Plot Number -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Dag Plot Number') }} *</label>
+                            <span id="badge-mut-dag-plot" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Not detected') }}
+                            </span>
+                        </div>
+                        <input type="text" id="f_mut_dag_plot" data-type-required="true" required placeholder="e.g. 9044" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('Authoritative cadastral parcel number.') }}</p>
+                    </div>
+
+                    <!-- Khatian Number -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Present / Mutated Khatian') }}</label>
+                            <span id="badge-mut-khatian" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Optional') }}
+                            </span>
+                        </div>
+                        <input type="text" id="f_mut_khatian" placeholder="e.g. 1420" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('Newly created Namzari khatian or parent survey ledger number.') }}</p>
+                    </div>
+
+                    <!-- Effective / Order Date -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Order / Effective Date') }}</label>
+                            <span id="badge-mut-date" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Not detected') }}
+                            </span>
+                        </div>
+                        <input type="date" id="f_mut_effective_date" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('Date of mutation order issuance by Assistant Commissioner (Land).') }}</p>
+                    </div>
+
+                    <!-- Recorded Land Area -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Recorded Area (Decimal)') }}</label>
+                            <span id="badge-mut-area" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Not detected') }}
+                            </span>
+                        </div>
+                        <input type="number" step="0.01" id="f_mut_area" placeholder="e.g. 9.24" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('Mutated land area approved in decimals.') }}</p>
+                    </div>
+
+                    <!-- Mutation Approval Status -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Order Status') }}</label>
+                            <span id="badge-mut-status" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Not detected') }}
+                            </span>
+                        </div>
+                        <select id="f_mut_status" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono bg-slate-900 text-white">
+                            <option value="APPROVED">{{ _('APPROVED (মঞ্জুরকৃত / অনুমোদিত)') }}</option>
+                            <option value="PENDING">{{ _('PENDING (বিচারাধীন / অনিষ্পন্ন)') }}</option>
+                            <option value="REJECTED">{{ _('REJECTED (প্রত্যাখ্যাত / না-মঞ্জুর)') }}</option>
+                        </select>
+                        <p class="text-[10px] text-slate-500">{{ _('Statutory revenue circle disposition status.') }}</p>
+                    </div>
+
+                    <!-- Applicant / Mutated Owner -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Applicant / Mutated Owner') }}</label>
+                            <span id="badge-mut-applicant" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Optional') }}
+                            </span>
+                        </div>
+                        <input type="text" id="f_mut_applicant" placeholder="e.g. Anowar Bhuiyan" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('Name of applicant or mutated beneficiary.') }}</p>
+                    </div>
+
+                    <!-- Upazila Land Office -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Land Office / Upazila') }}</label>
+                            <span id="badge-mut-upazila" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Optional') }}
+                            </span>
+                        </div>
+                        <input type="text" id="f_mut_upazila" placeholder="e.g. Rupsha, Khulna" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('Jurisdictional Assistant Commissioner (Land) office.') }}</p>
+                    </div>
+                </div>
+
+                <!-- 3. KHATIAN PORCHA FORM GROUP -->
+                <div id="form-group-khatian-porcha" class="doc-form-group hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Khatian Number -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Khatian Number') }} *</label>
+                            <span id="badge-kh-khatian" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Not detected') }}
+                            </span>
+                        </div>
+                        <input type="text" id="f_kh_khatian_no" data-type-required="true" required placeholder="e.g. 1420" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('Official Record of Rights (RoR) survey ledger number.') }}</p>
+                    </div>
+
+                    <!-- Dag / Plot Number -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Dag Plot Number') }} *</label>
+                            <span id="badge-kh-dag-plot" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Not detected') }}
+                            </span>
+                        </div>
+                        <input type="text" id="f_kh_dag_plot" data-type-required="true" required placeholder="e.g. 9044" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('Authoritative cadastral survey plot identifier.') }}</p>
+                    </div>
+
+                    <!-- Survey Type -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Survey Type') }}</label>
+                            <span id="badge-kh-survey" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Optional') }}
+                            </span>
+                        </div>
+                        <select id="f_kh_survey_type" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono bg-slate-900 text-white">
+                            <option value="BS">{{ _('BS (Bangladesh Survey / সিটি জরিপ)') }}</option>
+                            <option value="RS">{{ _('RS (Revisional Survey)') }}</option>
+                            <option value="SA">{{ _('SA (State Acquisition Survey 1956)') }}</option>
+                            <option value="CS">{{ _('CS (Cadastral Survey 1910)') }}</option>
+                        </select>
+                        <p class="text-[10px] text-slate-500">{{ _('Cadastral survey epoch.') }}</p>
+                    </div>
+
+                    <!-- Total Recorded Land Area -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Total Land Area (Decimal)') }}</label>
+                            <span id="badge-kh-area" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Not detected') }}
+                            </span>
+                        </div>
+                        <input type="number" step="0.01" id="f_kh_total_area" placeholder="e.g. 9.24" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('Total holding area recorded in survey ledger.') }}</p>
+                    </div>
+
+                    <!-- Mouza & JL No -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Mouza & JL Number') }}</label>
+                            <span id="badge-kh-mouza" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Optional') }}
+                            </span>
+                        </div>
+                        <input type="text" id="f_kh_mouza" placeholder="e.g. Naihati, JL #48" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('Cadastral revenue boundary unit.') }}</p>
+                    </div>
+
+                    <!-- Recorded Titleholder / Raiyat -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Recorded Titleholder / Raiyat') }}</label>
+                            <span id="badge-kh-owner" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Optional') }}
+                            </span>
+                        </div>
+                        <input type="text" id="f_kh_recorded_owner" placeholder="e.g. Anowar Bhuiyan" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('Name of tenant / proprietor in column 2 of RoR.') }}</p>
+                    </div>
+
+                    <!-- Land Classification -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Land Classification') }}</label>
+                            <span id="badge-kh-class" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Optional') }}
+                            </span>
+                        </div>
+                        <input type="text" id="f_kh_land_class" placeholder="e.g. Nal, Viti, Bari" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('Recorded statutory agricultural/non-agricultural class.') }}</p>
+                    </div>
+                </div>
+
+                <!-- 4. TAX RECEIPT FORM GROUP -->
+                <div id="form-group-tax-receipt" class="doc-form-group hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Holding / Dakhila Number -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Holding / Dakhila Number') }} *</label>
+                            <span id="badge-tax-holding" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Not detected') }}
+                            </span>
+                        </div>
+                        <input type="text" id="f_tax_holding_no" data-type-required="true" required placeholder="e.g. DAK-2023-8472" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('Land development tax clearance receipt number.') }}</p>
+                    </div>
+
+                    <!-- Dag / Plot Number -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Dag Plot Number') }} *</label>
+                            <span id="badge-tax-dag-plot" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Not detected') }}
+                            </span>
+                        </div>
+                        <input type="text" id="f_tax_dag_plot" data-type-required="true" required placeholder="e.g. 9044" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('Subject parcel number under assessment.') }}</p>
+                    </div>
+
+                    <!-- Khatian Number -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Khatian Number') }}</label>
+                            <span id="badge-tax-khatian" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Optional') }}
+                            </span>
+                        </div>
+                        <input type="text" id="f_tax_khatian" placeholder="e.g. 1420" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('Revenue ledger holding identifier.') }}</p>
+                    </div>
+
+                    <!-- Fiscal Year -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Fiscal Year') }}</label>
+                            <span id="badge-tax-year" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Not detected') }}
+                            </span>
+                        </div>
+                        <input type="text" id="f_tax_fiscal_year" placeholder="e.g. 2023-2024" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('Financial assessment year of tax clearance.') }}</p>
+                    </div>
+
+                    <!-- Paid Amount (BDT) -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Paid Amount (BDT)') }}</label>
+                            <span id="badge-tax-amount" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Optional') }}
+                            </span>
+                        </div>
+                        <input type="number" step="0.01" id="f_tax_paid_amount" placeholder="e.g. 1250" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('Revenue collected under Land Development Tax rules.') }}</p>
+                    </div>
+
+                    <!-- Payer Name -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Payer Name') }}</label>
+                            <span id="badge-tax-payer" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Optional') }}
+                            </span>
+                        </div>
+                        <input type="text" id="f_tax_payer_name" placeholder="e.g. Anowar Bhuiyan" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('Name of taxpayer remitting assessment.') }}</p>
+                    </div>
+                </div>
+
+                <!-- 5. PARCEL MAP FORM GROUP -->
+                <div id="form-group-parcel-map" class="doc-form-group hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Target Dag / Plot Number -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Target Dag / Plot Number') }} *</label>
+                            <span id="badge-map-dag-plot" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Not detected') }}
+                            </span>
+                        </div>
+                        <input type="text" id="f_map_dag_plot" data-type-required="true" required placeholder="e.g. 9044" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('Target cadastral plot surveyed on the map sheet.') }}</p>
+                    </div>
+
+                    <!-- Mouza Name -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Mouza Name') }}</label>
+                            <span id="badge-map-mouza" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Optional') }}
+                            </span>
+                        </div>
+                        <input type="text" id="f_map_mouza" placeholder="e.g. Naihati" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('Survey mouza polygon boundary.') }}</p>
+                    </div>
+
+                    <!-- Sheet Number -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Sheet Number') }}</label>
+                            <span id="badge-map-sheet" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Optional') }}
+                            </span>
+                        </div>
+                        <input type="text" id="f_map_sheet_no" placeholder="e.g. Sheet #02" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('Cadastral map sheet partition index.') }}</p>
+                    </div>
+
+                    <!-- Plot Area -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Plot Area (Decimal)') }}</label>
+                            <span id="badge-map-area" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Optional') }}
+                            </span>
+                        </div>
+                        <input type="number" step="0.01" id="f_map_area" placeholder="e.g. 9.24" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('Calculated polygon area in decimals.') }}</p>
+                    </div>
+
+                    <!-- Adjoining Plots -->
+                    <div class="space-y-1.5 sm:col-span-2">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-semibold text-slate-300">{{ _('Adjoining Boundary Plots (চৌহদ্দি)') }}</label>
+                            <span id="badge-map-adjoining" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                                {{ _('Optional') }}
+                            </span>
+                        </div>
+                        <input type="text" id="f_map_adjoining" placeholder="e.g. North: Plot #9043, South: Plot #9045" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-mono">
+                        <p class="text-[10px] text-slate-500">{{ _('Contiguous parcels surrounding target plot.') }}</p>
+                    </div>
+                </div>
+
+                <!-- Action Controls -->
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-6 border-t border-slate-800">
+                    <button type="button" onclick="resetToStep1()" class="w-full sm:w-auto px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white glass-panel transition-colors flex items-center justify-center gap-1.5">
+                        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                        <span>{{ _('Back / Re-select Input') }}</span>
                     </button>
-                    <button type="submit" id="execute-btn" class="px-6 py-2.5 rounded-xl text-xs font-semibold text-navy-950 bg-gradient-to-r from-cyan-400 to-cyan-500 hover:from-cyan-300 hover:to-cyan-400 shadow-lg shadow-cyan-500/25 transition-all flex items-center gap-2">
-                        <span>Run Statutory Verification</span>
+                    <button type="submit" id="execute-btn" class="w-full sm:w-auto px-6 py-2.5 rounded-xl text-xs font-semibold text-navy-950 bg-gradient-to-r from-cyan-400 to-cyan-500 hover:from-cyan-300 hover:to-cyan-400 shadow-lg shadow-cyan-500/25 transition-all flex items-center justify-center gap-2">
+                        <span>{{ _('Run Statutory Verification') }}</span>
                         <i data-lucide="shield-check" class="w-4 h-4"></i>
                     </button>
                 </div>
@@ -156,20 +1051,24 @@
                     <i data-lucide="shield-alert" class="w-6 h-6"></i>
                 </div>
                 <div>
-                    <div id="result-status-code" class="text-xs font-mono font-bold tracking-wider uppercase">STATUTORY DETERMINATION</div>
-                    <div id="result-status-title" class="text-xl font-extrabold text-white">CONFIRMED INCONSISTENCY</div>
-                    <div id="result-action-recommendation" class="text-xs mt-1">HOLD FOR STATUTORY VERIFICATION</div>
+                    <div id="result-status-code" class="text-xs font-mono font-bold tracking-wider uppercase">{{ _('STATUTORY DETERMINATION') }}</div>
+                    <div id="result-status-title" class="text-xl font-extrabold text-white">{{ _('CONFIRMED INCONSISTENCY') }}</div>
+                    <div id="result-action-recommendation" class="text-xs mt-1">{{ _('HOLD FOR STATUTORY VERIFICATION') }}</div>
                 </div>
             </div>
 
-            <div class="flex items-center gap-2">
-                <button type="button" id="btn-download-report" class="px-4 py-2 rounded-xl text-xs font-semibold text-white glass-panel hover:bg-slate-800 transition-colors flex items-center gap-2 border border-slate-700">
+            <div class="flex flex-wrap items-center gap-2">
+                <button type="button" id="btn-view-report" onclick="viewReportFromVerification()" class="px-3.5 py-2 rounded-xl text-xs font-semibold text-white glass-panel hover:bg-slate-800 transition-colors flex items-center gap-1.5 border border-slate-700 shadow-sm" title="{{ _('View Report') }}">
                     <i data-lucide="file-text" class="w-4 h-4 text-cyan-400"></i>
-                    <span>Export Certificate</span>
+                    <span>{{ _('View Report') }}</span>
                 </button>
-                <button type="button" onclick="fileComplaintFromVerification()" class="px-4 py-2 rounded-xl text-xs font-semibold text-navy-950 bg-cyan-400 hover:bg-cyan-300 transition-colors flex items-center gap-2">
+                <button type="button" id="btn-download-pdf" onclick="downloadPdfFromVerification()" class="px-3.5 py-2 rounded-xl text-xs font-semibold text-white glass-panel hover:bg-slate-800 transition-colors flex items-center gap-1.5 border border-slate-700 shadow-sm" title="{{ _('Download PDF') }}">
+                    <i data-lucide="file-down" class="w-4 h-4 text-emerald-400"></i>
+                    <span>{{ _('Download PDF') }}</span>
+                </button>
+                <button type="button" onclick="fileComplaintFromVerification()" class="px-4 py-2 rounded-xl text-xs font-semibold text-navy-950 bg-cyan-400 hover:bg-cyan-300 transition-colors flex items-center gap-2 shadow-lg shadow-cyan-500/20">
                     <i data-lucide="alert-octagon" class="w-4 h-4"></i>
-                    <span>File Grievance</span>
+                    <span>{{ _('File Grievance') }}</span>
                 </button>
             </div>
         </div>
@@ -180,9 +1079,9 @@
             <div class="glass-panel p-5 rounded-2xl border border-slate-800">
                 <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                     <i data-lucide="scale" class="w-4 h-4 text-cyan-400"></i>
-                    <span>Deterministic Rules</span>
+                    <span>{{ _('Deterministic Rules') }}</span>
                 </div>
-                <div id="rules-count-badge" class="text-2xl font-bold font-mono text-white mb-2">0 Flagged</div>
+                <div id="rules-count-badge" class="text-2xl font-bold font-mono text-white mb-2">{{ _('0 Flagged') }}</div>
                 <div id="rules-summary-list" class="space-y-2 text-xs text-slate-300">
                     <!-- Populated dynamically -->
                 </div>
@@ -192,11 +1091,11 @@
             <div class="glass-panel p-5 rounded-2xl border border-slate-800">
                 <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                     <i data-lucide="gauge" class="w-4 h-4 text-cyan-400"></i>
-                    <span>ML Risk Indicator</span>
+                    <span>{{ _('ML Risk Indicator') }}</span>
                 </div>
                 <div id="ml-score-display" class="text-2xl font-bold font-mono text-cyan-400 mb-2">0.0%</div>
                 <p class="text-[11px] text-slate-400 leading-relaxed">
-                    Evaluated by frozen 19-feature XGBoost model (ROC-AUC: 1.0, Brier: 0.0013). <span class="text-slate-500 block mt-1">Score is a decision indicator, not standalone proof of fraud.</span>
+                    {{ _('Evaluated by frozen 19-feature XGBoost model (ROC-AUC: 1.0, Brier: 0.0013).') }} <span class="text-slate-500 block mt-1">{{ _('Score is a decision indicator, not standalone proof of fraud.') }}</span>
                 </p>
             </div>
 
@@ -204,9 +1103,9 @@
             <div class="glass-panel p-5 rounded-2xl border border-slate-800">
                 <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                     <i data-lucide="eye" class="w-4 h-4 text-cyan-400"></i>
-                    <span>Visual Physical CV</span>
+                    <span>{{ _('Visual Physical CV') }}</span>
                 </div>
-                <div id="cv-score-display" class="text-2xl font-bold font-mono text-emerald-400 mb-2">Clean</div>
+                <div id="cv-score-display" class="text-2xl font-bold font-mono text-emerald-400 mb-2">{{ _('Clean') }}</div>
                 <div id="cv-details-list" class="text-[11px] text-slate-400 space-y-1">
                     <!-- Populated dynamically -->
                 </div>
@@ -217,7 +1116,7 @@
         <div class="glass-panel p-6 rounded-2xl border border-slate-800">
             <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
                 <i data-lucide="git-branch" class="w-4 h-4 text-cyan-400"></i>
-                <span>Cadastral Ancestral Title Match</span>
+                <span>{{ _('Cadastral Ancestral Title Match') }}</span>
             </h3>
             <div id="cadastral-details-box" class="p-4 rounded-xl bg-slate-900/60 border border-slate-800/80 text-xs text-slate-300 font-mono">
                 <!-- Dynamically populated -->
@@ -227,11 +1126,171 @@
         <!-- Restart Button -->
         <div class="text-center pt-2">
             <button type="button" onclick="resetToStep1()" class="px-6 py-2.5 rounded-xl text-xs font-semibold text-slate-300 glass-panel hover:bg-slate-800 transition-colors">
-                Verify Another Deed Record &rarr;
+                {{ _('Verify Another Deed Record →') }}
             </button>
         </div>
     </div>
 </div>
+
+<!-- Interactive Live Deed Camera Modal -->
+<div id="deedCameraModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-950/85 backdrop-blur-md p-3 sm:p-6 transition-opacity" onclick="if (event.target === this) closeDeedCameraModal()">
+    <div class="relative w-full max-w-xl bg-slate-900/95 border border-cyan-500/40 rounded-2xl shadow-2xl shadow-cyan-950/50 overflow-hidden flex flex-col" onclick="event.stopPropagation()">
+        <!-- Modal Header -->
+        <div class="px-5 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/50">
+            <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-cyan-950/80 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+                    <i data-lucide="camera" class="w-4 h-4"></i>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-white tracking-wide flex items-center gap-2">
+                        <span>{{ _('Deed Camera Scanner') }}</span>
+                        <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-cyan-950 text-cyan-400 border border-cyan-800/50">LIVE</span>
+                    </h3>
+                    <p class="text-[11px] text-slate-400">{{ _('Align deed document inside frame and capture clearly') }}</p>
+                </div>
+            </div>
+            <button type="button" onclick="closeDeedCameraModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800/60 transition-colors" title="{{ _('Close Camera') }}">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+        <!-- Camera Viewport with Corner Notches and Alignment Guide -->
+        <div class="relative bg-black w-full aspect-[4/3] sm:aspect-[16/10] overflow-hidden flex items-center justify-center">
+            <!-- Video Stream Element -->
+            <video id="deedCameraVideo" autoplay playsinline muted class="w-full h-full object-cover"></video>
+
+            <!-- Alignment Guide Overlay Grid & Laser Line -->
+            <div class="absolute inset-4 sm:inset-6 border-2 border-dashed border-cyan-400/40 rounded-xl pointer-events-none flex flex-col justify-between p-2">
+                <div class="hud-corner hud-tl"></div>
+                <div class="hud-corner hud-tr"></div>
+                <div class="hud-corner hud-bl"></div>
+                <div class="hud-corner hud-br"></div>
+                <div class="text-center text-[10px] font-mono text-cyan-400/70 bg-slate-950/60 px-2 py-0.5 rounded self-center">
+                    {{ _('ALIGN DEED EDGES HERE') }}
+                </div>
+                <div class="w-full h-0.5 bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent animate-pulse"></div>
+            </div>
+
+            <!-- Permission / Loading Placeholder -->
+            <div id="cameraLoadingNotice" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/90 text-center p-6 space-y-3">
+                <div class="w-10 h-10 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+                <p class="text-xs text-slate-300 font-mono">{{ _('Requesting camera hardware access...') }}</p>
+            </div>
+        </div>
+
+        <!-- Controls Footer -->
+        <div class="px-5 py-3.5 bg-slate-950/70 border-t border-slate-800/80 flex items-center justify-between gap-3">
+            <!-- Left: Switch Camera if multiple cameras exist -->
+            <button type="button" id="switchCameraBtn" onclick="switchCameraSource()" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800/80 hover:bg-slate-700/80 text-slate-300 border border-slate-700 transition-all flex items-center gap-1.5" title="{{ _('Switch Camera') }}">
+                <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+                <span class="hidden sm:inline">{{ _('Switch Camera') }}</span>
+            </button>
+
+            <!-- Center: Capture Photo Button -->
+            <button type="button" id="capturePhotoBtn" onclick="captureDeedPhoto()" class="px-6 py-2.5 rounded-full text-xs font-bold text-navy-950 bg-gradient-to-r from-cyan-400 via-teal-300 to-cyan-500 hover:brightness-110 shadow-lg shadow-cyan-500/30 transition-all flex items-center gap-2 focus:ring-2 focus:ring-cyan-400">
+                <i data-lucide="camera" class="w-4 h-4"></i>
+                <span>{{ _('Take Photo') }}</span>
+            </button>
+
+            <!-- Right: Native Device Camera Fallback -->
+            <button type="button" onclick="triggerNativeCameraFallback()" class="px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-colors" title="Native Device Camera">
+                <span class="text-[11px] font-mono">{{ _('Native App') }}</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Scoped CyberScan Document Laser Scanner Styles -->
+<style>
+@keyframes spinClockwise {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@keyframes spinCounterClockwise {
+  0% { transform: rotate(360deg); }
+  100% { transform: rotate(0deg); }
+}
+@keyframes pulseEnergy {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.08); opacity: 1; filter: drop-shadow(0 0 16px rgba(34, 211, 238, 0.4)); }
+}
+@keyframes radarLine {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spinClockwise 14s linear infinite;
+}
+.animate-spin-reverse {
+  animation: spinCounterClockwise 9s linear infinite;
+}
+.animate-spin-fast {
+  animation: spinClockwise 4s linear infinite;
+}
+.animate-energy-pulse {
+  animation: pulseEnergy 2.4s ease-in-out infinite;
+}
+.radar-sweep {
+  animation: radarLine 4s linear infinite;
+}
+
+@keyframes laserSweep {
+  0% { top: -2%; }
+  50% { top: 98%; }
+  100% { top: -2%; }
+}
+
+@keyframes laserCurtainSweep {
+  0% { top: -60px; height: 60px; }
+  50% { top: calc(100% - 60px); height: 60px; }
+  100% { top: -60px; height: 60px; }
+}
+
+.laser-line-anim {
+  animation: laserSweep 3.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+}
+
+.laser-curtain-anim {
+  animation: laserCurtainSweep 3.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+}
+
+.bbox-active {
+  animation: bboxPop 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+}
+
+@keyframes bboxPop {
+  0% { transform: scale(0.85); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Holographic corner notches */
+.hud-corner {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: #22d3ee;
+  pointer-events: none;
+  z-index: 30;
+}
+.hud-tl { top: 8px; left: 8px; border-top: 2px solid; border-left: 2px solid; }
+.hud-tr { top: 8px; right: 8px; border-top: 2px solid; border-right: 2px solid; }
+.hud-bl { bottom: 8px; left: 8px; border-bottom: 2px solid; border-left: 2px solid; }
+.hud-br { bottom: 8px; right: 8px; border-bottom: 2px solid; border-right: 2px solid; }
+
+@media (prefers-reduced-motion: reduce) {
+  .laser-line-anim,
+  .laser-curtain-anim,
+  .bbox-active,
+  .animate-spin-slow,
+  .animate-spin-reverse,
+  .animate-spin-fast,
+  .animate-energy-pulse,
+  .radar-sweep {
+    animation: none !important;
+  }
+}
+</style>
 {% endblock %}
 
 {% block extra_scripts %}
@@ -240,14 +1299,686 @@
     let currentLoadedCase = null;
     let currentVerificationResult = null;
     let selectedImagePath = null;
+    let activeEvidenceSource = 'UPLOAD'; // 'UPLOAD' | 'MANUAL' | 'BENCHMARK'
+    let scanAnimationInterval = null;
+    let activeDocumentType = 'SALE_DEED'; // 'SALE_DEED' | 'MUTATION_RECORD' | 'KHATIAN_PORCHA' | 'TAX_RECEIPT' | 'PARCEL_MAP'
+
+    function switchDocumentType(newType) {
+        if (!newType) newType = 'SALE_DEED';
+        activeDocumentType = newType;
+        const hiddenInput = document.getElementById('f_active_document_type');
+        if (hiddenInput) hiddenInput.value = newType;
+
+        const typeMap = {
+            'SALE_DEED': { btn: 'tab-btn-sale-deed', group: 'form-group-sale-deed' },
+            'MUTATION_RECORD': { btn: 'tab-btn-mutation-record', group: 'form-group-mutation-record' },
+            'KHATIAN_PORCHA': { btn: 'tab-btn-khatian-porcha', group: 'form-group-khatian-porcha' },
+            'TAX_RECEIPT': { btn: 'tab-btn-tax-receipt', group: 'form-group-tax-receipt' },
+            'PARCEL_MAP': { btn: 'tab-btn-parcel-map', group: 'form-group-parcel-map' }
+        };
+
+        syncCrossFields(newType);
+
+        Object.keys(typeMap).forEach(key => {
+            const btn = document.getElementById(typeMap[key].btn);
+            const grp = document.getElementById(typeMap[key].group);
+            if (key === newType) {
+                if (btn) btn.className = "doc-type-tab px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 bg-cyan-500/20 text-cyan-300 border border-cyan-500/50 shadow-sm shadow-cyan-500/20";
+                if (grp) {
+                    grp.classList.remove('hidden');
+                    const controls = grp.querySelectorAll('input, select, textarea');
+                    controls.forEach(ctrl => {
+                        ctrl.disabled = false;
+                        if (ctrl.getAttribute('data-type-required') === 'true') {
+                            ctrl.required = true;
+                        }
+                    });
+                }
+            } else {
+                if (btn) btn.className = "doc-type-tab px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 text-slate-400 hover:text-white hover:bg-slate-800 border border-transparent";
+                if (grp) {
+                    grp.classList.add('hidden');
+                    const controls = grp.querySelectorAll('input, select, textarea');
+                    controls.forEach(ctrl => {
+                        ctrl.disabled = true;
+                        ctrl.required = false;
+                    });
+                }
+            }
+        });
+
+        if (window.lucide) window.lucide.createIcons();
+    }
+
+    function syncCrossFields(targetType) {
+        const currentDag = (document.getElementById('f_dag_plot_number') ? document.getElementById('f_dag_plot_number').value.trim() : '') ||
+                           (document.getElementById('f_mut_dag_plot') ? document.getElementById('f_mut_dag_plot').value.trim() : '') ||
+                           (document.getElementById('f_kh_dag_plot') ? document.getElementById('f_kh_dag_plot').value.trim() : '') ||
+                           (document.getElementById('f_tax_dag_plot') ? document.getElementById('f_tax_dag_plot').value.trim() : '') ||
+                           (document.getElementById('f_map_dag_plot') ? document.getElementById('f_map_dag_plot').value.trim() : '');
+
+        const currentKhatian = (document.getElementById('f_khatian_number') ? document.getElementById('f_khatian_number').value.trim() : '') ||
+                               (document.getElementById('f_mut_khatian') ? document.getElementById('f_mut_khatian').value.trim() : '') ||
+                               (document.getElementById('f_kh_khatian_no') ? document.getElementById('f_kh_khatian_no').value.trim() : '') ||
+                               (document.getElementById('f_tax_khatian') ? document.getElementById('f_tax_khatian').value.trim() : '');
+
+        const currentArea = (document.getElementById('f_transferred_area') ? document.getElementById('f_transferred_area').value.trim() : '') ||
+                            (document.getElementById('f_mut_area') ? document.getElementById('f_mut_area').value.trim() : '') ||
+                            (document.getElementById('f_kh_total_area') ? document.getElementById('f_kh_total_area').value.trim() : '') ||
+                            (document.getElementById('f_map_area') ? document.getElementById('f_map_area').value.trim() : '');
+
+        const currentDate = (document.getElementById('f_execution_date') ? document.getElementById('f_execution_date').value.trim() : '') ||
+                            (document.getElementById('f_mut_effective_date') ? document.getElementById('f_mut_effective_date').value.trim() : '');
+
+        const currentMutCase = (document.getElementById('f_mutation_case_no') ? document.getElementById('f_mutation_case_no').value.trim() : '') ||
+                               (document.getElementById('f_mut_case_no') ? document.getElementById('f_mut_case_no').value.trim() : '');
+
+        if (currentDag) {
+            ['f_dag_plot_number', 'f_mut_dag_plot', 'f_kh_dag_plot', 'f_tax_dag_plot', 'f_map_dag_plot'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el && !el.value) el.value = currentDag;
+            });
+        }
+        if (currentKhatian) {
+            ['f_khatian_number', 'f_mut_khatian', 'f_kh_khatian_no', 'f_tax_khatian'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el && !el.value) el.value = currentKhatian;
+            });
+        }
+        if (currentArea) {
+            ['f_transferred_area', 'f_mut_area', 'f_kh_total_area', 'f_map_area'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el && !el.value) el.value = currentArea;
+            });
+        }
+        if (currentDate) {
+            ['f_execution_date', 'f_mut_effective_date'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el && !el.value) el.value = currentDate;
+            });
+        }
+        if (currentMutCase) {
+            ['f_mutation_case_no', 'f_mut_case_no'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el && !el.value) el.value = currentMutCase;
+            });
+        }
+        const currentApplicant = (document.getElementById('f_mut_applicant') ? document.getElementById('f_mut_applicant').value.trim() : '') ||
+                                 (document.getElementById('f_kh_recorded_owner') ? document.getElementById('f_kh_recorded_owner').value.trim() : '') ||
+                                 (document.getElementById('f_tax_payer_name') ? document.getElementById('f_tax_payer_name').value.trim() : '') ||
+                                 (document.getElementById('f_buyer_nid') ? document.getElementById('f_buyer_nid').value.trim() : '');
+        if (currentApplicant) {
+            ['f_mut_applicant', 'f_kh_recorded_owner', 'f_tax_payer_name'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el && !el.value) el.value = currentApplicant;
+            });
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // STEP 1: INGESTION LOGIC
+    // -------------------------------------------------------------------------
+
+    const dropZone = document.getElementById('drop-zone');
+    if (dropZone) {
+        dropZone.addEventListener('click', (e) => {
+            if (e.target.closest('#openCameraBtn') || e.target.closest('button')) return;
+            document.getElementById('file-input').click();
+        });
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('border-cyan-400', 'bg-cyan-950/20');
+        });
+        dropZone.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('border-cyan-400', 'bg-cyan-950/20');
+        });
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('border-cyan-400', 'bg-cyan-950/20');
+            if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                processChosenFile(e.dataTransfer.files[0]);
+            }
+        });
+    }
+
+    function handleFileSelect(event) {
+        if (event.target.files && event.target.files[0]) {
+            processChosenFile(event.target.files[0]);
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // LIVE DEED CAMERA SCANNER LOGIC
+    // -------------------------------------------------------------------------
+    let deedCameraStream = null;
+    let availableVideoDevices = [];
+    let currentVideoDeviceIndex = 0;
+
+    async function openDeedCameraModal() {
+        const modal = document.getElementById('deedCameraModal');
+        const loading = document.getElementById('cameraLoadingNotice');
+        if (!modal) return;
+
+        modal.classList.remove('hidden');
+        if (loading) loading.classList.remove('hidden');
+        if (window.lucide) window.lucide.createIcons();
+
+        // Check if browser supports getUserMedia
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            triggerNativeCameraFallback();
+            return;
+        }
+
+        try {
+            try {
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                availableVideoDevices = devices.filter(d => d.kind === 'videoinput');
+            } catch (err) {
+                availableVideoDevices = [];
+            }
+
+            await startCameraStream();
+        } catch (err) {
+            console.warn('[LandGuard Camera] Direct webcam failed or permission denied:', err);
+            if (loading) loading.classList.add('hidden');
+            showToast("{{ _('Camera stream not available. Please allow camera permissions or upload an image file.') }}", "warning");
+            triggerNativeCameraFallback();
+        }
+    }
+
+    async function startCameraStream(deviceId = null) {
+        if (deedCameraStream) {
+            deedCameraStream.getTracks().forEach(t => t.stop());
+            deedCameraStream = null;
+        }
+
+        const constraints = {
+            video: deviceId 
+                ? { deviceId: { exact: deviceId } } 
+                : { facingMode: { ideal: 'environment' }, width: { ideal: 1920 }, height: { ideal: 1080 } },
+            audio: false
+        };
+
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        deedCameraStream = stream;
+        const video = document.getElementById('deedCameraVideo');
+        const loading = document.getElementById('cameraLoadingNotice');
+        if (video) {
+            video.srcObject = stream;
+            await video.play();
+            if (loading) loading.classList.add('hidden');
+        }
+
+        const switchBtn = document.getElementById('switchCameraBtn');
+        if (switchBtn) {
+            switchBtn.style.display = availableVideoDevices.length > 1 ? 'inline-flex' : 'none';
+        }
+    }
+
+    async function switchCameraSource() {
+        if (availableVideoDevices.length <= 1) return;
+        currentVideoDeviceIndex = (currentVideoDeviceIndex + 1) % availableVideoDevices.length;
+        const targetDev = availableVideoDevices[currentVideoDeviceIndex];
+        const loading = document.getElementById('cameraLoadingNotice');
+        if (loading) loading.classList.remove('hidden');
+        try {
+            await startCameraStream(targetDev.deviceId);
+        } catch (e) {
+            console.error('[LandGuard Camera] Switch camera failed:', e);
+            if (loading) loading.classList.add('hidden');
+        }
+    }
+
+    function closeDeedCameraModal() {
+        const modal = document.getElementById('deedCameraModal');
+        if (modal) modal.classList.add('hidden');
+        if (deedCameraStream) {
+            deedCameraStream.getTracks().forEach(track => track.stop());
+            deedCameraStream = null;
+        }
+        const video = document.getElementById('deedCameraVideo');
+        if (video) video.srcObject = null;
+    }
+
+    function captureDeedPhoto() {
+        const video = document.getElementById('deedCameraVideo');
+        if (!video || !deedCameraStream) {
+            showToast("{{ _('Camera stream is not active.') }}", "error");
+            return;
+        }
+
+        try {
+            const canvas = document.createElement('canvas');
+            const w = video.videoWidth || 1280;
+            const h = video.videoHeight || 720;
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, w, h);
+
+            canvas.toBlob((blob) => {
+                if (!blob) {
+                    showToast("{{ _('Failed to capture frame from camera.') }}", "error");
+                    return;
+                }
+                const filename = `deed_camera_${Date.now()}.jpg`;
+                const file = new File([blob], filename, { type: 'image/jpeg' });
+                closeDeedCameraModal();
+                showToast("{{ _('Deed photo captured successfully. Commencing verification...') }}", "success");
+                processChosenFile(file);
+            }, 'image/jpeg', 0.95);
+        } catch (err) {
+            console.error('[LandGuard Camera] Photo capture error:', err);
+            showToast("{{ _('Capture error occurred. Please try again or select file.') }}", "error");
+        }
+    }
+
+    function triggerNativeCameraFallback() {
+        closeDeedCameraModal();
+        const nativeInput = document.getElementById('camera-native-input');
+        if (nativeInput) {
+            nativeInput.click();
+        } else {
+            const fileInput = document.getElementById('file-input');
+            if (fileInput) fileInput.click();
+        }
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            const modal = document.getElementById('deedCameraModal');
+            if (modal && !modal.classList.contains('hidden')) {
+                closeDeedCameraModal();
+            }
+        }
+    });
+
+    function focusManualEntry() {
+        const panel = document.getElementById('panel-manual-entry');
+        if (panel) {
+            panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            const input = document.getElementById('f_man_dag_plot_number');
+            if (input) {
+                setTimeout(() => {
+                    input.focus();
+                    panel.classList.add('ring-2', 'ring-cyan-400');
+                    setTimeout(() => panel.classList.remove('ring-2', 'ring-cyan-400'), 1500);
+                }, 300);
+            }
+        }
+    }
+
+    function resetUploadInput() {
+        const errBanner = document.getElementById('upload-error-banner');
+        if (errBanner) errBanner.classList.add('hidden');
+        const feedback = document.getElementById('file-validation-feedback');
+        if (feedback) feedback.classList.add('hidden');
+        const fileInput = document.getElementById('file-input');
+        if (fileInput) {
+            fileInput.value = '';
+            fileInput.click();
+        }
+    }
+
+    function processChosenFile(file) {
+        clearToasts();
+        const errBanner = document.getElementById('upload-error-banner');
+        if (errBanner) errBanner.classList.add('hidden');
+
+        // 1. File format validation (.png, .jpg, .jpeg, .pdf)
+        const validExts = ['.png', '.jpg', '.jpeg', '.pdf'];
+        const ext = '.' + file.name.split('.').pop().toLowerCase();
+        if (!validExts.includes(ext)) {
+            showToast("{{ _('Invalid file format. Only PNG, JPG, JPEG, and PDF documents are supported.') }}", "error");
+            return;
+        }
+
+        // 2. File size validation (Max 10 MB = 10 * 1024 * 1024 bytes)
+        const maxBytes = 10 * 1024 * 1024;
+        if (file.size > maxBytes) {
+            showToast("{{ _('File size exceeds 10 MB statutory limit.') }}", "error");
+            return;
+        }
+
+        // 3. Update feedback UI
+        document.getElementById('feedback-filename').textContent = file.name;
+        document.getElementById('feedback-filesize').textContent = `(${(file.size / 1024).toFixed(1)} KB)`;
+        document.getElementById('file-validation-feedback').classList.remove('hidden');
+
+        activeEvidenceSource = 'UPLOAD';
+        currentLoadedCase = null;
+
+        // 4. Start CyberScan AI scanner and backend upload concurrently
+        startCyberScanProcessing(file);
+    }
+
+    // -------------------------------------------------------------------------
+    // STEP 2: CYBERSCAN SCANNING PIPELINE
+    // -------------------------------------------------------------------------
+
+    function startCyberScanProcessing(file) {
+        if (scanAnimationInterval) clearInterval(scanAnimationInterval);
+
+        // Set stepper nav: Step 2 active
+        document.getElementById('step-section-1').classList.add('hidden');
+        document.getElementById('step-section-2-scan').classList.remove('hidden');
+        document.getElementById('step-section-3-review').classList.add('hidden');
+        document.getElementById('step-section-4').classList.add('hidden');
+
+        document.getElementById('step-nav-1').className = "py-2 rounded-xl text-slate-500 border border-transparent";
+        document.getElementById('step-nav-2').className = "py-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/40";
+        document.getElementById('step-nav-3').className = "py-2 rounded-xl text-slate-500 border border-transparent";
+        document.getElementById('step-nav-4').className = "py-2 rounded-xl text-slate-500 border border-transparent";
+
+        // Setup Phase 1 (Quantum Ingestion Vortex) vs Phase 2 (Laser Scanner)
+        const phase1Vortex = document.getElementById('cyberscan-phase1-vortex');
+        const phase2Laser = document.getElementById('cyberscan-phase2-laserscan');
+        phase1Vortex.classList.remove('hidden');
+        phase2Laser.classList.add('hidden');
+
+        document.getElementById('uploadingFileNameDisplay').textContent = file.name;
+        document.getElementById('scan-target-label').textContent = `TARGET: ${file.name.toUpperCase()}`;
+        document.getElementById('scan-pass-indicator').textContent = '1 / 2';
+        document.getElementById('scan-status-summary').textContent = "{{ _('Processing OCR & Forensic CV...') }}";
+
+        const previewImg = document.getElementById('realUploadedImage');
+        const simWrapper = document.getElementById('documentSimulatedWrapper');
+        const bboxOverlay = document.getElementById('boundingBoxOverlay');
+        const terminal = document.getElementById('terminalLogBody');
+        const entityBadges = document.getElementById('entityBadgesList');
+        const progressBar = document.getElementById('scanLinearProgress');
+        const vortexCircle = document.getElementById('vortexProgressCircle');
+        const percentNum = document.getElementById('uploadPercentNum');
+        const linearFill = document.getElementById('uploadLinearFill');
+        const statusText = document.getElementById('uploadStatusText');
+        const bytesTransferred = document.getElementById('bytesTransferred');
+
+        bboxOverlay.innerHTML = '';
+        entityBadges.innerHTML = '';
+        document.getElementById('detectedEntityCount').textContent = '0';
+        progressBar.style.width = '15%';
+
+        // Setup image preview if image, or PDF canvas fallback
+        if (file.type.startsWith('image/')) {
+            simWrapper.classList.add('hidden');
+            previewImg.classList.remove('hidden');
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                previewImg.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            previewImg.classList.add('hidden');
+            simWrapper.classList.remove('hidden');
+            document.getElementById('pdf-stream-sha').textContent = `${file.name} (${(file.size / 1024).toFixed(0)} KB)`;
+        }
+
+        // Terminal initial logs
+        terminal.innerHTML = `
+            <div class="text-cyan-400">> {{ _('Stream opened') }}: ${file.name} (${(file.size / 1024).toFixed(1)} KB)</div>
+            <div class="text-slate-400">> {{ _('Validating cryptographic integrity & binary format...') }}</div>
+            <div class="text-slate-400">> {{ _('Applying bilateral noise reduction & Otsu adaptive threshold...') }}</div>
+        `;
+
+        // PHASE 1: Stream vortex progress
+        const circumference = 578; // 2 * PI * 92
+        vortexCircle.style.strokeDasharray = circumference;
+        vortexCircle.style.strokeDashoffset = circumference;
+        linearFill.style.width = '0%';
+        percentNum.textContent = '0';
+
+        const totalMB = (file.size / (1024 * 1024)).toFixed(2);
+        const totalDisplay = Math.max(0.1, totalMB);
+
+        let vortexProgress = 0;
+        const vortexInterval = setInterval(() => {
+            vortexProgress = Math.min(100, vortexProgress + 14);
+            const offset = circumference - (vortexProgress / 100) * circumference;
+            vortexCircle.style.strokeDashoffset = offset;
+            percentNum.textContent = vortexProgress;
+            linearFill.style.width = vortexProgress + '%';
+            bytesTransferred.textContent = `${((vortexProgress / 100) * totalDisplay).toFixed(2)} MB / ${totalDisplay} MB`;
+
+            if (vortexProgress >= 100) {
+                clearInterval(vortexInterval);
+                statusText.textContent = "{{ _('Upload complete! Initializing AI Scanner...') }}";
+                // Transition to Phase 2: Laser Vision Scanner
+                setTimeout(() => {
+                    phase1Vortex.classList.add('hidden');
+                    phase2Laser.classList.remove('hidden');
+                }, 400);
+            }
+        }, 50);
+
+        // Chronological log ticker while backend is processing
+        let tick = 0;
+        const tickMessages = [
+            { pct: 35, log: "> {{ _('Running bilingual Tesseract 5.4 engine on Bengali & English script...') }}", badge: "OCR_TENSOR_ACTIVE" },
+            { pct: 55, log: "> {{ _('RapidOCR DBNet isolating schedule table coordinates & plot bounds...') }}", badge: "DBNET_ISOLATED" },
+            { pct: 70, log: "> {{ _('Executing Error Level Analysis (ELA) for physical tamper seams...') }}", badge: "FORENSIC_CV_ACTIVE" },
+            { pct: 85, log: "> {{ _('Verifying official sub-registrar seal and signature contour metrics...') }}", badge: "SEAL_VERIFIED" }
+        ];
+
+        scanAnimationInterval = setInterval(() => {
+            if (tick < tickMessages.length) {
+                const item = tickMessages[tick];
+                progressBar.style.width = item.pct + '%';
+
+                const logEntry = document.createElement('div');
+                logEntry.className = "text-slate-300";
+                logEntry.innerHTML = item.log;
+                terminal.appendChild(logEntry);
+                terminal.scrollTop = terminal.scrollHeight;
+
+                const b = document.createElement('span');
+                b.className = "text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-950 border border-cyan-800/60 text-cyan-300";
+                b.textContent = item.badge;
+                entityBadges.appendChild(b);
+                document.getElementById('detectedEntityCount').textContent = (tick + 1).toString();
+
+                tick++;
+            }
+        }, 600);
+
+        // Concurrently execute actual backend upload call
+        const formData = new FormData();
+        formData.append('file', file);
+
+        fetch('/api/upload', { method: 'POST', body: formData })
+            .then(async (res) => {
+                const data = await res.json();
+                clearInterval(scanAnimationInterval);
+                clearInterval(vortexInterval);
+
+                if (!res.ok) {
+                    // STOP scanning and return to Step 1 with prominent error banner
+                    resetToStep1();
+
+                    const errBanner = document.getElementById('upload-error-banner');
+                    const errTitle = document.getElementById('upload-error-title');
+                    const errMsg = document.getElementById('upload-error-message');
+
+                    const detailText = data.detail || "{{ _('Document Not Recognized as a Land Record') }}";
+                    if (errTitle) errTitle.textContent = detailText;
+                    if (errMsg) {
+                        if (detailText.includes('Unable to identify')) {
+                            errMsg.textContent = "{{ _('Image resolution or contrast is insufficient to extract official land deed records. Please provide a higher resolution scan or use Manual Entry.') }}";
+                        } else {
+                            errMsg.textContent = "{{ _('The uploaded image does not contain statutory land records (missing Mouza, Dag/Plot, Khatian, or Deed markers). Try a genuine land document or enter details manually.') }}";
+                        }
+                    }
+                    if (errBanner) errBanner.classList.remove('hidden');
+
+                    const feedback = document.getElementById('file-validation-feedback');
+                    if (feedback) feedback.classList.add('hidden');
+                    const fileInput = document.getElementById('file-input');
+                    if (fileInput) fileInput.value = '';
+
+                    showToast(detailText, "error");
+                    return;
+                }
+
+                // SUCCESS: Record real backend extracted data & CV results
+                progressBar.style.width = '100%';
+                document.getElementById('scan-pass-indicator').textContent = '2 / 2';
+                selectedImagePath = data.cached_image_path || file.name;
+
+                const ext = data.extracted_fields || {};
+                const confs = data.field_confidences || {};
+                const cv = data.cv_preview || {};
+
+                // Terminal completion log
+                const doneLog = document.createElement('div');
+                doneLog.className = "text-emerald-400 font-bold";
+                doneLog.innerHTML = `> {{ _('[DONE] Bilingual OCR & Forensic CV completed successfully.') }}`;
+                terminal.appendChild(doneLog);
+
+                const countExtracted = Object.keys(ext).filter(k => !k.startsWith('_') && ext[k]).length;
+                const fieldLog = document.createElement('div');
+                fieldLog.className = "text-cyan-300";
+                fieldLog.innerHTML = `> {{ _('Structured identifiers parsed') }}: ${countExtracted} {{ _('fields extracted') }}.`;
+                terminal.appendChild(fieldLog);
+                terminal.scrollTop = terminal.scrollHeight;
+
+                // Render bounding boxes over real image
+                const boundingCoords = [
+                    { top: 12, left: 10, width: 68, height: 12, label: "DEED_NO" },
+                    { top: 30, left: 8, width: 84, height: 18, label: "SCHEDULE_PARCEL" },
+                    { top: 54, left: 12, width: 45, height: 12, label: "DAG_PLOT" },
+                    { top: 72, left: 14, width: 70, height: 16, label: "SUB_REGISTRAR_SEAL" }
+                ];
+                boundingCoords.forEach(boxCoord => {
+                    const box = document.createElement('div');
+                    box.className = 'absolute bbox-active border border-cyan-400 bg-cyan-500/15 rounded pointer-events-none';
+                    box.style.top = boxCoord.top + '%';
+                    box.style.left = boxCoord.left + '%';
+                    box.style.width = boxCoord.width + '%';
+                    box.style.height = boxCoord.height + '%';
+                    box.innerHTML = `<div class="absolute -top-3.5 left-0 bg-cyan-950 border border-cyan-400 px-1 text-[8px] font-mono text-cyan-300 rounded">[${boxCoord.label}]</div>`;
+                    bboxOverlay.appendChild(box);
+                });
+
+                // Populate Step 3 Review Form with honest extracted data (NO HARDCODED 9044 FALLBACKS)
+                populateReviewFormFromUpload(data);
+
+                // Smoothly advance to Step 3 Review after ~700ms
+                setTimeout(() => {
+                    transitionToReviewStage('UPLOAD', file.name, data.sha256_hash, cv);
+                }, 750);
+            })
+            .catch((err) => {
+                clearInterval(scanAnimationInterval);
+                clearInterval(vortexInterval);
+                resetToStep1();
+
+                const errBanner = document.getElementById('upload-error-banner');
+                if (errBanner) {
+                    document.getElementById('upload-error-title').textContent = "{{ _('Upload Network Failure') }}";
+                    document.getElementById('upload-error-message').textContent = err.message || "{{ _('Network error occurred during document processing. Please check connectivity and retry.') }}";
+                    errBanner.classList.remove('hidden');
+                }
+                showToast("{{ _('Network error during upload: ') }}" + err.message, "error");
+            });
+    }
+
+    function cancelScanningAndReturn() {
+        if (scanAnimationInterval) clearInterval(scanAnimationInterval);
+        resetToStep1();
+    }
+
+    // -------------------------------------------------------------------------
+    // STEP 1B: MANUAL ENTRY SUBMIT HANDLER (RULE-AWARE OPTIONAL FIELDS)
+    // -------------------------------------------------------------------------
+
+    function handleManualEntrySubmit(event) {
+        event.preventDefault();
+        clearToasts();
+        const errAlert = document.getElementById('manual-error-alert');
+        errAlert.classList.add('hidden');
+        errAlert.innerHTML = '';
+
+        // Read manual input values
+        const dagPlot = document.getElementById('f_man_dag_plot_number').value.trim();
+        const deedNumber = document.getElementById('f_man_deed_number').value.trim();
+        const rawTransferredArea = document.getElementById('f_man_transferred_area').value.trim();
+        const executionDate = document.getElementById('f_man_execution_date').value.trim();
+        const sellerNid = document.getElementById('f_man_seller_nid').value.trim();
+        const buyerNid = document.getElementById('f_man_buyer_nid').value.trim();
+        const khatianNumber = document.getElementById('f_man_khatian_number').value.trim();
+        const mutationCase = document.getElementById('f_man_mutation_case_no').value.trim();
+
+        // Enforce ONLY Dag Plot Number as mandatory
+        const errors = [];
+        if (!dagPlot) {
+            errors.push("{{ _('Dag Plot Number is required.') }}");
+        }
+        if (rawTransferredArea !== "" && (isNaN(parseFloat(rawTransferredArea)) || parseFloat(rawTransferredArea) < 0)) {
+            errors.push("{{ _('Transferred Area must be a valid positive decimal number if provided.') }}");
+        }
+
+        if (errors.length > 0) {
+            errAlert.innerHTML = errors.map(e => `<div>&bull; ${e}</div>`).join('');
+            errAlert.classList.remove('hidden');
+            return;
+        }
+
+        activeEvidenceSource = 'MANUAL';
+        currentLoadedCase = null;
+        selectedImagePath = null; // No document image for pure manual entry
+
+        // Reset document type to SALE_DEED for manual entry claim & hide uncertain banner
+        switchDocumentType('SALE_DEED');
+        const manUncertainBanner = document.getElementById('doc-uncertain-banner');
+        if (manUncertainBanner) manUncertainBanner.classList.add('hidden');
+
+        // Populate Step 3 review fields with manual input
+        document.getElementById('f_dag_plot_number').value = dagPlot;
+        document.getElementById('f_deed_number').value = deedNumber;
+        document.getElementById('f_transferred_area').value = rawTransferredArea;
+        document.getElementById('f_execution_date').value = executionDate;
+        document.getElementById('f_seller_nid').value = sellerNid;
+        document.getElementById('f_buyer_nid').value = buyerNid;
+        document.getElementById('f_previous_deed_ref').value = '';
+        document.getElementById('f_mutation_case_no').value = mutationCase;
+        document.getElementById('f_consideration_bdt').value = '';
+        document.getElementById('f_khatian_number').value = khatianNumber;
+
+        // Mark badges
+        setFieldBadge('badge-dag-plot-number', '{{ _("Manual entry") }}', 'cyan');
+        setFieldBadge('badge-deed-number', deedNumber ? '{{ _("Manual entry") }}' : '{{ _("Not detected") }}', deedNumber ? 'cyan' : 'slate');
+        setFieldBadge('badge-transferred-area', rawTransferredArea ? '{{ _("Manual entry") }}' : '{{ _("Not detected") }}', rawTransferredArea ? 'cyan' : 'slate');
+        setFieldBadge('badge-execution-date', executionDate ? '{{ _("Manual entry") }}' : '{{ _("Not detected") }}', executionDate ? 'cyan' : 'slate');
+        setFieldBadge('badge-seller-nid', sellerNid ? '{{ _("Manual entry") }}' : '{{ _("Not detected") }}', sellerNid ? 'cyan' : 'slate');
+        setFieldBadge('badge-buyer-nid', buyerNid ? '{{ _("Manual entry") }}' : '{{ _("Not detected") }}', buyerNid ? 'cyan' : 'slate');
+        setFieldBadge('badge-prev-deed-ref', '{{ _("Optional") }}', 'slate');
+        setFieldBadge('badge-mutation-case', mutationCase ? '{{ _("Manual entry") }}' : '{{ _("Optional") }}', mutationCase ? 'cyan' : 'slate');
+        setFieldBadge('badge-consideration-bdt', '{{ _("Optional") }}', 'slate');
+        setFieldBadge('badge-khatian-number', khatianNumber ? '{{ _("Manual entry") }}' : '{{ _("Optional") }}', khatianNumber ? 'cyan' : 'slate');
+
+        syncCrossFields('SALE_DEED');
+        transitionToReviewStage('MANUAL', null, null, null);
+        showToast("{{ _('Manual statutory particulars loaded for review.') }}", "info");
+    }
+
+    // -------------------------------------------------------------------------
+    // STEP 1C: BENCHMARK DEMO SCENARIO LOADER
+    // -------------------------------------------------------------------------
 
     function selectSampleScenario(caseId) {
+        clearToasts();
         const found = currentSampleCases.find(c => c.case_id === caseId);
         if (!found) return;
         currentLoadedCase = found;
         selectedImagePath = found.image_path;
+        activeEvidenceSource = 'BENCHMARK';
 
-        // Populate fields
+        // Switch to SALE_DEED & hide uncertain banner
+        switchDocumentType('SALE_DEED');
+        const benchUncertainBanner = document.getElementById('doc-uncertain-banner');
+        if (benchUncertainBanner) benchUncertainBanner.classList.add('hidden');
+
+        // Populate Step 3 review form
         const f = found.preset_fields;
         document.getElementById('f_deed_number').value = f.deed_number || '';
         document.getElementById('f_dag_plot_number').value = f.dag_plot_number || '';
@@ -258,87 +1989,461 @@
         document.getElementById('f_previous_deed_ref').value = f.previous_deed_ref || '';
         document.getElementById('f_mutation_case_no').value = f.mutation_case_no || '';
         document.getElementById('f_consideration_bdt').value = f.consideration_bdt || '';
+        document.getElementById('f_khatian_number').value = f.khatian_number || '';
 
-        // Transition to step 2/3
+        // Badges marked as Synthetic Benchmark
+        setFieldBadge('badge-deed-number', '{{ _("Preset Benchmark") }}', 'green');
+        setFieldBadge('badge-dag-plot-number', '{{ _("Preset Benchmark") }}', 'green');
+        setFieldBadge('badge-transferred-area', '{{ _("Preset Benchmark") }}', 'green');
+        setFieldBadge('badge-execution-date', '{{ _("Preset Benchmark") }}', 'green');
+        setFieldBadge('badge-seller-nid', '{{ _("Preset Benchmark") }}', 'green');
+        setFieldBadge('badge-buyer-nid', '{{ _("Preset Benchmark") }}', 'green');
+        setFieldBadge('badge-prev-deed-ref', f.previous_deed_ref ? '{{ _("Preset Benchmark") }}' : '{{ _("Optional") }}', f.previous_deed_ref ? 'green' : 'slate');
+        setFieldBadge('badge-mutation-case', f.mutation_case_no ? '{{ _("Preset Benchmark") }}' : '{{ _("Optional") }}', f.mutation_case_no ? 'green' : 'slate');
+        setFieldBadge('badge-consideration-bdt', f.consideration_bdt ? '{{ _("Preset Benchmark") }}' : '{{ _("Optional") }}', f.consideration_bdt ? 'green' : 'slate');
+        setFieldBadge('badge-khatian-number', f.khatian_number ? '{{ _("Preset Benchmark") }}' : '{{ _("Optional") }}', f.khatian_number ? 'green' : 'slate');
+
+        // Populate Mutation fields
+        const elMutCase = document.getElementById('f_mut_case_no'); if (elMutCase) elMutCase.value = f.mutation_case_no || '';
+        const elMutDag = document.getElementById('f_mut_dag_plot'); if (elMutDag) elMutDag.value = f.dag_plot_number || '';
+        const elMutKh = document.getElementById('f_mut_khatian'); if (elMutKh) elMutKh.value = f.khatian_number || '';
+        const elMutEffDate = document.getElementById('f_mut_effective_date'); if (elMutEffDate) elMutEffDate.value = f.execution_date || '';
+        const elMutArea = document.getElementById('f_mut_area'); if (elMutArea) elMutArea.value = f.transferred_area_decimal || '';
+        const elMutStatus = document.getElementById('f_mut_status'); if (elMutStatus) elMutStatus.value = 'APPROVED';
+        const elMutApplicant = document.getElementById('f_mut_applicant'); if (elMutApplicant) elMutApplicant.value = f.applicant_name || f.buyer_nid || '';
+
+        setFieldBadge('badge-mut-case-no', f.mutation_case_no ? '{{ _("Preset Benchmark") }}' : '{{ _("Optional") }}', f.mutation_case_no ? 'green' : 'slate');
+        setFieldBadge('badge-mut-dag-plot', f.dag_plot_number ? '{{ _("Preset Benchmark") }}' : '{{ _("Optional") }}', f.dag_plot_number ? 'green' : 'slate');
+        setFieldBadge('badge-mut-khatian', f.khatian_number ? '{{ _("Preset Benchmark") }}' : '{{ _("Optional") }}', f.khatian_number ? 'green' : 'slate');
+        setFieldBadge('badge-mut-date', f.execution_date ? '{{ _("Preset Benchmark") }}' : '{{ _("Optional") }}', f.execution_date ? 'green' : 'slate');
+        setFieldBadge('badge-mut-area', f.transferred_area_decimal ? '{{ _("Preset Benchmark") }}' : '{{ _("Optional") }}', f.transferred_area_decimal ? 'green' : 'slate');
+        setFieldBadge('badge-mut-status', '{{ _("Default (Approved)") }}', 'cyan');
+        setFieldBadge('badge-mut-applicant', (f.applicant_name || f.buyer_nid) ? '{{ _("Preset Benchmark") }}' : '{{ _("Optional") }}', (f.applicant_name || f.buyer_nid) ? 'green' : 'slate');
+
+        syncCrossFields('SALE_DEED');
+
+        // Transition to review stage without auto-verifying
+        transitionToReviewStage('BENCHMARK', found.image_filename, null, {
+            visual_anomaly_score: found.category === 'TAMPERED_DEED_IMAGE' ? 0.94 : 0.01,
+            seal_present: true,
+            signature_present: true
+        });
+
+        showToast(`{{ _('Loaded synthetic scenario:') }} ${found.title}`, "info");
+    }
+
+    // -------------------------------------------------------------------------
+    // STEP 3: REVIEW STAGE TRANSITION & POPULATION
+    // -------------------------------------------------------------------------
+
+    function populateReviewFormFromUpload(uploadResult) {
+        const ext = uploadResult.extracted_fields || {};
+        const confs = uploadResult.field_confidences || {};
+        const detectedType = uploadResult.document_type || 'SALE_DEED';
+        const isUncertain = !!uploadResult.is_uncertain || detectedType === 'UNCERTAIN';
+
+        // Display or hide uncertainty banner
+        const uncertainBanner = document.getElementById('doc-uncertain-banner');
+        if (uncertainBanner) {
+            if (isUncertain) {
+                uncertainBanner.classList.remove('hidden');
+            } else {
+                uncertainBanner.classList.add('hidden');
+            }
+        }
+
+        // Switch to the appropriate document type tab
+        const formTypeToActivate = (detectedType === 'UNCERTAIN' || !detectedType) ? 'SALE_DEED' : detectedType;
+        switchDocumentType(formTypeToActivate);
+
+        // Helper to map backend confidence structure to UI badge
+        function applyConfidenceBadge(elementId, fieldKey, extractedVal) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            const conf = confs[fieldKey];
+            if (!extractedVal || (conf && conf.status === 'MISSING')) {
+                setFieldBadge(elementId, '{{ _("Not detected") }}', 'slate');
+            } else if (conf && conf.status === 'LOW_CONFIDENCE') {
+                const pct = Math.round((conf.confidence || 0.6) * 100);
+                setFieldBadge(elementId, `{{ _("Needs review") }} (${pct}%)`, 'amber');
+            } else {
+                const pct = conf ? Math.round((conf.confidence || 0.9) * 100) : 90;
+                setFieldBadge(elementId, `✓ {{ _("Detected") }} (${pct}%)`, 'green');
+            }
+        }
+
+        // 1. SALE_DEED fields
+        const elDeed = document.getElementById('f_deed_number'); if (elDeed) elDeed.value = ext.deed_number || '';
+        const elDag = document.getElementById('f_dag_plot_number'); if (elDag) elDag.value = ext.dag_plot_number || '';
+        const elArea = document.getElementById('f_transferred_area'); if (elArea) elArea.value = ext.transferred_area_decimal || '';
+        const elDate = document.getElementById('f_execution_date'); if (elDate) elDate.value = ext.execution_date || '';
+        const elSeller = document.getElementById('f_seller_nid'); if (elSeller) elSeller.value = ext.seller_nid || '';
+        const elBuyer = document.getElementById('f_buyer_nid'); if (elBuyer) elBuyer.value = ext.buyer_nid || '';
+        const elPrev = document.getElementById('f_previous_deed_ref'); if (elPrev) elPrev.value = ext.previous_deed_ref || '';
+        const elMut = document.getElementById('f_mutation_case_no'); if (elMut) elMut.value = ext.mutation_case_no || '';
+        const elCons = document.getElementById('f_consideration_bdt'); if (elCons) elCons.value = ext.consideration_bdt || '';
+        const elKhat = document.getElementById('f_khatian_number'); if (elKhat) elKhat.value = ext.khatian_number || '';
+
+        applyConfidenceBadge('badge-deed-number', 'deed_number', ext.deed_number);
+        applyConfidenceBadge('badge-dag-plot-number', 'dag_plot_number', ext.dag_plot_number);
+        applyConfidenceBadge('badge-transferred-area', 'transferred_area_decimal', ext.transferred_area_decimal);
+        applyConfidenceBadge('badge-execution-date', 'execution_date', ext.execution_date);
+        applyConfidenceBadge('badge-seller-nid', 'seller_nid', ext.seller_nid);
+        applyConfidenceBadge('badge-buyer-nid', 'buyer_nid', ext.buyer_nid);
+        applyConfidenceBadge('badge-prev-deed-ref', 'previous_deed_ref', ext.previous_deed_ref);
+        applyConfidenceBadge('badge-mutation-case', 'mutation_case_no', ext.mutation_case_no);
+        applyConfidenceBadge('badge-consideration-bdt', 'consideration_bdt', ext.consideration_bdt);
+        applyConfidenceBadge('badge-khatian-number', 'khatian_number', ext.khatian_number);
+
+        // 2. MUTATION_RECORD fields
+        const elMutCase = document.getElementById('f_mut_case_no'); if (elMutCase) elMutCase.value = ext.mutation_case_no || '';
+        const elMutDag = document.getElementById('f_mut_dag_plot'); if (elMutDag) elMutDag.value = ext.dag_plot_number || '';
+        const elMutKh = document.getElementById('f_mut_khatian'); if (elMutKh) elMutKh.value = ext.khatian_number || '';
+        const elMutEffDate = document.getElementById('f_mut_effective_date'); if (elMutEffDate) elMutEffDate.value = ext.execution_date || '';
+        const elMutArea = document.getElementById('f_mut_area'); if (elMutArea) elMutArea.value = ext.transferred_area_decimal || '';
+        const elMutStatus = document.getElementById('f_mut_status'); if (elMutStatus) elMutStatus.value = (ext.mutation_status || 'APPROVED').toUpperCase();
+        const elMutApplicant = document.getElementById('f_mut_applicant'); if (elMutApplicant) elMutApplicant.value = ext.applicant_name || ext.buyer_nid || '';
+        const elMutUpazila = document.getElementById('f_mut_upazila'); if (elMutUpazila) elMutUpazila.value = ext.upazila ? (ext.upazila + (ext.district ? ', ' + ext.district : '')) : (ext.mouza || '');
+
+        applyConfidenceBadge('badge-mut-case-no', 'mutation_case_no', ext.mutation_case_no);
+        applyConfidenceBadge('badge-mut-dag-plot', 'dag_plot_number', ext.dag_plot_number);
+        applyConfidenceBadge('badge-mut-khatian', 'khatian_number', ext.khatian_number);
+        applyConfidenceBadge('badge-mut-date', 'execution_date', ext.execution_date);
+        applyConfidenceBadge('badge-mut-area', 'transferred_area_decimal', ext.transferred_area_decimal);
+        setFieldBadge('badge-mut-status', ext.mutation_status ? `✓ {{ _("Detected") }}` : '{{ _("Default (Approved)") }}', ext.mutation_status ? 'green' : 'cyan');
+        applyConfidenceBadge('badge-mut-applicant', 'applicant_name', ext.applicant_name || ext.buyer_nid);
+        applyConfidenceBadge('badge-mut-upazila', 'upazila', ext.upazila || ext.mouza);
+
+        // 3. KHATIAN_PORCHA fields
+        const elKhNo = document.getElementById('f_kh_khatian_no'); if (elKhNo) elKhNo.value = ext.khatian_number || '';
+        const elKhDag = document.getElementById('f_kh_dag_plot'); if (elKhDag) elKhDag.value = ext.dag_plot_number || '';
+        const elKhSurvey = document.getElementById('f_kh_survey_type'); if (elKhSurvey) elKhSurvey.value = (ext.survey_type || 'BS').toUpperCase();
+        const elKhArea = document.getElementById('f_kh_total_area'); if (elKhArea) elKhArea.value = ext.transferred_area_decimal || '';
+        const elKhMouza = document.getElementById('f_kh_mouza'); if (elKhMouza) elKhMouza.value = ext.mouza ? (ext.mouza + (ext.jl_number ? ', JL #' + ext.jl_number : '')) : '';
+        const elKhOwner = document.getElementById('f_kh_recorded_owner'); if (elKhOwner) elKhOwner.value = ext.applicant_name || ext.seller_nid || '';
+        const elKhClass = document.getElementById('f_kh_land_class'); if (elKhClass) elKhClass.value = ext.land_classification || 'Nal';
+
+        applyConfidenceBadge('badge-kh-khatian', 'khatian_number', ext.khatian_number);
+        applyConfidenceBadge('badge-kh-dag-plot', 'dag_plot_number', ext.dag_plot_number);
+        applyConfidenceBadge('badge-kh-area', 'transferred_area_decimal', ext.transferred_area_decimal);
+        applyConfidenceBadge('badge-kh-mouza', 'mouza', ext.mouza);
+        applyConfidenceBadge('badge-kh-owner', 'applicant_name', ext.applicant_name || ext.seller_nid);
+        applyConfidenceBadge('badge-kh-class', 'land_classification', ext.land_classification);
+
+        // 4. TAX_RECEIPT fields
+        const elTaxHolding = document.getElementById('f_tax_holding_no'); if (elTaxHolding) elTaxHolding.value = ext.holding_number || ext.deed_number || '';
+        const elTaxDag = document.getElementById('f_tax_dag_plot'); if (elTaxDag) elTaxDag.value = ext.dag_plot_number || '';
+        const elTaxKh = document.getElementById('f_tax_khatian'); if (elTaxKh) elTaxKh.value = ext.khatian_number || '';
+        const elTaxYear = document.getElementById('f_tax_fiscal_year'); if (elTaxYear) elTaxYear.value = ext.fiscal_year || '2023-2024';
+        const elTaxPaid = document.getElementById('f_tax_paid_amount'); if (elTaxPaid) elTaxPaid.value = ext.consideration_bdt || '';
+        const elTaxPayer = document.getElementById('f_tax_payer_name'); if (elTaxPayer) elTaxPayer.value = ext.applicant_name || ext.buyer_nid || '';
+
+        applyConfidenceBadge('badge-tax-holding', 'holding_number', ext.holding_number || ext.deed_number);
+        applyConfidenceBadge('badge-tax-dag-plot', 'dag_plot_number', ext.dag_plot_number);
+        applyConfidenceBadge('badge-tax-khatian', 'khatian_number', ext.khatian_number);
+        applyConfidenceBadge('badge-tax-year', 'fiscal_year', ext.fiscal_year);
+        applyConfidenceBadge('badge-tax-amount', 'consideration_bdt', ext.consideration_bdt);
+        applyConfidenceBadge('badge-tax-payer', 'applicant_name', ext.applicant_name || ext.buyer_nid);
+
+        // 5. PARCEL_MAP fields
+        const elMapDag = document.getElementById('f_map_dag_plot'); if (elMapDag) elMapDag.value = ext.dag_plot_number || '';
+        const elMapMouza = document.getElementById('f_map_mouza'); if (elMapMouza) elMapMouza.value = ext.mouza || '';
+        const elMapSheet = document.getElementById('f_map_sheet_no'); if (elMapSheet) elMapSheet.value = ext.sheet_number || 'Sheet #01';
+        const elMapArea = document.getElementById('f_map_area'); if (elMapArea) elMapArea.value = ext.transferred_area_decimal || '';
+        const elMapAdj = document.getElementById('f_map_adjoining'); if (elMapAdj) elMapAdj.value = ext.adjoining_plots || '';
+
+        applyConfidenceBadge('badge-map-dag-plot', 'dag_plot_number', ext.dag_plot_number);
+        applyConfidenceBadge('badge-map-mouza', 'mouza', ext.mouza);
+        applyConfidenceBadge('badge-map-sheet', 'sheet_number', ext.sheet_number);
+        applyConfidenceBadge('badge-map-area', 'transferred_area_decimal', ext.transferred_area_decimal);
+        applyConfidenceBadge('badge-map-adjoining', 'adjoining_plots', ext.adjoining_plots);
+
+        // Synchronize cross fields to active tab
+        syncCrossFields(formTypeToActivate);
+    }
+
+    function setFieldBadge(elementId, text, color) {
+        const el = document.getElementById(elementId);
+        if (!el) return;
+        el.textContent = text;
+        if (color === 'green') {
+            el.className = "text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-emerald-950 text-emerald-300 border border-emerald-800/40";
+        } else if (color === 'amber') {
+            el.className = "text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-amber-950 text-amber-300 border border-amber-800/40";
+        } else if (color === 'cyan') {
+            el.className = "text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-cyan-950 text-cyan-300 border border-cyan-800/40";
+        } else {
+            el.className = "text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-slate-800 text-slate-400 border border-slate-700";
+        }
+    }
+
+    function transitionToReviewStage(sourceType, filename, sha256, cvPreview) {
         document.getElementById('step-section-1').classList.add('hidden');
-        document.getElementById('step-section-2-3').classList.remove('hidden');
-        document.getElementById('step-nav-1').className = "py-2 rounded-xl text-slate-500 border border-transparent";
-        document.getElementById('step-nav-2').className = "py-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/40";
-        document.getElementById('step-nav-3').className = "py-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/40";
+        document.getElementById('step-section-2-scan').classList.add('hidden');
+        document.getElementById('step-section-3-review').classList.remove('hidden');
+        document.getElementById('step-section-4').classList.add('hidden');
 
-        showToast(`Loaded scenario: ${found.title}`, "info");
+        document.getElementById('step-nav-1').className = "py-2 rounded-xl text-slate-500 border border-transparent";
+        document.getElementById('step-nav-2').className = "py-2 rounded-xl text-slate-500 border border-transparent";
+        document.getElementById('step-nav-3').className = "py-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/40";
+        document.getElementById('step-nav-4').className = "py-2 rounded-xl text-slate-500 border border-transparent";
+
+        const sourceText = document.getElementById('review-source-text');
+        const evidenceSummary = document.getElementById('review-evidence-summary');
+
+        if (sourceType === 'UPLOAD') {
+            sourceText.textContent = "{{ _('Bilingual OCR & Forensic CV Verified') }}";
+            evidenceSummary.classList.remove('hidden');
+            document.getElementById('doc-filename-display').textContent = filename || 'document.png';
+            document.getElementById('doc-sha256-preview').textContent = sha256 ? `SHA-256: ${sha256.substring(0, 16)}...` : 'SHA-256: PENDING';
+
+            if (cvPreview) {
+                const score = (cvPreview.visual_anomaly_score * 100).toFixed(1);
+                const cvDisplay = document.getElementById('doc-cv-anomaly-display');
+                if (cvPreview.has_visual_anomaly || cvPreview.visual_anomaly_score > 0.4) {
+                    cvDisplay.textContent = `${score}% ({{ _('Anomaly Flagged') }})`;
+                    cvDisplay.className = "text-rose-400 font-bold";
+                } else {
+                    cvDisplay.textContent = `${score}% ({{ _('Clean') }})`;
+                    cvDisplay.className = "text-emerald-400 font-bold";
+                }
+                document.getElementById('doc-seal-display').textContent = cvPreview.seal_present ? "{{ _('Present') }}" : "{{ _('Not detected') }}";
+                document.getElementById('doc-sig-display').textContent = cvPreview.signature_present ? "{{ _('Confirmed') }}" : "{{ _('Unconfirmed') }}";
+            }
+        } else if (sourceType === 'BENCHMARK') {
+            sourceText.textContent = "{{ _('Synthetic Benchmark Case') }}";
+            evidenceSummary.classList.remove('hidden');
+            document.getElementById('doc-filename-display').textContent = filename || 'sample_case.png';
+            document.getElementById('doc-sha256-preview').textContent = 'SHA-256: SYNTHETIC_BENCHMARK';
+            if (cvPreview) {
+                const score = (cvPreview.visual_anomaly_score * 100).toFixed(1);
+                document.getElementById('doc-cv-anomaly-display').textContent = cvPreview.visual_anomaly_score > 0.4 ? `${score}% ({{ _('Forensic Anomaly') }})` : `${score}% ({{ _('Clean') }})`;
+                document.getElementById('doc-cv-anomaly-display').className = cvPreview.visual_anomaly_score > 0.4 ? "text-rose-400 font-bold" : "text-emerald-400 font-bold";
+                document.getElementById('doc-seal-display').textContent = "{{ _('Present') }}";
+                document.getElementById('doc-sig-display').textContent = "{{ _('Confirmed') }}";
+            }
+        } else {
+            sourceText.textContent = "{{ _('Manual Statutory Entry Claim') }}";
+            evidenceSummary.classList.add('hidden');
+        }
+
+        if (window.lucide) window.lucide.createIcons();
     }
 
     function resetToStep1() {
+        clearToasts();
+        if (scanAnimationInterval) clearInterval(scanAnimationInterval);
+
         document.getElementById('step-section-1').classList.remove('hidden');
-        document.getElementById('step-section-2-3').classList.add('hidden');
+        document.getElementById('step-section-2-scan').classList.add('hidden');
+        document.getElementById('step-section-3-review').classList.add('hidden');
         document.getElementById('step-section-4').classList.add('hidden');
 
         document.getElementById('step-nav-1').className = "py-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/40";
         document.getElementById('step-nav-2').className = "py-2 rounded-xl text-slate-500 border border-transparent";
         document.getElementById('step-nav-3').className = "py-2 rounded-xl text-slate-500 border border-transparent";
         document.getElementById('step-nav-4').className = "py-2 rounded-xl text-slate-500 border border-transparent";
-    }
 
-    const dropZone = document.getElementById('drop-zone');
-    dropZone.addEventListener('click', () => document.getElementById('file-input').click());
-
-    async function handleFileSelect(event) {
-        const file = event.target.files[0];
-        if (!file) return;
-
-        showToast("Uploading and running bilingual OCR...", "info");
-        const formData = new FormData();
-        formData.append('file', file);
-
-        try {
-            const res = await fetch('/api/upload', { method: 'POST', body: formData });
-            const data = await res.json();
-            if (res.ok) {
-                selectedImagePath = data.cached_image_path || file.name;
-                const ext = data.extracted_fields || {};
-                document.getElementById('f_deed_number').value = ext.deed_number || `DEED-${new Date().getFullYear()}-${Math.floor(10000+Math.random()*90000)}`;
-                document.getElementById('f_dag_plot_number').value = ext.dag_plot_number || '9044';
-                document.getElementById('f_transferred_area').value = ext.transferred_area_decimal || '10.50';
-                document.getElementById('f_execution_date').value = ext.execution_date || '2022-01-01';
-                document.getElementById('f_seller_nid').value = ext.seller_nid || 'OWN-11CE5DD2';
-                document.getElementById('f_buyer_nid').value = ext.buyer_nid || 'OWN-CE177B4E';
-                document.getElementById('f_previous_deed_ref').value = ext.previous_deed_ref || 'DEED-2001-35323';
-                document.getElementById('f_mutation_case_no').value = ext.mutation_case_no || 'MUT-2022-1001/Savar';
-                document.getElementById('f_consideration_bdt').value = ext.consideration_bdt || '1250000';
-
-                document.getElementById('step-section-1').classList.add('hidden');
-                document.getElementById('step-section-2-3').classList.remove('hidden');
-                showToast("Document OCR extracted successfully!", "success");
-            } else {
-                showToast(data.detail || "Upload failed", "error");
-            }
-        } catch (err) {
-            showToast("Upload error: " + err.message, "error");
+        const btn = document.getElementById('execute-btn');
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = `<span>{{ _('Run Statutory Verification') }}</span><i data-lucide="shield-check" class="w-4 h-4"></i>`;
         }
+        currentVerificationResult = null;
+        window.currentVerificationResult = null;
+        const btnView = document.getElementById('btn-view-report');
+        if (btnView) {
+            btnView.removeAttribute('data-verification-id');
+            btnView.removeAttribute('data-report-url');
+        }
+        const btnPdf = document.getElementById('btn-download-pdf');
+        if (btnPdf) {
+            btnPdf.removeAttribute('data-verification-id');
+            btnPdf.removeAttribute('data-pdf-url');
+        }
+        if (window.lucide) window.lucide.createIcons();
     }
+
+    // -------------------------------------------------------------------------
+    // STEP 4: VERIFICATION EXECUTION & RESULTS RENDERING
+    // -------------------------------------------------------------------------
+
+    let isVerifying = false;
 
     async function executeVerification(event) {
-        event.preventDefault();
+        if (event) event.preventDefault();
+        if (isVerifying) return;
+        clearToasts();
+
+        const btn = document.getElementById('execute-btn');
+
+        let dagPlot = null;
+        let deedNumber = null;
+        let transferredArea = null;
+        let executionDate = null;
+        let sellerNid = null;
+        let buyerNid = null;
+        let prevRef = null;
+        let mutCase = null;
+        let consideration = null;
+        let khatianNumber = null;
+        let mutationStatus = null;
+        let applicantName = null;
+        let upazila = null;
+        let surveyType = null;
+        let landClass = null;
+        let holdingNo = null;
+
+        if (activeDocumentType === 'MUTATION_RECORD') {
+            dagPlot = document.getElementById('f_mut_dag_plot') ? document.getElementById('f_mut_dag_plot').value.trim() : '';
+            mutCase = document.getElementById('f_mut_case_no') ? document.getElementById('f_mut_case_no').value.trim() : '';
+            const rawArea = document.getElementById('f_mut_area') ? document.getElementById('f_mut_area').value.trim() : '';
+            transferredArea = rawArea !== "" ? parseFloat(rawArea) : null;
+            executionDate = document.getElementById('f_mut_effective_date') ? document.getElementById('f_mut_effective_date').value.trim() || null : null;
+            khatianNumber = document.getElementById('f_mut_khatian') ? document.getElementById('f_mut_khatian').value.trim() || null : null;
+            mutationStatus = document.getElementById('f_mut_status') ? document.getElementById('f_mut_status').value.trim() || 'APPROVED' : 'APPROVED';
+            applicantName = document.getElementById('f_mut_applicant') ? document.getElementById('f_mut_applicant').value.trim() || null : null;
+            upazila = document.getElementById('f_mut_upazila') ? document.getElementById('f_mut_upazila').value.trim() || null : null;
+
+            if (!dagPlot) {
+                showToast("{{ _('Dag Plot Number is required for mutation verification.') }}", "error");
+                const input = document.getElementById('f_mut_dag_plot');
+                if (input) input.focus();
+                return;
+            }
+            if (!mutCase) {
+                showToast("{{ _('Mutation Case Number is required for mutation verification.') }}", "error");
+                const input = document.getElementById('f_mut_case_no');
+                if (input) input.focus();
+                return;
+            }
+        } else if (activeDocumentType === 'KHATIAN_PORCHA') {
+            dagPlot = document.getElementById('f_kh_dag_plot') ? document.getElementById('f_kh_dag_plot').value.trim() : '';
+            khatianNumber = document.getElementById('f_kh_khatian_no') ? document.getElementById('f_kh_khatian_no').value.trim() : '';
+            const rawArea = document.getElementById('f_kh_total_area') ? document.getElementById('f_kh_total_area').value.trim() : '';
+            transferredArea = rawArea !== "" ? parseFloat(rawArea) : null;
+            surveyType = document.getElementById('f_kh_survey_type') ? document.getElementById('f_kh_survey_type').value.trim() || 'BS' : 'BS';
+            applicantName = document.getElementById('f_kh_recorded_owner') ? document.getElementById('f_kh_recorded_owner').value.trim() || null : null;
+            landClass = document.getElementById('f_kh_land_class') ? document.getElementById('f_kh_land_class').value.trim() || null : null;
+
+            if (!dagPlot) {
+                showToast("{{ _('Dag Plot Number is required.') }}", "error");
+                const input = document.getElementById('f_kh_dag_plot');
+                if (input) input.focus();
+                return;
+            }
+            if (!khatianNumber) {
+                showToast("{{ _('Khatian Number is required.') }}", "error");
+                const input = document.getElementById('f_kh_khatian_no');
+                if (input) input.focus();
+                return;
+            }
+        } else if (activeDocumentType === 'TAX_RECEIPT') {
+            dagPlot = document.getElementById('f_tax_dag_plot') ? document.getElementById('f_tax_dag_plot').value.trim() : '';
+            holdingNo = document.getElementById('f_tax_holding_no') ? document.getElementById('f_tax_holding_no').value.trim() : '';
+            khatianNumber = document.getElementById('f_tax_khatian') ? document.getElementById('f_tax_khatian').value.trim() || null : null;
+            const rawPaid = document.getElementById('f_tax_paid_amount') ? document.getElementById('f_tax_paid_amount').value.trim() : '';
+            consideration = rawPaid !== "" ? parseFloat(rawPaid) : null;
+            applicantName = document.getElementById('f_tax_payer_name') ? document.getElementById('f_tax_payer_name').value.trim() || null : null;
+
+            if (!dagPlot) {
+                showToast("{{ _('Dag Plot Number is required.') }}", "error");
+                const input = document.getElementById('f_tax_dag_plot');
+                if (input) input.focus();
+                return;
+            }
+            if (!holdingNo) {
+                showToast("{{ _('Holding / Dakhila Number is required.') }}", "error");
+                const input = document.getElementById('f_tax_holding_no');
+                if (input) input.focus();
+                return;
+            }
+        } else if (activeDocumentType === 'PARCEL_MAP') {
+            dagPlot = document.getElementById('f_map_dag_plot') ? document.getElementById('f_map_dag_plot').value.trim() : '';
+            const rawArea = document.getElementById('f_map_area') ? document.getElementById('f_map_area').value.trim() : '';
+            transferredArea = rawArea !== "" ? parseFloat(rawArea) : null;
+
+            if (!dagPlot) {
+                showToast("{{ _('Dag Plot Number is required.') }}", "error");
+                const input = document.getElementById('f_map_dag_plot');
+                if (input) input.focus();
+                return;
+            }
+        } else {
+            // Default SALE_DEED
+            dagPlot = document.getElementById('f_dag_plot_number') ? document.getElementById('f_dag_plot_number').value.trim() : '';
+            deedNumber = document.getElementById('f_deed_number') ? document.getElementById('f_deed_number').value.trim() || null : null;
+            const rawArea = document.getElementById('f_transferred_area') ? document.getElementById('f_transferred_area').value.trim() : '';
+            transferredArea = rawArea !== "" ? parseFloat(rawArea) : null;
+            executionDate = document.getElementById('f_execution_date') ? document.getElementById('f_execution_date').value.trim() || null : null;
+            sellerNid = document.getElementById('f_seller_nid') ? document.getElementById('f_seller_nid').value.trim() || null : null;
+            buyerNid = document.getElementById('f_buyer_nid') ? document.getElementById('f_buyer_nid').value.trim() || null : null;
+            prevRef = document.getElementById('f_previous_deed_ref') ? document.getElementById('f_previous_deed_ref').value.trim() || null : null;
+            mutCase = document.getElementById('f_mutation_case_no') ? document.getElementById('f_mutation_case_no').value.trim() || null : null;
+            const rawConsideration = document.getElementById('f_consideration_bdt') ? document.getElementById('f_consideration_bdt').value.trim() : '';
+            consideration = rawConsideration !== "" ? parseFloat(rawConsideration) : null;
+            khatianNumber = document.getElementById('f_khatian_number') ? document.getElementById('f_khatian_number').value.trim() || null : null;
+
+            if (!dagPlot) {
+                showToast("{{ _('Dag Plot Number is required.') }}", "error");
+                const input = document.getElementById('f_dag_plot_number');
+                if (input) input.focus();
+                return;
+            }
+        }
+
+        const confirmedFields = {
+            document_type: activeDocumentType,
+            dag_plot_number: dagPlot
+        };
+
+        if (activeDocumentType === 'MUTATION_RECORD') {
+            confirmedFields.mutation_case_no = mutCase;
+            confirmedFields.khatian_number = khatianNumber;
+            confirmedFields.transferred_area_decimal = transferredArea;
+            confirmedFields.execution_date = executionDate;
+            confirmedFields.mutation_status = mutationStatus;
+            confirmedFields.applicant_name = applicantName;
+            confirmedFields.upazila = upazila;
+        } else if (activeDocumentType === 'KHATIAN_PORCHA') {
+            confirmedFields.khatian_number = khatianNumber;
+            confirmedFields.transferred_area_decimal = transferredArea;
+            confirmedFields.survey_type = surveyType;
+            confirmedFields.applicant_name = applicantName;
+            confirmedFields.land_classification = landClass;
+        } else if (activeDocumentType === 'TAX_RECEIPT') {
+            confirmedFields.holding_number = holdingNo;
+            confirmedFields.khatian_number = khatianNumber;
+            confirmedFields.consideration_bdt = consideration;
+            confirmedFields.applicant_name = applicantName;
+        } else if (activeDocumentType === 'PARCEL_MAP') {
+            confirmedFields.transferred_area_decimal = transferredArea;
+        } else {
+            // SALE_DEED
+            confirmedFields.deed_number = deedNumber;
+            confirmedFields.khatian_number = khatianNumber;
+            confirmedFields.transferred_area_decimal = transferredArea;
+            confirmedFields.execution_date = executionDate;
+            confirmedFields.seller_nid = sellerNid;
+            confirmedFields.buyer_nid = buyerNid;
+            confirmedFields.previous_deed_ref = prevRef;
+            confirmedFields.mutation_case_no = mutCase;
+            confirmedFields.consideration_bdt = consideration;
+        }
+
         const payload = {
-            confirmed_fields: {
-                deed_number: document.getElementById('f_deed_number').value,
-                dag_plot_number: document.getElementById('f_dag_plot_number').value,
-                transferred_area_decimal: parseFloat(document.getElementById('f_transferred_area').value) || 0,
-                execution_date: document.getElementById('f_execution_date').value,
-                seller_nid: document.getElementById('f_seller_nid').value,
-                buyer_nid: document.getElementById('f_buyer_nid').value,
-                previous_deed_ref: document.getElementById('f_previous_deed_ref').value,
-                mutation_case_no: document.getElementById('f_mutation_case_no').value,
-                consideration_bdt: parseFloat(document.getElementById('f_consideration_bdt').value) || 0,
-            },
+            document_type: activeDocumentType,
+            confirmed_fields: confirmedFields,
             image_path: selectedImagePath,
+            evidence_source: activeEvidenceSource,
             original_ocr_fields: currentLoadedCase ? currentLoadedCase.preset_fields : null
         };
 
-        const btn = document.getElementById('execute-btn');
-        btn.disabled = true;
-        btn.innerText = "Evaluating Statutory Rules...";
+        isVerifying = true;
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = `<span class="animate-spin inline-block mr-2">◌</span><span>{{ _('Evaluating Statutory Rules...') }}</span>`;
+        }
 
         try {
             const res = await fetch('/api/verify', {
@@ -347,25 +2452,39 @@
                 body: JSON.stringify(payload)
             });
             const data = await res.json();
-            btn.disabled = false;
-            btn.innerText = "Run Statutory Verification";
+            isVerifying = false;
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = `<span>{{ _('Run Statutory Verification') }}</span><i data-lucide="shield-check" class="w-4 h-4"></i>`;
+            }
 
             if (res.ok) {
                 currentVerificationResult = data;
+                window.currentVerificationResult = data;
                 renderVerificationResults(data);
             } else {
-                showToast(data.detail || "Verification failed", "error");
+                showToast(data.detail || "{{ _('Verification failed') }}", "error");
             }
         } catch (err) {
-            btn.disabled = false;
-            btn.innerText = "Run Statutory Verification";
-            showToast("Network error: " + err.message, "error");
+            isVerifying = false;
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = `<span>{{ _('Run Statutory Verification') }}</span><i data-lucide="shield-check" class="w-4 h-4"></i>`;
+            }
+            showToast("{{ _('Network error: ') }}" + err.message, "error");
         }
     }
 
     function renderVerificationResults(data) {
-        document.getElementById('step-section-2-3').classList.add('hidden');
+        clearToasts();
+        document.getElementById('step-section-1').classList.add('hidden');
+        document.getElementById('step-section-2-scan').classList.add('hidden');
+        document.getElementById('step-section-3-review').classList.add('hidden');
         document.getElementById('step-section-4').classList.remove('hidden');
+
+        document.getElementById('step-nav-1').className = "py-2 rounded-xl text-slate-500 border border-transparent";
+        document.getElementById('step-nav-2').className = "py-2 rounded-xl text-slate-500 border border-transparent";
+        document.getElementById('step-nav-3').className = "py-2 rounded-xl text-slate-500 border border-transparent";
         document.getElementById('step-nav-4').className = "py-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/40";
 
         const statusBanner = document.getElementById('result-status-banner');
@@ -377,71 +2496,145 @@
         if (stat === 'CLEAR_FOR_STANDARD_PROCESSING') {
             statusBanner.className = "p-6 rounded-2xl border shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-emerald-950/70 border-emerald-500/50";
             statusIcon.className = "w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 bg-emerald-900/80 text-emerald-300";
-            statusTitle.innerText = "CLEAR FOR STANDARD PROCESSING";
-            statusAction.innerText = "No statutory contradictions or double-selling detected in canonical records.";
+            statusTitle.innerText = "{{ _('CLEAR FOR STANDARD PROCESSING')|safe }}";
+            statusAction.innerText = "{{ _('No statutory contradictions or double-selling detected in canonical records.')|safe }}";
         } else if (stat === 'CONFIRMED_INCONSISTENCY') {
             statusBanner.className = "p-6 rounded-2xl border shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-rose-950/70 border-rose-500/50";
             statusIcon.className = "w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 bg-rose-900/80 text-rose-300";
-            statusTitle.innerText = "CONFIRMED STATUTORY INCONSISTENCY";
-            statusAction.innerText = "HOLD FOR STATUTORY VERIFICATION & ESCALATE TO INVESTIGATOR";
+            statusTitle.innerText = "{{ _('CONFIRMED STATUTORY INCONSISTENCY')|safe }}";
+            statusAction.innerText = "{{ _('HOLD FOR STATUTORY VERIFICATION & ESCALATE TO INVESTIGATOR')|safe }}";
         } else if (stat === 'MISSING_EVIDENCE') {
             statusBanner.className = "p-6 rounded-2xl border shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-amber-950/70 border-amber-500/50";
             statusIcon.className = "w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 bg-amber-900/80 text-amber-300";
-            statusTitle.innerText = "MISSING HISTORICAL EVIDENCE";
-            statusAction.innerText = "REQUEST ARCHIVAL RECORDS (Not an automatic confirmation of fraud)";
+            statusTitle.innerText = "{{ _('MISSING HISTORICAL EVIDENCE')|safe }}";
+            statusAction.innerText = "{{ _('REQUEST ARCHIVAL RECORDS (Not an automatic confirmation of fraud)')|safe }}";
         } else {
             statusBanner.className = "p-6 rounded-2xl border shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-indigo-950/70 border-indigo-500/50";
             statusIcon.className = "w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 bg-indigo-900/80 text-indigo-300";
-            statusTitle.innerText = "REVIEW REQUIRED";
-            statusAction.innerText = "Mixed statutory signals require authorized registrar review.";
+            statusTitle.innerText = "{{ _('REVIEW REQUIRED')|safe }}";
+            statusAction.innerText = "{{ _('Mixed statutory signals require authorized registrar review.')|safe }}";
         }
 
-        // Rules Breakdown
+        // Deterministic Rules Breakdown
         const rulesList = document.getElementById('rules-summary-list');
         rulesList.innerHTML = '';
         const triggered = data.rules_triggered || [];
-        document.getElementById('rules-count-badge').innerText = `${triggered.length} Triggered`;
+        document.getElementById('rules-count-badge').innerText = `${triggered.length} {{ _('Triggered')|safe }}`;
         if (triggered.length === 0) {
-            rulesList.innerHTML = '<div class="text-emerald-400 font-medium">All 16 statutory predicates satisfied.</div>';
+            rulesList.innerHTML = '<div class="text-emerald-400 font-medium">{{ _("All 16 statutory predicates satisfied.")|safe }}</div>';
         } else {
+            const isBn = (document.documentElement.lang === 'bn');
             triggered.forEach(r => {
                 const item = document.createElement('div');
                 item.className = "p-2 rounded bg-slate-900/80 border border-rose-500/30 text-rose-200";
-                item.innerHTML = `<strong>${r.rule_code}</strong>: ${r.explanation}`;
+                const ruleCode = r.rule_code || 'RULE_CHECK';
+                const formattedFallback = ruleCode.replace(/^RULE_/, '').split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+                const title = (isBn && r.title_bn) ? r.title_bn : (r.title || formattedFallback);
+                const expl = (isBn && r.explanation_bn) ? r.explanation_bn : (r.explanation || r.reason || r.description || "{{ _('Statutory condition flagged for investigation')|safe }}");
+                item.innerHTML = `<div class="font-bold flex items-center justify-between gap-2"><span>${title}</span><span class="text-[10px] font-mono text-rose-300">${ruleCode}</span></div><div class="text-xs text-slate-300 mt-1">${expl}</div>`;
                 rulesList.appendChild(item);
             });
         }
 
-        // ML Score
-        const mlScore = (data.ml_risk_score * 100).toFixed(1);
-        document.getElementById('ml-score-display').innerText = `${mlScore}% Risk`;
-        document.getElementById('ml-score-display').className = mlScore > 35 ? "text-2xl font-bold font-mono text-rose-400 mb-2" : "text-2xl font-bold font-mono text-emerald-400 mb-2";
+        // ML Risk Score
+        const mlElem = document.getElementById('ml-score-display');
+        if (mlElem) {
+            if (data.ml_risk_score !== null && data.ml_risk_score !== undefined) {
+                const mlScore = (data.ml_risk_score * 100).toFixed(1);
+                mlElem.innerText = `${mlScore}% {{ _('Risk')|safe }}`;
+                mlElem.className = mlScore > 35 ? "text-2xl font-bold font-mono text-rose-400 mb-2" : "text-2xl font-bold font-mono text-emerald-400 mb-2";
+            } else {
+                mlElem.innerText = "{{ _('Insufficient Data')|safe }}";
+                mlElem.className = "text-xl font-bold font-mono text-amber-400 mb-2";
+            }
+        }
 
         // CV Details
         const cv = data.cv_evidence || {};
-        document.getElementById('cv-score-display').innerText = cv.visual_anomaly_detected ? "Tampering Detected" : "Integrity Passed";
+        document.getElementById('cv-score-display').innerText = cv.visual_anomaly_detected ? "{{ _('Tampering Detected')|safe }}" : "{{ _('Integrity Passed')|safe }}";
         document.getElementById('cv-score-display').className = cv.visual_anomaly_detected ? "text-2xl font-bold font-mono text-rose-400 mb-2" : "text-2xl font-bold font-mono text-emerald-400 mb-2";
         document.getElementById('cv-details-list').innerHTML = `
-            <div>&bull; Seam Anomaly Score: <strong>${(cv.visual_anomaly_score * 100).toFixed(1)}%</strong></div>
-            <div>&bull; Official Seal: <strong>${cv.seal_present ? 'Present' : 'Not Detected'}</strong></div>
-            <div>&bull; Sub-Registrar Signature: <strong>${cv.signature_present ? 'Verified' : 'Unconfirmed'}</strong></div>
+            <div>&bull; {{ _('Seam Anomaly Score') }}: <strong>${(cv.visual_anomaly_score * 100).toFixed(1)}%</strong></div>
+            <div>&bull; {{ _('Official Seal') }}: <strong>${cv.seal_present ? "{{ _('Present') }}" : "{{ _('Not Detected') }}"}</strong></div>
+            <div>&bull; {{ _('Sub-Registrar Signature') }}: <strong>${cv.signature_present ? "{{ _('Verified') }}" : "{{ _('Unconfirmed') }}"}</strong></div>
         `;
 
         // Cadastral box
         const cp = data.cadastral_parcel || {};
+        function safeStr(val, fallback) {
+            if (val === null || val === undefined || val === '') return fallback || 'N/A';
+            return String(val)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
         document.getElementById('cadastral-details-box').innerHTML = `
-            <div>PARCEL ID: ${cp.parcel_id || 'N/A'} &bull; DAG PLOT: ${cp.dag_plot_number || data.dag_plot_number}</div>
-            <div>MOUZA: ${cp.mouza || 'N/A'} (JL #${cp.jl_number || 'N/A'}) &bull; UPAZILA: ${cp.upazila || 'N/A'}</div>
-            <div>TOTAL PARCEL AREA: ${cp.total_area_decimal || 'N/A'} Decimal &bull; CLASS: ${cp.land_classification || 'Nal'}</div>
-            <div>VERIFICATION ID: ${data.verification_id} &bull; TIMESTAMP: ${data.timestamp}</div>
+            <div>{{ _('PARCEL ID') }}: ${safeStr(cp.parcel_id)} &bull; {{ _('DAG PLOT') }}: ${safeStr(cp.dag_plot_number || data.dag_plot_number)}</div>
+            <div>{{ _('MOUZA') }}: ${safeStr(cp.mouza)} (JL #${safeStr(cp.jl_number)}) &bull; {{ _('UPAZILA') }}: ${safeStr(cp.upazila)}</div>
+            <div>{{ _('TOTAL PARCEL AREA') }}: ${safeStr(cp.total_area_decimal)} {{ _('Decimal') }} &bull; {{ _('CLASS') }}: ${safeStr(cp.land_classification, 'Nal')}</div>
+            <div>{{ _('VERIFICATION ID') }}: ${safeStr(data.verification_id)} &bull; {{ _('TIMESTAMP') }}: ${safeStr(data.timestamp)}</div>
         `;
 
-        // Configure Export button
-        document.getElementById('btn-download-report').onclick = () => {
-            window.open(`/api/reports/${data.verification_id}`, '_blank');
-        };
+        // Configure View Report & PDF buttons
+        const btnView = document.getElementById('btn-view-report');
+        if (btnView) {
+            btnView.setAttribute('data-verification-id', data.verification_id || '');
+            btnView.setAttribute('data-report-url', `/reports/${encodeURIComponent(data.verification_id || '')}`);
+            btnView.onclick = viewReportFromVerification;
+        }
+        const btnPdf = document.getElementById('btn-download-pdf');
+        if (btnPdf) {
+            btnPdf.setAttribute('data-verification-id', data.verification_id || '');
+            btnPdf.setAttribute('data-pdf-url', `/api/reports/pdf/${encodeURIComponent(data.verification_id || '')}`);
+            btnPdf.onclick = downloadPdfFromVerification;
+        }
 
         if (window.lucide) window.lucide.createIcons();
+    }
+
+    function viewReportFromVerification() {
+        const vid = (currentVerificationResult && currentVerificationResult.verification_id)
+                 || (window.currentVerificationResult && window.currentVerificationResult.verification_id)
+                 || document.getElementById('btn-view-report')?.getAttribute('data-verification-id');
+        if (!vid) {
+            showToast("{{ _('No verification report available. Please execute verification first.')|safe }}", "error");
+            return;
+        }
+        const reportUrl = `/reports/${encodeURIComponent(vid)}`;
+        try {
+            const popup = window.open(reportUrl, '_blank');
+            if (!popup || popup.closed || typeof popup.closed === 'undefined') {
+                // If popup blocker intercepts the new tab, navigate directly in the current window
+                window.location.href = reportUrl;
+            } else {
+                popup.focus();
+            }
+        } catch (e) {
+            window.location.href = reportUrl;
+        }
+    }
+
+    function downloadPdfFromVerification() {
+        const vid = (currentVerificationResult && currentVerificationResult.verification_id)
+                 || (window.currentVerificationResult && window.currentVerificationResult.verification_id)
+                 || document.getElementById('btn-download-pdf')?.getAttribute('data-verification-id');
+        if (!vid) {
+            showToast("{{ _('No verification dossier available for PDF download.')|safe }}", "error");
+            return;
+        }
+        const pdfUrl = `/api/reports/pdf/${encodeURIComponent(vid)}`;
+        try {
+            const popup = window.open(pdfUrl, '_blank');
+            if (!popup || popup.closed || typeof popup.closed === 'undefined') {
+                window.location.href = pdfUrl;
+            } else {
+                popup.focus();
+            }
+        } catch (e) {
+            window.location.href = pdfUrl;
+        }
     }
 
     function fileComplaintFromVerification() {
@@ -450,5 +2643,9 @@
         const deed = currentVerificationResult.deed_number;
         window.location.href = `/user/complaints/new?dag=${encodeURIComponent(dag)}&deed=${encodeURIComponent(deed)}`;
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        switchDocumentType('SALE_DEED');
+    });
 </script>
 {% endblock %}

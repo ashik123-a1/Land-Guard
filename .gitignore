@@ -1,18 +1,29 @@
-# LandGuard AI Evaluation & Research
+# LandGuard AI Evaluation & Research — Git Ignore Specification
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
 
-# Environments
+# Environment variables & secrets
 .env
+.env.local
+*.pem
+*.key
+
+# Virtual Environments
 .venv
 env/
 venv/
 ENV/
 
-# Large generated datasets and images (keep manifests, samples, and reports in Git)
+# Operational database journals and backups (Do NOT commit WAL files or temporary backups)
+data/backups/
+data/backup_*.db
+*.db-shm
+*.db-wal
+
+# Large raw datasets and local image uploads (Preserve manifests, fixtures, and canonical operational db)
 data/full/
 data/pilot/
 data/raw/
@@ -22,7 +33,7 @@ data/uploads/
 *.parquet
 *.sqlite3
 
-# Model binaries
+# Model binaries (Preserve frozen production XGBoost model)
 models/*.bin
 models/*.onnx
 !models/README.md
@@ -39,3 +50,16 @@ Thumbs.db
 .pytest_cache/
 .coverage
 htmlcov/
+
+# Logs & temp files
+*.log
+=
+
+# Scratch, Debug & Personal Artifacts
+ashik/
+debug_landing.html
+scratch_user_prompt.txt
+extract_prompt.py
+test_bn_output.pdf
+test_tile.jpg
+

@@ -1,9 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="{{ current_lang or 'bn' }}" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}LandGuard AI — Statutory Land Record Verification{% endblock %}</title>
+    <title>{% block title %}LandGuard AI{% endblock %}</title>
+    <!-- LandGuard Browser Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/static/images/favicon.svg">
+    <link rel="icon" type="image/png" sizes="64x64" href="/static/images/favicon.png">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/static/images/favicon.png">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -30,7 +35,7 @@
                         }
                     },
                     fontFamily: {
-                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                        sans: ['Inter', 'Noto Sans Bengali', 'Hind Siliguri', 'Nirmala UI', 'system-ui', '-apple-system', 'sans-serif'],
                         mono: ['JetBrains Mono', 'Menlo', 'monospace'],
                     }
                 }
@@ -39,14 +44,16 @@
     </script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Google Fonts: Inter -->
+    <!-- Google Fonts: Inter, JetBrains Mono, Orbitron, Noto Sans Bengali, Hind Siliguri -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Bengali:wght@300;400;500;600;700;800&family=Orbitron:wght@700;800;900;950&display=swap" rel="stylesheet">
+    <!-- LandGuard Unified Theme Tokens & Motion -->
+    <link rel="stylesheet" href="/static/css/theme.css?v=20261018-01">
 
     <style>
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', 'Noto Sans Bengali', 'Hind Siliguri', 'Nirmala UI', sans-serif;
             background-color: #070b16;
             color: #f1f5f9;
             overflow-x: hidden;
@@ -131,6 +138,82 @@
             border-radius: 2px;
         }
 
+        /* 3D Flippable Smart NID Identity Card */
+        .id-card-3d-wrapper {
+            width: 100%;
+            max-width: 440px;
+            aspect-ratio: 1.586 / 1;
+            perspective: 1200px;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+        .id-card-3d-wrapper:hover {
+            transform: translateY(-4px) scale(1.01);
+        }
+        .id-card-3d-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.65s cubic-bezier(0.4, 0.0, 0.2, 1);
+            border-radius: 1.25rem;
+        }
+        .id-card-3d-inner.flipped {
+            transform: rotateY(180deg);
+        }
+        .id-card-face {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 1.25rem;
+            overflow: hidden;
+        }
+        .id-card-front {
+            z-index: 2;
+            transform: rotateY(0deg);
+        }
+        .id-card-back {
+            transform: rotateY(180deg);
+            z-index: 1;
+        }
+        .id-card-front .identity-card {
+            height: 100%;
+            max-width: 100%;
+            box-shadow: none;
+            transition: none;
+            transform: none !important;
+            padding: 1.15rem 1.35rem;
+        }
+        .identity-card-back {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0b132b 0%, #1e1b4b 50%, #082f49 100%);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 30px rgba(6, 182, 212, 0.2);
+            border-radius: 1.25rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1.15rem 1.35rem;
+            color: #ffffff;
+            position: relative;
+        }
+        .identity-card-back::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
         /* Subtle scrollbars */
         ::-webkit-scrollbar {
             width: 6px;
@@ -159,12 +242,6 @@
     {% block extra_head %}{% endblock %}
 </head>
 <body class="min-h-screen flex flex-col bg-navy-950 text-slate-100 antialiased selection:bg-cyan-500 selection:text-white">
-    <!-- Mandatory Synthetic Demo Banner -->
-    <aside aria-label="Synthetic Data Disclosure" class="w-full bg-gradient-to-r from-amber-950/90 via-slate-900 to-amber-950/90 border-b border-amber-500/30 text-amber-200 text-xs py-1.5 px-4 text-center font-mono tracking-wider flex items-center justify-center gap-2 z-50">
-        <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-amber-400 shrink-0"></i>
-        <span><strong>SYNTHETIC DEMO — NOT AN OFFICIAL DOCUMENT</strong> &bull; LandTech 2026 P3 Fraud & Double-Selling Research Benchmark</span>
-    </aside>
-
     <!-- Main Content Slot -->
     <div class="flex-1 flex flex-col">
         {% block content %}{% endblock %}
@@ -182,6 +259,11 @@
         });
 
         // Global Toast Notification Helper
+        function clearToasts() {
+            const container = document.getElementById('toast-container');
+            if (container) container.innerHTML = '';
+        }
+
         function showToast(message, type = 'info', duration = 4000) {
             const container = document.getElementById('toast-container');
             if (!container) return;
@@ -214,6 +296,23 @@
                 toast.classList.add('opacity-0', 'translate-y-2');
                 setTimeout(() => toast.remove(), 300);
             }, duration);
+        }
+
+        // Global Language Preference Switcher
+        async function setLanguagePreference(lang) {
+            try {
+                await fetch('/api/user/preferences', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ preferred_language: lang })
+                });
+            } catch (err) {
+                console.warn("Could not save preference via API:", err);
+            }
+            document.cookie = `landguard_lang=${lang};path=/;max-age=31536000;SameSite=Lax`;
+            const url = new URL(window.location.href);
+            url.searchParams.set('lang', lang);
+            window.location.href = url.toString();
         }
     </script>
     {% block extra_scripts %}{% endblock %}

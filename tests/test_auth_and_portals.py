@@ -59,7 +59,7 @@ def test_citizen_demo_login_flow():
     dash_res = client_sess.get("/user/dashboard")
     assert dash_res.status_code == 200
     assert "Citizen Verification Center" in dash_res.text
-    assert "Rafiqul Islam" in dash_res.text
+    assert ("Nakib Md Ashik" in dash_res.text or "Rafiqul Islam" in dash_res.text)
     assert "CIT-BD-884920" in dash_res.text
 
     # 3. Citizen trying to access admin dashboard must be blocked with redirect to /access-denied

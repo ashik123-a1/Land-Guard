@@ -75,8 +75,8 @@ def test_audit_logging_writes_to_sqlite_file():
         ip_address="127.0.0.1",
     )
 
-    # Directly verify in the SQLite database file using standard sqlite3
-    conn = sqlite3.connect("data/landguard_operational.db")
+    # Directly verify in the active SQLite database file using standard sqlite3
+    conn = sqlite3.connect(db.db_path)
     cur = conn.cursor()
     cur.execute("SELECT actor_id, action_type, target_entity, target_id FROM audit_events WHERE action_type = ?", (test_action,))
     row = cur.fetchone()
@@ -98,7 +98,7 @@ def test_existing_sqlite_tables_remain_intact():
         "notifications", "audit_events"
     }
 
-    conn = sqlite3.connect("data/landguard_operational.db")
+    conn = sqlite3.connect("file:data/landguard_operational.db?mode=ro", uri=True)
     cur = conn.cursor()
     cur.execute("SELECT name FROM sqlite_master WHERE type='table';")
     existing_tables = {r[0] for r in cur.fetchall()}

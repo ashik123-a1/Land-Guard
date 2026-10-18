@@ -47,126 +47,345 @@
 {% endblock %}
 
 {% block content %}
-<div class="flex-1 flex overflow-hidden">
-    <!-- Admin Operational Sidebar -->
-    <aside class="w-64 bg-navy-900 border-r border-slate-800 flex flex-col justify-between shrink-0 hidden md:flex">
-        <div>
-            <!-- Header -->
-            <div class="p-5 border-b border-slate-800 flex items-center gap-3">
-                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 border border-indigo-400/40">
-                    <i data-lucide="shield" class="w-5 h-5 text-white"></i>
+{% set is_investigator = (current_user and current_user.role == 'INVESTIGATOR') %}
+<div class="flex-1 flex overflow-hidden relative lg-portal-ambient-bg">
+    <!-- Desktop Authenticated React-Inspired Glass Operational Sidebar -->
+    <aside id="desktop-admin-sidebar" class="lg-sidebar w-64 flex flex-col justify-between shrink-0 hidden md:flex select-none p-3 m-2 rounded-[28px] border border-white/10 shadow-2xl relative z-10 backdrop-blur-2xl">
+        <div class="flex flex-col flex-1 min-h-0">
+            <!-- 1. Top Window Controls & Collapse Pill Button -->
+            <div class="flex items-center justify-between px-2 pt-1 pb-3 lg-sidebar-header-wrapper">
+                <div class="lg-window-dots">
+                    <span class="lg-dot-red"></span>
+                    <span class="lg-dot-yellow"></span>
+                    <span class="lg-dot-green"></span>
                 </div>
-                <div>
-                    <span class="text-base font-bold text-white tracking-tight">LandGuard</span>
-                    <span class="text-[10px] font-mono tracking-wider text-indigo-400 block uppercase font-medium">Ops &bull; Command Center</span>
+
+                <button type="button" id="admin-sidebar-collapse-btn" onclick="toggleAdminDesktopSidebar()"
+                        class="lg-collapse-pill focus:outline-none focus-visible:ring-1 {% if is_investigator %}focus-visible:ring-indigo-400{% else %}focus-visible:ring-emerald-400{% endif %}"
+                        title="Toggle Sidebar (Expand/Collapse)" aria-label="Toggle Sidebar">
+                    <span class="lg-sidebar-text text-[11px] font-medium">{{ _('Collapse') }}</span>
+                    <i id="admin-sidebar-toggle-icon" data-lucide="panel-left-close" class="w-3.5 h-3.5"></i>
+                </button>
+            </div>
+
+            <!-- 2. Staff Profile Card with Role Badge -->
+            <div class="lg-sidebar-top-profile mt-1 mb-3">
+                <div class="relative flex-shrink-0">
+                    {% if is_investigator %}
+                    <div class="w-9 h-9 rounded-xl bg-indigo-950 border border-indigo-500/40 text-[#A5B4FC] flex items-center justify-center font-bold text-xs ring-2 ring-white/10 shrink-0">
+                        {{ (current_user.full_name[:2] if current_user else 'IN')|upper }}
+                    </div>
+                    {% else %}
+                    <img src="/static/images/profile-nabil.jpg" alt="Senior Registrar Nabil" class="w-9 h-9 rounded-xl object-cover border border-emerald-500/40 ring-2 ring-white/10 shadow-sm shrink-0">
+                    {% endif %}
+                    <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-slate-900 rounded-full" title="Online"></span>
+                </div>
+                <div class="lg-sidebar-user-details truncate flex-1 min-w-0">
+                    <div class="flex items-center justify-between">
+                        <span class="font-semibold text-xs text-white truncate">
+                            {% if is_investigator %}
+                                {{ current_user.full_name if current_user and current_user.role == 'INVESTIGATOR' else 'Insp. S. Karim' }}
+                            {% else %}
+                                Senior Registrar Nabil
+                            {% endif %}
+                        </span>
+                        <i data-lucide="chevron-right" class="w-3 h-3 text-slate-500"></i>
+                    </div>
+                    <span class="text-[10px] font-mono {% if is_investigator %}text-[#A5B4FC]{% else %}text-emerald-400{% endif %} block truncate">
+                        {{ current_user.role if current_user else ('INVESTIGATOR' if is_investigator else 'ADMIN') }}
+                    </span>
                 </div>
             </div>
 
-            <!-- Admin Nav Links -->
-            <nav class="py-3 px-2 space-y-0.5 text-xs">
-                <a href="/admin/dashboard" class="flex items-center gap-3 px-3 py-2 rounded-xl font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all {% if active_page == 'dashboard' %}admin-nav-active{% endif %}">
-                    <i data-lucide="activity" class="w-4 h-4 text-indigo-400"></i>
-                    <span>Command Center</span>
+            <!-- 3. Quick Search Filter for Operational Modules -->
+            <div class="lg-sidebar-text lg-sidebar-search-box">
+                <i data-lucide="search" class="w-3.5 h-3.5 shrink-0 text-slate-400"></i>
+                <input type="text" id="admin-sidebar-search" oninput="filterSidebarNav('admin-nav', this.value)" placeholder="{{ _('Search modules...') }}" aria-label="{{ _('Search navigation') }}">
+            </div>
+
+            <!-- 4. Operational Navigation Links (React-style rounded-2xl buttons) -->
+            <nav id="admin-nav" class="flex-1 space-y-1 overflow-y-auto pr-0.5">
+                <div class="lg-sidebar-text lg-nav-section-title">
+                    {{ _('OPERATIONS') }}
+                </div>
+                <a href="/admin/dashboard" data-nav-label="command center dashboard" title="{{ _('Command Center') }}" class="lg-sidebar-item {% if active_page == 'dashboard' %}{% if is_investigator %}lg-sidebar-item-active-investigator{% else %}lg-sidebar-item-active-admin{% endif %} admin-nav-active{% endif %}">
+                    <i data-lucide="activity" class="w-4 h-4 shrink-0"></i>
+                    <span class="lg-sidebar-text truncate">{{ _('Command Center') }}</span>
                 </a>
-                <a href="/admin/verifications" class="flex items-center gap-3 px-3 py-2 rounded-xl font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all {% if active_page == 'verifications' %}admin-nav-active{% endif %}">
-                    <i data-lucide="check-square" class="w-4 h-4 text-indigo-400"></i>
-                    <span>Verification Queue</span>
+                <a href="/admin/verifications" data-nav-label="verification queue" title="{{ _('Verification Queue') }}" class="lg-sidebar-item {% if active_page == 'verifications' %}{% if is_investigator %}lg-sidebar-item-active-investigator{% else %}lg-sidebar-item-active-admin{% endif %} admin-nav-active{% endif %}">
+                    <i data-lucide="check-square" class="w-4 h-4 shrink-0"></i>
+                    <span class="lg-sidebar-text truncate flex-1">{{ _('Verification Queue') }}</span>
+                    <span class="lg-sidebar-badge px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">12</span>
                 </a>
-                <a href="/admin/cases" class="flex items-center gap-3 px-3 py-2 rounded-xl font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all {% if active_page == 'cases' %}admin-nav-active{% endif %}">
-                    <i data-lucide="folder-kanban" class="w-4 h-4 text-indigo-400"></i>
-                    <span>Investigation Docket</span>
+                <a href="/admin/cases" data-nav-label="investigation docket cases" title="{{ _('Investigation Docket') }}" class="lg-sidebar-item {% if active_page == 'cases' %}{% if is_investigator %}lg-sidebar-item-active-investigator{% else %}lg-sidebar-item-active-admin{% endif %} admin-nav-active{% endif %}">
+                    <i data-lucide="folder-kanban" class="w-4 h-4 shrink-0"></i>
+                    <span class="lg-sidebar-text truncate flex-1">{{ _('Investigation Docket') }}</span>
+                    <span class="lg-sidebar-badge px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">5</span>
                 </a>
-                <a href="/admin/parcels" class="flex items-center gap-3 px-3 py-2 rounded-xl font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all {% if active_page == 'parcels' %}admin-nav-active{% endif %}">
-                    <i data-lucide="layers" class="w-4 h-4 text-indigo-400"></i>
-                    <span>Cadastral Registry</span>
+                <a href="/admin/parcels" data-nav-label="cadastral registry parcels" title="{{ _('Cadastral Registry') }}" class="lg-sidebar-item {% if active_page == 'parcels' %}{% if is_investigator %}lg-sidebar-item-active-investigator{% else %}lg-sidebar-item-active-admin{% endif %} admin-nav-active{% endif %}">
+                    <i data-lucide="layers" class="w-4 h-4 shrink-0"></i>
+                    <span class="lg-sidebar-text truncate">{{ _('Cadastral Registry') }}</span>
                 </a>
-                <a href="/admin/reports" class="flex items-center gap-3 px-3 py-2 rounded-xl font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all {% if active_page == 'reports' %}admin-nav-active{% endif %}">
-                    <i data-lucide="file-check" class="w-4 h-4 text-indigo-400"></i>
-                    <span>Evidence Dossiers</span>
+                <a href="/admin/reports" data-nav-label="evidence dossiers reports" title="{{ _('Evidence Dossiers') }}" class="lg-sidebar-item {% if active_page == 'reports' %}{% if is_investigator %}lg-sidebar-item-active-investigator{% else %}lg-sidebar-item-active-admin{% endif %} admin-nav-active{% endif %}">
+                    <i data-lucide="file-check" class="w-4 h-4 shrink-0"></i>
+                    <span class="lg-sidebar-text truncate">{{ _('Evidence Dossiers') }}</span>
                 </a>
-                <a href="/admin/analytics" class="flex items-center gap-3 px-3 py-2 rounded-xl font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all {% if active_page == 'analytics' %}admin-nav-active{% endif %}">
-                    <i data-lucide="bar-chart-3" class="w-4 h-4 text-indigo-400"></i>
-                    <span>Analytics &amp; Metrics</span>
+
+                <div class="lg-sidebar-text lg-nav-section-title pt-2">
+                    {{ _('GOVERNANCE') }}
+                </div>
+                <a href="/admin/analytics" data-nav-label="analytics metrics" title="{{ _('Analytics & Metrics') }}" class="lg-sidebar-item {% if active_page == 'analytics' %}{% if is_investigator %}lg-sidebar-item-active-investigator{% else %}lg-sidebar-item-active-admin{% endif %} admin-nav-active{% endif %}">
+                    <i data-lucide="bar-chart-3" class="w-4 h-4 shrink-0"></i>
+                    <span class="lg-sidebar-text truncate">{{ _('Analytics & Metrics') }}</span>
                 </a>
-                <a href="/admin/audit" class="flex items-center gap-3 px-3 py-2 rounded-xl font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all {% if active_page == 'audit' %}admin-nav-active{% endif %}">
-                    <i data-lucide="history" class="w-4 h-4 text-indigo-400"></i>
-                    <span>Immutable Audit Log</span>
+                <a href="/admin/audit" data-nav-label="immutable audit log" title="{{ _('Immutable Audit Log') }}" class="lg-sidebar-item {% if active_page == 'audit' %}{% if is_investigator %}lg-sidebar-item-active-investigator{% else %}lg-sidebar-item-active-admin{% endif %} admin-nav-active{% endif %}">
+                    <i data-lucide="history" class="w-4 h-4 shrink-0"></i>
+                    <span class="lg-sidebar-text truncate">{{ _('Immutable Audit Log') }}</span>
                 </a>
-                <a href="/admin/users" class="flex items-center gap-3 px-3 py-2 rounded-xl font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all {% if active_page == 'users' %}admin-nav-active{% endif %}">
-                    <i data-lucide="users" class="w-4 h-4 text-indigo-400"></i>
-                    <span>User Directory</span>
+                <a href="/admin/users" data-nav-label="user directory users" title="{{ _('User Directory') }}" class="lg-sidebar-item {% if active_page == 'users' %}{% if is_investigator %}lg-sidebar-item-active-investigator{% else %}lg-sidebar-item-active-admin{% endif %} admin-nav-active{% endif %}">
+                    <i data-lucide="users" class="w-4 h-4 shrink-0"></i>
+                    <span class="lg-sidebar-text truncate">{{ _('User Directory') }}</span>
                 </a>
-                <a href="/admin/models" class="flex items-center gap-3 px-3 py-2 rounded-xl font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all {% if active_page == 'models' %}admin-nav-active{% endif %}">
-                    <i data-lucide="cpu" class="w-4 h-4 text-indigo-400"></i>
-                    <span>AI Model Ops</span>
+                <a href="/admin/models" data-nav-label="ai model ops models xgboost" title="{{ _('AI Model Ops') }}" class="lg-sidebar-item {% if active_page == 'models' %}{% if is_investigator %}lg-sidebar-item-active-investigator{% else %}lg-sidebar-item-active-admin{% endif %} admin-nav-active{% endif %}">
+                    <i data-lucide="cpu" class="w-4 h-4 shrink-0"></i>
+                    <span class="lg-sidebar-text truncate">{{ _('AI Model Ops') }}</span>
                 </a>
-                <a href="/admin/system" class="flex items-center gap-3 px-3 py-2 rounded-xl font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all {% if active_page == 'system' %}admin-nav-active{% endif %}">
-                    <i data-lucide="server" class="w-4 h-4 text-indigo-400"></i>
-                    <span>System Health</span>
+                <a href="/admin/system" data-nav-label="system health status" title="{{ _('System Health') }}" class="lg-sidebar-item {% if active_page == 'system' %}{% if is_investigator %}lg-sidebar-item-active-investigator{% else %}lg-sidebar-item-active-admin{% endif %} admin-nav-active{% endif %}">
+                    <i data-lucide="server" class="w-4 h-4 shrink-0"></i>
+                    <span class="lg-sidebar-text truncate">{{ _('System Health') }}</span>
                 </a>
-                <a href="/admin/settings" class="flex items-center gap-3 px-3 py-2 rounded-xl font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all {% if active_page == 'settings' %}admin-nav-active{% endif %}">
-                    <i data-lucide="sliders" class="w-4 h-4 text-indigo-400"></i>
-                    <span>SLA &amp; Rulesets</span>
+                <a href="/admin/settings" data-nav-label="sla rulesets settings" title="{{ _('SLA & Rulesets') }}" class="lg-sidebar-item {% if active_page == 'settings' %}{% if is_investigator %}lg-sidebar-item-active-investigator{% else %}lg-sidebar-item-active-admin{% endif %} admin-nav-active{% endif %}">
+                    <i data-lucide="sliders" class="w-4 h-4 shrink-0"></i>
+                    <span class="lg-sidebar-text truncate">{{ _('SLA & Rulesets') }}</span>
                 </a>
             </nav>
         </div>
 
-        <!-- Staff Profile Pill -->
-        <div class="p-3 border-t border-slate-800">
-            <div class="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center justify-between">
-                <div class="flex items-center gap-2.5 min-w-0">
-                    <div class="w-8 h-8 rounded-lg bg-indigo-950 border border-indigo-500/40 flex items-center justify-center text-indigo-300 font-bold text-xs shrink-0">
-                        {{ (current_user.full_name[:2] if current_user else 'AD')|upper }}
+        <!-- 5. Bottom Dedicated Logout Button -->
+        <div class="pt-2.5 mt-auto border-t border-slate-800/80 shrink-0">
+            <a href="/logout" data-nav-label="logout" title="{{ _('Sign Out') }}"
+               class="lg-sidebar-item group flex items-center gap-2.5 px-3 py-2.5 rounded-2xl text-xs font-semibold text-rose-300 hover:text-white bg-rose-950/40 hover:bg-rose-900/60 border border-rose-500/30 hover:border-rose-400/70 transition-all shadow-md shadow-rose-950/30">
+                <i data-lucide="log-out" class="w-4 h-4 text-rose-400 group-hover:text-rose-200 shrink-0 transition-transform group-hover:-translate-x-0.5"></i>
+                <span class="lg-sidebar-text truncate font-bold tracking-wide">{{ _('Sign Out') }}</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Mobile Off-Canvas Drawer Backdrop -->
+    <div id="admin-mobile-drawer-backdrop" class="lg-mobile-backdrop md:hidden" onclick="closeAdminMobileDrawer()"></div>
+
+    <!-- Mobile Off-Canvas Glass Drawer -->
+    <aside id="admin-mobile-drawer" class="lg-mobile-drawer lg-sidebar md:hidden flex flex-col justify-between p-4" aria-label="Staff Mobile Navigation">
+        <div class="flex flex-col flex-1 min-h-0">
+            <!-- Mobile Drawer Header -->
+            <div class="pb-4 border-b border-slate-800 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <div class="lg-window-dots">
+                        <span class="lg-dot-red"></span>
+                        <span class="lg-dot-yellow"></span>
+                        <span class="lg-dot-green"></span>
                     </div>
-                    <div class="truncate">
-                        <div class="text-xs font-bold text-white truncate">{{ current_user.full_name if current_user else 'Authorized Officer' }}</div>
-                        <div class="text-[10px] text-indigo-400 font-mono">{{ current_user.role if current_user else 'ADMIN' }}</div>
-                    </div>
+                    <span class="text-sm font-bold text-white ml-2">LandGuard Ops</span>
                 </div>
-                <a href="/logout" title="Sign Out" class="text-slate-400 hover:text-rose-400 p-1.5 rounded-lg hover:bg-slate-800 transition-colors">
-                    <i data-lucide="log-out" class="w-4 h-4"></i>
-                </a>
+                <button type="button" onclick="closeAdminMobileDrawer()" class="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800" aria-label="Close menu">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
             </div>
+
+            <!-- Mobile Nav Links -->
+            <nav class="py-4 space-y-1 text-xs flex-1 overflow-y-auto">
+                <a href="/admin/dashboard" class="lg-sidebar-item {% if active_page == 'dashboard' %}{% if is_investigator %}lg-sidebar-item-active-investigator{% else %}lg-sidebar-item-active-admin{% endif %} admin-nav-active{% endif %}">
+                    <i data-lucide="activity" class="w-4 h-4"></i>
+                    <span>{{ _('Command Center') }}</span>
+                </a>
+                <a href="/admin/verifications" class="lg-sidebar-item {% if active_page == 'verifications' %}{% if is_investigator %}lg-sidebar-item-active-investigator{% else %}lg-sidebar-item-active-admin{% endif %} admin-nav-active{% endif %}">
+                    <i data-lucide="check-square" class="w-4 h-4"></i>
+                    <span>{{ _('Verification Queue') }}</span>
+                </a>
+                <a href="/admin/cases" class="lg-sidebar-item {% if active_page == 'cases' %}{% if is_investigator %}lg-sidebar-item-active-investigator{% else %}lg-sidebar-item-active-admin{% endif %} admin-nav-active{% endif %}">
+                    <i data-lucide="folder-kanban" class="w-4 h-4"></i>
+                    <span>{{ _('Investigation Docket') }}</span>
+                </a>
+                <a href="/admin/parcels" class="lg-sidebar-item {% if active_page == 'parcels' %}{% if is_investigator %}lg-sidebar-item-active-investigator{% else %}lg-sidebar-item-active-admin{% endif %} admin-nav-active{% endif %}">
+                    <i data-lucide="layers" class="w-4 h-4"></i>
+                    <span>{{ _('Cadastral Registry') }}</span>
+                </a>
+                <a href="/admin/reports" class="lg-sidebar-item {% if active_page == 'reports' %}{% if is_investigator %}lg-sidebar-item-active-investigator{% else %}lg-sidebar-item-active-admin{% endif %} admin-nav-active{% endif %}">
+                    <i data-lucide="file-check" class="w-4 h-4"></i>
+                    <span>{{ _('Evidence Dossiers') }}</span>
+                </a>
+                <a href="/admin/analytics" class="lg-sidebar-item {% if active_page == 'analytics' %}{% if is_investigator %}lg-sidebar-item-active-investigator{% else %}lg-sidebar-item-active-admin{% endif %} admin-nav-active{% endif %}">
+                    <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
+                    <span>{{ _('Analytics & Metrics') }}</span>
+                </a>
+                <a href="/admin/audit" class="lg-sidebar-item {% if active_page == 'audit' %}{% if is_investigator %}lg-sidebar-item-active-investigator{% else %}lg-sidebar-item-active-admin{% endif %} admin-nav-active{% endif %}">
+                    <i data-lucide="history" class="w-4 h-4"></i>
+                    <span>{{ _('Immutable Audit Log') }}</span>
+                </a>
+                <a href="/admin/users" class="lg-sidebar-item {% if active_page == 'users' %}{% if is_investigator %}lg-sidebar-item-active-investigator{% else %}lg-sidebar-item-active-admin{% endif %} admin-nav-active{% endif %}">
+                    <i data-lucide="users" class="w-4 h-4"></i>
+                    <span>{{ _('User Directory') }}</span>
+                </a>
+                <a href="/admin/models" class="lg-sidebar-item {% if active_page == 'models' %}{% if is_investigator %}lg-sidebar-item-active-investigator{% else %}lg-sidebar-item-active-admin{% endif %} admin-nav-active{% endif %}">
+                    <i data-lucide="cpu" class="w-4 h-4"></i>
+                    <span>{{ _('AI Model Ops') }}</span>
+                </a>
+                <a href="/admin/system" class="lg-sidebar-item {% if active_page == 'system' %}{% if is_investigator %}lg-sidebar-item-active-investigator{% else %}lg-sidebar-item-active-admin{% endif %} admin-nav-active{% endif %}">
+                    <i data-lucide="server" class="w-4 h-4"></i>
+                    <span>{{ _('System Health') }}</span>
+                </a>
+                <a href="/admin/settings" class="lg-sidebar-item {% if active_page == 'settings' %}{% if is_investigator %}lg-sidebar-item-active-investigator{% else %}lg-sidebar-item-active-admin{% endif %} admin-nav-active{% endif %}">
+                    <i data-lucide="sliders" class="w-4 h-4"></i>
+                    <span>{{ _('SLA & Rulesets') }}</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- Mobile Drawer Bottom Sign Out -->
+        <div class="pt-3 border-t border-slate-800 shrink-0">
+            <a href="/logout" class="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl text-xs font-semibold text-rose-300 hover:text-white bg-rose-950/40 hover:bg-rose-900/60 border border-rose-500/30 transition-all shadow-sm">
+                <i data-lucide="log-out" class="w-4 h-4 text-rose-400"></i>
+                <span>{{ _('Sign Out') }}</span>
+            </a>
         </div>
     </aside>
 
     <!-- Main Content Area -->
-    <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+    <div class="flex-1 flex flex-col min-w-0 overflow-y-auto relative z-10">
         <!-- Topbar -->
-        <header class="h-16 bg-navy-900/70 border-b border-slate-800 px-6 flex items-center justify-between shrink-0">
+        <header class="h-16 bg-navy-900/70 backdrop-blur-md border-b border-slate-800 px-6 flex items-center justify-between shrink-0">
             <div class="flex items-center gap-3">
-                <button class="md:hidden text-slate-400 hover:text-white">
+                <button type="button" id="admin-mobile-menu-trigger" onclick="openAdminMobileDrawer()" class="md:hidden text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800" aria-label="Open staff navigation menu">
                     <i data-lucide="menu" class="w-5 h-5"></i>
                 </button>
                 <div class="flex items-center gap-2 text-xs font-medium text-slate-400">
-                    <span class="text-indigo-400">Operations</span>
+                    <span class="{% if is_investigator %}text-[#A5B4FC]{% else %}text-emerald-400{% endif %}">
+                        {% if is_investigator %}{{ _('Investigation Docket') }}{% else %}{{ _('Operations') }}{% endif %}
+                    </span>
                     <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-600"></i>
                     <span class="text-white capitalize">{{ active_page|replace('_', ' ') }}</span>
                 </div>
             </div>
 
             <div class="flex items-center gap-3">
-                <div class="hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-950/60 border border-indigo-500/30 text-[11px] font-mono text-indigo-300">
+                <div class="hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full {% if is_investigator %}bg-indigo-950/60 border-indigo-500/30 text-[#A5B4FC]{% else %}bg-emerald-950/60 border-emerald-500/30 text-emerald-300{% endif %} border text-[11px] font-mono">
                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span>XGBOOST RISK ENGINE ONLINE</span>
+                    <span>{{ _('XGBOOST RISK ENGINE ONLINE') }}</span>
+                </div>
+
+                <!-- Language Switcher Pill -->
+                <div class="inline-flex items-center rounded-xl p-0.5 bg-slate-900/90 border border-slate-700/80 text-[11px] font-mono shadow-inner">
+                    <button type="button" onclick="setLanguagePreference('en')" class="px-2.5 py-1 rounded-lg transition-all {% if (current_lang or 'bn') == 'en' %}bg-cyan-500 text-slate-950 font-bold shadow-sm{% else %}text-slate-400 hover:text-white{% endif %}">EN</button>
+                    <button type="button" onclick="setLanguagePreference('bn')" class="px-2.5 py-1 rounded-lg transition-all {% if (current_lang or 'bn') == 'bn' %}bg-cyan-500 text-slate-950 font-bold shadow-sm{% else %}text-slate-400 hover:text-white{% endif %}">বাংলা</button>
+                </div>
+
+                <!-- Persistent Hands-Free Voice Assistant Topbar Pill -->
+                <div id="topbar-voice-pill" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-900/90 border border-slate-700/80 text-xs font-mono text-slate-300 shadow-md">
+                    <button type="button" id="handsFreeToggleBtn" onclick="window.toggleHandsFreeMode()" class="flex items-center gap-2 focus:outline-none" title="Toggle Hands-Free Voice Assistant ('Hello Daffodil')">
+                        <span id="handsFreeDot" class="w-2.5 h-2.5 rounded-full bg-slate-500"></span>
+                        <span id="handsFreeLabel" class="text-[11px] font-semibold text-slate-300">Hands-Free: OFF</span>
+                    </button>
+                    <button type="button" id="stopSpeechBtn" onclick="window.handleStopDaffodil()" class="text-slate-500 hover:text-rose-400 p-0.5 ml-1 transition-colors" title="Deactivate Hands-Free ('Stop Daffodil')">
+                        <i data-lucide="square" class="w-3 h-3"></i>
+                    </button>
+                </div>
+                <!-- Hidden DOM hooks for test assertions and voice routing compatibility -->
+                <div id="voice-layout-hidden-hooks" class="hidden">
+                    <span id="spoken-en"></span>
+                    <span id="spoken-bn"></span>
+                    <div id="response-card" class="hidden"></div>
+                    <div id="action-container"></div>
+                    <input type="text" id="voice-text-input">
                 </div>
 
                 <a href="/user/dashboard" class="px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white glass-panel hover:bg-slate-800 transition-colors flex items-center gap-1.5">
                     <i data-lucide="eye" class="w-3.5 h-3.5 text-cyan-400"></i>
-                    <span class="hidden sm:inline">Citizen View</span>
+                    <span class="hidden sm:inline">{{ _('Citizen View') }}</span>
                 </a>
 
                 <a href="/logout" class="px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-rose-300 glass-panel hover:bg-slate-800 transition-colors flex items-center gap-1.5">
                     <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
-                    <span class="hidden sm:inline">Logout</span>
+                    <span class="hidden sm:inline">{{ _('Logout') }}</span>
                 </a>
             </div>
         </header>
 
         <!-- Page View -->
-        <main class="flex-1 p-6 lg:p-8 max-w-7xl w-full mx-auto">
+        <main class="flex-1 w-full max-w-[1440px] mx-auto p-4 sm:p-6 lg:p-8">
             {% block portal_content %}{% endblock %}
         </main>
     </div>
 </div>
+
+<script>
+    // Live Search Filter for Admin Sidebar
+    function filterSidebarNav(containerId, query) {
+        const q = (query || '').toLowerCase().trim();
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        const items = container.querySelectorAll('.lg-sidebar-item');
+        items.forEach(el => {
+            const text = (el.getAttribute('data-nav-label') || '') + ' ' + (el.innerText || '');
+            if (!q || text.toLowerCase().includes(q)) {
+                el.style.display = 'flex';
+            } else {
+                el.style.display = 'none';
+            }
+        });
+    }
+
+    // Admin Desktop Sidebar Collapsible State Controller
+    function applyAdminSidebarState(collapsed) {
+        const sidebar = document.getElementById('desktop-admin-sidebar');
+        const icon = document.getElementById('admin-sidebar-toggle-icon');
+        if (!sidebar) return;
+
+        if (collapsed) {
+            sidebar.classList.add('collapsed');
+            if (icon) icon.setAttribute('data-lucide', 'panel-left-open');
+        } else {
+            sidebar.classList.remove('collapsed');
+            if (icon) icon.setAttribute('data-lucide', 'panel-left-close');
+        }
+        if (window.lucide) window.lucide.createIcons();
+    }
+
+    function toggleAdminDesktopSidebar() {
+        const isCurrentlyCollapsed = localStorage.getItem('landguard_admin_sidebar_collapsed') === 'true';
+        const newState = !isCurrentlyCollapsed;
+        localStorage.setItem('landguard_admin_sidebar_collapsed', newState ? 'true' : 'false');
+        applyAdminSidebarState(newState);
+    }
+
+    // Mobile Drawer Controller
+    function openAdminMobileDrawer() {
+        const drawer = document.getElementById('admin-mobile-drawer');
+        const backdrop = document.getElementById('admin-mobile-drawer-backdrop');
+        if (drawer) drawer.classList.add('open');
+        if (backdrop) backdrop.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeAdminMobileDrawer() {
+        const drawer = document.getElementById('admin-mobile-drawer');
+        const backdrop = document.getElementById('admin-mobile-drawer-backdrop');
+        if (drawer) drawer.classList.remove('open');
+        if (backdrop) backdrop.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    // Keyboard Accessibility: Escape key closes drawer
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeAdminMobileDrawer();
+        }
+    });
+
+    // Initialize state on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        const isCollapsed = localStorage.getItem('landguard_admin_sidebar_collapsed') === 'true';
+        applyAdminSidebarState(isCollapsed);
+    });
+</script>
+<script src="/static/js/voice_controller.js?v=20261018-01"></script>
 {% endblock %}

@@ -1,28 +1,25 @@
 {% extends "admin/layout.html" %}
+{% import "components/ui_components.html" as ui %}
 
 {% block title %}Investigation Docket — LandGuard Operations{% endblock %}
 
 {% block portal_content %}
 <div class="space-y-6">
     <!-- Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Investigation Case Docket</h1>
-            <p class="text-xs sm:text-sm text-slate-400 mt-1">Official registry dispute management, officer assignments, and statutory findings.</p>
-        </div>
-        <div class="text-xs font-mono text-indigo-400 px-3 py-1.5 rounded-xl bg-indigo-950/60 border border-indigo-500/30">
-            {{ cases|length }} Active Cases
-        </div>
-    </div>
+    {{ ui.page_header(
+        title=_('Investigation Case Docket'),
+        subtitle=_('Official registry dispute management, officer assignments, and statutory findings.'),
+        badge=(cases|length|string ~ " " ~ _('Active Cases'))
+    ) }}
 
     <!-- Filter Bar -->
     <div class="flex items-center gap-2 overflow-x-auto pb-2 text-xs">
-        <span class="text-[11px] font-mono text-slate-400 uppercase mr-2">Status Filter:</span>
-        <a href="/admin/cases" class="px-3 py-1.5 rounded-lg bg-indigo-950 text-indigo-300 border border-indigo-500/40 font-semibold">All Cases</a>
-        <a href="/admin/cases?status=UNDER_REVIEW" class="px-3 py-1.5 rounded-lg bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700">Under Review</a>
-        <a href="/admin/cases?status=OPEN" class="px-3 py-1.5 rounded-lg bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700">Open</a>
-        <a href="/admin/cases?priority=CRITICAL" class="px-3 py-1.5 rounded-lg bg-slate-900 text-rose-300 border border-slate-800 hover:border-rose-500/40">Critical Priority</a>
-        <a href="/admin/cases?status=RESOLVED" class="px-3 py-1.5 rounded-lg bg-slate-900 text-emerald-300 border border-slate-800 hover:border-emerald-500/40">Resolved</a>
+        <span class="text-[11px] font-mono text-slate-400 uppercase mr-2">{{ _('Status Filter:') }}</span>
+        <a href="/admin/cases" class="px-3 py-1.5 rounded-lg bg-indigo-950 text-indigo-300 border border-indigo-500/40 font-semibold">{{ _('All Cases') }}</a>
+        <a href="/admin/cases?status=UNDER_REVIEW" class="px-3 py-1.5 rounded-lg bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700">{{ _('Under Review') }}</a>
+        <a href="/admin/cases?status=OPEN" class="px-3 py-1.5 rounded-lg bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700">{{ _('Open') }}</a>
+        <a href="/admin/cases?priority=CRITICAL" class="px-3 py-1.5 rounded-lg bg-slate-900 text-rose-300 border border-slate-800 hover:border-rose-500/40">{{ _('Critical Priority') }}</a>
+        <a href="/admin/cases?status=RESOLVED" class="px-3 py-1.5 rounded-lg bg-slate-900 text-emerald-300 border border-slate-800 hover:border-emerald-500/40">{{ _('Resolved') }}</a>
     </div>
 
     <!-- Cases Table -->
@@ -31,14 +28,14 @@
             <table class="w-full text-left text-xs font-mono">
                 <thead class="bg-slate-900/80 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
                     <tr>
-                        <th class="p-4">Case ID</th>
-                        <th class="p-4">Case Title &amp; Scope</th>
-                        <th class="p-4">Dag Plot #</th>
-                        <th class="p-4">Priority</th>
-                        <th class="p-4">Status</th>
-                        <th class="p-4">Assigned Investigator</th>
-                        <th class="p-4">Last Updated</th>
-                        <th class="p-4 text-right">Action</th>
+                        <th class="p-4">{{ _('Case ID') }}</th>
+                        <th class="p-4">{{ _('Case Title & Scope') }}</th>
+                        <th class="p-4">{{ _('Dag Plot #') }}</th>
+                        <th class="p-4">{{ _('Priority') }}</th>
+                        <th class="p-4">{{ _('Status') }}</th>
+                        <th class="p-4">{{ _('Assigned Investigator') }}</th>
+                        <th class="p-4">{{ _('Last Updated') }}</th>
+                        <th class="p-4 text-right">{{ _('Action') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-800/60 text-slate-300">
@@ -47,24 +44,20 @@
                         <td class="p-4 font-bold text-indigo-300">{{ c.case_id }}</td>
                         <td class="p-4 font-sans">
                             <div class="font-bold text-white text-xs line-clamp-1">{{ c.title }}</div>
-                            <div class="text-[10px] text-slate-400 font-mono">Deed: {{ c.deed_number }}</div>
+                            <div class="text-[10px] text-slate-400 font-mono">{{ _('Deed Reference') }}: {{ c.deed_number }}</div>
                         </td>
                         <td class="p-4 text-cyan-400 font-bold">#{{ c.dag_plot_number }}</td>
                         <td class="p-4">
-                            <span class="inline-flex px-2 py-0.5 rounded text-[10px] font-bold {% if c.priority == 'CRITICAL' %}bg-rose-950 text-rose-300 border border-rose-800/40{% elif c.priority == 'HIGH' %}bg-amber-950 text-amber-300 border border-amber-800/40{% else %}bg-slate-800 text-slate-400{% endif %}">
-                                {{ c.priority }}
-                            </span>
+                            {{ ui.priority_badge(c.priority) }}
                         </td>
                         <td class="p-4">
-                            <span class="inline-flex px-2 py-0.5 rounded text-[10px] font-semibold {% if c.status == 'UNDER_REVIEW' %}bg-indigo-950 text-indigo-300 border border-indigo-800/40{% elif c.status == 'RESOLVED' %}bg-emerald-950 text-emerald-300 border border-emerald-800/40{% else %}bg-slate-800 text-slate-300{% endif %}">
-                                {{ c.status }}
-                            </span>
+                            {{ ui.status_badge(c.status) }}
                         </td>
                         <td class="p-4 font-sans text-slate-300">{{ c.assigned_officer }}</td>
                         <td class="p-4 text-slate-500">{{ c.updated_at[:10] }}</td>
                         <td class="p-4 text-right font-sans">
                             <a href="/admin/cases/{{ c.case_id }}" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-indigo-600/80 hover:bg-indigo-600 border border-indigo-500/30 transition-colors inline-flex items-center gap-1">
-                                <span>Workspace</span>
+                                <span>{{ _('Workspace') }}</span>
                                 <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
                             </a>
                         </td>
@@ -72,7 +65,7 @@
                     {% else %}
                     <tr>
                         <td colspan="8" class="p-8 text-center text-slate-500 font-sans">
-                            No cases found in this category.
+                            {{ _('No cases found in this category.') }}
                         </td>
                     </tr>
                     {% endfor %}
