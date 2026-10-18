@@ -52,28 +52,10 @@ from src.landguard_web.routers import (
     analytics_router,
 )
 
-from contextlib import asynccontextmanager
-import threading
-
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    # Pre-warm heavy ONNX models in background thread so first document scan is fast
-    def _warmup():
-        try:
-            from src.landguard_vision.run_ocr import get_rapid_ocr
-            get_rapid_ocr()
-        except Exception:
-            pass
-    threading.Thread(target=_warmup, daemon=True).start()
-    yield
-
-
 app = FastAPI(
     title="LandGuard AI Land Record Verification",
     description="Statutory land deed verification, bilingual OCR, and multi-modal risk assessment.",
     version="2.0.0",
-    lifespan=lifespan,
 )
 
 # CORS configuration for cross-origin / reverse-proxy deployments

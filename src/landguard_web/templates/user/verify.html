@@ -1785,64 +1785,27 @@
         const formData = new FormData();
         formData.append('file', file);
 
-        let watchDogSecs = 0;
-        const watchDogInterval = setInterval(() => {
-            watchDogSecs += 1;
-            if (watchDogSecs === 8) {
-                const termMsg = document.createElement('div');
-                termMsg.className = "text-cyan-300 font-mono text-[11px]";
-                termMsg.innerHTML = "> {{ _('Deep neural feature extraction active on cloud worker... please hold.') }}";
-                terminal.appendChild(termMsg);
-                terminal.scrollTop = terminal.scrollHeight;
-                document.getElementById('scan-status-summary').textContent = "{{ _('Deep Neural Feature Extraction Active...') }}";
-            } else if (watchDogSecs === 18) {
-                const termMsg = document.createElement('div');
-                termMsg.className = "text-amber-300 font-mono text-[11px]";
-                termMsg.innerHTML = "> {{ _('Cloud CPU analyzing cadastral table and tamper contours...') }}";
-                terminal.appendChild(termMsg);
-                terminal.scrollTop = terminal.scrollHeight;
-            }
-        }, 1000);
-
         fetch('/api/upload', { method: 'POST', body: formData })
             .then(async (res) => {
+                const data = await res.json();
                 clearInterval(scanAnimationInterval);
                 clearInterval(vortexInterval);
-                clearInterval(watchDogInterval);
 
-                let data = null;
-                const contentType = res.headers.get('content-type') || '';
-                if (contentType.includes('application/json')) {
-                    try {
-                        data = await res.json();
-                    } catch (e) {
-                        data = { detail: "{{ _('Failed to parse response from server.') }}" };
-                    }
-                } else {
-                    const text = await res.text();
-                    if (res.status === 504 || res.status === 502) {
-                        data = { detail: "{{ _('Cloud server cold-start / gateway timeout. The container was waking up. Please retry in a few seconds.') }}" };
-                    } else {
-                        data = { detail: `{{ _('Server returned status') }} ${res.status}. {{ _('Please try again or use Manual Entry.') }}` };
-                    }
-                }
-
-                if (!res.ok || !data) {
+                if (!res.ok) {
+                    // STOP scanning and return to Step 1 with prominent error banner
                     resetToStep1();
 
                     const errBanner = document.getElementById('upload-error-banner');
                     const errTitle = document.getElementById('upload-error-title');
                     const errMsg = document.getElementById('upload-error-message');
 
-                    const detailText = (data && data.detail) ? data.detail : "{{ _('Document Processing Error') }}";
+                    const detailText = data.detail || "{{ _('Document Not Recognized as a Land Record') }}";
                     if (errTitle) errTitle.textContent = detailText;
                     if (errMsg) {
                         if (detailText.includes('Unable to identify')) {
                             errMsg.textContent = "{{ _('Image resolution or contrast is insufficient to extract official land deed records. Please provide a higher resolution scan or use Manual Entry.') }}";
-                        } else if (detailText.includes('cold-start') || detailText.includes('timeout')) {
-                            errMsg.textContent = "{{ _('Render Free Tier spins down when idle and took over 50s to wake up. It is now warm and ready! Please re-upload or use Manual Entry.') }}";
                         } else {
-                            errMsg.textContent = "{{ _('The uploaded image could not be processed into statutory land records. Try a clear document or enter details manually.') }}";
+                            errMsg.textContent = "{{ _('The uploaded image does not contain statutory land records (missing Mouza, Dag/Plot, Khatian, or Deed markers). Try a genuine land document or enter details manually.') }}";
                         }
                     }
                     if (errBanner) errBanner.classList.remove('hidden');
@@ -1907,7 +1870,6 @@
             .catch((err) => {
                 clearInterval(scanAnimationInterval);
                 clearInterval(vortexInterval);
-                clearInterval(watchDogInterval);
                 resetToStep1();
 
                 const errBanner = document.getElementById('upload-error-banner');
