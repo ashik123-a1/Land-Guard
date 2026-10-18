@@ -309,6 +309,28 @@ flowchart TD
     style TierOutput fill:#022c22,stroke:#34d399,stroke-width:2px,color:#ecfdf5
 ```
 
+### 📊 Empirical Machine Learning Evaluation & Accuracy Benchmarks
+
+To ensure scientific transparency and evaluate out-of-distribution robustness, the supplementary XGBoost model (19 engineered cadastral features) was evaluated across two distinct empirical testing regimes ($N=500$ unseen test samples each):
+
+| Metric / Parameter | Regime A: Standard Holdout Test Set | Regime B: Zero-Leakage Group-Disjoint Stress Test | Target / Statutory Standard | Status |
+| :--- | :---: | :---: | :---: | :---: |
+| **Test Sample Size ($N$)** | $N = 500$ | $N = 500$ | Independent unseen test cohort | PASS |
+| **Split Strategy** | `template_cohort` holdout split | 4-way group disjoint (`parcel_id`, `seller_id`, `scenario_id`, `cohort`) | Strict 0-leakage partition | PASS |
+| **Decision Threshold ($\tau$)** | $\tau = 0.50$ | $\tau = 0.41$ (Optimal calibrated operating point) | Tuned on validation split | PASS |
+| **Accuracy** | **99.80%** (`0.9980`) | **98.20%** (`0.9820`) | $\ge 95.0\%$ | PASS |
+| **Precision** | **99.70%** (`0.9970`) | **97.92%** (`0.9792`) | $\ge 95.0\%$ | PASS |
+| **Recall (Sensitivity)** | **100.00%** (`1.0000`) | **99.40%** (`0.9940`) | $\ge 98.0\%$ (Fraud capture) | PASS |
+| **F1-Score** | **0.9985** | **0.9865** | $\ge 0.9600$ | PASS |
+| **ROC-AUC** | **1.0000** | **0.9994** | $\ge 0.9800$ | PASS |
+| **Brier Score** | **0.0013** | **0.0104** | $\le 0.0500$ (Optimal probability calibration) | PASS |
+| **Calibration Error (ECE)** | **0.0110** (1.1%) | **0.0142** (1.4%) | $\le 0.0500$ | PASS |
+| **Confusion Matrix** | TN: 167, FP: 1, FN: 0, TP: 332 | TN: 161, FP: 7, FN: 2, TP: 330 | $N = 500$ | PASS |
+
+> **Evaluation Setup Note**:  
+> - **Regime A** reflects standard in-distribution benchmark performance on unseen deed documents from known administrative cohorts (recorded in `models/model_metadata.json`).  
+> - **Regime B** evaluates operational out-of-distribution generalization under strict group-disjoint partitioning where no parcel, seller, or scenario from the training set appears in the test set (recorded in `reports/independent_ml_metrics.json` and `reports/LANDGUARD_FINAL_ACCEPTANCE_QA.md`).
+
 ---
 
 ## 5. Cadastral Survey Chain Lineage & Graph Topology Engine
@@ -773,9 +795,9 @@ In compliance with LandTech 2026 competition evaluation criteria and open-scienc
 | :--- | :--- | :--- | :--- |
 | **Bilingual OCR** | **RapidOCR (ONNX)** + **Tesseract 5.4** | Extracts Bengali and English text, schedule tables, dag/plot numbers, execution dates, and deed numbers from uploaded deed images. | Open-source pre-trained ONNX DBNet detection and CRNN recognition models (`rapidocr-onnxruntime`) paired with bilingual Bengali (`ben`) & English (`eng`) Tesseract traineddata. |
 | **Forensic Computer Vision** | **OpenCV 4.8+** (ELA, Otsu, Contours) | Error Level Analysis (ELA) for paste-over detection, adaptive thresholding, seal presence detection, and signature bounding extraction. | Deterministic image processing algorithms running locally; no external generative tampering or synthetic hallucination. |
-| **Non-Linear Risk Scoring** | **XGBoost Classifier** (`models/xgboost_risk_model.joblib`) | Evaluates 18 engineered cadastral features to calculate an empirical risk probability score ($[0, 100]$). | Frozen scikit-learn/joblib artifact trained on stratified benchmark splits (`train_stratified.csv`); strictly serves as supplementary advisory score and never overrides deterministic statutory rules. |
+| **Non-Linear Risk Scoring** | **XGBoost Classifier** (`models/xgboost_risk_model.joblib`) | Evaluates 19 engineered cadastral features to calculate an empirical risk probability score ($[0, 100]$). | Frozen scikit-learn/joblib artifact trained on stratified benchmark splits (`train_stratified.csv`); strictly serves as supplementary advisory score and never overrides deterministic statutory rules. |
 | **Neural Voice Synthesis** | **Edge-TTS** (`Microsoft Server Speech`) | Powers the citizen-facing conversational voice assistant for accessibility and deed queries. | Cloud-based text-to-speech API (`bn-BD-PradeepNeural` / `bn-BD-NabanitaNeural`) with graceful offline fallback. |
-| **AI Development Assistance** | **Large Language Models (LLMs)** | Code structuring, test case generation, documentation authoring, and architectural pair-programming. | Used as an assistive developer tool during development. All core legal logic, statutory decision rules, and evaluation algorithms were designed and validated against Bangladesh land laws. |
+| **AI Development Assistance** | **Google Antigravity IDE** (`Gemini 2.5 Pro / Flash`) | Agentic pair-programming, automated test suite authoring, statutory rule translation, and technical documentation synthesis. | Used strictly as an assistive coding and validation environment. All core statutory decision tables, cadastral lineage graphs, and legal evaluation rules were architected and verified against Bangladesh land laws. |
 
 ---
 
