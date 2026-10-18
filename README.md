@@ -15,7 +15,8 @@
 [![SQLite WAL](https://img.shields.io/badge/SQLite_WAL-Persistent_Storage-003B57?style=for-the-badge&logo=sqlite&logoColor=white)](https://sqlite.org)
 [![Neon PostgreSQL](https://img.shields.io/badge/Neon_Postgres-Standby_Ready-00E599?style=for-the-badge&logo=postgresql&logoColor=black)](https://neon.tech)
 [![Tests 277 Passed](https://img.shields.io/badge/Tests-277%20Passed%20(100%25)-brightgreen?style=for-the-badge&logo=pytest&logoColor=white)](tests/)
-[![Render Backend](https://img.shields.io/badge/Render-Persistent_Cloud-46E3B7?style=for-the-badge&logo=render&logoColor=black)](https://render.com)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Codespaces_High_Speed-00C7B7?style=for-the-badge&logo=github&logoColor=white)](https://expert-engine-gx6rj5vp5xprcwr44-8000.app.github.dev/)
+[![Render Standby](https://img.shields.io/badge/Render-Standby_Cloud-46E3B7?style=for-the-badge&logo=render&logoColor=black)](https://https-landguard-backend-onrender-com.onrender.com)
 [![Vercel Edge](https://img.shields.io/badge/Vercel-Edge_Routing-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com)
 [![Bilingual](https://img.shields.io/badge/Localization-Bilingual_(EN%20%7C%20বাংলা)-E91E63?style=for-the-badge)](src/landguard_web/localization.py)
 
@@ -25,9 +26,9 @@
 
 <br>
 
-| 🌐 **Public Live URL** | ⚙️ **Backend Service** | 🗄️ **Primary Database** | 🛡️ **Test Coverage** |
-| :---: | :---: | :---: | :---: |
-| [landguard.vercel.app](https://landguard.vercel.app) | **Render Linux Container** (`FastAPI + Uvicorn`) | **SQLite WAL** (`/var/data/landguard_operational.db`) | **277 / 277 Passing (100%)** |
+| 🌐 **Primary Live URL** | 🌐 **Standby Cloud URL** | ⚙️ **Compute Infrastructure** | 🗄️ **Primary Database** | 🛡️ **Test Coverage** |
+| :---: | :---: | :---: | :---: | :---: |
+| [**expert-engine-...app.github.dev**](https://expert-engine-gx6rj5vp5xprcwr44-8000.app.github.dev/) | [landguard-backend.onrender.com](https://https-landguard-backend-onrender-com.onrender.com) | **GitHub Codespaces (8 GB RAM • 4 vCPU)** | **SQLite WAL** (`/var/data/landguard_operational.db`) | **277 / 277 Passing (100%)** |
 
 </div>
 

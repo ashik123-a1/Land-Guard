@@ -624,6 +624,19 @@
       updatePreloaderState(customElapsed);
     };
 
+    function checkLandingVideoReady() {
+      const vid = document.getElementById('landing-hero-video') || document.querySelector('video');
+      if (!vid) return true;
+      return (vid.currentTime > 0 && !vid.paused) || vid.readyState >= 3;
+    }
+
+    let preloaderDismissed = false;
+    function finishPreloader() {
+      if (preloaderDismissed) return;
+      preloaderDismissed = true;
+      dismissLandGuardPreloader();
+    }
+
     function frame(now) {
       if (window.RECORDING_MODE) return;
       const elapsed = now - startTime;
@@ -631,14 +644,27 @@
 
       if (elapsed >= TOTAL_DURATION) {
         if (!window.DISABLE_PRELOADER_DISMISS) {
-          setTimeout(() => {
-            dismissLandGuardPreloader();
-          }, 300);
+          // Normal load time completed: if video is already playing, do NOT hold — directly open
+          if (checkLandingVideoReady() || elapsed >= 9000) {
+            finishPreloader();
+            return;
+          } else {
+            // If video has not loaded yet, hold smoothly until video starts playing (or 9s failsafe)
+            const vid = document.getElementById('landing-hero-video') || document.querySelector('video');
+            if (vid && !vid._lg_listening) {
+              vid._lg_listening = true;
+              const onPlay = () => finishPreloader();
+              vid.addEventListener('playing', onPlay, { once: true });
+              vid.addEventListener('timeupdate', () => { if (vid.currentTime > 0) finishPreloader(); }, { once: true });
+              vid.addEventListener('error', onPlay, { once: true });
+            }
+          }
         }
-        return;
       }
 
-      requestAnimationFrame(frame);
+      if (!preloaderDismissed) {
+        requestAnimationFrame(frame);
+      }
     }
 
     requestAnimationFrame(frame);
