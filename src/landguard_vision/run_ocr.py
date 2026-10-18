@@ -575,7 +575,14 @@ def run_ocr(
                 if engine == "auto":
                     rapid = get_rapid_ocr()
                     if rapid:
-                        r_res, _ = rapid(proc_img)
+                        h_o, w_o = proc_img.shape[:2]
+                        max_d = max(h_o, w_o)
+                        if max_d > 1200:
+                            s_f = 1200.0 / max_d
+                            r_in = cv2.resize(proc_img, (int(w_o * s_f), int(h_o * s_f)), interpolation=cv2.INTER_AREA)
+                        else:
+                            r_in = proc_img
+                        r_res, _ = rapid(r_in)
                         if r_res:
                             r_text = "\n".join(
                                 _clean_ocr_line(it[1]) for it in r_res if _clean_ocr_line(it[1])
@@ -606,7 +613,20 @@ def run_ocr(
 
     rapid = get_rapid_ocr()
     if rapid:
-        result, _ = rapid(proc_img)
+        h_orig, w_orig = proc_img.shape[:2]
+        max_dim = max(h_orig, w_orig)
+        if max_dim > 1200:
+            scale_factor = 1200.0 / max_dim
+            rapid_input = cv2.resize(
+                proc_img,
+                (int(w_orig * scale_factor), int(h_orig * scale_factor)),
+                interpolation=cv2.INTER_AREA,
+            )
+        else:
+            scale_factor = 1.0
+            rapid_input = proc_img
+
+        result, _ = rapid(rapid_input)
         lines = []
         text_parts = []
         if result:
@@ -615,7 +635,11 @@ def run_ocr(
                 cleaned_txt = _clean_ocr_line(txt)
                 if not cleaned_txt:
                     continue
-                lines.append({"box": box, "text": cleaned_txt, "score": float(score)})
+                if scale_factor != 1.0 and box is not None:
+                    scaled_box = [[float(pt[0]) / scale_factor, float(pt[1]) / scale_factor] for pt in box]
+                else:
+                    scaled_box = box
+                lines.append({"box": scaled_box, "text": cleaned_txt, "score": float(score)})
                 text_parts.append(cleaned_txt)
 
         full_text = "\n".join(text_parts)
