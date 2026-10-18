@@ -4,7 +4,7 @@
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "https://landguard-backend.onrender.com/$1"
+      "destination": "https://landguard.onrender.com/$1"
     }
   ]
 }
