@@ -16,8 +16,6 @@
 [![Neon PostgreSQL](https://img.shields.io/badge/Neon_Postgres-Standby_Ready-00E599?style=for-the-badge&logo=postgresql&logoColor=black)](https://neon.tech)
 [![Tests 277 Passed](https://img.shields.io/badge/Tests-277%20Passed%20(100%25)-brightgreen?style=for-the-badge&logo=pytest&logoColor=white)](tests/)
 [![Live Demo](https://img.shields.io/badge/Live_Demo-Codespaces_High_Speed-00C7B7?style=for-the-badge&logo=github&logoColor=white)](https://expert-engine-gx6rj5vp5xprcwr44-8000.app.github.dev/)
-[![Render Standby](https://img.shields.io/badge/Render-Standby_Cloud-46E3B7?style=for-the-badge&logo=render&logoColor=black)](https://https-landguard-backend-onrender-com.onrender.com)
-[![Vercel Edge](https://img.shields.io/badge/Vercel-Edge_Routing-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com)
 [![Bilingual](https://img.shields.io/badge/Localization-Bilingual_(EN%20%7C%20বাংলা)-E91E63?style=for-the-badge)](src/landguard_web/localization.py)
 
 <br>
@@ -26,9 +24,9 @@
 
 <br>
 
-| 🌐 **Primary Live URL** | 🌐 **Standby Cloud URL** | ⚙️ **Compute Infrastructure** | 🗄️ **Primary Database** | 🛡️ **Test Coverage** |
-| :---: | :---: | :---: | :---: | :---: |
-| [**expert-engine-...app.github.dev**](https://expert-engine-gx6rj5vp5xprcwr44-8000.app.github.dev/) | [landguard-backend.onrender.com](https://https-landguard-backend-onrender-com.onrender.com) | **GitHub Codespaces (8 GB RAM • 4 vCPU)** | **SQLite WAL** (`/var/data/landguard_operational.db`) | **277 / 277 Passing (100%)** |
+| 🌐 **Public Live Judging URL** | ⚙️ **Compute Infrastructure** | 🗄️ **Primary Database** | 🛡️ **Test Coverage** |
+| :---: | :---: | :---: | :---: |
+| [**expert-engine-gx6rj5vp5xprcwr44-8000.app.github.dev**](https://expert-engine-gx6rj5vp5xprcwr44-8000.app.github.dev/) | **GitHub Codespaces (8 GB RAM • 4 vCPU • Linux)** | **SQLite WAL** (`landguard_operational.db`) | **277 / 277 Passing (100%)** |
 
 </div>
 
@@ -49,8 +47,9 @@
 - [11. Local Setup & Quickstart](#11-local-setup--quickstart)
 - [12. Automated Testing & Verification](#12-automated-testing--verification)
 - [13. Environment Configuration](#13-environment-configuration)
-- [14. Cloud Deployment (Render + Vercel)](#14-cloud-deployment-render--vercel)
-- [15. Statutory Disclaimers](#15-statutory-disclaimers)
+- [14. Cloud Deployment (GitHub Codespaces Cloud Engine)](#14-cloud-deployment-github-codespaces-cloud-engine)
+- [15. AI Tools & Methodology Disclosure](#15-ai-tools--methodology-disclosure)
+- [16. Statutory Disclaimers](#16-statutory-disclaimers)
 
 ---
 
@@ -747,42 +746,40 @@ Configure these environment variables in your local `.env` file or in your cloud
 | `DATABASE_BACKEND` | Yes | `SQLITE` | Active database engine. Must remain `SQLITE` for primary operations. |
 | `LANDGUARD_DB_PATH` | Yes | `/var/data/landguard_operational.db` | Absolute path to SQLite operational database on persistent disk. |
 | `LANDGUARD_UPLOADS_PATH`| Yes | `/var/data/uploads` | Directory for ingested deed uploads on persistent disk. |
-| `LANDGUARD_BASE_URL` | Yes | `https://landguard.vercel.app` | Canonical public URL used to construct dynamic QR code inspection links. |
-| `ALLOWED_ORIGINS` | Yes | `https://landguard.vercel.app,http://localhost:8000` | Authorized CORS origins. |
+| `LANDGUARD_BASE_URL` | Yes | `https://expert-engine-gx6rj5vp5xprcwr44-8000.app.github.dev` | Canonical public URL used to construct dynamic QR code inspection links. |
+| `ALLOWED_ORIGINS` | Yes | `https://expert-engine-gx6rj5vp5xprcwr44-8000.app.github.dev,http://localhost:8000` | Authorized CORS origins. |
 | `ALLOW_DEMO_LOGIN_IN_PROD` | No | `true` | Enables one-click demo credentials for evaluators. |
 | `DATABASE_URL` | No | `postgresql://...` | Standby Neon PostgreSQL connection string. |
 
 ---
 
-## 14. Cloud Deployment (Render + Vercel)
+## 14. Cloud Deployment (GitHub Codespaces Cloud Engine)
 
-### A. Backend Deployment on Render
-1. In Render Dashboard, click **New &rarr; Blueprint** and select this repository. Render automatically reads `render.yaml`.
-2. A 1 GB persistent SSD disk mounted at `/var/data` is automatically provisioned.
-3. Build command: `pip install -r requirements.txt`.
-4. Start command: `python scripts/init_persistent_db.py && uvicorn src.landguard_web.app:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips='*'`.
+The official live judging demonstration environment is hosted directly on high-performance **GitHub Codespaces** cloud infrastructure, delivering 8 GB RAM and 4 vCPUs for low-latency (< 3.8s) bilingual OCR and CV inference:
 
-### B. Frontend Deployment on Vercel
-1. In Vercel Dashboard, import this repository.
-2. Select framework preset **Other** (no build step needed).
-3. Ensure `vercel.json` routes all requests to your active Render service:
-   ```json
-   {
-     "version": 2,
-     "name": "landguard-frontend-proxy",
-     "rewrites": [
-       {
-         "source": "/(.*)",
-         "destination": "https://<your-render-service>.onrender.com/$1"
-       }
-     ]
-   }
-   ```
-4. Deploy and verify that the public URL loads seamlessly.
+- **Live Judging URL**: [https://expert-engine-gx6rj5vp5xprcwr44-8000.app.github.dev/](https://expert-engine-gx6rj5vp5xprcwr44-8000.app.github.dev/)
+- **Compute Specifications**: 8 GB RAM • 4 vCPUs • Debian Linux (Bookworm) • Python 3.11.9
+- **Automated Devcontainer**: The repository contains `.devcontainer/devcontainer.json` which automatically provisions system Tesseract (`tesseract-ocr`, `tesseract-ocr-ben`), OpenCV dependencies, and port forwarding.
+- **Startup Script**: Run `bash start_codespace.sh` to launch the Uvicorn ASGI server bound to `0.0.0.0:8000`.
+- **Public Port Forwarding**: Port `8000` is forwarded with **Public** visibility, allowing evaluation from any modern web browser or mobile device without authentication barriers.
 
 ---
 
-## 15. Statutory Disclaimers
+## 15. AI Tools & Methodology Disclosure
+
+In compliance with LandTech 2026 competition evaluation criteria and open-science transparency standards, this section discloses all artificial intelligence models, machine learning algorithms, and assistive technologies incorporated into the LandGuard platform:
+
+| Domain / Pipeline | Technology / Model | Role in LandGuard | Disclosure & Governance |
+| :--- | :--- | :--- | :--- |
+| **Bilingual OCR** | **RapidOCR (ONNX)** + **Tesseract 5.4** | Extracts Bengali and English text, schedule tables, dag/plot numbers, execution dates, and deed numbers from uploaded deed images. | Open-source pre-trained ONNX DBNet detection and CRNN recognition models (`rapidocr-onnxruntime`) paired with bilingual Bengali (`ben`) & English (`eng`) Tesseract traineddata. |
+| **Forensic Computer Vision** | **OpenCV 4.8+** (ELA, Otsu, Contours) | Error Level Analysis (ELA) for paste-over detection, adaptive thresholding, seal presence detection, and signature bounding extraction. | Deterministic image processing algorithms running locally; no external generative tampering or synthetic hallucination. |
+| **Non-Linear Risk Scoring** | **XGBoost Classifier** (`models/xgboost_risk_model.joblib`) | Evaluates 18 engineered cadastral features to calculate an empirical risk probability score ($[0, 100]$). | Frozen scikit-learn/joblib artifact trained on stratified benchmark splits (`train_stratified.csv`); strictly serves as supplementary advisory score and never overrides deterministic statutory rules. |
+| **Neural Voice Synthesis** | **Edge-TTS** (`Microsoft Server Speech`) | Powers the citizen-facing conversational voice assistant for accessibility and deed queries. | Cloud-based text-to-speech API (`bn-BD-PradeepNeural` / `bn-BD-NabanitaNeural`) with graceful offline fallback. |
+| **AI Development Assistance** | **Large Language Models (LLMs)** | Code structuring, test case generation, documentation authoring, and architectural pair-programming. | Used as an assistive developer tool during development. All core legal logic, statutory decision rules, and evaluation algorithms were designed and validated against Bangladesh land laws. |
+
+---
+
+## 16. Statutory Disclaimers
 
 > **LEGAL NOTICE**: LandGuard was developed as an advanced scientific benchmark and decision-support prototype for the LandTech 2026 competition.  
 > 1. All citizen identities, national ID (NID) numbers, mouza cadastral records, and deed parchment images are synthetically generated for benchmark evaluation.  
