@@ -84,10 +84,26 @@ $$\Large \text{Deterministic Statutory Predicates} \succ \text{Human Review / Cl
       </ul>
     </td>
     <td width="50%">
+      <h3>📜 Supported Deed & Record Archetypes (দলিল ও রেকর্ড স্ক্যানিং)</h3>
+      <ul>
+        <li><strong>Document Archetypes</strong>: স্ক্যান ও যাচাই করে <strong>সাফ-কবলা দলিল</strong> (Sale Deed), <strong>দানপত্র ও হেবা দলিল</strong> (Heba / Gift Deed), <strong>বণ্টননামা ও বাটোয়ারা দলিল</strong> (Partition Deed), <strong>বায়নাপত্র ও আমমোক্তারনামা</strong> (Contract & Power of Attorney), এবং <strong>খতিয়ান ও পর্চা (CS, SA, RS, BS)</strong>।</li>
+        <li><strong>Multi-Format Scanning Pipeline</strong>: Scans mobile photos, scanned parchments, and files (<code>.pdf</code>, <code>.png</code>, <code>.jpg</code>, <code>.jpeg</code>); parses Mouza, Khatian, Dag, and transferred decimals; verifies Sub-Registry stamps and detects scraping/paste-over tampering (কাটাছেঁড়া ও ঘষামাজা)।</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
       <h3>🧠 Calibrated AI Risk Engine</h3>
       <ul>
         <li><strong>19 Domain Features</strong>: Extracted from chain depth, party continuity, temporal gaps, and mutation records.</li>
         <li><strong>XGBoost 3.x Classifier</strong>: Trained on 2,500 scenarios with probability calibration (Brier score 0.0013) and SHAP feature attribution.</li>
+      </ul>
+    </td>
+    <td width="50%">
+      <h3>🗺️ Cadastral Lineage & What-If Simulator (জরিপ চেইন ও সিমুলেটর)</h3>
+      <ul>
+        <li><strong>4-Generation Chain Validation</strong>: Complete historical survey traversal across <strong>CS (~1920) ➔ SA (~1956) ➔ RS (~1982) ➔ BS (~2000+)</strong> with strict area conservation ($\sum \text{Daughters} \le \text{Parent}$).</li>
+        <li><strong>Zero-Mutation What-If Sandbox</strong>: In-memory simulation API (<code>/api/simulator/what-if</code>) to test upcoming transactions, partition splits, and syndicate double-sale fraud before official land registry execution.</li>
       </ul>
     </td>
   </tr>
