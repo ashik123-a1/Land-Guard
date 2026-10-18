@@ -38,10 +38,10 @@
 - [1. Executive Summary & Purpose](#1-executive-summary--purpose)
 - [2. Key Capabilities & Statutory Vectors](#2-key-capabilities--statutory-vectors)
 - [3. System Architecture](#3-system-architecture)
-- [4. Database Entity-Relationship Model](#4-database-entity-relationship-model)
-- [5. End-to-End Verification & QR Journey](#5-end-to-end-verification--qr-journey)
-- [6. Multimodal AI & Statutory Rules Decision Pipeline](#6-multimodal-ai--statutory-rules-decision-pipeline)
-- [7. Cadastral Survey Chain Lineage & Graph Topology Engine](#7-cadastral-survey-chain-lineage--graph-topology-engine)
+- [4. Multimodal AI & Statutory Rules Decision Pipeline](#4-multimodal-ai--statutory-rules-decision-pipeline)
+- [5. Cadastral Survey Chain Lineage & Graph Topology Engine](#5-cadastral-survey-chain-lineage--graph-topology-engine)
+- [6. End-to-End Verification & QR Journey](#6-end-to-end-verification--qr-journey)
+- [7. Database Entity-Relationship Model](#7-database-entity-relationship-model)
 - [8. Technology Stack](#8-technology-stack)
 - [9. Repository Structure](#9-repository-structure)
 - [10. Demonstration Accounts & Evaluation Flow](#10-demonstration-accounts--evaluation-flow)
@@ -212,7 +212,244 @@ flowchart TD
 
 ---
 
-## 4. Database Entity-Relationship Model
+## 4. Multimodal AI & Statutory Rules Decision Pipeline
+
+The deed verification engine runs a dual-track multimodal inspection combining deterministic statutory predicates (Registration Act 1908, SAT Act 1950) with supplementary machine learning risk scoring:
+
+```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#1e293b',
+    'primaryTextColor': '#f8fafc',
+    'primaryBorderColor': '#38bdf8',
+    'lineColor': '#38bdf8',
+    'secondaryColor': '#0f172a',
+    'tertiaryColor': '#1e1b4b',
+    'fontFamily': 'Inter, system-ui, sans-serif'
+  }
+}}%%
+flowchart TD
+    classDef inputNode fill:#0f172a,stroke:#38bdf8,stroke-width:2px,color:#ffffff;
+    classDef visionNode fill:#3b0764,stroke:#c084fc,stroke-width:2px,color:#ffffff;
+    classDef ruleNode fill:#064e3b,stroke:#34d399,stroke-width:2px,color:#ffffff;
+    classDef mlNode fill:#1e1b4b,stroke:#818cf8,stroke-width:2px,color:#ffffff;
+    classDef matrixNode fill:#451a03,stroke:#f59e0b,stroke-width:2px,color:#ffffff;
+    classDef outputNode fill:#022c22,stroke:#10b981,stroke-width:2px,color:#ffffff;
+
+    subgraph TierInput["📥 1. Ingestion Layer"]
+        DeedUpload["📄 Deed Document (.pdf / .png)<br/>SHA-256 Digest Hashing"]:::inputNode
+        ParcelMeta["📋 Cadastral Metadata<br/>(Dag, Khatian, Mouza, Area, Parties)"]:::inputNode
+    end
+
+    subgraph TierVision["👁️ 2. Computer Vision & Multimodal Extraction"]
+        RapidOCR["🔤 RapidOCR Engine<br/>HarfBuzz Bengali Script Shaping & Key-Value Extraction"]:::visionNode
+        SeamDetect["🔍 OpenCV Seam & Tamper Detector<br/>Laplacian Edge Variance & Physical Alteration Heatmap"]:::visionNode
+        SealDetect["💮 HSV Seal & Signature Verifier<br/>Circular Hough Transform & Color Morphology"]:::visionNode
+    end
+
+    subgraph TierReasoning["⚖️ 3. Dual-Track Analysis Engine"]
+        subgraph StatutoryEngine["🏛️ Deterministic Statutory Rules (R-01 to R-10)"]
+            R01["R-01: Conflicting Double Disposition (Reg. Act 1908 §47)"]:::ruleNode
+            R02["R-02: Seller Not Titleholder in BS Record"]:::ruleNode
+            R03["R-03: Area Exceeds Khatian Quota (SAT Act 1950)"]:::ruleNode
+            R04["R-04: Unverified Mutation / Missing AC Land Order"]:::ruleNode
+            R05["R-05: Unindexed Pre-1972 Archival Gap"]:::ruleNode
+        end
+        subgraph MLEngine["🧠 Supervised Machine Learning"]
+            XGBoost["⚡ Frozen XGBoost Classifier<br/>19 Cadastral & Temporal Features<br/>Calibrated Risk Score (Brier: 0.0013)"]:::mlNode
+        end
+    end
+
+    subgraph TierSynthesis["🏛️ 4. Statutory Precedence Synthesis Hierarchy"]
+        PrecedenceMatrix{"Evidence Act 1872 §45 Synthesis:<br/>Do Statutory Violations or Archival Gaps Exist?"}:::matrixNode
+        VerdictIncons["🚨 CONFIRMED_INCONSISTENCY<br/>(Statutory Violation Overrides ML)"]:::matrixNode
+        VerdictMissing["⚠️ MISSING_EVIDENCE<br/>(Archival Absence Overrides ML)"]:::matrixNode
+        VerdictReview["🕒 REVIEW_REQUIRED<br/>(Pending Mutation / Revenue Hearing)"]:::matrixNode
+        VerdictClear["✅ CLEAR_FOR_STANDARD_PROCESSING<br/>(Valid Title Conveyance)"]:::matrixNode
+    end
+
+    subgraph TierOutput["📑 5. Cryptographic Evidence Output"]
+        PDFReport["📜 Court-Ready PDF Evidence Dossier (ReportLab)"]:::outputNode
+        DynamicQR["📱 Dynamic Verification QR Code (Public Redaction)"]:::outputNode
+        AuditTrail["🔒 Immutable SHA-256 Audit Trail Entry"]:::outputNode
+    end
+
+    DeedUpload --> RapidOCR & SeamDetect & SealDetect
+    ParcelMeta --> StatutoryEngine & XGBoost
+    RapidOCR & SeamDetect & SealDetect --> StatutoryEngine & XGBoost
+    StatutoryEngine --> PrecedenceMatrix
+    XGBoost --> PrecedenceMatrix
+    PrecedenceMatrix --> VerdictIncons & VerdictMissing & VerdictReview & VerdictClear
+    VerdictIncons & VerdictMissing & VerdictReview & VerdictClear --> PDFReport
+    PDFReport --> DynamicQR --> AuditTrail
+
+    style TierInput fill:#090d16,stroke:#38bdf8,stroke-width:2px,color:#e0f2fe
+    style TierVision fill:#1c102a,stroke:#a855f7,stroke-width:2px,color:#f3e8ff
+    style TierReasoning fill:#06221c,stroke:#10b981,stroke-width:2px,color:#d1fae5
+    style StatutoryEngine fill:#022c22,stroke:#059669,stroke-width:1.5px,color:#a7f3d0
+    style MLEngine fill:#1e1b4b,stroke:#6366f1,stroke-width:1.5px,color:#e0e7ff
+    style TierSynthesis fill:#261605,stroke:#f59e0b,stroke-width:2px,color:#fef3c7
+    style TierOutput fill:#022c22,stroke:#34d399,stroke-width:2px,color:#ecfdf5
+```
+
+---
+
+## 5. Cadastral Survey Chain Lineage & Graph Topology Engine
+
+LandGuard models Bangladesh's multi-generational land records as a Directed Acyclic Graph (DAG) across the four canonical survey epochs:
+
+```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#1e293b',
+    'primaryTextColor': '#f8fafc',
+    'primaryBorderColor': '#38bdf8',
+    'lineColor': '#38bdf8',
+    'secondaryColor': '#0f172a',
+    'tertiaryColor': '#1e1b4b',
+    'fontFamily': 'Inter, system-ui, sans-serif'
+  }
+}}%%
+flowchart TD
+    classDef csNode fill:#1e1b4b,stroke:#818cf8,stroke-width:2px,color:#ffffff;
+    classDef saNode fill:#0c4a6e,stroke:#38bdf8,stroke-width:2px,color:#ffffff;
+    classDef rsNode fill:#064e3b,stroke:#34d399,stroke-width:2px,color:#ffffff;
+    classDef bsNode fill:#3b0764,stroke:#c084fc,stroke-width:2px,color:#ffffff;
+    classDef engineNode fill:#0f172a,stroke:#38bdf8,stroke-width:2px,color:#ffffff;
+    classDef simNode fill:#451a03,stroke:#f59e0b,stroke-width:2px,color:#ffffff;
+
+    subgraph SurveyChain["📜 Historical Cadastral Lineage Chronology (Bangladesh)"]
+        subgraph CS_Tier["🏛️ CS Survey (~1920) • Cadastral Survey"]
+            CS_Plot["Parent Dag Plot 101<br/>Khatian 42 • Total Area: 100 Decimals<br/>Original British Bengal Cadastral Baseline"]:::csNode
+        end
+
+        subgraph SA_Tier["🏛️ SA Survey (~1956) • State Acquisition"]
+            SA_Plot1["Subdivided Dag 101/1<br/>Khatian 78 • Area: 60 Decimals"]:::saNode
+            SA_Plot2["Subdivided Dag 101/2<br/>Khatian 79 • Area: 40 Decimals"]:::saNode
+        end
+
+        subgraph RS_Tier["🏛️ RS Survey (~1982) • Revisional Survey"]
+            RS_Plot1["Daughter Dag 305<br/>Area: 35 Decimals"]:::rsNode
+            RS_Plot2["Daughter Dag 306<br/>Area: 25 Decimals"]:::rsNode
+            RS_Plot3["Daughter Dag 307<br/>Area: 40 Decimals"]:::rsNode
+        end
+
+        subgraph BS_Tier["🏛️ BS / City Survey (~2000+) • Active Registry"]
+            BS_Plot1["Active BS Dag 5012<br/>Area: 20 Decimals (Title Valid)"]:::bsNode
+            BS_Plot2["Active BS Dag 5013<br/>Area: 15 Decimals (Disputed)"]:::bsNode
+            BS_Plot3["Active BS Dag 5014<br/>Area: 40 Decimals (Intact)"]:::bsNode
+        end
+
+        CS_Plot -->|"SAT Act 1950 Partition"| SA_Plot1 & SA_Plot2
+        SA_Plot1 -->|"Revisional Subdivision"| RS_Plot1 & RS_Plot2
+        SA_Plot2 -->|"Revisional Succession"| RS_Plot3
+        RS_Plot1 -->|"BS Modern Mutation"| BS_Plot1
+        RS_Plot2 -->|"Conflicting Mutation"| BS_Plot2
+        RS_Plot3 -->|"Unbroken Inheritance"| BS_Plot3
+    end
+
+    subgraph TopologyEngine["🌐 LandGuard Cadastral Topology Graph Engine (NetworkX)"]
+        DirectedGraph["Directed Acyclic Graph (DAG)<br/>Nodes: Parcels & Khatians | Edges: Subdivisions & Mutations"]:::engineNode
+        ChainValidator["🔍 Survey Chain Traversal<br/>Validates complete genealogy back to CS baseline"]:::engineNode
+        AreaIntegrity["📐 Area Conservation Auditing<br/>Ensures Sum(Daughter Areas) &le; Parent Area"]:::engineNode
+
+        DirectedGraph --> ChainValidator & AreaIntegrity
+    end
+
+    subgraph SimulationSuite["🧪 Simulation & Fraud Discovery Services"]
+        WhatIfSim["🧪 Zero-Mutation What-If Simulator<br/>(POST /api/simulator/what-if)<br/>Simulates land subdivision without mutating operational DB"]:::simNode
+        PatternDetector["🚨 Cross-Parcel Fraud Pattern Discovery<br/>(GET /api/parcels/:id/patterns)<br/>Detects fraudulent sellers disposing fractional rights across multiple dags"]:::simNode
+    end
+
+    BS_Tier --> DirectedGraph
+    TopologyEngine --> SimulationSuite
+
+    style SurveyChain fill:#090d16,stroke:#64748b,stroke-width:2px,color:#e2e8f0
+    style CS_Tier fill:#1e1b4b,stroke:#6366f1,stroke-width:1.5px,color:#c7d2fe
+    style SA_Tier fill:#082f49,stroke:#0ea5e9,stroke-width:1.5px,color:#bae6fd
+    style RS_Tier fill:#022c22,stroke:#10b981,stroke-width:1.5px,color:#a7f3d0
+    style BS_Tier fill:#2e1065,stroke:#a855f7,stroke-width:1.5px,color:#e9d5ff
+    style TopologyEngine fill:#0f172a,stroke:#38bdf8,stroke-width:2px,color:#e0f2fe
+    style SimulationSuite fill:#261605,stroke:#f59e0b,stroke-width:2px,color:#fef3c7
+```
+
+---
+
+## 6. End-to-End Verification & QR Journey
+
+```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#0f172a',
+    'primaryTextColor': '#f8fafc',
+    'primaryBorderColor': '#38bdf8',
+    'lineColor': '#38bdf8',
+    'actorBkg': '#1e1b4b',
+    'actorBorder': '#818cf8',
+    'actorTextColor': '#ffffff',
+    'actorLineColor': '#6366f1',
+    'signalColor': '#38bdf8',
+    'signalTextColor': '#e2e8f0',
+    'labelBoxBkgColor': '#0c4a6e',
+    'labelBoxBorderColor': '#38bdf8',
+    'labelTextColor': '#ffffff',
+    'loopTextColor': '#ffffff',
+    'noteBkgColor': '#1e1b4b',
+    'noteBorderColor': '#c084fc',
+    'noteTextColor': '#e9d5ff',
+    'activationBkgColor': '#064e3b',
+    'activationBorderColor': '#34d399',
+    'sequenceNumberColor': '#ffffff',
+    'fontFamily': 'Inter, system-ui, sans-serif'
+  }
+}}%%
+sequenceDiagram
+    autonumber
+    actor Citizen as 👤 Citizen / Landholder
+    actor Registrar as 👨‍💼 Sub-Registrar / Admin
+    participant WebApp as 💻 LandGuard Web UI (Vercel)
+    participant API as 🚀 FastAPI Backend (Render)
+    participant OCR as 👁️ RapidOCR & CV Engine
+    participant DB as 🗄️ SQLite DB (/var/data)
+    actor PublicUser as 📱 Third-Party Buyer / Verifier
+
+    Citizen->>WebApp: Upload Deed Image (.png / .pdf)
+    WebApp->>API: POST /api/upload (Multipart)
+    API->>OCR: Run Bilingual OCR & CV Tampering Detection
+    OCR-->>API: Extracted Fields (Plot, Khatian, Area, Parties) + Edge Heatmap
+    API->>DB: Store Document & SHA-256 Hash
+    API-->>WebApp: Return Extracted Fields with Uncertainty Badges
+
+    Citizen->>WebApp: Confirm Fields & Submit Statutory Verification
+    WebApp->>API: POST /api/verify
+    API->>DB: Query Cadastral Chain (CS -> SA -> RS -> BS) & Active Mutations
+    API->>API: Evaluate Statutory Rules (R-01 to R-10) + XGBoost Risk
+    API->>DB: Persist Verification Run (Verdict, SHA-256, Rule Findings)
+    API-->>WebApp: Render Verification Dossier
+
+    Registrar->>WebApp: Review Dossier & Issue Determination
+    WebApp->>API: POST /api/verifications/:id/decision
+    API->>DB: Update Official Registrar Determination & Audit Event
+
+    Registrar->>WebApp: Request Official Evidence Dossier Certificate (PDF)
+    WebApp->>API: GET /api/reports/:id/pdf
+    API->>API: Compute SHA-256 Hash & Generate Authenticity QR Code
+    Note over API: QR Code links to canonical PUBLIC_BASE_URL/verify/public/:id
+    API-->>Registrar: Download Printable Cryptographic PDF Dossier
+
+    PublicUser->>PublicScanner: Scan QR Code on Printed Certificate
+    PublicScanner->>WebApp: GET /verify/public/:id
+    WebApp->>API: Fetch Dossier Details
+    API-->>WebApp: Return Dossier Metadata (Masked PII, Official Seal)
+    WebApp-->>PublicUser: Display Statutory Integrity Proof & Live Verdict
+```
+
+---
+
+## 7. Database Entity-Relationship Model
 
 The operational database maintains strict foreign-key constraints and relational integrity across all domain entities:
 
@@ -321,243 +558,6 @@ erDiagram
         string ip_address
         datetime created_at
     }
-```
-
----
-
-## 5. End-to-End Verification & QR Journey
-
-```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'primaryColor': '#0f172a',
-    'primaryTextColor': '#f8fafc',
-    'primaryBorderColor': '#38bdf8',
-    'lineColor': '#38bdf8',
-    'actorBkg': '#1e1b4b',
-    'actorBorder': '#818cf8',
-    'actorTextColor': '#ffffff',
-    'actorLineColor': '#6366f1',
-    'signalColor': '#38bdf8',
-    'signalTextColor': '#e2e8f0',
-    'labelBoxBkgColor': '#0c4a6e',
-    'labelBoxBorderColor': '#38bdf8',
-    'labelTextColor': '#ffffff',
-    'loopTextColor': '#ffffff',
-    'noteBkgColor': '#1e1b4b',
-    'noteBorderColor': '#c084fc',
-    'noteTextColor': '#e9d5ff',
-    'activationBkgColor': '#064e3b',
-    'activationBorderColor': '#34d399',
-    'sequenceNumberColor': '#ffffff',
-    'fontFamily': 'Inter, system-ui, sans-serif'
-  }
-}}%%
-sequenceDiagram
-    autonumber
-    actor Citizen as 👤 Citizen / Landholder
-    actor Registrar as 👨‍💼 Sub-Registrar / Admin
-    participant WebApp as 💻 LandGuard Web UI (Vercel)
-    participant API as 🚀 FastAPI Backend (Render)
-    participant OCR as 👁️ RapidOCR & CV Engine
-    participant DB as 🗄️ SQLite DB (/var/data)
-    actor PublicUser as 📱 Third-Party Buyer / Verifier
-
-    Citizen->>WebApp: Upload Deed Image (.png / .pdf)
-    WebApp->>API: POST /api/upload (Multipart)
-    API->>OCR: Run Bilingual OCR & CV Tampering Detection
-    OCR-->>API: Extracted Fields (Plot, Khatian, Area, Parties) + Edge Heatmap
-    API->>DB: Store Document & SHA-256 Hash
-    API-->>WebApp: Return Extracted Fields with Uncertainty Badges
-
-    Citizen->>WebApp: Confirm Fields & Submit Statutory Verification
-    WebApp->>API: POST /api/verify
-    API->>DB: Query Cadastral Chain (CS -> SA -> RS -> BS) & Active Mutations
-    API->>API: Evaluate Statutory Rules (R-01 to R-10) + XGBoost Risk
-    API->>DB: Persist Verification Run (Verdict, SHA-256, Rule Findings)
-    API-->>WebApp: Render Verification Dossier
-
-    Registrar->>WebApp: Review Dossier & Issue Determination
-    WebApp->>API: POST /api/verifications/:id/decision
-    API->>DB: Update Official Registrar Determination & Audit Event
-
-    Registrar->>WebApp: Request Official Evidence Dossier Certificate (PDF)
-    WebApp->>API: GET /api/reports/:id/pdf
-    API->>API: Compute SHA-256 Hash & Generate Authenticity QR Code
-    Note over API: QR Code links to canonical PUBLIC_BASE_URL/verify/public/:id
-    API-->>Registrar: Download Printable Cryptographic PDF Dossier
-
-    PublicUser->>PublicScanner: Scan QR Code on Printed Certificate
-    PublicScanner->>WebApp: GET /verify/public/:id
-    WebApp->>API: Fetch Dossier Details
-    API-->>WebApp: Return Dossier Metadata (Masked PII, Official Seal)
-    WebApp-->>PublicUser: Display Statutory Integrity Proof & Live Verdict
-```
-
----
-
-## 6. Multimodal AI & Statutory Rules Decision Pipeline
-
-The deed verification engine runs a dual-track multimodal inspection combining deterministic statutory predicates (Registration Act 1908, SAT Act 1950) with supplementary machine learning risk scoring:
-
-```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'primaryColor': '#1e293b',
-    'primaryTextColor': '#f8fafc',
-    'primaryBorderColor': '#38bdf8',
-    'lineColor': '#38bdf8',
-    'secondaryColor': '#0f172a',
-    'tertiaryColor': '#1e1b4b',
-    'fontFamily': 'Inter, system-ui, sans-serif'
-  }
-}}%%
-flowchart TD
-    classDef inputNode fill:#0f172a,stroke:#38bdf8,stroke-width:2px,color:#ffffff;
-    classDef visionNode fill:#3b0764,stroke:#c084fc,stroke-width:2px,color:#ffffff;
-    classDef ruleNode fill:#064e3b,stroke:#34d399,stroke-width:2px,color:#ffffff;
-    classDef mlNode fill:#1e1b4b,stroke:#818cf8,stroke-width:2px,color:#ffffff;
-    classDef matrixNode fill:#451a03,stroke:#f59e0b,stroke-width:2px,color:#ffffff;
-    classDef outputNode fill:#022c22,stroke:#10b981,stroke-width:2px,color:#ffffff;
-
-    subgraph TierInput["📥 1. Ingestion Layer"]
-        DeedUpload["📄 Deed Document (.pdf / .png)<br/>SHA-256 Digest Hashing"]:::inputNode
-        ParcelMeta["📋 Cadastral Metadata<br/>(Dag, Khatian, Mouza, Area, Parties)"]:::inputNode
-    end
-
-    subgraph TierVision["👁️ 2. Computer Vision & Multimodal Extraction"]
-        RapidOCR["🔤 RapidOCR Engine<br/>HarfBuzz Bengali Script Shaping & Key-Value Extraction"]:::visionNode
-        SeamDetect["🔍 OpenCV Seam & Tamper Detector<br/>Laplacian Edge Variance & Physical Alteration Heatmap"]:::visionNode
-        SealDetect["💮 HSV Seal & Signature Verifier<br/>Circular Hough Transform & Color Morphology"]:::visionNode
-    end
-
-    subgraph TierReasoning["⚖️ 3. Dual-Track Analysis Engine"]
-        subgraph StatutoryEngine["🏛️ Deterministic Statutory Rules (R-01 to R-10)"]
-            R01["R-01: Conflicting Double Disposition (Reg. Act 1908 §47)"]:::ruleNode
-            R02["R-02: Seller Not Titleholder in BS Record"]:::ruleNode
-            R03["R-03: Area Exceeds Khatian Quota (SAT Act 1950)"]:::ruleNode
-            R04["R-04: Unverified Mutation / Missing AC Land Order"]:::ruleNode
-            R05["R-05: Unindexed Pre-1972 Archival Gap"]:::ruleNode
-        end
-        subgraph MLEngine["🧠 Supervised Machine Learning"]
-            XGBoost["⚡ Frozen XGBoost Classifier<br/>19 Cadastral & Temporal Features<br/>Calibrated Risk Score (Brier: 0.0013)"]:::mlNode
-        end
-    end
-
-    subgraph TierSynthesis["🏛️ 4. Statutory Precedence Synthesis Hierarchy"]
-        PrecedenceMatrix{"Evidence Act 1872 §45 Synthesis:<br/>Do Statutory Violations or Archival Gaps Exist?"}:::matrixNode
-        VerdictIncons["🚨 CONFIRMED_INCONSISTENCY<br/>(Statutory Violation Overrides ML)"]:::matrixNode
-        VerdictMissing["⚠️ MISSING_EVIDENCE<br/>(Archival Absence Overrides ML)"]:::matrixNode
-        VerdictReview["🕒 REVIEW_REQUIRED<br/>(Pending Mutation / Revenue Hearing)"]:::matrixNode
-        VerdictClear["✅ CLEAR_FOR_STANDARD_PROCESSING<br/>(Valid Title Conveyance)"]:::matrixNode
-    end
-
-    subgraph TierOutput["📑 5. Cryptographic Evidence Output"]
-        PDFReport["📜 Court-Ready PDF Evidence Dossier (ReportLab)"]:::outputNode
-        DynamicQR["📱 Dynamic Verification QR Code (Public Redaction)"]:::outputNode
-        AuditTrail["🔒 Immutable SHA-256 Audit Trail Entry"]:::outputNode
-    end
-
-    DeedUpload --> RapidOCR & SeamDetect & SealDetect
-    ParcelMeta --> StatutoryEngine & XGBoost
-    RapidOCR & SeamDetect & SealDetect --> StatutoryEngine & XGBoost
-    StatutoryEngine --> PrecedenceMatrix
-    XGBoost --> PrecedenceMatrix
-    PrecedenceMatrix --> VerdictIncons & VerdictMissing & VerdictReview & VerdictClear
-    VerdictIncons & VerdictMissing & VerdictReview & VerdictClear --> PDFReport
-    PDFReport --> DynamicQR --> AuditTrail
-
-    style TierInput fill:#090d16,stroke:#38bdf8,stroke-width:2px,color:#e0f2fe
-    style TierVision fill:#1c102a,stroke:#a855f7,stroke-width:2px,color:#f3e8ff
-    style TierReasoning fill:#06221c,stroke:#10b981,stroke-width:2px,color:#d1fae5
-    style StatutoryEngine fill:#022c22,stroke:#059669,stroke-width:1.5px,color:#a7f3d0
-    style MLEngine fill:#1e1b4b,stroke:#6366f1,stroke-width:1.5px,color:#e0e7ff
-    style TierSynthesis fill:#261605,stroke:#f59e0b,stroke-width:2px,color:#fef3c7
-    style TierOutput fill:#022c22,stroke:#34d399,stroke-width:2px,color:#ecfdf5
-```
-
----
-
-## 7. Cadastral Survey Chain Lineage & Graph Topology Engine
-
-LandGuard models Bangladesh's multi-generational land records as a Directed Acyclic Graph (DAG) across the four canonical survey epochs:
-
-```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'primaryColor': '#1e293b',
-    'primaryTextColor': '#f8fafc',
-    'primaryBorderColor': '#38bdf8',
-    'lineColor': '#38bdf8',
-    'secondaryColor': '#0f172a',
-    'tertiaryColor': '#1e1b4b',
-    'fontFamily': 'Inter, system-ui, sans-serif'
-  }
-}}%%
-flowchart TD
-    classDef csNode fill:#1e1b4b,stroke:#818cf8,stroke-width:2px,color:#ffffff;
-    classDef saNode fill:#0c4a6e,stroke:#38bdf8,stroke-width:2px,color:#ffffff;
-    classDef rsNode fill:#064e3b,stroke:#34d399,stroke-width:2px,color:#ffffff;
-    classDef bsNode fill:#3b0764,stroke:#c084fc,stroke-width:2px,color:#ffffff;
-    classDef engineNode fill:#0f172a,stroke:#38bdf8,stroke-width:2px,color:#ffffff;
-    classDef simNode fill:#451a03,stroke:#f59e0b,stroke-width:2px,color:#ffffff;
-
-    subgraph SurveyChain["📜 Historical Cadastral Lineage Chronology (Bangladesh)"]
-        subgraph CS_Tier["🏛️ CS Survey (~1920) • Cadastral Survey"]
-            CS_Plot["Parent Dag Plot 101<br/>Khatian 42 • Total Area: 100 Decimals<br/>Original British Bengal Cadastral Baseline"]:::csNode
-        end
-
-        subgraph SA_Tier["🏛️ SA Survey (~1956) • State Acquisition"]
-            SA_Plot1["Subdivided Dag 101/1<br/>Khatian 78 • Area: 60 Decimals"]:::saNode
-            SA_Plot2["Subdivided Dag 101/2<br/>Khatian 79 • Area: 40 Decimals"]:::saNode
-        end
-
-        subgraph RS_Tier["🏛️ RS Survey (~1982) • Revisional Survey"]
-            RS_Plot1["Daughter Dag 305<br/>Area: 35 Decimals"]:::rsNode
-            RS_Plot2["Daughter Dag 306<br/>Area: 25 Decimals"]:::rsNode
-            RS_Plot3["Daughter Dag 307<br/>Area: 40 Decimals"]:::rsNode
-        end
-
-        subgraph BS_Tier["🏛️ BS / City Survey (~2000+) • Active Registry"]
-            BS_Plot1["Active BS Dag 5012<br/>Area: 20 Decimals (Title Valid)"]:::bsNode
-            BS_Plot2["Active BS Dag 5013<br/>Area: 15 Decimals (Disputed)"]:::bsNode
-            BS_Plot3["Active BS Dag 5014<br/>Area: 40 Decimals (Intact)"]:::bsNode
-        end
-
-        CS_Plot -->|"SAT Act 1950 Partition"| SA_Plot1 & SA_Plot2
-        SA_Plot1 -->|"Revisional Subdivision"| RS_Plot1 & RS_Plot2
-        SA_Plot2 -->|"Revisional Succession"| RS_Plot3
-        RS_Plot1 -->|"BS Modern Mutation"| BS_Plot1
-        RS_Plot2 -->|"Conflicting Mutation"| BS_Plot2
-        RS_Plot3 -->|"Unbroken Inheritance"| BS_Plot3
-    end
-
-    subgraph TopologyEngine["🌐 LandGuard Cadastral Topology Graph Engine (NetworkX)"]
-        DirectedGraph["Directed Acyclic Graph (DAG)<br/>Nodes: Parcels & Khatians | Edges: Subdivisions & Mutations"]:::engineNode
-        ChainValidator["🔍 Survey Chain Traversal<br/>Validates complete genealogy back to CS baseline"]:::engineNode
-        AreaIntegrity["📐 Area Conservation Auditing<br/>Ensures Sum(Daughter Areas) &le; Parent Area"]:::engineNode
-
-        DirectedGraph --> ChainValidator & AreaIntegrity
-    end
-
-    subgraph SimulationSuite["🧪 Simulation & Fraud Discovery Services"]
-        WhatIfSim["🧪 Zero-Mutation What-If Simulator<br/>(POST /api/simulator/what-if)<br/>Simulates land subdivision without mutating operational DB"]:::simNode
-        PatternDetector["🚨 Cross-Parcel Fraud Pattern Discovery<br/>(GET /api/parcels/:id/patterns)<br/>Detects fraudulent sellers disposing fractional rights across multiple dags"]:::simNode
-    end
-
-    BS_Tier --> DirectedGraph
-    TopologyEngine --> SimulationSuite
-
-    style SurveyChain fill:#090d16,stroke:#64748b,stroke-width:2px,color:#e2e8f0
-    style CS_Tier fill:#1e1b4b,stroke:#6366f1,stroke-width:1.5px,color:#c7d2fe
-    style SA_Tier fill:#082f49,stroke:#0ea5e9,stroke-width:1.5px,color:#bae6fd
-    style RS_Tier fill:#022c22,stroke:#10b981,stroke-width:1.5px,color:#a7f3d0
-    style BS_Tier fill:#2e1065,stroke:#a855f7,stroke-width:1.5px,color:#e9d5ff
-    style TopologyEngine fill:#0f172a,stroke:#38bdf8,stroke-width:2px,color:#e0f2fe
-    style SimulationSuite fill:#261605,stroke:#f59e0b,stroke-width:2px,color:#fef3c7
 ```
 
 ---
