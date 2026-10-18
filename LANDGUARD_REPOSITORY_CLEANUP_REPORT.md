@@ -23,10 +23,11 @@ All internal sprint audit reports, security remediation scratchpads, localizatio
 | `README.md` | Yes | Yes (Root documentation, GitHub landing) | **Yes** (Primary judge presentation) | **Retain in root, keep tracked** |
 | `TESTS.md` | Yes | Yes (Test suite & QA documentation) | **Yes** (Judge-facing QA proof) | **Retain in root, keep tracked** |
 | `docs/ARCHITECTURE.md` | Yes | Yes (Referenced in system docs) | **Yes** (Detailed system design) | **Retain in docs/, keep tracked** |
-| `brand1.png` | Yes | Yes (Referenced in README.md) | **Yes** (Official brand emblem) | **Retain in root, keep tracked** |
-| `brand2.png` | Yes | Potential future brand variant | **Yes** (Branding asset) | **Retain in root, keep tracked** |
-| `frame1.png` | Yes | Yes (Featured Hero UI in README.md) | **Yes** (Primary visual showcase) | **Retain in root, keep tracked** |
-| `frame2.png` | Yes | Alternative UI capture | **Yes** (Visual asset) | **Retain in root, keep tracked** |
+| `landguard_preloader_animated.svg` | Yes | Yes (Hero UI preview in README.md) | **Yes** (Cyber radar animated vector) | **Retained in root, tracked** |
+| `brand1.png` | Deleted | None in code (Replaced by animated SVG) | No (Unused) | **Deleted per user request (backed up externally)** |
+| `brand2.png` | Deleted | None in code | No (Unused) | **Deleted per user request (backed up externally)** |
+| `frame1.png` | Deleted | None in code (Replaced by animated SVG) | No (Replaced by SVG) | **Deleted per user request (backed up externally)** |
+| `frame2.png` | Deleted | None in code | No (Unused) | **Deleted per user request (backed up externally)** |
 | `.env.example` | Yes | Yes (Referenced in README & Render) | **Yes** (Template for configuration) | **Retain in root, keep tracked** |
 | `.gitignore` | Yes | Yes (Git configuration) | **Yes** (Repository cleanliness & security) | **Retain in root, keep tracked** |
 | `pyproject.toml` | Yes | Yes (Pytest configuration & packaging) | **Yes** (Project runtime spec) | **Retain in root, keep tracked** |

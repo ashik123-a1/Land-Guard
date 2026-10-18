@@ -21,7 +21,7 @@
 
 <br>
 
-<img src="frame1.png" alt="LandGuard AI Intelligent Land Record Verification & Title Defense Interface" width="100%" style="border-radius: 14px; box-shadow: 0 16px 40px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);">
+<img src="landguard_preloader_animated.svg" alt="LandGuard AI Intelligent Land Record Verification & Title Defense Interface" width="100%" style="border-radius: 14px; box-shadow: 0 16px 40px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);">
 
 <br>
 
@@ -372,8 +372,7 @@ sequenceDiagram
 ├── .env.example                         # Environment configuration template with safe placeholders
 ├── .gitignore                           # Git ignore specification protecting operational databases
 ├── README.md                            # Comprehensive system documentation & deployment guide
-├── brand1.png                           # LandGuard branding emblem asset
-├── frame1.png                           # High-resolution platform preview hero screenshot
+├── landguard_preloader_animated.svg     # Animated cyber radar & statutory verification SVG
 ├── scripts/
 │   ├── init_persistent_db.py           # Idempotent persistent volume initialization & seeding guard
 │   ├── generate_all_markdown_and_pdfs.py # Batch dossier generation utility

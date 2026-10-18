@@ -1,0 +1,324 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 720" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <radialGradient id="cyberBg" cx="50%" cy="45%" r="65%">
+      <stop offset="0%" stop-color="#0b1728"/>
+      <stop offset="60%" stop-color="#060a14"/>
+      <stop offset="100%" stop-color="#03060c"/>
+    </radialGradient>
+
+    <!-- Logo Gradients -->
+    <linearGradient id="shieldBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="50%" stop-color="#0A221C"/>
+      <stop offset="100%" stop-color="#02150F"/>
+    </linearGradient>
+    <linearGradient id="neonCyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#22D3EE"/>
+      <stop offset="100%" stop-color="#06B6D4"/>
+    </linearGradient>
+    <linearGradient id="neonGreen" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#065F46"/>
+      <stop offset="60%" stop-color="#34D399"/>
+      <stop offset="100%" stop-color="#6EE7B7"/>
+    </linearGradient>
+    <linearGradient id="bdFillGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06B6D4" stop-opacity="0.20"/>
+      <stop offset="50%" stop-color="#10B981" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#047857" stop-opacity="0.25"/>
+    </linearGradient>
+
+    <!-- Glow Filters -->
+    <filter id="cyanGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3.5" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <filter id="greenGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <filter id="amberGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3.5" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@800;900&amp;family=Inter:wght@600;700&amp;display=swap');
+
+    text {
+      font-family: 'Orbitron', 'Inter', -apple-system, sans-serif;
+      user-select: none;
+    }
+
+    /* Loop Animation Timing: Total 6.0s seamless loop */
+    
+    /* 1. Logo Orbit & Laser */
+    .logo-orbit {
+      animation: orbitSpin 8s linear infinite;
+      transform-origin: 500px 48px;
+    }
+    @keyframes orbitSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .logo-laser {
+      animation: laserSweep 2.8s ease-in-out infinite;
+    }
+    @keyframes laserSweep {
+      0%, 100% { transform: translateY(0); opacity: 0.2; }
+      50% { transform: translateY(32px); opacity: 1; }
+    }
+
+    .badge-beat {
+      animation: beatPulse 2.4s ease-in-out infinite;
+      transform-origin: 513px 43px;
+    }
+    @keyframes beatPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+    }
+
+    /* 2. Bangladesh Border Tracing */
+    .bd-trace-line {
+      stroke-dasharray: 3909;
+      stroke-dashoffset: 3909;
+      animation: traceBorder 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+    @keyframes traceBorder {
+      0% {
+        stroke-dashoffset: 3909;
+        opacity: 0.95;
+      }
+      48% {
+        stroke-dashoffset: 0;
+        opacity: 1;
+      }
+      88% {
+        stroke-dashoffset: 0;
+        opacity: 0.95;
+      }
+      100% {
+        stroke-dashoffset: 0;
+        opacity: 0.3;
+      }
+    }
+
+    /* 3. Bangladesh Interior Fill Illumination */
+    .bd-map-fill {
+      animation: mapIlluminate 6s ease-in-out infinite;
+    }
+    @keyframes mapIlluminate {
+      0%, 42% {
+        opacity: 0;
+        transform: scale(0.995);
+      }
+      56% {
+        opacity: 0.85;
+        transform: scale(1);
+      }
+      88% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+
+    /* 4. Division Radar Pins */
+    .division-marker {
+      animation: divisionFade 6s ease-in-out infinite;
+    }
+    @keyframes divisionFade {
+      0%, 44% {
+        opacity: 0;
+        transform: scale(0.5);
+      }
+      52% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      88% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+
+    .radar-wave {
+      animation: radarRing 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+      transform-origin: 0 0;
+    }
+    .wave-delayed {
+      animation-delay: 0.8s;
+    }
+    @keyframes radarRing {
+      0% { transform: scale(0.4); opacity: 0.9; }
+      80%, 100% { transform: scale(2.2); opacity: 0; }
+    }
+
+    .division-label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      fill: #CBD5E1;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+    }
+  </style>
+
+  <!-- Deep Cyber Dark Background -->
+  <rect width="1000" height="720" fill="url(#cyberBg)"/>
+
+  <!-- Subtle Cadastral Grid Lines -->
+  <g stroke="#1e293b" stroke-width="0.75" opacity="0.45">
+    <line x1="100" y1="0" x2="100" y2="720"/>
+    <line x1="250" y1="0" x2="250" y2="720"/>
+    <line x1="400" y1="0" x2="400" y2="720"/>
+    <line x1="550" y1="0" x2="550" y2="720"/>
+    <line x1="700" y1="0" x2="700" y2="720"/>
+    <line x1="850" y1="0" x2="850" y2="720"/>
+    <line x1="0" y1="120" x2="1000" y2="120"/>
+    <line x1="0" y1="260" x2="1000" y2="260"/>
+    <line x1="0" y1="400" x2="1000" y2="400"/>
+    <line x1="0" y1="540" x2="1000" y2="540"/>
+    <line x1="0" y1="660" x2="1000" y2="660"/>
+  </g>
+
+  <!-- ========================================================================
+       TOP BRAND HUD: LAND [ CYBER SHIELD ] GUARD
+       ======================================================================== -->
+  <g id="preloader-brand-header">
+    <!-- LAND Word -->
+    <text x="445" y="58" text-anchor="end" font-size="24" font-weight="950" letter-spacing="4" fill="#34D399" filter="url(#greenGlow)">LAND</text>
+
+    <!-- Center Cyber Shield -->
+    <g transform="translate(476, 22)">
+      <!-- Outer Orbit Ring -->
+      <g class="logo-orbit" transform-origin="24 26">
+        <ellipse cx="24" cy="26" rx="28" ry="11" transform="rotate(-15 24 26)" stroke="#22D3EE" stroke-width="1.2" stroke-dasharray="10 60" fill="none"/>
+        <circle cx="48" cy="17" r="2" fill="#22D3EE" filter="url(#cyanGlow)"/>
+      </g>
+
+      <!-- Main Shield -->
+      <path d="M24 3 C36 8 43 10 44 14 C44 34 27 47 24 51 C21 47 4 34 4 14 C5 10 12 8 24 3 Z"
+            fill="url(#shieldBg)" stroke="url(#neonCyan)" stroke-width="2.2" stroke-linejoin="round" filter="url(#cyanGlow)"/>
+
+      <!-- Internal Grid -->
+      <g stroke="#1E293B" stroke-width="0.8" opacity="0.8">
+        <line x1="10" y1="14" x2="38" y2="14"/>
+        <line x1="8" y1="22" x2="40" y2="22"/>
+        <line x1="9" y1="30" x2="39" y2="30"/>
+        <line x1="24" y1="5" x2="24" y2="34" stroke="#22D3EE" stroke-width="1" opacity="0.6"/>
+      </g>
+
+      <!-- Vertical Laser Scan -->
+      <line class="logo-laser" x1="8" y1="12" x2="40" y2="12" stroke="#34D399" stroke-width="1.6" filter="url(#greenGlow)"/>
+
+      <!-- Smart Deed & Verified Badge -->
+      <g transform="translate(20, 11)">
+        <rect x="0" y="0" width="14" height="18" rx="2" fill="#061A14" stroke="#34D399" stroke-width="1.2"/>
+        <line x1="3" y1="4" x2="11" y2="4" stroke="#34D399" stroke-width="1.2" stroke-linecap="round"/>
+        <line x1="3" y1="8" x2="9" y2="8" stroke="#6EE7B7" stroke-width="1.2" stroke-linecap="round"/>
+        <circle class="badge-beat" cx="13" cy="14" r="3.5" fill="#34D399" filter="url(#greenGlow)"/>
+        <path d="M11.5 14 L12.5 15.2 L14.5 13" stroke="#022C22" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+    </g>
+
+    <!-- GUARD Word -->
+    <text x="555" y="58" text-anchor="start" font-size="24" font-weight="950" letter-spacing="4" fill="#22D3EE" filter="url(#cyanGlow)">GUARD</text>
+
+    <!-- Cyber Platform Wings -->
+    <g transform="translate(370, 82)">
+      <line x1="0" y1="0" x2="115" y2="0" stroke="url(#neonGreen)" stroke-width="2"/>
+      <g transform="translate(130, -7)">
+        <path d="M0 0 L6 3 V7 C6 10 0 12 0 12 C0 12 -6 10 -6 7 V3 L0 0 Z" stroke="#22D3EE" stroke-width="1.5" fill="#0A111E"/>
+        <circle cx="0" cy="5" r="1.5" fill="#22D3EE"/>
+      </g>
+      <line x1="145" y1="0" x2="260" y2="0" stroke="url(#neonCyan)" stroke-width="2"/>
+    </g>
+
+    <!-- Subtitle Tagline -->
+    <text x="500" y="98" text-anchor="middle" font-size="8" font-weight="800" letter-spacing="5" fill="#94A3B8">SECURE DIGITAL CADASTRE</text>
+  </g>
+
+  <!-- ========================================================================
+       BANGLADESH HIGH-RESOLUTION MAP & DIVISION PINS
+       ======================================================================== -->
+  <g id="preloader-map-body">
+    <!-- 1. Illuminated Cadastral Polygon Fill (Phase 3) -->
+    <path class="bd-map-fill" d="M 390.4 543.0 L 391.3 530.4 L 385.8 514.4 L 388.6 510.6 L 384.4 505.1 L 389.0 497.5 L 384.0 493.9 L 383.1 488.1 L 380.3 488.8 L 379.1 483.0 L 382.0 483.1 L 381.0 475.0 L 391.2 465.0 L 376.4 461.4 L 374.8 464.7 L 369.0 461.5 L 367.2 457.4 L 371.1 457.0 L 370.1 453.0 L 375.6 440.3 L 370.8 441.8 L 363.2 430.6 L 357.9 431.0 L 359.0 427.7 L 356.1 427.0 L 355.9 415.1 L 359.6 412.3 L 357.5 408.3 L 364.9 407.6 L 373.1 397.8 L 369.8 396.5 L 369.7 387.3 L 366.9 386.4 L 371.2 383.3 L 370.3 371.9 L 367.0 368.5 L 356.9 367.5 L 355.9 370.5 L 347.1 363.0 L 337.6 362.4 L 322.6 351.3 L 312.0 337.6 L 325.3 320.7 L 322.4 314.1 L 329.3 312.0 L 332.1 319.2 L 337.5 319.8 L 338.6 313.8 L 343.0 313.6 L 347.6 305.2 L 348.2 294.4 L 346.8 293.1 L 346.2 291.0 L 346.5 290.1 L 356.6 293.2 L 367.9 290.2 L 376.0 293.5 L 379.0 289.7 L 385.4 294.0 L 388.1 286.1 L 392.2 285.4 L 392.3 281.9 L 385.9 281.8 L 378.7 276.6 L 376.4 262.6 L 367.5 267.1 L 354.6 263.9 L 351.4 257.3 L 347.0 256.1 L 347.7 250.2 L 343.5 249.5 L 332.9 237.6 L 320.5 238.5 L 318.2 228.2 L 326.0 218.4 L 325.5 207.8 L 339.4 201.5 L 339.3 196.1 L 348.0 187.7 L 353.3 189.2 L 350.2 180.4 L 341.1 178.0 L 339.8 181.6 L 338.1 178.8 L 343.3 165.9 L 347.3 173.8 L 356.4 180.7 L 361.3 179.5 L 367.7 186.7 L 367.7 191.4 L 371.1 190.3 L 365.5 192.7 L 368.2 195.4 L 364.9 194.7 L 364.8 197.7 L 375.0 193.6 L 379.0 200.5 L 383.4 195.5 L 388.1 199.7 L 395.6 199.6 L 396.3 195.1 L 391.2 195.3 L 390.6 190.3 L 388.0 191.8 L 383.9 185.0 L 388.0 180.4 L 391.1 184.6 L 398.6 185.9 L 398.3 192.5 L 402.5 192.6 L 399.6 196.3 L 404.1 208.6 L 410.0 209.9 L 412.0 215.1 L 419.6 219.9 L 425.6 216.7 L 426.4 219.9 L 435.0 220.3 L 435.0 223.4 L 438.0 223.5 L 440.2 215.2 L 443.7 215.3 L 442.2 211.4 L 439.5 212.2 L 442.2 210.4 L 439.1 207.0 L 443.7 206.4 L 442.5 200.6 L 446.1 199.9 L 448.0 205.5 L 445.7 206.1 L 451.5 206.9 L 455.4 213.1 L 453.7 217.4 L 461.5 222.4 L 457.9 225.5 L 462.8 225.6 L 457.2 237.1 L 462.4 254.3 L 458.3 282.5 L 469.2 281.8 L 480.9 288.7 L 507.3 295.8 L 525.2 291.1 L 525.4 293.9 L 530.8 294.9 L 534.6 292.2 L 541.2 294.6 L 573.7 290.3 L 590.0 296.8 L 601.1 293.0 L 603.3 297.7 L 608.7 294.4 L 612.2 296.2 L 612.8 292.9 L 637.5 292.1 L 666.7 305.9 L 666.3 311.5 L 671.7 313.2 L 672.0 319.2 L 664.6 321.7 L 656.7 315.9 L 651.4 316.9 L 656.3 331.6 L 651.1 349.6 L 649.6 352.0 L 644.9 350.3 L 646.1 358.7 L 642.3 362.7 L 632.2 361.6 L 629.9 362.9 L 632.2 367.9 L 629.0 364.9 L 626.1 366.6 L 627.7 372.7 L 624.9 384.0 L 620.1 376.4 L 612.0 374.5 L 613.2 383.8 L 607.5 382.0 L 605.6 375.7 L 603.4 387.1 L 599.3 389.8 L 582.3 386.7 L 582.7 398.3 L 576.6 396.4 L 574.4 403.0 L 570.9 402.6 L 570.4 418.0 L 565.7 418.1 L 564.2 421.5 L 568.9 423.7 L 568.2 427.2 L 564.8 425.1 L 565.2 431.7 L 572.2 440.9 L 575.6 453.1 L 577.9 452.3 L 575.5 455.9 L 580.1 474.9 L 584.0 479.0 L 585.7 478.2 L 582.7 467.7 L 585.6 459.1 L 593.0 467.8 L 595.8 483.9 L 601.9 489.3 L 619.3 475.7 L 613.4 457.3 L 630.0 442.1 L 627.2 423.9 L 629.0 419.5 L 637.6 427.3 L 645.6 419.0 L 649.5 426.6 L 651.9 420.7 L 655.7 422.3 L 654.4 427.6 L 665.0 462.8 L 660.4 463.2 L 664.0 478.9 L 662.4 489.5 L 668.6 493.1 L 670.6 506.1 L 675.0 513.2 L 681.6 559.5 L 677.7 560.3 L 683.4 582.5 L 681.4 608.0 L 687.1 634.3 L 680.5 637.9 L 677.3 625.6 L 667.7 627.3 L 663.1 617.2 L 658.9 622.5 L 654.1 621.7 L 653.3 627.5 L 648.4 631.3 L 650.0 639.0 L 646.4 644.3 L 653.3 652.4 L 654.2 666.4 L 660.7 682.0 L 636.2 643.1 L 635.3 630.5 L 628.4 618.9 L 634.1 615.6 L 631.9 609.3 L 634.1 606.1 L 628.3 596.5 L 631.9 605.5 L 630.6 614.7 L 624.8 615.2 L 627.5 616.5 L 625.8 618.1 L 620.5 612.7 L 623.7 611.5 L 621.2 609.6 L 624.9 598.0 L 623.1 602.5 L 620.9 599.1 L 625.8 584.0 L 620.3 558.3 L 621.3 560.2 L 624.8 561.0 L 624.8 559.8 L 622.6 558.4 L 624.8 558.1 L 625.9 555.4 L 626.2 556.5 L 626.7 556.8 L 627.4 556.8 L 627.5 555.8 L 628.9 556.7 L 630.5 556.2 L 631.3 556.9 L 630.1 557.0 L 630.0 557.3 L 630.2 558.0 L 632.3 559.0 L 630.1 557.4 L 631.5 557.0 L 630.9 556.2 L 625.8 555.2 L 621.9 557.6 L 624.8 560.7 L 620.4 558.0 L 619.8 558.8 L 620.7 561.3 L 619.8 561.2 L 617.4 553.3 L 619.7 548.7 L 616.3 546.0 L 622.9 541.8 L 625.4 535.3 L 631.0 535.1 L 625.9 534.5 L 623.9 536.0 L 623.8 533.9 L 620.9 530.9 L 622.6 530.6 L 622.9 529.7 L 621.0 530.6 L 620.8 531.0 L 621.1 531.9 L 622.2 533.6 L 623.7 534.1 L 623.7 536.0 L 621.3 542.5 L 616.0 545.6 L 616.2 546.9 L 619.1 548.8 L 616.5 551.8 L 609.1 528.8 L 585.7 500.3 L 588.5 499.0 L 589.8 496.0 L 584.9 500.3 L 586.1 505.9 L 579.1 502.0 L 579.4 497.9 L 578.6 496.7 L 578.5 502.3 L 583.1 505.3 L 576.2 506.2 L 573.0 510.5 L 567.7 507.3 L 575.3 517.3 L 570.7 525.4 L 564.3 524.2 L 564.5 527.7 L 561.2 528.8 L 568.4 526.8 L 565.1 531.4 L 560.5 531.4 L 559.0 527.8 L 563.2 522.8 L 558.5 528.3 L 540.1 512.8 L 529.4 489.1 L 530.1 494.5 L 524.0 485.9 L 523.2 454.6 L 524.1 454.3 L 525.1 455.6 L 525.7 455.9 L 526.4 455.8 L 526.8 455.3 L 525.6 454.3 L 526.0 453.2 L 525.6 454.4 L 526.6 455.3 L 525.7 455.8 L 522.2 452.7 L 511.2 455.4 L 520.9 464.7 L 511.8 480.4 L 504.6 483.8 L 514.5 490.7 L 509.3 501.2 L 508.4 495.7 L 507.1 494.3 L 507.0 501.9 L 511.8 503.0 L 511.3 506.8 L 506.5 503.0 L 512.3 509.3 L 509.8 514.5 L 512.2 510.6 L 512.8 519.6 L 510.2 520.8 L 519.3 525.1 L 519.0 534.0 L 521.4 536.1 L 519.3 533.8 L 522.8 529.9 L 525.6 541.6 L 521.5 547.6 L 521.3 543.1 L 513.5 556.1 L 510.8 553.5 L 511.6 558.4 L 506.6 564.8 L 503.0 562.3 L 507.0 554.8 L 504.0 556.4 L 496.6 573.2 L 493.7 569.7 L 492.5 575.7 L 484.2 573.2 L 483.5 577.8 L 475.6 583.4 L 474.2 576.4 L 477.6 574.3 L 484.7 561.5 L 488.5 561.7 L 489.9 558.9 L 484.3 560.9 L 478.8 566.4 L 476.4 573.5 L 473.3 573.1 L 470.8 568.5 L 474.2 567.0 L 477.6 557.5 L 473.5 555.2 L 476.7 557.5 L 473.0 560.8 L 469.6 569.2 L 470.8 575.5 L 468.4 576.3 L 463.7 556.0 L 462.0 563.1 L 457.2 565.8 L 459.2 561.1 L 456.9 558.9 L 458.8 557.2 L 456.5 552.3 L 456.7 559.3 L 458.8 560.8 L 455.9 565.3 L 451.3 559.5 L 451.6 555.2 L 450.3 554.2 L 450.7 553.2 L 451.6 554.4 L 452.1 554.1 L 452.8 550.2 L 452.2 549.5 L 452.8 548.8 L 452.1 549.4 L 451.8 554.2 L 450.5 552.2 L 450.2 554.3 L 451.1 559.6 L 448.9 560.1 L 448.9 554.2 L 448.4 553.8 L 447.2 554.3 L 450.8 547.0 L 448.1 547.2 L 448.9 540.9 L 447.9 544.2 L 445.1 539.4 L 443.3 539.3 L 447.8 547.4 L 450.6 547.3 L 445.7 553.3 L 445.9 550.7 L 442.8 549.7 L 444.9 549.7 L 445.7 549.3 L 445.9 549.1 L 445.7 548.9 L 443.9 548.6 L 444.9 548.0 L 445.4 547.4 L 443.2 546.4 L 443.9 548.7 L 445.8 549.1 L 445.0 549.6 L 442.9 549.5 L 442.7 549.8 L 445.9 550.7 L 445.6 553.3 L 446.9 554.7 L 448.6 554.1 L 446.6 565.7 L 446.0 559.2 L 440.3 555.9 L 442.1 539.5 L 438.0 550.5 L 436.1 544.9 L 434.0 542.5 L 432.7 542.5 L 434.5 541.9 L 434.6 541.3 L 432.0 539.0 L 432.7 542.8 L 437.6 550.2 L 433.7 554.2 L 438.5 560.7 L 434.3 572.1 L 432.6 570.1 L 435.8 561.8 L 435.3 558.7 L 433.6 563.1 L 429.8 551.2 L 431.5 547.5 L 431.5 546.2 L 430.7 545.1 L 431.9 545.6 L 433.1 545.1 L 430.6 545.0 L 431.1 548.2 L 430.3 543.8 L 428.6 542.3 L 428.6 541.5 L 430.4 542.1 L 431.5 541.4 L 430.9 539.1 L 429.2 538.9 L 429.9 538.0 L 428.9 536.6 L 430.0 536.2 L 428.8 536.1 L 429.2 539.0 L 430.8 539.1 L 430.6 541.8 L 428.8 541.4 L 428.4 541.5 L 428.2 541.9 L 429.6 544.8 L 426.4 540.3 L 427.6 537.6 L 426.5 535.3 L 425.5 540.5 L 423.8 537.1 L 422.8 536.6 L 425.4 543.1 L 421.0 537.1 L 420.6 538.6 L 425.2 546.1 L 422.5 545.5 L 422.0 543.9 L 420.6 543.4 L 422.4 545.6 L 425.9 546.8 L 419.4 548.5 L 424.7 548.9 L 425.2 551.7 L 420.9 552.8 L 426.0 557.0 L 422.0 559.5 L 422.6 557.8 L 421.3 557.4 L 422.4 555.7 L 420.5 554.9 L 421.8 559.5 L 424.1 560.2 L 422.1 562.8 L 418.3 560.2 L 418.2 552.6 L 409.1 563.0 L 408.3 560.5 L 409.8 559.8 L 408.7 558.9 L 411.3 557.5 L 411.9 551.9 L 408.0 560.3 L 409.4 556.5 L 407.5 555.6 L 407.8 552.6 L 407.1 551.5 L 406.2 551.3 L 406.1 557.1 L 409.2 556.5 L 407.0 559.9 L 411.3 566.4 L 408.1 571.4 L 404.0 568.3 L 407.2 561.2 L 404.8 558.3 L 403.1 557.9 L 404.5 553.4 L 402.7 557.2 L 403.1 558.3 L 404.9 558.7 L 405.4 560.8 L 407.0 561.5 L 403.5 564.0 L 403.1 560.2 L 401.7 558.1 L 398.4 555.8 L 402.9 560.2 L 400.9 561.0 L 403.5 564.8 L 398.8 570.0 L 397.0 566.8 L 398.6 566.8 L 398.9 566.4 L 399.5 563.3 L 397.8 562.6 L 399.2 561.9 L 399.2 561.1 L 398.4 560.9 L 399.0 560.5 L 398.3 560.9 L 399.2 561.8 L 397.7 562.6 L 398.6 566.7 L 395.4 563.1 L 399.8 557.9 L 397.3 558.1 L 390.4 543.0 Z" fill="url(#bdFillGrad)" stroke="#06B6D4" stroke-width="1" stroke-dasharray="4 4" opacity="0.85"/>
+
+    <!-- 2. Dynamic Laser Traced Border (Phase 1) -->
+    <path class="bd-trace-line" d="M 390.4 543.0 L 391.3 530.4 L 385.8 514.4 L 388.6 510.6 L 384.4 505.1 L 389.0 497.5 L 384.0 493.9 L 383.1 488.1 L 380.3 488.8 L 379.1 483.0 L 382.0 483.1 L 381.0 475.0 L 391.2 465.0 L 376.4 461.4 L 374.8 464.7 L 369.0 461.5 L 367.2 457.4 L 371.1 457.0 L 370.1 453.0 L 375.6 440.3 L 370.8 441.8 L 363.2 430.6 L 357.9 431.0 L 359.0 427.7 L 356.1 427.0 L 355.9 415.1 L 359.6 412.3 L 357.5 408.3 L 364.9 407.6 L 373.1 397.8 L 369.8 396.5 L 369.7 387.3 L 366.9 386.4 L 371.2 383.3 L 370.3 371.9 L 367.0 368.5 L 356.9 367.5 L 355.9 370.5 L 347.1 363.0 L 337.6 362.4 L 322.6 351.3 L 312.0 337.6 L 325.3 320.7 L 322.4 314.1 L 329.3 312.0 L 332.1 319.2 L 337.5 319.8 L 338.6 313.8 L 343.0 313.6 L 347.6 305.2 L 348.2 294.4 L 346.8 293.1 L 346.2 291.0 L 346.5 290.1 L 356.6 293.2 L 367.9 290.2 L 376.0 293.5 L 379.0 289.7 L 385.4 294.0 L 388.1 286.1 L 392.2 285.4 L 392.3 281.9 L 385.9 281.8 L 378.7 276.6 L 376.4 262.6 L 367.5 267.1 L 354.6 263.9 L 351.4 257.3 L 347.0 256.1 L 347.7 250.2 L 343.5 249.5 L 332.9 237.6 L 320.5 238.5 L 318.2 228.2 L 326.0 218.4 L 325.5 207.8 L 339.4 201.5 L 339.3 196.1 L 348.0 187.7 L 353.3 189.2 L 350.2 180.4 L 341.1 178.0 L 339.8 181.6 L 338.1 178.8 L 343.3 165.9 L 347.3 173.8 L 356.4 180.7 L 361.3 179.5 L 367.7 186.7 L 367.7 191.4 L 371.1 190.3 L 365.5 192.7 L 368.2 195.4 L 364.9 194.7 L 364.8 197.7 L 375.0 193.6 L 379.0 200.5 L 383.4 195.5 L 388.1 199.7 L 395.6 199.6 L 396.3 195.1 L 391.2 195.3 L 390.6 190.3 L 388.0 191.8 L 383.9 185.0 L 388.0 180.4 L 391.1 184.6 L 398.6 185.9 L 398.3 192.5 L 402.5 192.6 L 399.6 196.3 L 404.1 208.6 L 410.0 209.9 L 412.0 215.1 L 419.6 219.9 L 425.6 216.7 L 426.4 219.9 L 435.0 220.3 L 435.0 223.4 L 438.0 223.5 L 440.2 215.2 L 443.7 215.3 L 442.2 211.4 L 439.5 212.2 L 442.2 210.4 L 439.1 207.0 L 443.7 206.4 L 442.5 200.6 L 446.1 199.9 L 448.0 205.5 L 445.7 206.1 L 451.5 206.9 L 455.4 213.1 L 453.7 217.4 L 461.5 222.4 L 457.9 225.5 L 462.8 225.6 L 457.2 237.1 L 462.4 254.3 L 458.3 282.5 L 469.2 281.8 L 480.9 288.7 L 507.3 295.8 L 525.2 291.1 L 525.4 293.9 L 530.8 294.9 L 534.6 292.2 L 541.2 294.6 L 573.7 290.3 L 590.0 296.8 L 601.1 293.0 L 603.3 297.7 L 608.7 294.4 L 612.2 296.2 L 612.8 292.9 L 637.5 292.1 L 666.7 305.9 L 666.3 311.5 L 671.7 313.2 L 672.0 319.2 L 664.6 321.7 L 656.7 315.9 L 651.4 316.9 L 656.3 331.6 L 651.1 349.6 L 649.6 352.0 L 644.9 350.3 L 646.1 358.7 L 642.3 362.7 L 632.2 361.6 L 629.9 362.9 L 632.2 367.9 L 629.0 364.9 L 626.1 366.6 L 627.7 372.7 L 624.9 384.0 L 620.1 376.4 L 612.0 374.5 L 613.2 383.8 L 607.5 382.0 L 605.6 375.7 L 603.4 387.1 L 599.3 389.8 L 582.3 386.7 L 582.7 398.3 L 576.6 396.4 L 574.4 403.0 L 570.9 402.6 L 570.4 418.0 L 565.7 418.1 L 564.2 421.5 L 568.9 423.7 L 568.2 427.2 L 564.8 425.1 L 565.2 431.7 L 572.2 440.9 L 575.6 453.1 L 577.9 452.3 L 575.5 455.9 L 580.1 474.9 L 584.0 479.0 L 585.7 478.2 L 582.7 467.7 L 585.6 459.1 L 593.0 467.8 L 595.8 483.9 L 601.9 489.3 L 619.3 475.7 L 613.4 457.3 L 630.0 442.1 L 627.2 423.9 L 629.0 419.5 L 637.6 427.3 L 645.6 419.0 L 649.5 426.6 L 651.9 420.7 L 655.7 422.3 L 654.4 427.6 L 665.0 462.8 L 660.4 463.2 L 664.0 478.9 L 662.4 489.5 L 668.6 493.1 L 670.6 506.1 L 675.0 513.2 L 681.6 559.5 L 677.7 560.3 L 683.4 582.5 L 681.4 608.0 L 687.1 634.3 L 680.5 637.9 L 677.3 625.6 L 667.7 627.3 L 663.1 617.2 L 658.9 622.5 L 654.1 621.7 L 653.3 627.5 L 648.4 631.3 L 650.0 639.0 L 646.4 644.3 L 653.3 652.4 L 654.2 666.4 L 660.7 682.0 L 636.2 643.1 L 635.3 630.5 L 628.4 618.9 L 634.1 615.6 L 631.9 609.3 L 634.1 606.1 L 628.3 596.5 L 631.9 605.5 L 630.6 614.7 L 624.8 615.2 L 627.5 616.5 L 625.8 618.1 L 620.5 612.7 L 623.7 611.5 L 621.2 609.6 L 624.9 598.0 L 623.1 602.5 L 620.9 599.1 L 625.8 584.0 L 620.3 558.3 L 621.3 560.2 L 624.8 561.0 L 624.8 559.8 L 622.6 558.4 L 624.8 558.1 L 625.9 555.4 L 626.2 556.5 L 626.7 556.8 L 627.4 556.8 L 627.5 555.8 L 628.9 556.7 L 630.5 556.2 L 631.3 556.9 L 630.1 557.0 L 630.0 557.3 L 630.2 558.0 L 632.3 559.0 L 630.1 557.4 L 631.5 557.0 L 630.9 556.2 L 625.8 555.2 L 621.9 557.6 L 624.8 560.7 L 620.4 558.0 L 619.8 558.8 L 620.7 561.3 L 619.8 561.2 L 617.4 553.3 L 619.7 548.7 L 616.3 546.0 L 622.9 541.8 L 625.4 535.3 L 631.0 535.1 L 625.9 534.5 L 623.9 536.0 L 623.8 533.9 L 620.9 530.9 L 622.6 530.6 L 622.9 529.7 L 621.0 530.6 L 620.8 531.0 L 621.1 531.9 L 622.2 533.6 L 623.7 534.1 L 623.7 536.0 L 621.3 542.5 L 616.0 545.6 L 616.2 546.9 L 619.1 548.8 L 616.5 551.8 L 609.1 528.8 L 585.7 500.3 L 588.5 499.0 L 589.8 496.0 L 584.9 500.3 L 586.1 505.9 L 579.1 502.0 L 579.4 497.9 L 578.6 496.7 L 578.5 502.3 L 583.1 505.3 L 576.2 506.2 L 573.0 510.5 L 567.7 507.3 L 575.3 517.3 L 570.7 525.4 L 564.3 524.2 L 564.5 527.7 L 561.2 528.8 L 568.4 526.8 L 565.1 531.4 L 560.5 531.4 L 559.0 527.8 L 563.2 522.8 L 558.5 528.3 L 540.1 512.8 L 529.4 489.1 L 530.1 494.5 L 524.0 485.9 L 523.2 454.6 L 524.1 454.3 L 525.1 455.6 L 525.7 455.9 L 526.4 455.8 L 526.8 455.3 L 525.6 454.3 L 526.0 453.2 L 525.6 454.4 L 526.6 455.3 L 525.7 455.8 L 522.2 452.7 L 511.2 455.4 L 520.9 464.7 L 511.8 480.4 L 504.6 483.8 L 514.5 490.7 L 509.3 501.2 L 508.4 495.7 L 507.1 494.3 L 507.0 501.9 L 511.8 503.0 L 511.3 506.8 L 506.5 503.0 L 512.3 509.3 L 509.8 514.5 L 512.2 510.6 L 512.8 519.6 L 510.2 520.8 L 519.3 525.1 L 519.0 534.0 L 521.4 536.1 L 519.3 533.8 L 522.8 529.9 L 525.6 541.6 L 521.5 547.6 L 521.3 543.1 L 513.5 556.1 L 510.8 553.5 L 511.6 558.4 L 506.6 564.8 L 503.0 562.3 L 507.0 554.8 L 504.0 556.4 L 496.6 573.2 L 493.7 569.7 L 492.5 575.7 L 484.2 573.2 L 483.5 577.8 L 475.6 583.4 L 474.2 576.4 L 477.6 574.3 L 484.7 561.5 L 488.5 561.7 L 489.9 558.9 L 484.3 560.9 L 478.8 566.4 L 476.4 573.5 L 473.3 573.1 L 470.8 568.5 L 474.2 567.0 L 477.6 557.5 L 473.5 555.2 L 476.7 557.5 L 473.0 560.8 L 469.6 569.2 L 470.8 575.5 L 468.4 576.3 L 463.7 556.0 L 462.0 563.1 L 457.2 565.8 L 459.2 561.1 L 456.9 558.9 L 458.8 557.2 L 456.5 552.3 L 456.7 559.3 L 458.8 560.8 L 455.9 565.3 L 451.3 559.5 L 451.6 555.2 L 450.3 554.2 L 450.7 553.2 L 451.6 554.4 L 452.1 554.1 L 452.8 550.2 L 452.2 549.5 L 452.8 548.8 L 452.1 549.4 L 451.8 554.2 L 450.5 552.2 L 450.2 554.3 L 451.1 559.6 L 448.9 560.1 L 448.9 554.2 L 448.4 553.8 L 447.2 554.3 L 450.8 547.0 L 448.1 547.2 L 448.9 540.9 L 447.9 544.2 L 445.1 539.4 L 443.3 539.3 L 447.8 547.4 L 450.6 547.3 L 445.7 553.3 L 445.9 550.7 L 442.8 549.7 L 444.9 549.7 L 445.7 549.3 L 445.9 549.1 L 445.7 548.9 L 443.9 548.6 L 444.9 548.0 L 445.4 547.4 L 443.2 546.4 L 443.9 548.7 L 445.8 549.1 L 445.0 549.6 L 442.9 549.5 L 442.7 549.8 L 445.9 550.7 L 445.6 553.3 L 446.9 554.7 L 448.6 554.1 L 446.6 565.7 L 446.0 559.2 L 440.3 555.9 L 442.1 539.5 L 438.0 550.5 L 436.1 544.9 L 434.0 542.5 L 432.7 542.5 L 434.5 541.9 L 434.6 541.3 L 432.0 539.0 L 432.7 542.8 L 437.6 550.2 L 433.7 554.2 L 438.5 560.7 L 434.3 572.1 L 432.6 570.1 L 435.8 561.8 L 435.3 558.7 L 433.6 563.1 L 429.8 551.2 L 431.5 547.5 L 431.5 546.2 L 430.7 545.1 L 431.9 545.6 L 433.1 545.1 L 430.6 545.0 L 431.1 548.2 L 430.3 543.8 L 428.6 542.3 L 428.6 541.5 L 430.4 542.1 L 431.5 541.4 L 430.9 539.1 L 429.2 538.9 L 429.9 538.0 L 428.9 536.6 L 430.0 536.2 L 428.8 536.1 L 429.2 539.0 L 430.8 539.1 L 430.6 541.8 L 428.8 541.4 L 428.4 541.5 L 428.2 541.9 L 429.6 544.8 L 426.4 540.3 L 427.6 537.6 L 426.5 535.3 L 425.5 540.5 L 423.8 537.1 L 422.8 536.6 L 425.4 543.1 L 421.0 537.1 L 420.6 538.6 L 425.2 546.1 L 422.5 545.5 L 422.0 543.9 L 420.6 543.4 L 422.4 545.6 L 425.9 546.8 L 419.4 548.5 L 424.7 548.9 L 425.2 551.7 L 420.9 552.8 L 426.0 557.0 L 422.0 559.5 L 422.6 557.8 L 421.3 557.4 L 422.4 555.7 L 420.5 554.9 L 421.8 559.5 L 424.1 560.2 L 422.1 562.8 L 418.3 560.2 L 418.2 552.6 L 409.1 563.0 L 408.3 560.5 L 409.8 559.8 L 408.7 558.9 L 411.3 557.5 L 411.9 551.9 L 408.0 560.3 L 409.4 556.5 L 407.5 555.6 L 407.8 552.6 L 407.1 551.5 L 406.2 551.3 L 406.1 557.1 L 409.2 556.5 L 407.0 559.9 L 411.3 566.4 L 408.1 571.4 L 404.0 568.3 L 407.2 561.2 L 404.8 558.3 L 403.1 557.9 L 404.5 553.4 L 402.7 557.2 L 403.1 558.3 L 404.9 558.7 L 405.4 560.8 L 407.0 561.5 L 403.5 564.0 L 403.1 560.2 L 401.7 558.1 L 398.4 555.8 L 402.9 560.2 L 400.9 561.0 L 403.5 564.8 L 398.8 570.0 L 397.0 566.8 L 398.6 566.8 L 398.9 566.4 L 399.5 563.3 L 397.8 562.6 L 399.2 561.9 L 399.2 561.1 L 398.4 560.9 L 399.0 560.5 L 398.3 560.9 L 399.2 561.8 L 397.7 562.6 L 398.6 566.7 L 395.4 563.1 L 399.8 557.9 L 397.3 558.1 L 390.4 543.0 Z" fill="none" stroke="#10B981" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" filter="url(#greenGlow)"/>
+
+    <!-- 3. All 8 Division Radar Pins & Wave Pulses (Phase 2) -->
+    <g id="division-pins">
+
+      <!-- Dhaka Division Pin -->
+      <g class="division-marker" transform="translate(505.0, 412.8)">
+        <circle cx="0" cy="0" r="18" class="radar-wave" fill="#F59E0B" opacity="0.4"/>
+        <circle cx="0" cy="0" r="28" class="radar-wave wave-delayed" fill="#F59E0B" opacity="0.2"/>
+        <circle cx="0" cy="0" r="5" fill="#F59E0B" stroke="#FFFFFF" stroke-width="2" filter="url(#amberGlow)"/>
+        <text x="0" y="16" text-anchor="middle" class="division-label">DHAKA</text>
+      </g>
+
+      <!-- Chattogram Division Pin -->
+      <g class="division-marker" transform="translate(615.1, 540.3)">
+        <circle cx="0" cy="0" r="18" class="radar-wave" fill="#06B6D4" opacity="0.4"/>
+        <circle cx="0" cy="0" r="28" class="radar-wave wave-delayed" fill="#06B6D4" opacity="0.2"/>
+        <circle cx="0" cy="0" r="5" fill="#06B6D4" stroke="#FFFFFF" stroke-width="2" filter="url(#cyanGlow)"/>
+        <text x="0" y="16" text-anchor="middle" class="division-label">CHATTOGRAM</text>
+      </g>
+
+      <!-- Rajshahi Division Pin -->
+      <g class="division-marker" transform="translate(361.4, 364.3)">
+        <circle cx="0" cy="0" r="18" class="radar-wave" fill="#F59E0B" opacity="0.4"/>
+        <circle cx="0" cy="0" r="28" class="radar-wave wave-delayed" fill="#F59E0B" opacity="0.2"/>
+        <circle cx="0" cy="0" r="5" fill="#F59E0B" stroke="#FFFFFF" stroke-width="2" filter="url(#amberGlow)"/>
+        <text x="0" y="16" text-anchor="middle" class="division-label">RAJSHAHI</text>
+      </g>
+
+      <!-- Khulna Division Pin -->
+      <g class="division-marker" transform="translate(435.0, 497.4)">
+        <circle cx="0" cy="0" r="18" class="radar-wave" fill="#F59E0B" opacity="0.4"/>
+        <circle cx="0" cy="0" r="28" class="radar-wave wave-delayed" fill="#F59E0B" opacity="0.2"/>
+        <circle cx="0" cy="0" r="5" fill="#F59E0B" stroke="#FFFFFF" stroke-width="2" filter="url(#amberGlow)"/>
+        <text x="0" y="16" text-anchor="middle" class="division-label">KHULNA</text>
+      </g>
+
+      <!-- Sylhet Division Pin -->
+      <g class="division-marker" transform="translate(622.0, 317.7)">
+        <circle cx="0" cy="0" r="18" class="radar-wave" fill="#06B6D4" opacity="0.4"/>
+        <circle cx="0" cy="0" r="28" class="radar-wave wave-delayed" fill="#06B6D4" opacity="0.2"/>
+        <circle cx="0" cy="0" r="5" fill="#06B6D4" stroke="#FFFFFF" stroke-width="2" filter="url(#cyanGlow)"/>
+        <text x="0" y="16" text-anchor="middle" class="division-label">SYLHET</text>
+      </g>
+
+      <!-- Barishal Division Pin -->
+      <g class="division-marker" transform="translate(500.3, 510.1)">
+        <circle cx="0" cy="0" r="18" class="radar-wave" fill="#06B6D4" opacity="0.4"/>
+        <circle cx="0" cy="0" r="28" class="radar-wave wave-delayed" fill="#06B6D4" opacity="0.2"/>
+        <circle cx="0" cy="0" r="5" fill="#06B6D4" stroke="#FFFFFF" stroke-width="2" filter="url(#cyanGlow)"/>
+        <text x="0" y="16" text-anchor="middle" class="division-label">BARISHAL</text>
+      </g>
+
+      <!-- Rangpur Division Pin -->
+      <g class="division-marker" transform="translate(413.7, 243.2)">
+        <circle cx="0" cy="0" r="18" class="radar-wave" fill="#06B6D4" opacity="0.4"/>
+        <circle cx="0" cy="0" r="28" class="radar-wave wave-delayed" fill="#06B6D4" opacity="0.2"/>
+        <circle cx="0" cy="0" r="5" fill="#06B6D4" stroke="#FFFFFF" stroke-width="2" filter="url(#cyanGlow)"/>
+        <text x="0" y="16" text-anchor="middle" class="division-label">RANGPUR</text>
+      </g>
+
+      <!-- Mymensingh Division Pin -->
+      <g class="division-marker" transform="translate(505.6, 330.7)">
+        <circle cx="0" cy="0" r="18" class="radar-wave" fill="#06B6D4" opacity="0.4"/>
+        <circle cx="0" cy="0" r="28" class="radar-wave wave-delayed" fill="#06B6D4" opacity="0.2"/>
+        <circle cx="0" cy="0" r="5" fill="#06B6D4" stroke="#FFFFFF" stroke-width="2" filter="url(#cyanGlow)"/>
+        <text x="0" y="16" text-anchor="middle" class="division-label">MYMENSINGH</text>
+      </g>
+    </g>
+  </g>
+</svg>
