@@ -590,7 +590,12 @@ erDiagram
 ├── .env.example                         # Environment configuration template with safe placeholders
 ├── .gitignore                           # Git ignore specification protecting operational databases
 ├── README.md                            # Comprehensive system documentation & deployment guide
+├── TESTS.md                             # Automated test suite specification & coverage metrics
 ├── landguard_preloader_animated.svg     # Animated cyber radar & statutory verification SVG
+├── landguard_preloader_animated.gif     # High-definition animated preview asset
+├── docs/                                # Technical system specifications & architectural blueprints
+│   ├── ARCHITECTURE.md                  # Comprehensive architecture & system design document
+│   └── landguard_preloader_animated.svg # Vector assets and design references
 ├── scripts/
 │   ├── init_persistent_db.py           # Idempotent persistent volume initialization & seeding guard
 │   ├── generate_all_markdown_and_pdfs.py # Batch dossier generation utility
