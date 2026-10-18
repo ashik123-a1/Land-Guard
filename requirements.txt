@@ -29,5 +29,9 @@ pymupdf>=1.23.0
 qrcode[pil]>=7.4.0
 reportlab>=4.0.0
 
+# Neural Voice Synthesis & Data Validation
+edge-tts>=6.1.0
+jsonschema>=4.0.0
+
 # Standby PostgreSQL Driver (Pre-compiled binary for zero-build environments)
 psycopg2-binary>=2.9.9

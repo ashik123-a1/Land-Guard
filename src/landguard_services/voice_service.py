@@ -1,6 +1,10 @@
 import io
 from typing import Dict, Any, Optional
-import edge_tts
+
+try:
+    import edge_tts
+except ImportError:
+    edge_tts = None
 
 from src.landguard_ai.voice_assistant import (
     parse_bilingual_intent,
@@ -61,6 +65,8 @@ class VoiceService:
         cleaned_text = (text or "").strip()
         if not cleaned_text:
             raise ValueError("Text parameter cannot be empty for speech synthesis")
+        if not edge_tts:
+            raise RuntimeError("Neural TTS service requires edge-tts package to be installed")
 
         voice = BANGLA_FEMALE_VOICE if (lang == "bn" or str(lang).lower().startswith("bn")) else ENGLISH_FEMALE_VOICE
         communicate = edge_tts.Communicate(cleaned_text, voice)
