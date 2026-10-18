@@ -698,8 +698,6 @@ To give evaluators and judges immediate insight into the operational data repres
 ```
 .
 ├── .devcontainer/                       # GitHub Codespaces container specification (Active Judging Environment)
-├── render.yaml                          # [Legacy / Standby] Render blueprint (Preserved for reference; unused in judging)
-├── vercel.json                          # [Legacy / Standby] Vercel proxy config (Preserved for reference; unused in judging)
 ├── requirements.txt                     # Production Python dependencies (Linux/Codespaces ready)
 ├── pyproject.toml                       # Python package specification and pytest configuration
 ├── .env.example                         # Environment configuration template with safe placeholders
@@ -855,7 +853,7 @@ Configure these environment variables in your local `.env` file or in your cloud
 ## 14. Cloud Deployment (GitHub Codespaces Cloud Engine)
 
 > **Judging Deployment Note**:  
-> The official, active judging and evaluation environment is hosted exclusively on **GitHub Codespaces**. Any legacy configuration files (`vercel.json` or `render.yaml`) are preserved strictly for architectural reference / standby deployment and are completely unused in the active judging setup.
+> The official, active judging and evaluation environment is hosted exclusively on **GitHub Codespaces** with automated zero-config container execution.
 
 The official live judging demonstration environment is hosted directly on high-performance **GitHub Codespaces** cloud infrastructure, delivering 8 GB RAM and 4 vCPUs for low-latency (< 3.8s) bilingual OCR and CV inference:
 
