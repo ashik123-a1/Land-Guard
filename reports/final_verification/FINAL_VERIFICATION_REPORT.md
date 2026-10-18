@@ -152,16 +152,36 @@ The frozen multimodal XGBoost model achieves near-perfect test metrics ($F_1 = 0
 The synthesis hierarchy in `src/landguard/rules/explainable_risk.py` was verified to guarantee statutory dominance over machine learning scores:
 
 ```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#1e293b',
+    'primaryTextColor': '#f8fafc',
+    'primaryBorderColor': '#38bdf8',
+    'lineColor': '#38bdf8',
+    'secondaryColor': '#0f172a',
+    'tertiaryColor': '#1e1b4b',
+    'fontFamily': 'Inter, system-ui, sans-serif'
+  }
+}}%%
 flowchart TD
-    Start["Deed Ingestion & Verification"] --> ArchivalCheck{"Pre-1972 Missing Archive?"}
-    ArchivalCheck -- "Yes" --> MissingEv["MISSING_EVIDENCE<br>(Overrides ML Risk Score)"]
-    ArchivalCheck -- "No" --> StatCheck{"Statutory Rule Fired?<br>(Double Sale, Fake Owner, Area Excess)"}
-    StatCheck -- "Yes" --> ConfIncons["CONFIRMED_INCONSISTENCY<br>(Statutory Contradiction)"]
-    StatCheck -- "No" --> ReviewCheck{"Administrative Review Flag?<br>(Pending Mutation, Boundary Subdiv)"}
-    ReviewCheck -- "Yes" --> RevReq["REVIEW_REQUIRED<br>(Awaiting Revenue Hearing)"]
-    ReviewCheck -- "No" --> MLCheck{"Compound ML Risk >= 0.50?"}
-    MLCheck -- "Yes" --> RiskInd["RISK_INDICATOR<br>(Advisory Statistical Warning)"]
-    MLCheck -- "No" --> Clear["CLEAR_FOR_STANDARD_PROCESSING<br>(Valid Conveyance)"]
+    classDef startNode fill:#0f172a,stroke:#38bdf8,stroke-width:2px,color:#ffffff;
+    classDef decisionNode fill:#1e1b4b,stroke:#818cf8,stroke-width:2px,color:#ffffff;
+    classDef redNode fill:#450a0a,stroke:#ef4444,stroke-width:2px,color:#fecaca;
+    classDef amberNode fill:#451a03,stroke:#f59e0b,stroke-width:2px,color:#fef3c7;
+    classDef yellowNode fill:#3f2c00,stroke:#eab308,stroke-width:2px,color:#fef08a;
+    classDef purpleNode fill:#3b0764,stroke:#a855f7,stroke-width:2px,color:#f3e8ff;
+    classDef greenNode fill:#052e16,stroke:#22c55e,stroke-width:2px,color:#dcfce7;
+
+    Start["📄 Deed Ingestion & Verification"]:::startNode --> ArchivalCheck{"📜 Pre-1972 Missing Archive?"}:::decisionNode
+    ArchivalCheck -- "Yes" --> MissingEv["⚠️ MISSING_EVIDENCE<br/>(Overrides ML Risk Score)"]:::amberNode
+    ArchivalCheck -- "No" --> StatCheck{"⚖️ Statutory Rule Fired?<br/>(Double Sale, Fake Owner, Area Excess)"}:::decisionNode
+    StatCheck -- "Yes" --> ConfIncons["🚨 CONFIRMED_INCONSISTENCY<br/>(Statutory Contradiction)"]:::redNode
+    StatCheck -- "No" --> ReviewCheck{"⏳ Administrative Review Flag?<br/>(Pending Mutation, Boundary Subdiv)"}:::decisionNode
+    ReviewCheck -- "Yes" --> RevReq["🕒 REVIEW_REQUIRED<br/>(Awaiting Revenue Hearing)"]:::yellowNode
+    ReviewCheck -- "No" --> MLCheck{"🧠 Compound ML Risk &ge; 0.50?"}:::decisionNode
+    MLCheck -- "Yes" --> RiskInd["🔮 RISK_INDICATOR<br/>(Advisory Statistical Warning)"]:::purpleNode
+    MLCheck -- "No" --> Clear["✅ CLEAR_FOR_STANDARD_PROCESSING<br/>(Valid Conveyance)"]:::greenNode
 ```
 
 - **Precedence Tier 1 (Statutory Contradiction):** Even if the ML model outputs risk score 0.01, a statutory violation produces `CONFIRMED_INCONSISTENCY`.

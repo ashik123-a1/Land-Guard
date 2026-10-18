@@ -1,10 +1,10 @@
 # LandGuard Architecture & System Design Document
 
-**Document Version:** 2.3.0  
+**Document Version:** 2.4.0  
 **Status:** ACCEPTED & PRODUCTION VERIFIED  
 **Primary Operational Database:** SQLite (`data/landguard_operational.db`) — WAL Mode (`PRAGMA journal_mode=WAL`, `PRAGMA busy_timeout=5000`)  
 **Standby Database:** Neon Serverless PostgreSQL (Configured in `.env` on Standby, Zero Application Traffic)  
-**Total Automated Tests:** 177 / 177 PASSED (0 Warnings, 100% Pass Rate in ~31.6s)  
+**Total Automated Tests:** 277 / 277 PASSED (0 Warnings, 100% Pass Rate in ~74.7s)  
 
 ---
 
@@ -20,39 +20,75 @@ No machine learning score or computer-vision seam detection can legally establis
 
 ## 2. Layered Architecture
 
-The application is structured into three clean, decoupled tiers:
+The application is structured into four decoupled, resilient architectural tiers:
 
-```
-┌────────────────────────────────────────────────────────────────────────┐
-│                   Presentation & Routing Layer                         │
-│                    (src/landguard_web/routers/)                        │
-│  auth, citizen, complaints, cases, verifications, parcels, reports,   │
-│              documents, voice, analytics, dependencies, schemas        │
-└───────────────────────────────────┬────────────────────────────────────┘
-                                    │ Calls Domain Services
-                                    ▼
-┌────────────────────────────────────────────────────────────────────────┐
-│                      Domain Services Layer                             │
-│                     (src/landguard_services/)                          │
-│  VerificationService, ParcelService, ReportService, CaseService,       │
-│  ComplaintService, DocumentService, AnalyticsService, AuthService,    │
-│  NotificationService, VoiceService                                     │
-└───────────────────────────────────┬────────────────────────────────────┘
-                                    │ Executes SQLite Queries
-                                    ▼
-┌────────────────────────────────────────────────────────────────────────┐
-│                       Data Access Layer                                │
-│                 (src/landguard_data/repositories/)                     │
-│  UsersRepo, ComplaintsRepo, CasesRepo, VerificationsRepo,              │
-│  DocumentsRepo, NotificationsRepo, AuditRepo, BaseRepository           │
-└───────────────────────────────────┬────────────────────────────────────┘
-                                    │ Connection Pooling / WAL
-                                    ▼
-┌────────────────────────────────────────────────────────────────────────┐
-│                Active Primary Database: SQLite                         │
-│                  data/landguard_operational.db                         │
-│  [Standby: Neon PostgreSQL in .env — 0 Normal Application Traffic]     │
-└────────────────────────────────────────────────────────────────────────┘
+```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#1e293b',
+    'primaryTextColor': '#f8fafc',
+    'primaryBorderColor': '#38bdf8',
+    'lineColor': '#38bdf8',
+    'secondaryColor': '#0f172a',
+    'tertiaryColor': '#1e1b4b',
+    'fontFamily': 'Inter, system-ui, sans-serif'
+  }
+}}%%
+flowchart TD
+    classDef presentation fill:#1e1b4b,stroke:#818cf8,stroke-width:2px,color:#ffffff;
+    classDef services fill:#064e3b,stroke:#34d399,stroke-width:2px,color:#ffffff;
+    classDef aiEngine fill:#4c1d95,stroke:#c084fc,stroke-width:2px,color:#ffffff;
+    classDef dataAccess fill:#0c4a6e,stroke:#38bdf8,stroke-width:2px,color:#ffffff;
+    classDef activeDB fill:#14532d,stroke:#22c55e,stroke-width:2px,color:#ffffff;
+    classDef standbyDB fill:#451a03,stroke:#f59e0b,stroke-width:2px,color:#ffffff;
+
+    subgraph LayerPresentation["🖥️ Presentation & Routing Layer (src/landguard_web/routers/)"]
+        AuthRoute["🔐 auth.py & Session Guard"]:::presentation
+        CitizenRoute["👤 citizen.py & complaints.py"]:::presentation
+        AdminRoute["⚖️ cases.py & verifications.py"]:::presentation
+        CadastralRoute["🗺️ parcels.py & Cadastral Graph"]:::presentation
+        ReportRoute["📄 reports.py & QR Verification"]:::presentation
+        VoiceRoute["🎙️ voice.py & Speech Intent"]:::presentation
+        AnalyticsRoute["📊 analytics.py Bento Grid"]:::presentation
+    end
+
+    subgraph LayerServices["⚙️ Domain Services & AI Reasoning Engine"]
+        subgraph CoreServices["📦 Business Logic (src/landguard_services/)"]
+            VerificationSvc["🛡️ VerificationService<br/>(Deterministic Statutory Rules R-01 to R-10)"]:::services
+            ParcelSvc["🌐 ParcelService<br/>(CS &rarr; SA &rarr; RS &rarr; BS Cadastral Chain)"]:::services
+            CaseSvc["📋 CaseService & ComplaintService<br/>(SLA Timelines & Expedited Review)"]:::services
+            ReportSvc["📑 ReportService & DocumentService<br/>(ReportLab PDF & SHA-256 Ingestion)"]:::services
+            VoiceSvc["🗣️ VoiceService<br/>(Bilingual Bangla/English TTS & Intent)"]:::services
+        end
+        subgraph AIServices["🧠 AI & Vision Engine (src/landguard_ai/)"]
+            XGBoostModel["⚡ Supervised XGBoost Risk Model<br/>(19 Calibrated Features, Brier: 0.0013)"]:::aiEngine
+            ComplaintAnalyzer["🔍 AI Complaint Analyzer<br/>(Registry Evidence Cross-Match)"]:::aiEngine
+            RapidOCREngine["👁️ RapidOCR & Seam Tamper Detector<br/>(HarfBuzz Bengali Script Shaping)"]:::aiEngine
+        end
+    end
+
+    subgraph LayerData["🗄️ Data Access & Repository Layer (src/landguard_data/repositories/)"]
+        Repos["BaseRepository Facade (WAL Mode, Thread-Safe Pools)<br/>UsersRepo | ComplaintsRepo | CasesRepo | VerificationsRepo | DocumentsRepo | AuditRepo"]:::dataAccess
+    end
+
+    subgraph LayerPersistence["💾 Persistence & Storage Tier"]
+        ActiveSQLite[("🟢 Active Primary: SQLite 3<br/>data/landguard_operational.db (/var/data)<br/>PRAGMA journal_mode=WAL | PRAGMA busy_timeout=5000")]:::activeDB
+        StandbyPostgres[("🟡 Standby Cloud Database: Neon PostgreSQL<br/>Zero Application Traffic (Configured in .env)")]:::standbyDB
+    end
+
+    LayerPresentation -->|"HTTP Request Dispatch / Pydantic Validation"| LayerServices
+    CoreServices <-->|"Inference & Extraction Calls"| AIServices
+    LayerServices -->|"Domain Entity Invocations"| Repos
+    Repos -->|"Active Read/Write Transactions"| ActiveSQLite
+    Repos -.->|"Failover Standby Pipeline"| StandbyPostgres
+
+    style LayerPresentation fill:#0f172a,stroke:#6366f1,stroke-width:2px,color:#c7d2fe
+    style LayerServices fill:#022c22,stroke:#10b981,stroke-width:2px,color:#a7f3d0
+    style CoreServices fill:#064e3b,stroke:#059669,stroke-width:1.5px,color:#d1fae5
+    style AIServices fill:#2e1065,stroke:#8b5cf6,stroke-width:1.5px,color:#ede9fe
+    style LayerData fill:#082f49,stroke:#0ea5e9,stroke-width:2px,color:#bae6fd
+    style LayerPersistence fill:#090d16,stroke:#64748b,stroke-width:2px,stroke-dasharray: 4 4,color:#e2e8f0
 ```
 
 ### 2.1 Presentation & Routing (`src/landguard_web/routers/`)
@@ -160,7 +196,7 @@ All repeating UI elements are consolidated into [`src/landguard_web/templates/co
 ## 6. Execution Commands
 
 ```bash
-# 1. Run Complete Automated Test Suite under Database Isolation (177 tests)
+# 1. Run Complete Automated Test Suite under Database Isolation (277 tests)
 pytest -q
 
 # 2. Run Focused Test Suites

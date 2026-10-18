@@ -130,26 +130,45 @@ $$\Large \text{Deterministic Statutory Predicates} \succ \text{Human Review / Cl
 LandGuard utilizes a hybrid cloud architecture combining **Render's persistent backend compute** with **Vercel's global edge network**.
 
 ```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#1e293b',
+    'primaryTextColor': '#f8fafc',
+    'primaryBorderColor': '#38bdf8',
+    'lineColor': '#38bdf8',
+    'secondaryColor': '#0f172a',
+    'tertiaryColor': '#1e1b4b',
+    'fontFamily': 'Inter, system-ui, sans-serif'
+  }
+}}%%
 flowchart TD
+    classDef client fill:#1e1b4b,stroke:#818cf8,stroke-width:2px,color:#ffffff;
+    classDef edgeGateway fill:#0c4a6e,stroke:#38bdf8,stroke-width:2px,color:#ffffff;
+    classDef backend fill:#064e3b,stroke:#34d399,stroke-width:2px,color:#ffffff;
+    classDef aiEngine fill:#4c1d95,stroke:#c084fc,stroke-width:2px,color:#ffffff;
+    classDef storage fill:#3b0764,stroke:#d8b4fe,stroke-width:2px,color:#ffffff;
+    classDef standby fill:#78350f,stroke:#fbbf24,stroke-width:2px,color:#ffffff;
+
     subgraph ClientLayer["🖥️ Client & Device Layer"]
-        CitizenBrowser["Citizen Browser / Mobile Device"]
-        RegistrarDesktop["Sub-Registrar / Investigator Desktop"]
-        PublicScanner["Smartphone Scanning Authenticity QR Code"]
+        CitizenBrowser["Citizen Browser / Mobile Device"]:::client
+        RegistrarDesktop["Sub-Registrar / Investigator Desktop"]:::client
+        PublicScanner["Smartphone Scanning Authenticity QR Code"]:::client
     end
 
     subgraph VercelEdge["⚡ Vercel Global Edge (Public Gateway)"]
-        VercelDNS["https://landguard.vercel.app"]
-        VercelProxy["Vercel Edge Proxy / Rewrites (vercel.json)"]
+        VercelDNS["🌐 https://landguard.vercel.app"]:::edgeGateway
+        VercelProxy["🔀 Vercel Edge Proxy / Rewrites (vercel.json)"]:::edgeGateway
         VercelDNS --> VercelProxy
     end
 
     subgraph RenderBackend["🚀 Render Cloud Service (Linux Container)"]
-        RenderLB["Render TLS Termination & Load Balancer"]
-        UvicornASGI["Uvicorn ASGI Server (0.0.0.0:$PORT)"]
-        FastAPIApp["FastAPI Modular Application (src.landguard_web.app)"]
-        DomainServices["Domain Services (Auth, Cases, Verification, Reports, Voice)"]
-        Repositories["Repository Facade (BaseRepository, SQLite WAL Engine)"]
-        XGBoostEngine["XGBoost Risk Model & RapidOCR ONNX Engine"]
+        RenderLB["🛡️ Render TLS Termination & Load Balancer"]:::backend
+        UvicornASGI["⚙️ Uvicorn ASGI Server (0.0.0.0:$PORT)"]:::backend
+        FastAPIApp["⚡ FastAPI Modular Application (src.landguard_web.app)"]:::backend
+        DomainServices["📦 Domain Services (Auth, Cases, Verification, Reports, Voice)"]:::backend
+        Repositories["🗄️ Repository Facade (BaseRepository, SQLite WAL Engine)"]:::backend
+        XGBoostEngine["🧠 XGBoost Risk Model & RapidOCR ONNX Engine"]:::aiEngine
 
         RenderLB --> UvicornASGI
         UvicornASGI --> FastAPIApp
@@ -159,12 +178,12 @@ flowchart TD
     end
 
     subgraph RenderStorage["💾 Render Attached Persistent Disk (/var/data)"]
-        OperationalDB["landguard_operational.db (WAL Mode, Foreign Keys ON)"]
-        UploadsStorage["uploads/deeds (SHA-256 Masked Document Store)"]
+        OperationalDB[("📁 landguard_operational.db (WAL Mode, Foreign Keys ON)")]:::storage
+        UploadsStorage[("📂 uploads/deeds (SHA-256 Masked Document Store)")]:::storage
     end
 
     subgraph StandbyDatabase["☁️ Standby Cloud Database"]
-        NeonPostgres[("Neon Serverless PostgreSQL (Standby via DATABASE_URL)")]
+        NeonPostgres[("🐘 Neon Serverless PostgreSQL (Standby via DATABASE_URL)")]:::standby
     end
 
     CitizenBrowser -->|"HTTPS Requests"| VercelDNS
@@ -175,6 +194,12 @@ flowchart TD
     Repositories -->|"Read / Write Operations (LANDGUARD_DB_PATH)"| OperationalDB
     DomainServices -->|"Secure Document Ingestion (LANDGUARD_UPLOADS_PATH)"| UploadsStorage
     Repositories -.->|"Standby Connection (when DATABASE_BACKEND=POSTGRESQL)"| NeonPostgres
+
+    style ClientLayer fill:#0f172a,stroke:#6366f1,stroke-width:2px,stroke-dasharray: 5 5,color:#c7d2fe
+    style VercelEdge fill:#082f49,stroke:#0ea5e9,stroke-width:2px,color:#bae6fd
+    style RenderBackend fill:#022c22,stroke:#10b981,stroke-width:2px,color:#a7f3d0
+    style RenderStorage fill:#2e1065,stroke:#a855f7,stroke-width:2px,color:#e9d5ff
+    style StandbyDatabase fill:#451a03,stroke:#f59e0b,stroke-width:2px,stroke-dasharray: 4 4,color:#fde68a
 ```
 
 ### 🔒 Architectural Guarantees
@@ -301,6 +326,32 @@ erDiagram
 ## 5. End-to-End Verification & QR Journey
 
 ```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#0f172a',
+    'primaryTextColor': '#f8fafc',
+    'primaryBorderColor': '#38bdf8',
+    'lineColor': '#38bdf8',
+    'actorBkg': '#1e1b4b',
+    'actorBorder': '#818cf8',
+    'actorTextColor': '#ffffff',
+    'actorLineColor': '#6366f1',
+    'signalColor': '#38bdf8',
+    'signalTextColor': '#e2e8f0',
+    'labelBoxBkgColor': '#0c4a6e',
+    'labelBoxBorderColor': '#38bdf8',
+    'labelTextColor': '#ffffff',
+    'loopTextColor': '#ffffff',
+    'noteBkgColor': '#1e1b4b',
+    'noteBorderColor': '#c084fc',
+    'noteTextColor': '#e9d5ff',
+    'activationBkgColor': '#064e3b',
+    'activationBorderColor': '#34d399',
+    'sequenceNumberColor': '#ffffff',
+    'fontFamily': 'Inter, system-ui, sans-serif'
+  }
+}}%%
 sequenceDiagram
     autonumber
     actor Citizen as 👤 Citizen / Landholder
