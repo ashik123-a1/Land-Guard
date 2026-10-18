@@ -1,10 +1,9 @@
 {
   "version": 2,
-  "name": "landguard-frontend-proxy",
   "rewrites": [
     {
-      "source": "/(.*)",
-      "destination": "https://https-landguard-backend-onrender.com/$1"
+      "source": "/:path*",
+      "destination": "https://https-landguard-backend-onrender.com/:path*"
     }
   ]
 }
