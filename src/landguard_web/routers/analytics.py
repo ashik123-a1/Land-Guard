@@ -145,8 +145,8 @@ async def admin_settings(request: Request):
 # Operational API Endpoints
 # ---------------------------------------------------------
 
-@router.get("/health")
-@router.get("/api/health")
+@router.api_route("/health", methods=["GET", "HEAD"])
+@router.api_route("/api/health", methods=["GET", "HEAD"])
 async def health_check():
     """Health check endpoint indicating model readiness, active database, and standby configuration."""
     neon_status = "STANDBY" if service.db.neon_configured else "NOT_CONFIGURED"

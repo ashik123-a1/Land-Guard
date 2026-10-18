@@ -1,9 +1,10 @@
 {
+  "_notice": "LEGACY / UNUSED CONFIGURATION: Active judging deployment is hosted on GitHub Codespaces (https://expert-engine-gx6rj5vp5xprcwr44-8000.app.github.dev/). This file is preserved strictly as an optional standby Vercel Edge reverse-proxy configuration.",
   "version": 2,
   "rewrites": [
     {
       "source": "/:path*",
-      "destination": "https://https-landguard-backend-onrender.com/:path*"
+      "destination": "https://landguard-backend.onrender.com/:path*"
     }
   ]
 }

@@ -1,5 +1,9 @@
 # ==============================================================================
-# LandGuard AI — Render Blueprint Deployment Specification
+# LandGuard AI — Standby Cloud Deployment Specification (Legacy / Reference Only)
+# ==============================================================================
+# NOTE: The primary, active judging deployment is hosted on GitHub Codespaces:
+#   https://expert-engine-gx6rj5vp5xprcwr44-8000.app.github.dev/
+# This Render blueprint is preserved strictly as an optional standby configuration.
 # ==============================================================================
 
 services:

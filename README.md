@@ -619,7 +619,9 @@ erDiagram
 
 ```
 .
-├── .devcontainer/                       # GitHub Codespaces container specification (Python 3.11, OCR tools)
+├── .devcontainer/                       # GitHub Codespaces container specification (Active Judging Environment)
+├── render.yaml                          # [Legacy / Standby] Render blueprint (Preserved for reference; unused in judging)
+├── vercel.json                          # [Legacy / Standby] Vercel proxy config (Preserved for reference; unused in judging)
 ├── requirements.txt                     # Production Python dependencies (Linux/Codespaces ready)
 ├── pyproject.toml                       # Python package specification and pytest configuration
 ├── .env.example                         # Environment configuration template with safe placeholders
@@ -763,16 +765,19 @@ Configure these environment variables in your local `.env` file or in your cloud
 | `PORT` | Auto | `8000` | Port for ASGI binding (assigned by host). |
 | `HOST` | No | `0.0.0.0` | Host interface for network binding. |
 | `DATABASE_BACKEND` | Yes | `SQLITE` | Active database engine. Must remain `SQLITE` for primary operations. |
-| `LANDGUARD_DB_PATH` | Yes | `/var/data/landguard_operational.db` | Absolute path to SQLite operational database on persistent disk. |
-| `LANDGUARD_UPLOADS_PATH`| Yes | `/var/data/uploads` | Directory for ingested deed uploads on persistent disk. |
+| `LANDGUARD_DB_PATH` | Yes | `data/landguard_operational.db` | Relative or absolute path to SQLite operational database file. |
+| `LANDGUARD_UPLOADS_PATH`| Yes | `data/uploads` | Directory for ingested deed uploads. |
 | `LANDGUARD_BASE_URL` | Yes | `https://expert-engine-gx6rj5vp5xprcwr44-8000.app.github.dev` | Canonical public URL used to construct dynamic QR code inspection links. |
-| `ALLOWED_ORIGINS` | Yes | `https://expert-engine-gx6rj5vp5xprcwr44-8000.app.github.dev,http://localhost:8000` | Authorized CORS origins. |
+| `ALLOWED_ORIGINS` | Yes | `http://localhost:8000,http://127.0.0.1:8000,https://expert-engine-gx6rj5vp5xprcwr44-8000.app.github.dev` | Authorized CORS origins. |
 | `ALLOW_DEMO_LOGIN_IN_PROD` | No | `true` | Enables one-click demo credentials for evaluators. |
 | `DATABASE_URL` | No | `postgresql://...` | Standby Neon PostgreSQL connection string. |
 
 ---
 
 ## 14. Cloud Deployment (GitHub Codespaces Cloud Engine)
+
+> **Judging Deployment Note**:  
+> The official, active judging and evaluation environment is hosted exclusively on **GitHub Codespaces**. Any legacy configuration files (`vercel.json` or `render.yaml`) are preserved strictly for architectural reference / standby deployment and are completely unused in the active judging setup.
 
 The official live judging demonstration environment is hosted directly on high-performance **GitHub Codespaces** cloud infrastructure, delivering 8 GB RAM and 4 vCPUs for low-latency (< 3.8s) bilingual OCR and CV inference:
 
