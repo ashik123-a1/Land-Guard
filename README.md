@@ -608,7 +608,7 @@ erDiagram
 ├── README.md                            # Comprehensive system documentation & deployment guide
 ├── TESTS.md                             # Automated test suite specification & coverage metrics
 ├── landguard_preloader_animated.svg     # Animated cyber radar & statutory verification SVG
-├── landguard_preloader_animated.gif     # High-definition animated preview asset
+├── start.bat                            # One-click Windows launch and dev server startup script
 ├── docs/                                # Technical system specifications & architectural blueprints
 │   ├── ARCHITECTURE.md                  # Comprehensive architecture & system design document
 │   └── landguard_preloader_animated.svg # Vector assets and design references
