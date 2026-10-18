@@ -508,12 +508,8 @@
       }
     }
 
-    function frame(now) {
-      const elapsed = now - startTime;
-
-      // =========================================================================
-      // PHASE 1: 0 to TRACE_DURATION (Line Tracing with Brisk Southern Delta Speed)
-      // =========================================================================
+    function updatePreloaderState(elapsed) {
+      // PHASE 1: 0 to TRACE_DURATION (Line Tracing)
       if (elapsed < TRACE_DURATION) {
         const u = Math.min(1.0, elapsed / TRACE_DURATION);
         const currentIdx = getPointIndex(u);
@@ -530,12 +526,8 @@
           }
         }
       }
-      // =========================================================================
-      // PHASE 2: TRACE_DURATION to TRACE_DURATION + IGNITE_DURATION
-      // Line closes. All 8 divisions ignite simultaneously (Clean radar dots & rings)
-      // =========================================================================
+      // PHASE 2: TRACE_DURATION to TRACE_DURATION + IGNITE_DURATION (Divisions ignite)
       else if (elapsed >= TRACE_DURATION && elapsed < (TRACE_DURATION + IGNITE_DURATION)) {
-        // Ensure perimeter is closed
         if (tracePolyline) {
           tracePolyline.setLatLngs(BD_ACCURATE_BORDER_POINTS);
         }
@@ -544,7 +536,6 @@
           tracerMarker = null;
         }
 
-        // IGNITE ALL 8 DIVISIONS SIMULTANEOUSLY (NO text clutter)
         if (!divisionsIgnited) {
           divisionsIgnited = true;
           Object.keys(DIVISION_COORDS).forEach(k => {
@@ -566,10 +557,28 @@
           });
         }
       }
-      // =========================================================================
-      // PHASE 3: Fade in Map Tiles & Illuminated Cadastre Fill
-      // =========================================================================
+      // PHASE 3: Fade in Real Map Tiles & Cadastre Fill
       else if (elapsed >= (TRACE_DURATION + IGNITE_DURATION) && elapsed < TOTAL_DURATION) {
+        if (!divisionsIgnited) {
+          divisionsIgnited = true;
+          Object.keys(DIVISION_COORDS).forEach(k => {
+            const div = DIVISION_COORDS[k];
+            const isP = div.pilot;
+            const markerIcon = L.divIcon({
+              className: 'custom-radar-icon',
+              html: `
+                <div class="radar-pin-container">
+                  <div class="${isP ? 'radar-pulse-ring-pilot' : 'radar-pulse-ring'}"></div>
+                  <div class="${isP ? 'radar-core-dot-pilot' : 'radar-core-dot'}"></div>
+                </div>
+              `,
+              iconSize: [38, 38],
+              iconAnchor: [19, 19]
+            });
+            L.marker([div.lat, div.lng], { icon: markerIcon }).addTo(pMap);
+          });
+        }
+
         const mapElapsed = elapsed - (TRACE_DURATION + IGNITE_DURATION);
         const mapRatio = Math.min(1.0, mapElapsed / MAP_REVEAL_DURATION);
 
@@ -598,19 +607,33 @@
           });
         }
       }
-      // =========================================================================
-      // PHASE 4: Fully Illuminated -> Smooth Fade-Out Opening Website
-      // =========================================================================
+      // PHASE 4: Fully Illuminated Real Map
       else if (elapsed >= TOTAL_DURATION) {
         tileBase.setOpacity(1.0);
         tileRef.setOpacity(0.85);
         if (fullPolygon) {
           fullPolygon.setStyle({ fillOpacity: 0.22 });
         }
+      }
+    }
 
-        setTimeout(() => {
-          dismissLandGuardPreloader();
-        }, 300);
+    // Expose programmatic renderer for GIF/video frame recorder
+    window.renderPreloaderFrame = function(customElapsed) {
+      window.RECORDING_MODE = true;
+      updatePreloaderState(customElapsed);
+    };
+
+    function frame(now) {
+      if (window.RECORDING_MODE) return;
+      const elapsed = now - startTime;
+      updatePreloaderState(elapsed);
+
+      if (elapsed >= TOTAL_DURATION) {
+        if (!window.DISABLE_PRELOADER_DISMISS) {
+          setTimeout(() => {
+            dismissLandGuardPreloader();
+          }, 300);
+        }
         return;
       }
 
