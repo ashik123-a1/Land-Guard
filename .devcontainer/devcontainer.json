@@ -8,14 +8,22 @@
     "8000": {
       "label": "LandGuard AI Web Portal",
       "onAutoForward": "openPreview",
+      "visibility": "public",
       "elevateIfNeeded": false
     }
   },
+  "containerEnv": {
+    "PYTHONPATH": "${containerWorkspaceFolder}"
+  },
+  "postStartCommand": "bash -c 'nohup bash start_codespace.sh > /tmp/landguard_server.log 2>&1 &'",
   "customizations": {
     "vscode": {
       "extensions": [
         "ms-python.python"
-      ]
+      ],
+      "settings": {
+        "task.allowAutomaticTasks": "on"
+      }
     }
   }
 }

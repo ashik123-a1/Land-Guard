@@ -15,7 +15,8 @@
 [![SQLite WAL](https://img.shields.io/badge/SQLite_WAL-Persistent_Storage-003B57?style=for-the-badge&logo=sqlite&logoColor=white)](https://sqlite.org)
 [![Neon PostgreSQL](https://img.shields.io/badge/Neon_Postgres-Standby_Ready-00E599?style=for-the-badge&logo=postgresql&logoColor=black)](https://neon.tech)
 [![Tests 277 Passed](https://img.shields.io/badge/Tests-277%20Passed%20(100%25)-brightgreen?style=for-the-badge&logo=pytest&logoColor=white)](tests/)
-[![Live Demo](https://img.shields.io/badge/Live_Demo-Codespaces_High_Speed-00C7B7?style=for-the-badge&logo=github&logoColor=white)](https://expert-engine-gx6rj5vp5xprcwr44-8000.app.github.dev/)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/ashik123-a1/Land-Guard)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Codespaces_Live-00C7B7?style=for-the-badge&logo=github&logoColor=white)](https://expert-engine-gx6rj5vp5xprcwr44-8000.app.github.dev/)
 [![Bilingual](https://img.shields.io/badge/Localization-Bilingual_(EN%20%7C%20বাংলা)-E91E63?style=for-the-badge)](src/landguard_web/localization.py)
 
 <br>
@@ -24,9 +25,9 @@
 
 <br>
 
-| 🌐 **Public Live Judging URL** | ⚙️ **Compute Infrastructure** | 🗄️ **Primary Database** | 🛡️ **Test Coverage** |
+| 🌐 **Public Live Judging URL** | 🚀 **1-Click Cloud Launch** | ⚙️ **Compute Infrastructure** | 🛡️ **Test Coverage** |
 | :---: | :---: | :---: | :---: |
-| [**expert-engine-gx6rj5vp5xprcwr44-8000.app.github.dev**](https://expert-engine-gx6rj5vp5xprcwr44-8000.app.github.dev/) | **GitHub Codespaces (8 GB RAM • 4 vCPU • Linux)** | **SQLite WAL** (`landguard_operational.db`) | **277 / 277 Passing (100%)** |
+| [**expert-engine-gx6rj5vp5xprcwr44-8000.app.github.dev**](https://expert-engine-gx6rj5vp5xprcwr44-8000.app.github.dev/) | [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/ashik123-a1/Land-Guard) | **GitHub Codespaces (8 GB RAM • 4 vCPU • Linux)** | **277 / 277 Passing (100%)** |
 
 </div>
 
