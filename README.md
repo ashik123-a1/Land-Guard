@@ -596,6 +596,84 @@ erDiagram
     }
 ```
 
+### 📄 Concrete Sample Data Payloads (Anonymized & Bilingual)
+
+To give evaluators and judges immediate insight into the operational data representations, the following anonymized JSON payloads illustrate the core cadastral parcel model and an evaluated statutory verification dossier:
+
+#### 1. Cadastral Parcel Entity (`PARCELS` Record)
+```json
+{
+  "parcel_id": "PAR-834B3C92",
+  "dag_plot_number": "2630",
+  "khatian_number": "1420",
+  "mouza": "রোহিতপুর (Ruhitpur)",
+  "jl_number": 55,
+  "upazila": "কেরানীগঞ্জ (Keraniganj)",
+  "district": "ঢাকা (Dhaka)",
+  "division": "ঢাকা (Dhaka)",
+  "total_area_decimal": 90.86,
+  "land_classification": "নাল জমি (Nal Agricultural)",
+  "survey_lineage": {
+    "cs_plot": "101",
+    "sa_plot": "101/1",
+    "rs_plot": "305",
+    "bs_plot": "2630"
+  },
+  "boundaries": {
+    "north": "দাগ নং ২৬২৯ (Dag #2629)",
+    "south": "দাগ নং ২৬৩১ (Dag #2631)",
+    "east": "পাকা রাস্তা / দাগ নং ২৬৩৫ (Road / Dag #2635)",
+    "west": "সরকারি খাল / দাগ নং ২৬২৬ (Canal / Dag #2626)"
+  },
+  "recorded_owner": {
+    "owner_name": "মোঃ আব্দুর রহিম চৌধুরী (Md. Abdur Rahim Chowdhury)",
+    "owner_nid": "NID-1982-2694-8172",
+    "share_decimal": 90.86
+  },
+  "is_synthetic": true
+}
+```
+
+#### 2. Statutory Verification Dossier (`VERIFICATION_RUNS` Record)
+```json
+{
+  "verification_id": "VRF-20261018-DF42CB",
+  "user_id": "USR-CITIZEN-001",
+  "document_type": "SALE_DEED",
+  "deed_number": "DEED-2024-75341",
+  "sub_registry_office": "কেরানীগঞ্জ সাব-রেজিস্ট্রি অফিস, ঢাকা",
+  "execution_date": "2024-07-09",
+  "dag_plot_number": "2630",
+  "transferred_area_decimal": 70.39,
+  "consideration_bdt": 7013469.0,
+  "seller_nid": "OWN-FA43027A",
+  "buyer_nid": "OWN-647B630F",
+  "overall_status": "SUSPICIOUS_CONVEYANCE_FLAGGED",
+  "rule_engine_flagged": true,
+  "ml_risk_score": 0.8842,
+  "ml_risk_tier": "HIGH",
+  "recommended_action": "HOLD_REGISTRATION_FOR_INVESTIGATION: Statutory contradiction detected under SAT Act 1950.",
+  "rules_triggered": [
+    {
+      "rule_code": "RULE_UNVERIFIED_MUTATION_RECORD",
+      "severity": "HIGH",
+      "statutory_reference": "State Acquisition and Tenancy Act 1950 s.143",
+      "title": "Unverified Mutation Record (অযাচাইকৃত নামজারি রেকর্ড)",
+      "explanation_bn": "ভূমি রাজস্ব রেকর্ডে উল্লিখিত নামজারি কেসটি (MUT-2024-5255/Keraniganj) অযাচাইকৃত বা অনুপস্থিত।",
+      "explanation_en": "Mutation record reference 'MUT-2024-5255/Keraniganj' is unverified in official Land Revenue records."
+    }
+  ],
+  "cv_forensic_evidence": {
+    "cv_seal_present": true,
+    "cv_signature_present": true,
+    "visual_anomaly_detected": false,
+    "visual_anomaly_score": 0.042
+  },
+  "sha256_report_hash": "936629d8de4d636b14229ff9cd7cc3458fece4981b53032bf0b705cdd3487f3e",
+  "created_at": "2026-10-18T15:08:50Z"
+}
+```
+
 ---
 
 ## 8. Technology Stack
