@@ -18,7 +18,7 @@ from src.landguard_web.rate_limiter import enforce_rate_limit
 router = APIRouter()
 
 
-@router.get("/", response_class=HTMLResponse)
+@router.api_route("/", methods=["GET", "HEAD"], response_class=HTMLResponse)
 async def landing_page(request: Request):
     """Public Landing / Welcome Page."""
     user = get_current_user(request)

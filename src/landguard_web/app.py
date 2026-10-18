@@ -96,6 +96,12 @@ async def get_favicon():
     return FileResponse(svg_path, media_type="image/svg+xml")
 
 
+@app.api_route("/health", methods=["GET", "HEAD"])
+@app.api_route("/api/health", methods=["GET", "HEAD"])
+async def health_check():
+    return {"status": "healthy", "service": "landguard"}
+
+
 from fastapi import Request
 from src.landguard_web.localization import get_preferred_language
 
