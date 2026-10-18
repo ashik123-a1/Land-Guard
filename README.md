@@ -705,8 +705,8 @@ For rapid evaluation and judging, three pre-configured demonstration accounts ar
 
 ```bash
 # 1. Clone repository
-git clone https://github.com/ashik123-a1/Land-Gurd.git
-cd Land-Gurd
+git clone https://github.com/ashik123-a1/Land-Guard.git
+cd Land-Guard
 
 # 2. Create and activate virtual environment
 python -m venv .venv
