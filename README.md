@@ -145,7 +145,7 @@ $$\Large \text{Deterministic Statutory Predicates} \succ \text{Human Review / Cl
 
 ## 3. System Architecture
 
-LandGuard utilizes a hybrid cloud architecture combining **Render's persistent backend compute** with **Vercel's global edge network**.
+LandGuard utilizes a cloud-native ASGI container architecture deployed on **GitHub Codespaces** (with zero-latency public port forwarding) and full local cross-platform deployment support.
 
 ```mermaid
 %%{init: {
@@ -174,29 +174,27 @@ flowchart TD
         PublicScanner["Smartphone Scanning Authenticity QR Code"]:::client
     end
 
-    subgraph VercelEdge["⚡ Vercel Global Edge (Public Gateway)"]
-        VercelDNS["🌐 https://landguard.vercel.app"]:::edgeGateway
-        VercelProxy["🔀 Vercel Edge Proxy / Rewrites (vercel.json)"]:::edgeGateway
-        VercelDNS --> VercelProxy
+    subgraph CloudGateway["⚡ Public Cloud Gateway (GitHub Codespaces / Local)"]
+        LiveEndpoint["🌐 https://expert-engine-gx6rj5vp5xprcwr44-8000.app.github.dev / localhost:8000"]:::edgeGateway
+        PortGateway["🔀 Secure TLS Proxy & Public Port 8000 Forwarding"]:::edgeGateway
+        LiveEndpoint --> PortGateway
     end
 
-    subgraph RenderBackend["🚀 Render Cloud Service (Linux Container)"]
-        RenderLB["🛡️ Render TLS Termination & Load Balancer"]:::backend
-        UvicornASGI["⚙️ Uvicorn ASGI Server (0.0.0.0:$PORT)"]:::backend
+    subgraph AppBackend["🚀 LandGuard Application Backend (Linux Container / Local ASGI)"]
+        UvicornASGI["⚙️ Uvicorn ASGI Server (0.0.0.0:8000)"]:::backend
         FastAPIApp["⚡ FastAPI Modular Application (src.landguard_web.app)"]:::backend
         DomainServices["📦 Domain Services (Auth, Cases, Verification, Reports, Voice)"]:::backend
         Repositories["🗄️ Repository Facade (BaseRepository, SQLite WAL Engine)"]:::backend
         XGBoostEngine["🧠 XGBoost Risk Model & RapidOCR ONNX Engine"]:::aiEngine
 
-        RenderLB --> UvicornASGI
         UvicornASGI --> FastAPIApp
         FastAPIApp --> DomainServices
         DomainServices --> Repositories
         DomainServices --> XGBoostEngine
     end
 
-    subgraph RenderStorage["💾 Render Attached Persistent Disk (/var/data)"]
-        OperationalDB[("📁 landguard_operational.db (WAL Mode, Foreign Keys ON)")]:::storage
+    subgraph AppStorage["💾 Persistent Storage Engine"]
+        OperationalDB[("📁 data/landguard_operational.db (WAL Mode, Foreign Keys ON)")]:::storage
         UploadsStorage[("📂 uploads/deeds (SHA-256 Masked Document Store)")]:::storage
     end
 
@@ -204,27 +202,27 @@ flowchart TD
         NeonPostgres[("🐘 Neon Serverless PostgreSQL (Standby via DATABASE_URL)")]:::standby
     end
 
-    CitizenBrowser -->|"HTTPS Requests"| VercelDNS
-    RegistrarDesktop -->|"HTTPS Requests"| VercelDNS
-    PublicScanner -->|"Direct QR Inspection (/verify/public/:id)"| VercelDNS
+    CitizenBrowser -->|"HTTPS Requests"| LiveEndpoint
+    RegistrarDesktop -->|"HTTPS Requests"| LiveEndpoint
+    PublicScanner -->|"Direct QR Inspection (/verify/public/:id)"| LiveEndpoint
 
-    VercelProxy -->|"Transparent Proxy Rewrite: /(.*) -> Render"| RenderLB
+    PortGateway -->|"Internal Loopback Traffic"| UvicornASGI
     Repositories -->|"Read / Write Operations (LANDGUARD_DB_PATH)"| OperationalDB
     DomainServices -->|"Secure Document Ingestion (LANDGUARD_UPLOADS_PATH)"| UploadsStorage
     Repositories -.->|"Standby Connection (when DATABASE_BACKEND=POSTGRESQL)"| NeonPostgres
 
     style ClientLayer fill:#0f172a,stroke:#6366f1,stroke-width:2px,stroke-dasharray: 5 5,color:#c7d2fe
-    style VercelEdge fill:#082f49,stroke:#0ea5e9,stroke-width:2px,color:#bae6fd
-    style RenderBackend fill:#022c22,stroke:#10b981,stroke-width:2px,color:#a7f3d0
-    style RenderStorage fill:#2e1065,stroke:#a855f7,stroke-width:2px,color:#e9d5ff
+    style CloudGateway fill:#082f49,stroke:#0ea5e9,stroke-width:2px,color:#bae6fd
+    style AppBackend fill:#022c22,stroke:#10b981,stroke-width:2px,color:#a7f3d0
+    style AppStorage fill:#2e1065,stroke:#a855f7,stroke-width:2px,color:#e9d5ff
     style StandbyDatabase fill:#451a03,stroke:#f59e0b,stroke-width:2px,stroke-dasharray: 4 4,color:#fde68a
 ```
 
 ### 🔒 Architectural Guarantees
 
-- **Unified Domain Experience**: The entire application, static assets, login sessions, and forms are exposed seamlessly under the public Vercel domain (`https://landguard.vercel.app`).
-- **Complete Data Persistence**: Render mounts an attached persistent SSD disk at `/var/data`. The operational SQLite database (`/var/data/landguard_operational.db`) survives service restarts, deployments, and rebuilds.
-- **Zero-Overwrite Deployment Guard**: The initialization guard (`scripts/init_persistent_db.py`) automatically seeds the persistent disk on first boot, and strictly skips re-initialization on subsequent deployments, preserving all live user data and complaints.
+- **Unified Domain Experience**: The entire application, static assets, login sessions, and forms are exposed seamlessly under the official GitHub Codespaces live endpoint (`https://expert-engine-gx6rj5vp5xprcwr44-8000.app.github.dev/`) or local environment (`http://localhost:8000`).
+- **Complete Data Persistence**: LandGuard operates with persistent transactional SQLite storage in WAL mode (`landguard_operational.db`), ensuring zero data loss across service reloads, worker restarts, and container sessions.
+- **Zero-Overwrite Deployment Guard**: The initialization guard (`scripts/init_persistent_db.py`) automatically seeds the operational database on first boot, and strictly skips re-initialization on subsequent runs, preserving all live user data and complaints.
 
 ---
 
@@ -448,10 +446,10 @@ sequenceDiagram
     autonumber
     actor Citizen as 👤 Citizen / Landholder
     actor Registrar as 👨‍💼 Sub-Registrar / Admin
-    participant WebApp as 💻 LandGuard Web UI (Vercel)
-    participant API as 🚀 FastAPI Backend (Render)
+    participant WebApp as 💻 LandGuard Web UI (Codespaces / Local)
+    participant API as 🚀 FastAPI Backend (Uvicorn ASGI)
     participant OCR as 👁️ RapidOCR & CV Engine
-    participant DB as 🗄️ SQLite DB (/var/data)
+    participant DB as 🗄️ SQLite DB (Operational WAL)
     actor PublicUser as 📱 Third-Party Buyer / Verifier
 
     Citizen->>WebApp: Upload Deed Image (.png / .pdf)
@@ -604,11 +602,11 @@ erDiagram
 
 | Layer | Component | Technology & Specification |
 | :--- | :--- | :--- |
-| **Edge Routing & Proxy** | Vercel Edge Network | Transparent reverse-proxy rewrites via `vercel.json` |
+| **Hosting & Port Gateway** | GitHub Codespaces / Local ASGI | Zero-latency cloud container with public TLS port 8000 forwarding |
 | **Backend Application** | FastAPI 0.110+ | Asynchronous ASGI RESTful API & Server-Side Rendered (SSR) routes |
 | **ASGI Web Server** | Uvicorn 0.28+ | High-performance ASGI server with forwarded headers enabled |
 | **Templating & UI** | Jinja2 3.1+ & TailwindCSS | Bento-grid responsive layout with bilingual i18n support |
-| **Primary Operational DB** | SQLite 3 (WAL Mode) | Persistent transactional disk storage on Render persistent disk (`/var/data`) |
+| **Primary Operational DB** | SQLite 3 (WAL Mode) | Persistent transactional disk storage (`data/landguard_operational.db`) |
 | **Standby Cloud DB** | Neon Serverless PostgreSQL | Serverless PostgreSQL driver (`psycopg2-binary`) on standby |
 | **Machine Learning** | XGBoost 3.x & Scikit-learn | 19 domain features, calibrated risk score, Brier score 0.0013 |
 | **Vision & OCR** | RapidOCR, OpenCV, PyMuPDF | Text line detection, HarfBuzz Bengali shaping, seam artifact analysis |
@@ -621,9 +619,8 @@ erDiagram
 
 ```
 .
-├── render.yaml                          # Render cloud service & persistent disk blueprint
-├── vercel.json                          # Vercel domain reverse-proxy configuration
-├── requirements.txt                     # Production Python dependencies (Linux/Render ready)
+├── .devcontainer/                       # GitHub Codespaces container specification (Python 3.11, OCR tools)
+├── requirements.txt                     # Production Python dependencies (Linux/Codespaces ready)
 ├── pyproject.toml                       # Python package specification and pytest configuration
 ├── .env.example                         # Environment configuration template with safe placeholders
 ├── .gitignore                           # Git ignore specification protecting operational databases

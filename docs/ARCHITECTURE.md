@@ -223,7 +223,7 @@ flowchart TD
 - **Deterministic Statutory Evaluation**: Evaluates non-negotiable legal rules (R-01 to R-10). Any statutory failure immediately flags the conveyance as a confirmed violation.
 - **Calibrated Supervised XGBoost Inference**: Computes an explainable risk indicator across 19 features (calibrated with isotonic regression, Brier score: 0.0013).
 - **Evidence Act 1872 Section 45 Synthesis**: The non-negotiable hierarchy guarantees that statutory contradictions strictly override statistical scores.
-- **Cryptographic Output**: Generates an official court-ready ReportLab PDF dossier embedded with a dynamic verification QR code linking to `https://landguard.vercel.app/verify/public/:id`.
+- **Cryptographic Output**: Generates an official court-ready ReportLab PDF dossier embedded with a dynamic verification QR code linking to `https://expert-engine-gx6rj5vp5xprcwr44-8000.app.github.dev/verify/public/:id` (or local equivalent).
 
 ---
 
